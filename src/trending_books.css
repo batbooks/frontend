@@ -1,7 +1,6 @@
 .trending_desc{
-    
     height: 100% ;
-    place-content: center;
+    
 }
 .trending_img{
     display: grid;
