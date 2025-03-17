@@ -1,0 +1,17 @@
+.trending_desc{
+    
+    height: 100% ;
+    place-content: center;
+}
+.trending_img{
+    display: grid;
+    place-content: center;
+    height: 100%;
+    
+    
+    
+}
+.trending_rating{
+    height: 100%;
+    place-content: center;
+}

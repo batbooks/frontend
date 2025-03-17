@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import viteLogo from '/vite.svg'
 import { store } from './redux/store'
 import './App.css'
-import HomePage from './HomePage';
+import HomePage from './trending_books';
 
 function App() {
 
