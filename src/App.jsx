@@ -1,17 +1,18 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
+
 import { Provider } from 'react-redux';
-import viteLogo from '/vite.svg'
+
 import { store } from './redux/store'
 import './App.css'
-import HomePage from './trending_books';
+import Trending_books from './Trending_books';
+import Suggestions from './suggestions';
 
 function App() {
 
   
   return (
    <Provider store={store}>
-    <HomePage></HomePage>
+    <Trending_books></Trending_books>
+    <Suggestions></Suggestions>
    </Provider>
   )
 }

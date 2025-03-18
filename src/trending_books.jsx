@@ -39,9 +39,9 @@ const books = [
         rating: 2,
     },
 ];
-export default function trending_books() {
+export default function Trending_books() {
     return (
-        <>
+        <div className="m-10">
             <div className="flex flex-col h-[70vh] gap-4 w-[70vw] m-auto">
                 <div className="h-2/3 flex   flex-row items-center justify-center gap-4">
                     <div className="w-1/4 h-full grid grid-rows-3 place-items-center bg-[#A4C0ED] rounded-2xl  p-3">
@@ -238,6 +238,6 @@ export default function trending_books() {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 }
