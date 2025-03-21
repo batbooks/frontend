@@ -5,13 +5,14 @@ import viteLogo from '/vite.svg'
 import { store } from './redux/store'
 import './App.css'
 import HomePage from './HomePage';
+import Book_Page from './bookpage';
 
 function App() {
 
   
   return (
    <Provider store={store}>
-    <HomePage></HomePage>
+    <Book_Page></Book_Page>
    </Provider>
   )
 }
