@@ -1,6 +1,10 @@
+import React from 'react';
 import { useState, useEffect } from 'react';
+import { Navigate, useNavigate } from 'react-router';
+import Forget_password_2 from './Forget_password_2';
 
 function Forget_password() {
+  let navigate=useNavigate();
   const [email, setEmail] = useState('');
   const [code, setCode] = useState('');
   const [isCodeSent, setIsCodeSent] = useState(false);
@@ -22,12 +26,7 @@ function Forget_password() {
   };
 
   // Handle countdown timer
-  useEffect(() => {
-    if (countdown > 0) {
-      const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
-      return () => clearTimeout(timer);
-    }
-  }, [countdown]);
+
 
   const handleSendCode = async () => {
     setError('');
@@ -44,50 +43,53 @@ function Forget_password() {
     try {
       const code = await fetchVerificationCode(email);
       setGeneratedCode(code);
-      setIsCodeSent(true);
+      
       setMessage(`Verification code sent to ${email}`);
-      setCountdown(60); // Start countdown from 60 seconds
+      
     } catch (err) {
       setError('Failed to send code. Please try again.');
     } finally {
       setIsLoading(false);
+      setIsCodeSent(true);
+      navigate('/Forget_password_2',{state:{email}});
+      
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    setMessage('');
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setError('');
+  //   setMessage('');
 
-    if (!code) {
-      setError('Please enter the verification code');
-      return;
-    }
+  //   if (!code) {
+  //     setError('Please enter the verification code');
+  //     return;
+  //   }
 
-    setIsSubmitting(true);
+  //   setIsSubmitting(true);
 
-    try {
-      if (code === generatedCode) {
-        setMessage('Verification successful!');
-        // navigate........
-        // Proceed with password recovery logic
-      } else {
-        setError('Invalid verification code');
-      }
-    } catch (err) {
-      setError('Verification failed. Please try again.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  //   try {
+  //     if (code === generatedCode) {
+  //       setMessage('Verification successful!');
+  //       // navigate........
+  //       // Proceed with password recovery logic
+  //     } else {
+  //       setError('Invalid verification code');
+  //     }
+  //   } catch (err) {
+  //     setError('Verification failed. Please try again.');
+  //   } finally {
+  //     setIsSubmitting(false);
+  //   }
+  // };
 
-  return (
-    <div style={styles.container} className='m-auto mt-40 h-100 w-150 bg-[#A4C0ED] '>
+  return ( <>
+    {!isCodeSent && (<div style={styles.container} className='m-auto mt-34 h-70 w-[39vw] bg-[#A4C0ED] rounded-lg'>
       <h2 style={styles.title} className='font-bold'> بازیابی رمز عبور </h2>
-      <form onSubmit={handleSubmit} style={styles.form}>
+      <form  style={styles.form}>
         <div className='relative'  >
           <input 
-          className='p-5 pr-10 rounded-full h-10 w-100 bg-white placeholder:opacity-40 placeholder:text-right placeholder:mr-4 hover:ring-2 hover:ring-blue-700  focus:outline-none  focus:ring-2 focus:ring-blue-700 transition-all duration-300 '
+          className='p-[1.29vw] pr-[2.6vw] rounded-full h-10 w-[26vw] bg-white placeholder:opacity-40 placeholder:text-right placeholder:mr-4 hover:ring-2 hover:ring-blue-700  focus:outline-none  focus:ring-2 focus:ring-blue-700 transition-all duration-300 '
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -95,15 +97,15 @@ function Forget_password() {
             
             required
           />
-            <div className="absolute inset-y-0 left-106 flex items-center pl-4 pointer-events-none ">
+            <div className="absolute inset-y-0 left-[27.5vw] flex items-center pl-[1vw] pointer-events-none ">
     <img
       src="user.png" // Replace with the path to your icon
       alt="Email Icon"
-      className="h-4.5 w-4.5 opacity-90"
+      className="h-4.5  w-[1.2vw] opacity-90"
     />
   </div>
         </div>
-        <div className='flex flex-row justify-center gap-3'>
+        <div className='flex flex-row justify-center gap-[0.77vw]'>
             
             
             
@@ -111,51 +113,32 @@ function Forget_password() {
           <button
             type="button"
             onClick={handleSendCode}
-            disabled={isLoading || countdown > 0}
-            className='w-34 h-10 ml-11 rounded-full text-white bg-[#2663CD]  hover:border border-blue-700 transition-all duration-300'
+            disabled={isLoading }
+            className='w-[8.8vw] h-10 ml-[2.8vw] font-[4.1vw] rounded-full text-white bg-[#2663CD]  hover:border border-blue-700 transition-all duration-300'
           >
-            {isLoading
-              ? 'در حال ارسال...'
-              : countdown > 0
-              ? `ارسال مجدد (${countdown})`
-              : 'ارسال کد'}
+             ارسال کد 
           </button>
-          <div className='relative'>
-          <input
-                type="text"
-                value={code}
-                onChange={(e) => setCode(e.target.value)}
-                placeholder=" کد بازیابی "
-                 className='p-5 pr-10 rounded-full h-10 w-63 mr-11  bg-white placeholder:opacity-40 placeholder:text-right placeholder:mr-4 hover:ring-2 ring-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 transition-all duration-300'
-                required
-            />
-            
-            <img 
-      src="lock.png" // Replace with the path to your icon
-      alt="lock icon"
-      className="h-4.5 w-4.7 opacity-90 absolute inset-y-2.5 left-53"
-    />
-    </div>
+          
           
         </div>
        
 
-        <div >
-          
-
-          <button
-            type="submit"
-            disabled={!isCodeSent || isSubmitting}
-            className='w-30 h-9 ml-11 rounded-full text-white bg-[#2663CD]  hover:border border-blue-700 transition-all duration-300 font-[]'
-
-          >
-            {isSubmitting ? 'در حال بررسی...' : 'بازیابی'} 
-          </button>
-        </div>
+        
         {error && <div style={styles.error}>{error}</div>}
         {message && <div style={styles.message}>{message}</div>}
       </form>
+      
+
+
+
+
+
+
+      
     </div>
+    )}
+    
+    </>
   );
 };
 
