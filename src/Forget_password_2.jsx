@@ -44,6 +44,7 @@ export default function Forget_Password_2() {
         email,
         verificationCode,
         newPassword,
+        confirmPassword
       });
 
       if (response.status === 200) {
