@@ -78,7 +78,7 @@ export default function Forget_Password_2() {
           {/* Verification Code Input */}
           <div className="ml-[4.5vw]">
             <div className="relative flex  items-center w-[26vw] bg-white border border-gray-300 rounded-full  ">
-            <img src="middle-left.png" alt="mid-right" className="w-45 absolute top-26 -left-24 "/>
+            <img src="middle-left.png" alt="mid-right" className="w-45 absolute top-26 -left-[6.2vw] "/>
 
               <input
                 type="text"

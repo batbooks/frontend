@@ -82,9 +82,11 @@ function Forget_password() {
   //     setIsSubmitting(false);
   //   }
   // };
-
+  const gotoloinpage=()=>{
+    navigate('/Forget_password')
+   }
   return ( <>
-    {!isCodeSent && (<div style={styles.container} className='m-auto mt-34 h-70 w-[39vw] bg-[#A4C0ED] rounded-lg'>
+    <div style={styles.container} className='flex flex-col m-auto mt-24 h-80 w-[39vw] bg-[#A4C0ED] rounded-lg'>
       <h2 style={styles.title} className='font-bold'> بازیابی رمز عبور </h2>
       <form  style={styles.form}>
         <div className='relative'  >
@@ -114,7 +116,7 @@ function Forget_password() {
             type="button"
             onClick={handleSendCode}
             disabled={isLoading }
-            className='w-[8.8vw] h-10 ml-[2.8vw] font-[4.1vw] rounded-full text-white bg-[#2663CD]  hover:border border-blue-700 transition-all duration-300'
+            className='w-[8.8vw] h-10 ml-[1.2vw] font-[4.1vw] rounded-full text-white bg-[#2663CD]  hover:border border-blue-700 transition-all duration-300'
           >
              ارسال کد 
           </button>
@@ -134,9 +136,17 @@ function Forget_password() {
 
 
 
-      
+      <h1 onClick={gotoloinpage} className="text-[1vw] text-[#2663CD] absolute top-83 left-[46vw] underline"> بازگشت به صفحه ورود </h1>  
+      <img src="middle-left.png" alt="mid-right" className="w-45 absolute top-53 left-[30vw] "/>
+      <img src="batbooks.png" alt="mid-right" className="w-[5.2vw] absolute top-3 left-0 "/>
+
+      <p className="text-[1.5vw] font-bold absolute top-8 left-[5.2vw] ">BatBooks</p>
+      <img src="bottom-right.png" alt="bottom-left" className="w-[35vw]  absolute top-52 right-0 min-w-100"/>
+      <img src="bottomleft.png" alt="bottom-left" className="w-[17vw] absolute top-123 left-0 min-w-50"/>
+
+      <img src="middle-right-login.png" alt="mid-right" className="w-[13vw]   absolute -top-1 left-[62.3vw] min-w-32"/>
     </div>
-    )}
+    
     
     </>
   );
