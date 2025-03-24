@@ -40,13 +40,13 @@ export default function BookPage() {
   };
 
   return (
-    <div className="bg-[#f5fddc] min-h-screen p-6 flex flex-col items-center">
+    <div className="bg-[#D9F0FF] min-h-screen  flex flex-col items-center">
       {/* Search Bar */}
       <div className="relative w-full max-w-lg mb-6">
         <input
           type="text"
           placeholder="Search Your Books"
-          className="w-full px-12 py-2 rounded-full border border-gray-300 shadow-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-700"
+          className="bg-white w-full px-12 py-2 rounded-full border border-gray-300 shadow-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-700"
         />
         <svg
           className="absolute left-3 top-2 w-6 h-6 text-gray-500"
@@ -59,7 +59,7 @@ export default function BookPage() {
       </div>
 
       {/* Book Details Section */}
-      <div className="flex flex-col md:flex-row w-full max-w-4xl bg-white p-6 rounded-lg shadow-md border border-blue-400 mb-6">
+      <div className=" flex flex-col md:flex-row w-full bg-blue-300 p-6  pb-20   ">
         <div className="w-full md:w-1/3 flex justify-center">
           <img
             src="https://via.placeholder.com/150"
@@ -75,9 +75,7 @@ export default function BookPage() {
             <span className="ml-2 text-sm">654 Ratings · 756 Reviews</span>
           </div>
           <p className="text-gray-700 text-sm leading-relaxed">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vitae
-            gravida lacus, ut sodales nunc...
-          </p>
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia, possimus velit aspernatur consequatur iusto, aperiam earum accusantium, hic inventore libero molestiae expedita ad provident voluptatibus. Maxime, nostrum. Quod, facilis enim.          </p>
           <div className="flex flex-wrap mt-2 text-sm">
             <span className="bg-blue-200 text-blue-800 px-2 py-1 rounded-md mr-2">
               Genre 1
@@ -104,8 +102,8 @@ export default function BookPage() {
       </div>
 
       {/* Table of Contents */}
-      <div className="w-full max-w-4xl bg-white p-6 rounded-lg shadow-md border">
-        <h3 className="text-lg font-bold text-red-500 flex items-center mb-4">
+      <div className="w-full bg-blue-300 p-6  ">
+        <h3 className="text-lg font-bold  flex items-center mb-4">
           📑 TABLE OF CONTENTS
         </h3>
         <table className="w-full border-collapse border border-gray-200">
@@ -127,7 +125,7 @@ export default function BookPage() {
               )
               .map((chapter) => (
                 <tr key={chapter.id} className="border border-gray-300">
-                  <td className="p-2 text-blue-600 underline cursor-pointer">
+                  <td className="p-2 underline cursor-pointer">
                     {chapter.id}. {chapter.name}
                   </td>
                   <td className="p-2 text-right text-gray-600">
