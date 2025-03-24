@@ -1,214 +1,194 @@
-import { useState } from "react";
+import { useState ,useEffect} from "react";
+import { FaStar, FaRegStar } from "react-icons/fa";
 import { Editor } from "primereact/editor";
 import { Rating } from "primereact/rating";
-// import "primereact/resources/themes/lara-dark-indigo/theme.css"; // Choose your preferred theme
-// import "primereact/resources/primereact.min.css";
-// import "primeicons/primeicons.css";
 
-export default function BookPage() {
-  const chapters = [
-    { id: 1, name: "Good Morning Brother", date: "6 years ago" },
-    { id: 2, name: "Life’s Little Problems", date: "6 years ago" },
-    { id: 3, name: "The Bitter Truth", date: "6 years ago" },
-    { id: 4, name: "Stars Fell", date: "6 years ago" },
-    { id: 5, name: "Start Over", date: "6 years ago" },
-    { id: 6, name: "Concentrate and Try Again", date: "6 years ago" },
-    { id: 7, name: "Of Gaps And Pretending", date: "6 years ago" },
-    { id: 8, name: "Perspective", date: "6 years ago" },
-    { id: 9, name: "Cheaters", date: "6 years ago" },
-    { id: 10, name: "Overlooked Details", date: "6 years ago" },
-  ];
+const Pagination = ({ totalPages, currentPage, onPageChange }) => {
+  return (
+    <div className="flex justify-center mt-4">
+      {Array.from({ length: totalPages }, (_, i) => (
+        <button
+          key={i}
+          className={`px-3 py-1 mx-1 ${currentPage === i + 1 ? "bg-blue-600 text-white" : "bg-gray-300"} rounded-lg`}
+          onClick={() => onPageChange(i + 1)}
+        >
+          {i + 1}
+        </button>
+      ))}
+    </div>
+  );
+};
 
+const BookPage = () => {
+  const rating = 4.5;
+  const reviews = 756;
+  const totalRatings = 654;
+  const genres = [" فانتزی ", " ماجراجویی ", " درام "];
+  const chapters = Array.from({ length: 20 }, (_, i) => `فصل ${i + 1}`);
   const [currentPage, setCurrentPage] = useState(1);
   const chaptersPerPage = 10;
   const totalPages = Math.ceil(chapters.length / chaptersPerPage);
+  const visibleChapters = chapters.slice(
+    (currentPage - 1) * chaptersPerPage,
+    currentPage * chaptersPerPage
+  );
+  const read_once=true;
+  const isfavourite=false;
 
-  // Review states
+  // Review States
   const [reviewTitle, setReviewTitle] = useState("");
   const [reviewContent, setReviewContent] = useState("");
   const [reviewRating, setReviewRating] = useState(0);
+  const [isSticky, setIsSticky] = useState(false);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const stopPosition = 400; // Height at which the element should stop
+      const scrollPosition = window.scrollY || window.pageYOffset;
+
+      if (scrollPosition >= stopPosition) {
+        setIsSticky(true);
+      } else {
+        setIsSticky(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
   const handleSubmitReview = () => {
-    console.log("Review Submitted:");
-    console.log("Title:", reviewTitle);
-    console.log("Rating:", reviewRating);
-    console.log("Content:", reviewContent);
-    alert("Thank you for your review!");
+    alert("با تشکر از نظر شما!");
     setReviewTitle("");
     setReviewRating(0);
     setReviewContent("");
   };
 
   return (
-    <div className="bg-[#D9F0FF] min-h-screen  flex flex-col items-center">
-      {/* Search Bar */}
-      <div className="relative w-full max-w-lg mb-6">
-        <input
-          type="text"
-          placeholder="Search Your Books"
-          className="bg-white w-full px-12 py-2 rounded-full border border-gray-300 shadow-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-700"
+    <div>
+    <div className="flex relative bg-[#D9F0FF] min-h-screen p-5 flex-row-reverse text-right">
+      {/* Fixed Book Cover */}
+      <div className={`w-[23.3vw]   ${
+        isSticky ? "absolute top-95" : " fixed top-5 right-5 "
+      } transition-all duration-500 ease-in-out`} style={{ bottom: "200px" }}>
+        <img
+          src="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-book-cover-design-template-34323b0f0734dccded21e0e3bebf004c_screen.jpg?ts=1637015198"
+          alt="Book Cover"
+          className="rounded-lg shadow-lg"
         />
-        <svg
-          className="absolute left-3 top-2 w-6 h-6 text-gray-500"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 50 50"
-          fill="currentColor"
-        >
-          <path d="M 21 3 C 11.621094 3 4 10.621094 4 20 C 4 29.378906 11.621094 37 21 37 C 24.710938 37 28.140625 35.804688 30.9375 33.78125 L 44.09375 46.90625 L 46.90625 44.09375 L 33.90625 31.0625 C 36.460938 28.085938 38 24.222656 38 20 C 38 10.621094 30.378906 3 21 3 Z M 21 5 C 29.296875 5 36 11.703125 36 20 C 36 28.296875 29.296875 35 21 35 C 12.703125 35 6 28.296875 6 20 C 6 11.703125 12.703125 5 21 5 Z"></path>
-        </svg>
-      </div>
-
-      {/* Book Details Section */}
-      <div className=" flex flex-col md:flex-row w-full bg-blue-300 p-6  pb-20   ">
-        <div className="w-full md:w-1/3 flex justify-center">
-          <img
-            src="https://via.placeholder.com/150"
-            alt="Book Cover"
-            className="w-48 h-64 rounded-lg"
-          />
-        </div>
-        <div className="w-full md:w-2/3 p-4">
-          <h2 className="text-2xl font-bold text-blue-900">Book Name</h2>
-          <h3 className="text-lg text-gray-700">Author Name</h3>
-          <div className="flex items-center my-2 text-gray-600">
-            ⭐ ⭐ ⭐ ⭐ ⭐ <span className="ml-2 font-bold text-black">4.5</span>
-            <span className="ml-2 text-sm">654 Ratings · 756 Reviews</span>
-          </div>
-          <p className="text-gray-700 text-sm leading-relaxed">
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia, possimus velit aspernatur consequatur iusto, aperiam earum accusantium, hic inventore libero molestiae expedita ad provident voluptatibus. Maxime, nostrum. Quod, facilis enim.          </p>
-          <div className="flex flex-wrap mt-2 text-sm">
-            <span className="bg-blue-200 text-blue-800 px-2 py-1 rounded-md mr-2">
-              Genre 1
-            </span>
-            <span className="bg-blue-200 text-blue-800 px-2 py-1 rounded-md mr-2">
-              Genre 2
-            </span>
-            <span className="bg-blue-200 text-blue-800 px-2 py-1 rounded-md">
-              Genre 3
-            </span>
-          </div>
-          <div className="mt-4 text-gray-600 text-sm">
-            <p>
-              <strong>Pages:</strong> 300
-            </p>
-            <p>
-              <strong>Publication Date:</strong> MM/DD/YYYY
-            </p>
-            <p>
-              <strong>Language:</strong> English
-            </p>
-          </div>
+        <div className="grid grid-cols-1 gap-y-2">
+          <button className={`shadow-lg rounded-full h-8 mt-1 ${isfavourite? "bg-[#265073] text-white ":"bg-white" } `}>{isfavourite?" حذف از مورد علاقه ها ":" اضافه کردن به مورد علاقه ها "}</button>
+          <button className={`shadow-lg rounded-full h-8 ${read_once? "bg-[#265073] text-white ":"bg-white" } `}>{read_once?" تا کنون خوانده شده " : " تا کنون خوانده نشده "}</button>
+          
         </div>
       </div>
 
-      {/* Table of Contents */}
-      <div className="w-full bg-blue-300 p-6  ">
-        <h3 className="text-lg font-bold  flex items-center mb-4">
-          📑 TABLE OF CONTENTS
-        </h3>
-        <table className="w-full border-collapse border border-gray-200">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="p-2 text-left border border-gray-300">
-                Chapter Name
-              </th>
-              <th className="p-2 text-right border border-gray-300">
-                Release Date
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {chapters
-              .slice(
-                (currentPage - 1) * chaptersPerPage,
-                currentPage * chaptersPerPage
+      {/* Combined Book Details and Chapters */}
+      <div className="w-3/4 mr-auto flex flex-col">
+        {/* Book Details */}
+        <div className="bg-[#D9F0FF] p-5   mb-5 relative z-10 text-right">
+          <h1 className="text-4xl font-bold mb-4">نام کتاب</h1>
+          <h2 className="text-2xl text-gray-600">نام نویسنده</h2>
+          <div className="flex items-center my-2 justify-end">
+            <span className="ml-2  text-gray-700 mb-1 font-bold opacity-70">
+                نظر 
+            </span>
+            <span className="ml-2 mr-2 text-gray-700 mb-1 font-bold opacity-70">
+           {reviews}
+            </span>
+            <span className="ml-2  text-gray-700 mb-1 font-bold opacity-70">
+               رای 
+            </span>
+            <span className="ml-2 mr-50 text-gray-700 mb-1 font-bold opacity-70">
+           {totalRatings}
+            </span>
+            <span className="ml-2 mr-7 text-gray-700 text-2xl mb-1">
+                     {rating}
+            </span>
+            {[...Array(5)].map((_, i) => (
+              i < Math.floor(rating) ? (
+                <FaStar key={i} className="text-yellow-500 m-3" />
+              ) : (
+                <FaRegStar key={i} className="text-gray-400" />
               )
-              .map((chapter) => (
-                <tr key={chapter.id} className="border border-gray-300">
-                  <td className="p-2 underline cursor-pointer">
-                    {chapter.id}. {chapter.name}
-                  </td>
-                  <td className="p-2 text-right text-gray-600">
-                    {chapter.date}
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
+            ))}
+          </div>
+          <p className="text-gray-700">توضیحات کوتاه کتاب در اینجا نوشته می‌شود...</p>
+          <div className="mt-2">
+            <span className="font-semibold"> ژانرها </span>
+            {genres.map((genre, index) => (
+              <span key={index} className="bg-gray-200 px-5 py-1 rounded-lg text-sm mx-2">{genre}</span>
+            ))}
+          </div>
+        </div>
 
-        {/* Pagination */}
-        <div className="flex justify-center mt-4">
-          {[...Array(totalPages)].map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setCurrentPage(i + 1)}
-              className={`mx-1 px-3 py-1 rounded ${
-                currentPage === i + 1 ? "bg-blue-500 text-white" : "bg-gray-200"
-              }`}
-            >
-              {i + 1}
+       {/* Chapter List */}
+<div className="bg-[#D9F0FF] p-5  relative z-0 text-right">
+  <h2 className="text-xl font-bold mb-3"> فهرست چپترها </h2>
+  <div className="overflow-x-auto">
+    <table className="w-full">
+      <thead>
+        <tr className="bg-blue-400 text-white">
+          {/* New Columns */}
+          <th className="p-3 text-right"> اسم فصل ها </th>
+          <th className="p-3 text-right"> تاریخ انتشار </th>
+          {/* Existing Column */}
+          <th className="p-3 text-right"> فصل </th>
+        </tr>
+      </thead>
+      <tbody>
+        {visibleChapters.map((chapter, index) => (
+          <tr key={index} className=" my-2 rounded-lg cursor-pointer hover:bg-blue-500">
+            {/* New Columns Data */}
+            <td className="p-3 text-right"> اسم فصل {index + 1}</td> {/* Replace with actual chapter name if available */}
+            <td className="p-3 text-right"> ۱۴۰۲/۰۷/۰۱ </td> {/* Replace with actual release date if available */}
+            {/* Existing Column Data */}
+            <td className="p-3 text-right">{chapter}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <Pagination totalPages={totalPages} currentPage={currentPage} onPageChange={setCurrentPage} />
+</div>
+      </div>  
+      </div>    
+        {/* Review section  */}
+      <div className="w-full bg- text-gray-800 p-6 rounded-lg shadow-lg border mt-8 text-right">
+          <h3 className="text-2xl font-bold mb-6 border-b pb-2 text-blue-600">ثبت نظر</h3>
+          <div className="space-y-6">
+            <div>
+              <label className="block text-gray-600 mb-1 text-sm">عنوان نظر</label>
+              <input
+                type="text"
+                value={reviewTitle}
+                onChange={(e) => setReviewTitle(e.target.value)}
+                placeholder="عنوان نظر خود را وارد کنید..."
+                className="w-full px-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-gray-600 mb-1 text-sm">امتیاز کلی</label>
+              <Rating value={reviewRating} onChange={(e) => setReviewRating(e.value)} stars={5} cancel={false} />
+            </div>
+            <div>
+              <label className="block text-gray-600 mb-1 text-sm">محتوای نظر</label>
+              <Editor value={reviewContent} onTextChange={(e) => setReviewContent(e.htmlValue)} style={{ height: "200px" }} />
+            </div>
+            <button onClick={handleSubmitReview} className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded transition">
+              ارسال نظر
             </button>
-          ))}
+          </div>
+          <div className="mt-6 bg-blue-100 text-blue-800 border-l-4 border-blue-600 p-4 text-xs rounded">
+            <strong>⚠ لطفا با احترام نظر دهید!</strong> نقد سازنده appreciated, اما لطفا محترمانه برخورد کنید و قوانین را رعایت کنید.
+          </div>
         </div>
       </div>
-
-      {/* Review Section */}
-      <div className="w-full max-w-4xl bg-[#1c1c1c] text-gray-200 p-6 rounded-2xl shadow-2xl border mt-8">
-        <h3 className="text-2xl font-bold mb-6 border-b border-gray-600 pb-2 text-yellow-400">
-          ⭐ Leave A Review
-        </h3>
-        <div className="space-y-6">
-          <div>
-            <label className="block text-gray-400 mb-1 text-sm">
-              Review Title
-            </label>
-            <input
-              type="text"
-              value={reviewTitle}
-              onChange={(e) => setReviewTitle(e.target.value)}
-              placeholder="Enter review title..."
-              className="w-full px-4 py-2 rounded-xl border border-gray-700 bg-[#2c2c2c] text-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-500"
-            />
-          </div>
-          <div>
-            <label className="block text-gray-400 mb-1 text-sm">
-              Overall Rating
-            </label>
-            <Rating
-              value={reviewRating}
-              onChange={(e) => setReviewRating(e.value)}
-              stars={5}
-              cancel={false}
-              className="text-yellow-400"
-            />
-          </div>
-          <div>
-            <label className="block text-gray-400 mb-1 text-sm">
-              Review Content
-            </label>
-            <Editor
-              value={reviewContent}
-              onTextChange={(e) => setReviewContent(e.htmlValue)}
-              style={{ height: "200px" }}
-              className="border-gray-700"
-            />
-          </div>
-          <button
-            onClick={handleSubmitReview}
-            className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 px-6 rounded-xl transition"
-          >
-            Submit Review
-          </button>
-        </div>
-        <div className="mt-6 bg-yellow-100 text-yellow-800 border-l-4 border-yellow-600 p-4 text-xs rounded">
-          <strong>⚠ Be Kind!</strong> Fair critique is appreciated, but please
-          be respectful and follow the{" "}
-          <a href="#" className="underline text-yellow-700">
-            review rules
-          </a>
-          .
-        </div>
-      </div>
-    </div>
+    
   );
-}
+};
+
+export default BookPage;
