@@ -6,20 +6,20 @@ import Forget_password_2 from './Forget_password_2';
 function Forget_password() {
   let navigate=useNavigate();
   const [email, setEmail] = useState('');
-  const [code, setCode] = useState('');
+  // const [code, setCode] = useState('');
   const [isCodeSent, setIsCodeSent] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  // const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
   const [generatedCode, setGeneratedCode] = useState('');
-  const [countdown, setCountdown] = useState(0); // Countdown timer
+  // const [countdown, setCountdown] = useState(0); // Countdown timer
 
   // Simulate an API call to get the verification code
   const fetchVerificationCode = async (email) => {
     return new Promise((resolve) => {
       setTimeout(() => {
-        const code = Math.floor(100000 + Math.random() * 900000).toString(); // Random 6-digit code
+        const code = fetch() // Random 6-digit code
         resolve(code);
       }, 1000); // Simulate network delay
     });
