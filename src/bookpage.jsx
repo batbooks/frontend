@@ -169,11 +169,11 @@ const BookPage = () => {
                 placeholder="عنوان نظر خود را وارد کنید..."
                 className="w-full px-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
-            <div>
+            {/* <div>
               <label className="block text-gray-600 mb-1 text-sm">شماره چپتر</label>
               <input type="text"                 className="w-30 px-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
-            </div>
+            </div> */}
             </div>
             
               <label className="block text-gray-600 mb-1 text-">امتیاز کلی</label>

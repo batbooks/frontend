@@ -17,6 +17,7 @@
     "@shadcn/ui": "^0.0.4",
     "@tailwindcss/vite": "^4.0.14",
     "editor": "^1.0.0",
+    "prime-react": "^1.0.0",
     "primeicons": "^7.0.0",
     "primereact": "^10.9.3",
     "quill": "^2.0.3",
