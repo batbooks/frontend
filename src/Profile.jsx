@@ -1,5 +1,7 @@
 import React from "react";
 import "./Profile.css";
+import "./Footer";
+import Footer from "./Footer";
 
 function Profile() {
   return (
@@ -319,6 +321,8 @@ function Profile() {
           خروج از حساب کاربری
         </button>
       </main>
+
+      <Footer />
     </div>
   );
 }
