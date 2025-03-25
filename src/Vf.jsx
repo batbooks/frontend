@@ -64,6 +64,7 @@ export default function Verify_code() {
 
     } finally {
       setLoading(false);
+      setSuccess("رمز عبور با موفقیت تغییر کرد.");
     }
   };
   const gotoloinpage=()=>{
@@ -81,7 +82,7 @@ export default function Verify_code() {
         </h2>
 
         {errors.general && <p className="text-red-500 text-center mb-2">{errors.general}</p>}
-        {success && <p className="text-green-500 text-center">{success}</p>}
+        {success && <p className="text-green-500 text-center mb-3">{success}</p>}
 
         <form onSubmit={handleSubmit} className="space-y-[1vw]">
           {/* Verification Code Input */}
