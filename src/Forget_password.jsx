@@ -1,10 +1,10 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { Navigate, useNavigate } from 'react-router';
-import Forget_password_2 from './Forget_password_2';
+import Forget_password_2 from './Vf';
 
 function Forget_password() {
-  let navigate=useNavigate();
+  const navigate=useNavigate();
   const [email, setEmail] = useState('');
   // const [code, setCode] = useState('');
   const [isCodeSent, setIsCodeSent] = useState(false);
@@ -16,43 +16,42 @@ function Forget_password() {
   // const [countdown, setCountdown] = useState(0); // Countdown timer
 
   // Simulate an API call to get the verification code
-  const fetchVerificationCode = async (email) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const code = fetch() // Random 6-digit code
-        resolve(code);
-      }, 1000); // Simulate network delay
-    });
-  };
-
+ 
   // Handle countdown timer
 
 
-  const handleSendCode = async () => {
+  const handleSendCode = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
     setError('');
     setMessage('');
 
-    // Simple email validation
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setError('Please enter a valid email address');
-      return;
-    }
-
-    setIsLoading(true);
-
     try {
-      const code = await fetchVerificationCode(email);
-      setGeneratedCode(code);
-      
-      setMessage(`Verification code sent to ${email}`);
-      
+      // Replace this with your actual API endpoint
+      const response = await fetch('https://batbooks.liara.run/auth/reset-password/send-otp/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setMessage('Code sent successfully!');
+        // Redirect to verification page or next step after a short delay
+        
+        navigate("/Vf", { state: { email:{email} } }) // Adjust the route as needed
+        console.log('adasd')
+        
+      } else {
+        throw new Error(data.message || 'Failed to send verification code');
+      }
     } catch (err) {
-      setError('Failed to send code. Please try again.');
+      setError(err.message || 'Verification failed. Please try again.');
     } finally {
       setIsLoading(false);
-      setIsCodeSent(true);
-      navigate('/Forget_password_2',{state:{email}});
-      
     }
   };
 
@@ -88,7 +87,7 @@ function Forget_password() {
   return ( <>
     <div style={styles.container} className='flex flex-col m-auto mt-24 h-80 w-[39vw] bg-[#A4C0ED] rounded-lg'>
       <h2 style={styles.title} className='font-bold'> بازیابی رمز عبور </h2>
-      <form  style={styles.form}>
+      <form  onSubmit={handleSendCode} style={styles.form}>
         <div className='relative'  >
           <input 
           className='p-[1.29vw] pr-[2.6vw] rounded-full h-10 w-[26vw] bg-white placeholder:opacity-40 placeholder:text-right placeholder:mr-4 hover:ring-2 hover:ring-blue-700  focus:outline-none  focus:ring-2 focus:ring-blue-700 transition-all duration-300 '
@@ -113,8 +112,8 @@ function Forget_password() {
             
             
           <button
-            type="button"
-            onClick={handleSendCode}
+            type="submit"
+            
             disabled={isLoading }
             className='w-[8.8vw] h-10 ml-[1.2vw] font-[4.1vw] rounded-full text-white bg-[#2663CD]  hover:border border-blue-700 transition-all duration-300'
           >

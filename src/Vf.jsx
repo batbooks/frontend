@@ -2,30 +2,31 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-export default function Forget_Password_2() {
-  const [verificationCode, setVerificationCode] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+export default function Verify_code() {
+  const [code, setVerificationCode] = useState("");
+  const [new_password, setNewPassword] = useState("");
+  const [new_password_conf, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
-  const email = location.state?.email;
+  const email = location.state?.email.email;
   
-  if (!email) {
-    navigate("/Forget_password");
-    return null;
-  }
+  // if (!email) {
+  //   useEffect(()=>navigate("/Forget_password"))
+    
+  //   return null;
+  // }
 
   const validateForm = () => {
     let newErrors = {};
 
-    if (!verificationCode.trim()) newErrors.verificationCode = "کد بازیابی را وارد کنید.";
-    if (!newPassword.trim()) newErrors.newPassword = "رمز عبور جدید را وارد کنید.";
-    else if (newPassword.length < 6) newErrors.newPassword = "رمز عبور حداقل باید ۶ کاراکتر باشد.";
-    if (confirmPassword !== newPassword) newErrors.confirmPassword = "رمزهای عبور مطابقت ندارند.";
+    if (!code.trim()) newErrors.code = "کد بازیابی را وارد کنید.";
+    if (!new_password.trim()) newErrors.new_password = "رمز عبور جدید را وارد کنید.";
+    else if (new_password.length < 6) newErrors.new_password = "رمز عبور حداقل باید ۶ کاراکتر باشد.";
+    if (new_password_conf !== new_password) newErrors.new_password_conf = "رمزهای عبور مطابقت ندارند.";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -39,20 +40,28 @@ export default function Forget_Password_2() {
     if (!validateForm()) return;
 
     setLoading(true);
+    
     try {
-      const response = await axios.post("/api/reset-password", {
+      const response = await axios.post("https://batbooks.liara.run/auth/reset-password/verify-otp/", {
         email,
-        verificationCode,
-        newPassword,
-        confirmPassword
+        code,
+        new_password,
+        new_password_conf
       });
 
-      if (response.status === 200) {
+      if (response.data.success) {
         setSuccess("رمز عبور با موفقیت تغییر کرد.");
+        console.log("sfdsdf ")
         setTimeout(() => navigate("/login"), 2000);
       }
     } catch (err) {
-      setErrors({ general: "خطا در بازیابی رمز عبور. لطفا دوباره امتحان کنید." });
+      setErrors({ general: " خطا در بازیابی رمز عبور. لطفا دوباره امتحان کنید " });
+      console.log(err  )
+      console.log(email)
+      console.log(code)
+      console.log(new_password)
+      console.log(new_password_conf)
+
     } finally {
       setLoading(false);
     }
@@ -82,15 +91,15 @@ export default function Forget_Password_2() {
 
               <input
                 type="text"
-                value={verificationCode}
+                value={code}
                 onChange={(e) => setVerificationCode(e.target.value)}
                 placeholder="کد بازیابی"
                 className="w-[26vw] h-10 px-[3.1vw] text-right bg-transparent focus:outline-none rounded-full placeholder:opacity-40 placeholder:text-right focus:ring-2 focus:ring-blue-700 hover:ring-2 hover:ring-blue-700"
               />
               <img src="lock.png" alt="lock" className="absolute left-[23.3vw] text-gray-500" />
             </div>
-            {errors.verificationCode && (
-              <p className="text-red-500 text-sm mt-1">{errors.verificationCode}</p>
+            {errors.code && (
+              <p className="text-red-500 text-sm mt-1">{errors.code}</p>
             )}
           </div>
 
@@ -99,15 +108,15 @@ export default function Forget_Password_2() {
             <div className="relative flex items-center w-[26vw] bg-white border border-gray-300 rounded-full ">
               <input
                 type="password"
-                value={newPassword}
+                value={new_password}
                 onChange={(e) => setNewPassword(e.target.value)}
                 placeholder="رمز جدید"
                 className="w-[26vw] h-10 px-12 text-right bg-transparent focus:outline-none rounded-full placeholder:opacity-40 placeholder:text-right focus:ring-2 focus:ring-blue-700 hover:ring-2 hover:ring-blue-700"
               />
               <img src="lock.png" alt="lock" className="absolute left-[23.3vw] text-gray-500" />
             </div>
-            {errors.newPassword && (
-              <p className="text-red-500 text-sm mt-1">{errors.newPassword}</p>
+            {errors.new_password && (
+              <p className="text-red-500 text-sm mt-1">{errors.new_password}</p>
             )}
           </div>
 
@@ -116,15 +125,15 @@ export default function Forget_Password_2() {
             <div className="relative flex items-center w-[26vw] bg-white border border-gray-300 rounded-full  ">
               <input
                 type="password"
-                value={confirmPassword}
+                value={new_password_conf}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="رمز عبور خود را تکرار کنید"
                 className="w-[26vw] h-10 px-[3.1vw] text-right bg-transparent focus:outline-none rounded-full placeholder:opacity-40 placeholder:text-right focus:ring-2 focus:ring-blue-700 hover:ring-2 hover:ring-blue-700"
               />
               <img src="lock.png" alt="lock" className="absolute left-[23.37vw] text-gray-500" />
             </div>
-            {errors.confirmPassword && (
-              <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>
+            {errors.new_password_conf && (
+              <p className="text-red-500 text-sm mt-1">{errors.new_password_conf}</p>
             )}
           </div>
 

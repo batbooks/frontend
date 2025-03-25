@@ -5,7 +5,7 @@ import { store } from './redux/store'
 import './App.css'
 import { BrowserRouter,Routes,Route } from "react-router";
 import Forget_password from './Forget_password';
-import Forget_password_2 from './Forget_password_2';
+import  Vf from './Vf';
 
 function App() {
 
@@ -15,7 +15,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path='/Forget_password' element={ <Forget_password/>}/>
-        <Route path='/Forget_password_2' element={<Forget_password_2/>}/>
+        <Route path='/Vf' element={<Vf/>}/>
         
       </Routes>
     </BrowserRouter>
