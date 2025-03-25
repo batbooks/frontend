@@ -1,8 +1,8 @@
 import { useState ,useEffect} from "react";
 import { FaStar, FaRegStar } from "react-icons/fa";
 import { Editor } from "primereact/editor";
-import { Rating } from "primereact/rating";
-
+// import { Rating } from "primereact/rating";
+import { Rating } from "@mui/material";
 const Pagination = ({ totalPages, currentPage, onPageChange }) => {
   return (
     <div className="flex justify-center mt-4">
@@ -43,7 +43,7 @@ const BookPage = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const stopPosition = 400; // Height at which the element should stop
+      const stopPosition = 420; // Height at which the element should stop
       const scrollPosition = window.scrollY || window.pageYOffset;
 
       if (scrollPosition >= stopPosition) {
@@ -69,11 +69,11 @@ const BookPage = () => {
 
   return (
     <div>
-    <div className="flex relative bg-[#D9F0FF] min-h-screen p-5 flex-row-reverse text-right">
+    <div className="flex  bg-[#D9F0FF] min-h-screen p-5 flex-row-reverse text-right">
       {/* Fixed Book Cover */}
       <div className={`w-[23.3vw]   ${
-        isSticky ? "absolute top-95" : " fixed top-5 right-5 "
-      } transition-all duration-500 ease-in-out`} style={{ bottom: "200px" }}>
+        isSticky ? " hidden" : " fixed top-5 "
+      } transition-all duration-500 ease-in-out`} style={{ bottom: {isSticky} ? "auto" : "200px" }}>
         <img
           src="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-book-cover-design-template-34323b0f0734dccded21e0e3bebf004c_screen.jpg?ts=1637015198"
           alt="Book Cover"
@@ -157,7 +157,7 @@ const BookPage = () => {
       </div>  
       </div>    
         {/* Review section  */}
-      <div className="w-full bg- text-gray-800 p-6 rounded-lg shadow-lg border mt-8 text-right">
+      <div className="w-auto bg-white text-gray-800 p-6 rounded-lg shadow-lg border mt-8 text-right mx-20">
           <h3 className="text-2xl font-bold mb-6 border-b pb-2 text-blue-600">ثبت نظر</h3>
           <div className="space-y-6">
             <div>
@@ -169,11 +169,23 @@ const BookPage = () => {
                 placeholder="عنوان نظر خود را وارد کنید..."
                 className="w-full px-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
-            </div>
             <div>
-              <label className="block text-gray-600 mb-1 text-sm">امتیاز کلی</label>
-              <Rating value={reviewRating} onChange={(e) => setReviewRating(e.value)} stars={5} cancel={false} />
+              <label className="block text-gray-600 mb-1 text-sm">شماره چپتر</label>
+              <input type="text"                 className="w-30 px-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
             </div>
+            </div>
+            
+              <label className="block text-gray-600 mb-1 text-">امتیاز کلی</label>
+              {/* <Rating className=""  value={reviewRating} onChange={(e) => setReviewRating(e.value)}  stars={5} cancel={false} /> */}
+              <Rating
+              className="mr-230"
+        name="custom-rating"
+        value={reviewRating}
+        onChange={(event, newValue) => setReviewRating(newValue)}
+        size="large" // Adjust size
+        
+      />
             <div>
               <label className="block text-gray-600 mb-1 text-sm">محتوای نظر</label>
               <Editor value={reviewContent} onTextChange={(e) => setReviewContent(e.htmlValue)} style={{ height: "200px" }} />
@@ -186,8 +198,9 @@ const BookPage = () => {
             <strong>⚠ لطفا با احترام نظر دهید!</strong> نقد سازنده appreciated, اما لطفا محترمانه برخورد کنید و قوانین را رعایت کنید.
           </div>
         </div>
+        <div className="h-200 m-40 border border-amber-950 text-6xl t">comment section</div>
       </div>
-    
+      
   );
 };
 
