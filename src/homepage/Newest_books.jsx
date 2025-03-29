@@ -40,8 +40,8 @@ const books = [
 ];
 export default function Newest_books(){
 return(
-    <div className="m-10">
-    <div className="h-[46vh] w-[70vw] m-auto flex flex-row gap-15 "> 
+    <div className="">
+    <div className="h-[46vh] w-[70vw] m-auto flex flex-row gap-15 items-center justify-center"> 
         <Bookcard book={books[0]}></Bookcard>
         <Bookcard book={books[0]}></Bookcard>
         <Bookcard book={books[0]}></Bookcard>

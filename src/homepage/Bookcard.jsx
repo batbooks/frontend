@@ -3,8 +3,8 @@ export default function Bookcard({book}){
 
 
     return(
-        <section className="w-auto">
-         <img className="h-full object-fill rounded-2xl m-auto" src={book.image} alt="" />
+        <section >
+         <img className="h-70 object-fill rounded-2xl m-auto w-42" src={book.image} alt="" />
         </section>
 
 

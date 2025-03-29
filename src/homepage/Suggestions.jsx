@@ -1,5 +1,5 @@
 import React from "react";
-import Bookcard from "./Bookcard";
+import Bookcard from "./bookcard";
 const books = [
     {
         name: " هری پاتر ",
@@ -41,8 +41,8 @@ const books = [
 export default function Suggestions(){
 return(
     <>
-    <h1 className="text-right"> پیشنهادی </h1>
-    <div className="h-[46vh] w-[70vw]  flex flex-row gap-15 "> 
+    <h1 className="m-20"> پیشنهادی </h1>
+    <div className="h-[46vh] w-[70vw] m-auto flex flex-row gap-15 justify-center items-center "> 
         <Bookcard book={books[0]}></Bookcard>
         <Bookcard book={books[0]}></Bookcard>
         <Bookcard book={books[0]}></Bookcard>

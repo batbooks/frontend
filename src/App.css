@@ -1,4 +1,13 @@
 @import "tailwindcss";
+.slick-prev:before,
+.slick-next:before {
+  color: blue !important; /* Change arrow color */
+}
+
+.backface-hidden {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
 
 /* #root {
   max-width: 1280px;

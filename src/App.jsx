@@ -9,11 +9,10 @@ function App() {
 
   
   return (
-   <Provider store={store}>
-    <Homepage></Homepage>
     
-   </Provider>
-  )
+      <Homepage />
+    
+  );
 }
 
 export default App

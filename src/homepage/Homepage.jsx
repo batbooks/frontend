@@ -7,7 +7,11 @@ import Banner from "./banner";
 export default function Homepage(){
     return(
         <>
-        <Banner></Banner>
+        
+    <div className="min-h-screen bg-gray-900 flex items-center justify-center p-8">
+    <Banner></Banner>
+    </div>
+        
         <Newest_books></Newest_books>
         <Suggestions></Suggestions>
         <Popular_authors></Popular_authors>
