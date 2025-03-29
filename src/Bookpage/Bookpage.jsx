@@ -3,6 +3,7 @@ import { FaStar, FaRegStar } from "react-icons/fa";
 import { Editor } from "primereact/editor";
 // import { Rating } from "primereact/rating";
 import { Rating } from "@mui/material";
+import SearchBar from "../Searchbar";
 const Pagination = ({ totalPages, currentPage, onPageChange }) => {
   return (
     <div className="flex justify-center mt-4">
@@ -69,6 +70,7 @@ const BookPage = () => {
 
   return (
     <div>
+     
     <div className="flex  bg-[#D9F0FF] min-h-screen p-5 flex-row-reverse text-right">
       {/* Fixed Book Cover */}
       <div className={`w-[23.3vw]   ${
@@ -88,6 +90,7 @@ const BookPage = () => {
 
       {/* Combined Book Details and Chapters */}
       <div className="w-3/4 mr-auto flex flex-col">
+      <SearchBar  />
         {/* Book Details */}
         <div className="bg-[#D9F0FF] p-5   mb-5 relative z-10 text-right">
           <h1 className="text-4xl font-bold mb-4">نام کتاب</h1>

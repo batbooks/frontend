@@ -1,12 +1,17 @@
+import { useState } from "react";
+
 export default function SearchBar() {
+  const [searched,setsearched]=useState("")
     const onSearch=()=>{
-        console.log("jiii")
+        
     }
     return (
       <div className="flex items-center justify-center bg-[#D9F0FF] p-6">
         <div className="relative w-full max-w-lg">
           <input
+
             type="text"
+            onChange={(e)=>setsearched(e.target.value)}
             placeholder="Search Your Books"
             className="w-full px-12 py-2 rounded-full border border-gray-300 bg- shadow-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-700"
           />
