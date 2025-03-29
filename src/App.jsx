@@ -1,18 +1,12 @@
-
-import { Provider } from 'react-redux';
-
-import { store } from './redux/store'
-import './App.css'
-import Homepage from './homepage/Homepage';
+import React from 'react';
+import CinematicCarousel from './components/CinematicCarousel';
 
 function App() {
-
-  
   return (
-    
-      <Homepage />
-    
+    <div className="min-h-screen bg-gray-900 flex items-center justify-center p-8">
+      <CinematicCarousel />
+    </div>
   );
 }
 
-export default App
+export default App;
