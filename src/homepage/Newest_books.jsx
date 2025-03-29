@@ -1,4 +1,5 @@
 import React from "react";
+import Bookcard from "./Bookcard";
 const books = [
     {
         name: " هری پاتر ",
@@ -41,19 +42,11 @@ export default function Newest_books(){
 return(
     <div className="m-10">
     <div className="h-[46vh] w-[70vw] m-auto flex flex-row gap-15 "> 
-        <section className="w-1/5  ">
-        <img className="h-full object-fill rounded-2xl" src={books[0].image} alt="" />
+        <Bookcard book={books[0]}></Bookcard>
+        <Bookcard book={books[0]}></Bookcard>
+        <Bookcard book={books[0]}></Bookcard>
+        <Bookcard book={books[0]}></Bookcard>
         
-        </section>
-        <section className="w-1/5 ">
-         <img className="h-full object-fill rounded-2xl" src={books[0].image} alt="" />
-        </section>
-        <section className="w-1/5 ">
-         <img className="h-full object-fill rounded-2xl" src={books[0].image} alt="" />
-        </section>
-        <section className="w-1/5 ">
-         <img className="h-full object-fill rounded-2xl" src={books[0].image} alt="" />
-        </section>
     </div>
     </div>
 )
