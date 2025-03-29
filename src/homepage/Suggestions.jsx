@@ -1,5 +1,5 @@
 import React from "react";
-import Bookcard from "./bookcard";
+import Bookcard from "./Bookcard";
 const books = [
     {
         name: " هری پاتر ",

@@ -1,129 +1,112 @@
-import { useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+function BookCard({ title, author, coverImage, description, chapters }) {
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  return (
+    <div 
+      className="relative w-50 h-82 cursor-pointer perspective-1000"
+      onClick={() => setIsFlipped(!isFlipped)}
+    >
+      <div className={`relative w-full h-full transition-transform duration-700 preserve-3d transform-origin-center ${isFlipped ? 'rotate-y-180' : ''}`}>
+        {/* Front Side */}
+        <div className="absolute inset-0 w-full h-full backface-hidden flex justify-center items-center">
+          <img 
+            src={coverImage} 
+            alt={title}
+            className="w-full h-full object-cover rounded-lg shadow-xl"
+          />
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2 rounded-b-lg text-xs">
+            <h3 className="text-cyan-400 font-bold text-[16px] mb-1.3">{title}</h3>
+            <p className="text-gray-300 mb-1">{author}</p>
+            <p className="text-gray-400">{chapters} Chapters</p>
+          </div>
+        </div>
+
+        {/* Back Side */}
+        <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-gray-800 rounded-lg p-2 shadow-xl flex flex-col  text-xs">
+          <h3 className="text-cyan-400 font-bold text-[20px]  mt-1 mb-auto">{title}</h3>
+          <p className="text-gray-300 text-[13px] mb-27">{description}</p>
+          <p className="text-gray-400">By {author}</p>
+          <p className="text-gray-400">{chapters} Chapters</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
 
 const books = [
   {
-    title: "Tempest Rising",
-    author: "CasualEvil",
-    chapters: "20 Chapters",
-    image: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=800",
-    description: "A thrilling tale of magic and mystery, where a young mage discovers her powers amidst a brewing storm that threatens to destroy everything she holds dear."
+    title: "Hypogeum, I",
+    author: "trembling rabbit",
+    coverImage: "1.png",
+    description: "Deep beneath the earth lies an ancient chamber known as the Hypogeum. Follow the journey of an unlikely hero as they uncover its mysteries and face the darkness that lurks within.",
+    chapters: 21
   },
   {
-    title: "Living In Death",
-    author: "Concepteer",
-    chapters: "20 Chapters",
-    image: "https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&q=80&w=800",
-    description: "In a world where the line between life and death blurs, one soul navigates the complexities of existence in both realms, challenging the very nature of mortality."
+    title: "Curse of the Exchanged",
+    author: "Yvenna",
+    coverImage: "2.png",
+    description: "In a world where souls can be traded, a young warrior discovers she's been given someone else's destiny. Now she must navigate a dangerous path between duty and desire.",
+    chapters: 21
   },
   {
-    title: "Awakening Dead",
-    author: "NotADegen",
-    chapters: "20 Chapters",
-    image: "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&q=80&w=800",
-    description: "When ancient rituals awaken forgotten powers, the dead rise with secrets that could reshape humanity. One person stands between order and chaos."
-  },
+    title: "A Cursed Flame",
+    author: "Purities Pale",
+    coverImage: "3.png",
+    description: "When an ancient flame that never dies falls into the wrong hands, the world teeters on the brink of chaos. Only one person holds the key to extinguishing the cursed fire.",
+    chapters: 21
+  }
 ];
 
 export default function Banner() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const [flipped, setFlipped] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(1);
 
-  const changeSlide = (newIndex) => {
-    if (isTransitioning || newIndex === currentIndex) return;
-    setIsTransitioning(true);
-    setFlipped(false); // Reset flip state on slide change
-    setCurrentIndex(newIndex);
-    setTimeout(() => setIsTransitioning(false), 600); // Prevent spam clicking
+  const showPreviousBook = () => {
+    setCurrentIndex((prev) => (prev === 0 ? books.length - 1 : prev - 1));
   };
 
-  const getVisibleBooks = () => {
-    const totalBooks = books.length;
-    return [-1, 0, 1].map((offset) => {
-      const index = (currentIndex + offset + totalBooks) % totalBooks;
-      return { ...books[index], position: offset };
-    });
+  const showNextBook = () => {
+    setCurrentIndex((prev) => (prev === books.length - 1 ? 0 : prev + 1));
   };
 
   return (
-    <div className="relative w-full max-w-6xl mx-auto overflow-hidden h-[650px]">
-      {/* Navigation Arrows */}
-      <div className="absolute top-1/2 w-full flex justify-between px-4 -translate-y-1/2 z-20">
-        <button
-          onClick={() => changeSlide((currentIndex - 1 + books.length) % books.length)}
-          className="p-3 bg-black/50 rounded-full hover:bg-black/70 transition-colors backdrop-blur-md"
-        >
-          <ChevronLeft size={28} className="text-white" />
-        </button>
-        <button
-          onClick={() => changeSlide((currentIndex + 1) % books.length)}
-          className="p-3 bg-black/50 rounded-full hover:bg-black/70 transition-colors backdrop-blur-md"
-        >
-          <ChevronRight size={28} className="text-white" />
-        </button>
+    <div className="relative flex items-center justify-center min-h-screen bg-[D9F0FF] px-4">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-gray-900 via-gray-900 to-cyan-900/20 z-0" />
+      
+      <button 
+        onClick={showPreviousBook}
+        className="absolute left-4 z-10 p-2 rounded-full bg-gray-800/50 hover:bg-gray-800 transition-colors"
+      >
+        <ChevronLeft className="w-6 h-6 text-cyan-400" />
+      </button>
+
+      <div className="flex gap-8 items-center justify-center">
+        {/* Previous Book (Dimmed) */}
+        <div className="opacity-40 scale-75 transition-all duration-500">
+          <BookCard {...books[(currentIndex - 1 + books.length) % books.length]} />
+        </div>
+
+        {/* Current Book */}
+        <div className="scale-110 z-10 transition-all duration-500">
+          <BookCard {...books[currentIndex]} />
+        </div>
+
+        {/* Next Book (Dimmed) */}
+        <div className="opacity-40 scale-75 transition-all duration-500">
+          <BookCard {...books[(currentIndex + 1) % books.length]} />
+        </div>
       </div>
 
-      {/* Carousel Items */}
-      <div className="flex justify-center items-center h-full">
-        <AnimatePresence initial={false} mode="popLayout">
-          {getVisibleBooks().map((book) => (
-            <motion.div
-              key={book.title}
-              initial={{ opacity: 0, scale: 0.85, x: book.position * 320 }}
-              animate={{
-                opacity: book.position === 0 ? 1 : 0.6,
-                scale: book.position === 0 ? 1 : 0.85,
-                x: book.position * 320,
-              }}
-              exit={{ opacity: 0, scale: 0.85, x: book.position * 320 }}
-              transition={{ type: "spring", stiffness: 80, damping: 20, duration: 0.6 }}
-              className="absolute flex flex-col items-center text-center w-72 cursor-pointer transition-all"
-              onClick={() => {
-                if (book.position === 0) setFlipped((prev) => !prev);
-                else changeSlide((currentIndex + book.position + books.length) % books.length);
-              }}
-            >
-              {/* Flip Card (Only Center Card Flips) */}
-              <motion.div
-                className="w-72 h-96 relative [transform-style:preserve-3d]"
-                animate={book.position === 0 ? { rotateY: flipped ? 180 : 0 } : {}}
-                transition={{ duration: 0.6 }}
-              >
-                {/* Front of Card */}
-                <div className="absolute w-full h-full backface-hidden">
-                  <div className="w-full h-full overflow-hidden rounded-lg shadow-lg">
-                    <img
-                      src={book.image}
-                      alt={book.title}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                </div>
-
-                {/* Back of Card (Only for Center Card) */}
-                {book.position === 0 && (
-                  <div
-                    className="absolute w-full h-full [transform:rotateY(180deg)] backface-hidden bg-white rounded-lg shadow-lg p-6 flex flex-col justify-center"
-                  >
-                    <h3 className="text-xl font-bold mb-4">{book.title}</h3>
-                    <p className="text-gray-600 text-sm mb-4">{book.description}</p>
-                    <div className="mt-auto">
-                      <p className="text-sm font-medium text-gray-900">{book.author}</p>
-                      <p className="text-xs text-gray-500">{book.chapters}</p>
-                    </div>
-                  </div>
-                )}
-              </motion.div>
-
-              {/* Title and details below card */}
-              <h2 className="text-xl font-bold mt-4 text-white">{book.title}</h2>
-              <p className="text-sm text-gray-300 mt-1">{book.author}</p>
-              <p className="text-xs text-gray-400 mt-1">{book.chapters}</p>
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </div>
+      <button 
+        onClick={showNextBook}
+        className="absolute right-4 z-10 p-2 rounded-full bg-gray-800/50 hover:bg-gray-800 transition-colors"
+      >
+        <ChevronRight className="w-6 h-6 text-cyan-400" />
+      </button>
     </div>
-  );}
+  );
+}

@@ -8,9 +8,9 @@ export default function Homepage(){
     return(
         <>
         
-    <div className="min-h-screen bg-gray-900 flex items-center justify-center p-8">
+    
     <Banner></Banner>
-    </div>
+    
         
         <Newest_books></Newest_books>
         <Suggestions></Suggestions>
