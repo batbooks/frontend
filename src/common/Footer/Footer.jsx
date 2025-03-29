@@ -1,5 +1,5 @@
 import React from "react";
-import "./Footer.css";
+import "./footer.css";
 
 function Footer() {
   return (
@@ -128,10 +128,6 @@ function Footer() {
                 به دیگران معرفی کنید...
               </a>
             </li>
-            <li style={{ display: "flex", gap: "5px", marginRight: "-7px" }}>
-              <button className="whatsapp-button"></button>
-              <button className="telegram-button"></button>
-            </li>
           </ul>
         </div>
         <div
@@ -229,6 +225,7 @@ function Footer() {
               backgroundColor: "#001F54",
               color: "#FFFFFF",
               marginLeft: "11px",
+              borderRadius: "12px",
             }}
           >
             <div style={{ display: "flex", gap: "18px", marginRight: "8px" }}>
@@ -252,7 +249,7 @@ function Footer() {
               </div>
               <img
                 style={{ width: "30px", height: "30px" }}
-                src="./photos/myket.png"
+                src="/photos/myket.png"
                 alt="Myket"
               />
             </div>
@@ -264,6 +261,7 @@ function Footer() {
               backgroundColor: "#001F54",
               color: "#FFFFFF",
               marginRight: "11px",
+              borderRadius: "12px",
             }}
           >
             <div style={{ display: "flex", gap: "18px", marginRight: "8px" }}>
@@ -287,7 +285,7 @@ function Footer() {
               </div>
               <img
                 style={{ width: "30px", height: "30px" }}
-                src="./photos/bazzar.png"
+                src="/photos/bazzar.png"
                 alt="Bazzar"
               />
             </div>

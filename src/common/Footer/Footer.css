@@ -12,7 +12,7 @@
   background-color: #a3d5ff;
   height: 40px;
   width: 40px;
-  background-image: url("./photos/whatsapp_logo.png");
+  background-image: url("/photos/whatsapp_logo.png");
   background-position: center;
   background-repeat: no-repeat;
   display: flex;
@@ -24,7 +24,7 @@
   background-color: #a3d5ff;
   height: 40px;
   width: 40px;
-  background-image: url("./photos/telegram_logo.png");
+  background-image: url("/photos/telegram_logo.png");
   background-position: center;
   background-repeat: no-repeat;
   display: flex;
@@ -36,7 +36,7 @@
   background-color: #a3d5ff;
   height: 40px;
   width: 40px;
-  background-image: url("./photos/instagram_logo.png");
+  background-image: url("/photos/instagram_logo.png");
   background-position: center;
   background-repeat: no-repeat;
   display: flex;
