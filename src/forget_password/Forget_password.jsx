@@ -137,9 +137,9 @@ function Forget_password() {
 
       <h1 onClick={gotoloinpage} className="text-[1vw] text-[#2663CD] absolute top-83 left-[46vw] underline"> بازگشت به صفحه ورود </h1>  
       <img src="middle-left.png" alt="mid-right" className="w-45 absolute top-53 left-[30vw] "/>
-      <img src="batbooks.png" alt="mid-right" className="w-[5.2vw] absolute top-3 left-0 "/>
+      {/* <img src="batbooks.png" alt="mid-right" className="w-[5.2vw] absolute top-3 left-0 "/> */}
 
-      <p className="text-[1.5vw] font-bold absolute top-8 left-[5.2vw] ">BatBooks</p>
+      <p className="text-[1.5vw] font-bold absolute top-8 left-[2vw] ">BatBooks</p>
       <img src="bottom-right.png" alt="bottom-left" className="w-[35vw]  absolute top-52 right-0 min-w-100"/>
       <img src="bottomleft.png" alt="bottom-left" className="w-[17vw] absolute top-123 left-0 min-w-50"/>
 

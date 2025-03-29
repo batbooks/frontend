@@ -4,8 +4,8 @@ import { Provider } from 'react-redux';
 import { store } from './redux/store'
 import './App.css'
 import { BrowserRouter,Routes,Route } from "react-router";
-import Forget_password from './Forget_password';
-import  Vf from './Vf';
+import Forget_password from './forget_password/Forget_password';
+import  Vf from './forget_password/Vf';
 
 function App() {
 

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-export default function Verify_code() {
+export default function Vf() {
   const [code, setVerificationCode] = useState("");
   const [new_password, setNewPassword] = useState("");
   const [new_password_conf, setConfirmPassword] = useState("");
@@ -153,11 +153,11 @@ export default function Verify_code() {
       <img src="middle-right-login.png" alt="mid-right" className="w-[13vw]   absolute -top-18 left-[62.3vw] min-w-32"/>
     </div>
     <h1 onClick={gotoloinpage} className="text-[1vw] text-[#2663CD] absolute top-123 left-[45vw] underline"> بازگشت به صفحه ورود </h1>
-    <img src="batbooks.png" alt="mid-right" className="w-[5.2vw] absolute top-3 left-0 "/>
+    {/* <img src="batbooks.png" alt="mid-right" className="w-[5.2vw] absolute top-3 left-0 "/> */}
     <img src="bottomleft.png" alt="bottom-left" className="w-[17vw] absolute top-123 left-0 min-w-50"/>
     <img src="bottom-right.png" alt="bottom-left" className="w-[35vw]  absolute top-52 right-0 min-w-100"/>
 
-    <p className="text-[1.5vw] font-bold absolute top-8 left-[5.2vw] ">BatBooks</p>
+    <p className="text-[1.5vw] font-bold absolute top-8 left-[2vw] ">BatBooks</p>
 
     </div>
   );
