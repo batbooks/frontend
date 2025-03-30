@@ -18,7 +18,7 @@ function BookCard({ title, author, coverImage, description, chapters }) {
             className="w-full h-full object-cover rounded-lg shadow-xl"
           />
           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2 rounded-b-lg text-xs">
-            <h3 className="text-cyan-400 font-bold text-[16px] mb-1.3">{title}</h3>
+            <h3 className="text-cyan-400 font-bold text-[16px] mb-2.5">{title}</h3>
             <p className="text-gray-300 mb-1">{author}</p>
             <p className="text-gray-400">{chapters} Chapters</p>
           </div>
@@ -27,9 +27,9 @@ function BookCard({ title, author, coverImage, description, chapters }) {
         {/* Back Side */}
         <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-gray-800 rounded-lg p-2 shadow-xl flex flex-col  text-xs">
           <h3 className="text-cyan-400 font-bold text-[20px]  mt-1 mb-auto">{title}</h3>
-          <p className="text-gray-300 text-[13px] mb-27">{description}</p>
+          <p className="text-gray-300 text-[13px] mb-22 mt-5">{description}</p>
           <p className="text-gray-400">By {author}</p>
-          <p className="text-gray-400">{chapters} Chapters</p>
+          <p className="text-gray-400 mb-auto">{chapters} Chapters</p>
         </div>
       </div>
     </div>
