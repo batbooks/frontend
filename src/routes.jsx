@@ -4,7 +4,8 @@ import Login from "./features/Auth/Login/login";
 import Profile from "./features/Profiles/UserProfile/userprofile";
 import Another_User_Profile from "./features/Profiles/AnotherUserProfile/anotheruserprofile";
 import BookPage from "./features/Bookpage/Bookpage";
-
+import Forget_password from "./features/Auth/forget_password/Forget_password";
+import Vf from "./features/Auth/forget_password/Vf";
 function AppRoutes() {
   return (
     <Router>
