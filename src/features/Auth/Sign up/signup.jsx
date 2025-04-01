@@ -21,31 +21,28 @@ function Signup() {
   return (
     <div className="w-[100vw] h-[100vh] bg-[#D9F0FF]">
       <div className="flex gap-1 items-center ">
-        <img
-          src="../../../../public/BatBooksLogo.png"
-          alt="mid-right"
-          className="w-[6vw] pt-1.5"
-        />
-        <h2 className="text-[24px]  font-bold text-[#333333]">BatBooks</h2>
+        <h2 className="text-[24px] mt-1.5 ml-2 font-bold text-[#333333]">
+          BatBooks
+        </h2>
       </div>
 
-      <main className=" w-[52vw] h-[55vh] m-auto bg-[#A4C0ED] rounded-[13px] justify-center ">
+      <main className=" w-[52vw] h-[55vh] m-auto bg-[#A4C0ED] rounded-[13px] justify-center mt-14 ">
         <h2 className="font-bold text-center text-[20px] mt-auto ">
           به batbooks خوش آمدید
         </h2>
-        <h3 className="text-center text-[16px] mb-14">
+        <h3 className="text-center text-[16px] mt-1.5 mb-12.5">
           برای ادامه دادن ثبت نام کنید
         </h3>
         <form typeof="submit" className="flex-col" onSubmit={handleSubmit}>
           <input
-            className="bg-[#FFFFFF] mx-auto mb-5 flex justify-center pl-16 items-center  w-[35.55vw] h-[4.58vh] rounded-[40px] placeholder:text-right placeholder:mr-[72px]"
+            className="bg-[#FFFFFF] mx-auto mb-5 flex justify-center pl-16 items-center  w-[27vw] h-[4.58vh] rounded-[40px] placeholder:text-right placeholder:mr-[72px]"
             value={email}
             placeholder="ایمیل"
             onChange={(e) => setEmail(e.target.value)}
           />
           <input
             type={showPassword ? "text" : "password"}
-            className="bg-[#FFFFFF] mx-auto mb-5 flex justify-center pl-16 items-center w-[35.55vw] h-[4.58vh] rounded-[40px] placeholder:text-right placeholder:mr-[72px]"
+            className="bg-[#FFFFFF] mx-auto mb-5 flex justify-center pl-16 items-center w-[27vw] h-[4.58vh] rounded-[40px] placeholder:text-right placeholder:mr-[72px]"
             value={password}
             placeholder="رمز عبور (8 کاراکتر)"
             onChange={(e) => setPassword(e.target.value)}
@@ -53,7 +50,7 @@ function Signup() {
 
           <input
             type={showRepeatPassword ? "text" : "password"}
-            className="bg-[#FFFFFF] mx-auto mb-5 flex justify-center  pl-16 items-center w-[35.55vw] h-[4.58vh] rounded-[40px] placeholder:text-right placeholder:mr-[72px]"
+            className="bg-[#FFFFFF] mx-auto mb-5 flex justify-center  pl-16 items-center w-[27vw] h-[4.58vh] rounded-[40px] placeholder:text-right placeholder:mr-[72px]"
             value={repeatPassword}
             placeholder="تکرار رمز عبور"
             onChange={(e) => setRepeatPassword(e.target.value)}
@@ -69,14 +66,14 @@ function Signup() {
           src="../../../../public/eye-on.png"
           alt="eye-on-password"
           onClick={handleShowPassword}
-          className="absolute z-50 left-[33vw] top-[36.75vh] "
+          className="absolute z-50 left-[37vw] top-[36.6vh] "
         />
       ) : (
         <img
           src="../../../../public/eye-off.png"
           alt="eye-off-password"
           onClick={handleShowPassword}
-          className="absolute z-50 left-[33vw] top-[36.75vh] "
+          className="absolute z-50 left-[37vw] top-[36.6vh] "
         />
       )}
       {showRepeatPassword ? (
@@ -84,31 +81,31 @@ function Signup() {
           src="../../../../public/eye-on.png"
           alt="eye-on-repeat-password"
           onClick={handleShowRepeatPassword}
-          className="absolute z-50 left-[33vw] top-[44vh]"
+          className="absolute z-50 left-[37vw] top-[43.8vh]"
         />
       ) : (
         <img
           src="../../../../public/eye-off.png"
           alt="eye-off-repeat-password"
           onClick={handleShowRepeatPassword}
-          className="absolute z-50 left-[33vw] top-[44vh]"
+          className="absolute z-50 left-[37vw] top-[43.8vh]"
         />
       )}
 
       <img
         src="../../../../public/user.png"
         alt="user"
-        className="absolute right-[33vw] top-[29.5vh]"
+        className="absolute right-[37vw] top-[29vh]"
       />
       <img
         src="../../../../public/lock.png"
         alt="lock-password"
-        className="absolute right-[33vw] top-[36.75vh]"
+        className="absolute right-[37vw] top-[36.5vh]"
       />
       <img
         src="../../../../public/lock.png"
         alt="lock-repeat-password"
-        className="absolute right-[33vw] top-[44vh]"
+        className="absolute right-[37vw] top-[43.8vh]"
       />
 
       <img
