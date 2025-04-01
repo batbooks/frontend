@@ -47,7 +47,7 @@ const Comments = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto bg-white text-blue-600 p-4">
+    <div className=" mx-auto bg-white text-blue-600 p-4">
       <h2 className="text-2xl font-bold mb-4">Comments</h2>
 
       {loading ? (
