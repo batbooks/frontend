@@ -1,9 +1,10 @@
 import { useState ,useEffect} from "react";
-import { FaStar, FaRegStar } from "react-icons/fa";
-import { Editor } from "primereact/editor";
+import { Rating } from '@mui/material';
+
 // import { Rating } from "primereact/rating";
-import { Rating } from "@mui/material";
+
 import SearchBar from "../Searchbar";
+import Comments from "./comments";
 const Pagination = ({ totalPages, currentPage, onPageChange }) => {
   return (
     <div className="flex justify-center mt-4">
@@ -21,7 +22,7 @@ const Pagination = ({ totalPages, currentPage, onPageChange }) => {
 };
 
 const BookPage = () => {
-  const rating = 4.5;
+  const rating = 4.62;
   const reviews = 756;
   const totalRatings = 654;
   const genres = [" فانتزی ", " ماجراجویی ", " درام "];
@@ -111,13 +112,7 @@ const BookPage = () => {
             <span className="ml-2 mr-7 text-gray-700 text-2xl mb-1">
                      {rating}
             </span>
-            {[...Array(5)].map((_, i) => (
-              i < Math.floor(rating) ? (
-                <FaStar key={i} className="text-yellow-500 m-3" />
-              ) : (
-                <FaRegStar key={i} className="text-gray-400" />
-              )
-            ))}
+            <Rating name="half-rating-read" defaultValue={rating} precision={0.01} readOnly />
           </div>
           <p className="text-gray-700">توضیحات کوتاه کتاب در اینجا نوشته می‌شود...</p>
           <div className="mt-2">
@@ -159,49 +154,7 @@ const BookPage = () => {
 </div>
       </div>  
       </div>    
-        {/* Review section  */}
-      <div className="w-auto bg-white text-gray-800 p-6 rounded-lg shadow-lg border mt-8 text-right mx-20">
-          <h3 className="text-2xl font-bold mb-6 border-b pb-2 text-blue-600">ثبت نظر</h3>
-          <div className="space-y-6">
-            <div>
-              <label className="block text-gray-600 mb-1 text-sm">عنوان نظر</label>
-              <input
-                type="text"
-                value={reviewTitle}
-                onChange={(e) => setReviewTitle(e.target.value)}
-                placeholder="عنوان نظر خود را وارد کنید..."
-                className="w-full px-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            {/* <div>
-              <label className="block text-gray-600 mb-1 text-sm">شماره چپتر</label>
-              <input type="text"                 className="w-30 px-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div> */}
-            </div>
-            
-              <label className="block text-gray-600 mb-1 text-">امتیاز کلی</label>
-              {/* <Rating className=""  value={reviewRating} onChange={(e) => setReviewRating(e.value)}  stars={5} cancel={false} /> */}
-              <Rating
-              className="mr-230"
-        name="custom-rating"
-        value={reviewRating}
-        onChange={(event, newValue) => setReviewRating(newValue)}
-        size="large" // Adjust size
-        
-      />
-            <div>
-              <label className="block text-gray-600 mb-1 text-sm">محتوای نظر</label>
-              <Editor value={reviewContent} onTextChange={(e) => setReviewContent(e.htmlValue)} style={{ height: "200px" }} />
-            </div>
-            <button onClick={handleSubmitReview} className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded transition">
-              ارسال نظر
-            </button>
-          </div>
-          <div className="mt-6 bg-blue-100 text-blue-800 border-l-4 border-blue-600 p-4 text-xs rounded">
-            <strong>⚠ لطفا با احترام نظر دهید!</strong> نقد سازنده appreciated, اما لطفا محترمانه برخورد کنید و قوانین را رعایت کنید.
-          </div>
-        </div>
-        <div className="h-200 m-40 border border-amber-950 text-6xl t">comment section</div>
+       <Comments></Comments >
       </div>
       
   );
