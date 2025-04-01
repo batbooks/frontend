@@ -1,6 +1,6 @@
 import React from "react";
 import "./userprofile.css";
-import Footer from "C:/Users/edwrd/Desktop/Tahlil Project/frontend/src/common/Footer/footer";
+import Footer from "../../../common/Footer/footer";
 
 function Profile() {
   return (
