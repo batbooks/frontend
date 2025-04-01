@@ -1,26 +1,22 @@
-
-import { Provider } from 'react-redux';
-
-import { store } from './redux/store'
+import React from 'react';
 import './App.css'
-import { BrowserRouter,Routes,Route } from "react-router";
-import Forget_password from './forget_password/Forget_password';
-import  Vf from './forget_password/Vf';
+import { decrement, increment, incrementByAmount } from './redux/infoSlice';
+import { Provider,useSelector, useDispatch  } from "react-redux";
+import { store } from "./redux/store";
+import AppRoutes from "./routes";
+
 
 function App() {
-
-  
   return (
-   <Provider store={store}>
-    <BrowserRouter>
-      <Routes>
-        <Route path='/Forget_password' element={ <Forget_password/>}/>
-        <Route path='/Vf' element={<Vf/>}/>
-        
-      </Routes>
-    </BrowserRouter>
-   </Provider>
-  )
+
+   
+
+    <Provider store={store}>
+      <AppRoutes />
+    </Provider>
+  );
+
+
 }
 
-export default App
+export default App;
