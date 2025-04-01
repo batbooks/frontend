@@ -1,9 +1,9 @@
 import { useState ,useEffect} from "react";
 import { Rating } from '@mui/material';
-
+import { useParams } from "react-router-dom";
 // import { Rating } from "primereact/rating";
 
-import SearchBar from "../Searchbar";
+import SearchBar from "../../Searchbar";
 import Comments from "./comments";
 const Pagination = ({ totalPages, currentPage, onPageChange }) => {
   return (
@@ -22,6 +22,7 @@ const Pagination = ({ totalPages, currentPage, onPageChange }) => {
 };
 
 const BookPage = () => {
+  const { id } = useParams();
   const rating = 4.62;
   const reviews = 756;
   const totalRatings = 654;
