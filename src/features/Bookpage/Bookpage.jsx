@@ -197,7 +197,9 @@ const BookPage = () => {
             <strong>⚠ لطفا با احترام نظر دهید!</strong> نقد سازنده appreciated, اما لطفا محترمانه برخورد کنید و قوانین را رعایت کنید.
           </div>
         </div>
-        <div className="h-200 m-40 border border-amber-950 text-6xl t">comment section</div>
+        <div className="w-350 p-10 pl-28">
+          <Comments chapter={2}></Comments>
+        </div>
       </div>
       
   );
