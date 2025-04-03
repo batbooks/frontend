@@ -6,6 +6,8 @@ import Another_User_Profile from "./features/Profiles/AnotherUserProfile/another
 import BookPage from "./features/Bookpage/Bookpage";
 import Forget_password from "./features/Auth/forget_password/Forget_password";
 import Vf from "./features/Auth/forget_password/Vf";
+import Footer from "./common/Footer/footer";
+
 function AppRoutes() {
   return (
     <Router>
@@ -13,13 +15,14 @@ function AppRoutes() {
         <Route path="/auth/signup" element={<Signup />}></Route>
         <Route path="/auth/login" element={<Login />}></Route>
         <Route path="/profiles/userprofile" element={<Profile />}></Route>
-        <Route path="/book/:id" element={<BookPage/>}></Route>
-        <Route path='/Forget_password' element={ <Forget_password/>}/>
-        <Route path='/Vf' element={<Vf/>}/>
+        <Route path="/book/:id" element={<BookPage />}></Route>
+        <Route path="/Forget_password" element={<Forget_password />} />
+        <Route path="/Vf" element={<Vf />} />
         <Route
           path="/profiles/anotheruserprofile"
           element={<Another_User_Profile />}
         ></Route>
+        <Route path="/footer" element={<Footer />} />
       </Routes>
     </Router>
   );

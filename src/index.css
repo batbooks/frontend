@@ -1,11 +1,9 @@
 @import "tailwindcss";
 
-
-
-body{
-  background-color: #D9F0FF;
+body {
+  background-color: #d9f0ff;
 }
-.p-rating .p-rating-icon{
+.p-rating .p-rating-icon {
   font-size: 5rem !important;
 }
 
@@ -77,4 +75,3 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 } */
-
