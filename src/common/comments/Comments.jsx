@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const Comments=({chapter})=>{
+const Comments=({chapter_id})=>{
   const [allComments,setAllComments]=useState({})
   const [replies,setreplies]=useState({})
   const [userfollowed,setuserfollowed]=useState(true)
