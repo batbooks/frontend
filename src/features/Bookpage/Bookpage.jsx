@@ -5,7 +5,8 @@ import { Editor } from "primereact/editor";
 // import { Rating } from "primereact/rating";
 
 import SearchBar from "../../Searchbar";
-import Comments from "./comments";
+import Comments from "../../common/comments/Comments";
+
 const Pagination = ({ totalPages, currentPage, onPageChange }) => {
   return (
     <div className="flex justify-center mt-4">

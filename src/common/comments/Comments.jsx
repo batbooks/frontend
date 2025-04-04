@@ -78,7 +78,7 @@ const Comments=({chapter})=>{
           <div className="mt-10 ">
             <div key={comment.id} className="flex flex-row gap-10 rounded-lg p-10 ">
               <div className="w-200 break-words text-wrap  mr-5">
-                <div className="text-[16px] text-right text-gray-600 ">{comment.date}</div>
+                <div className="text-[16px] text-right text-gray-600 mb-6">{comment.date}</div>
                 <div className="text-[16px] text-right text-gray-800">{comment.text}</div>
                 {/* <div >
                   <span> نفر این کامنت را پسندیدند  {43} </span>
@@ -101,11 +101,11 @@ const Comments=({chapter})=>{
               </div>
               
             </div>
-            
+            <div className="w-1/2 border-t-2 border-gray-500 mx-auto"></div>
           </div>
         ))
       ) : (
-        <p className="text-center text-gray-600">نظری ثبت نشده است.</p>
+        <p className="text-center text-gray-600"> نظری ثبت نشده است.</p>
       )}
     </div>
   </div>
