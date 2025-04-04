@@ -7,7 +7,7 @@ function BookCard({ title, author, coverImage, description, chapters }) {
   return (
     <div 
       className="relative w-50 h-82 cursor-pointer perspective-1000"
-      onClick={() => setIsFlipped(!isFlipped)}
+      onMouseEnter={() => setIsFlipped(!isFlipped)}
     >
       <div className={`relative w-full h-full transition-transform duration-700 preserve-3d transform-origin-center ${isFlipped ? 'rotate-y-180' : ''}`}>
         {/* Front Side */}
