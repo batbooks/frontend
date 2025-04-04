@@ -6,6 +6,7 @@ import Another_User_Profile from "./features/Profiles/AnotherUserProfile/another
 import BookPage from "./features/Bookpage/Bookpage";
 import Forget_password from "./features/Auth/forget_password/Forget_password";
 import Vf from "./features/Auth/forget_password/Vf";
+import Comments from "./common/comments/Comments";
 function AppRoutes() {
   return (
     <Router>
@@ -19,6 +20,10 @@ function AppRoutes() {
         <Route
           path="/profiles/anotheruserprofile"
           element={<Another_User_Profile />}
+        ></Route>
+        <Route
+          path="/comments"
+          element={<Comments chapter_id={1}/>}
         ></Route>
       </Routes>
     </Router>

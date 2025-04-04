@@ -4,9 +4,9 @@ const Comments=({chapter_id})=>{
   const [allComments,setAllComments]=useState({})
   const [replies,setreplies]=useState({})
   const [userfollowed,setuserfollowed]=useState(true)
-   
+  const [Loading,setLoading] =useState(false)
 
-
+    const[Error,setError]=useState("")
 
 
 
@@ -17,12 +17,15 @@ const Comments=({chapter_id})=>{
       try {
         
         
-        const response = await fetch("https://batbooks.liara.run/comments/chapter/3/"); // Replace with your API
+        
+        const response = await fetch(`https://batbooks.liara.run/comments/chapter/${chapter_id}/`); // Replace with your API
+        console.log(chapter_id)
         if (!response.ok) {
           throw new Error("Failed to fetch comments");
         }
         const data = await response.json();
-    //    setAllComments()
+        console.log(data)
+        setAllComments(data.results) 
 
       } catch (err) {
         setError(err.message);
@@ -44,7 +47,7 @@ const Comments=({chapter_id})=>{
             <div key={comment.id} className="flex flex-row gap-10 rounded-lg p-10 ">
               <div className="w-200 break-words text-wrap  mr-5">
                 <div className="text-[16px] text-right text-gray-600 mb-6">{comment.date}</div>
-                <div className="text-[16px] text-right text-gray-800">{comment.text}</div>
+                <div className="text-[16px] text-right text-gray-800">{comment.body}</div>
                 {/* <div >
                   <span> نفر این کامنت را پسندیدند  {43} </span>
                   <button className=""> لایک کردن</button>
@@ -52,8 +55,8 @@ const Comments=({chapter_id})=>{
               </div>
               <div className="w-1/4  ">
                 <section className="flex flex-row ">
-                  <p className="w-1/2  text-[16px] font-medium text-right mr-3">{comment.author}</p>
-                  <div className="w-25 "><img className=" " src={comment.image} alt="author avatar" /></div>
+                  <p className="w-1/2  text-[16px] font-medium text-right mr-3">{comment.user}</p>
+                  <div className="w-25 "><img className="w-20 object-fill rounded-[100%] " src={"photos/user_image.png"} alt="author avatar" /></div>
                   
                 </section>
                 <div className="w-50 flex flex-row justify-center ml-10 mt-4 mb-3">
