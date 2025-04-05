@@ -5,7 +5,7 @@ import { Rating } from "@mui/material";
 export default function Profile() {
   return (
     <>
-      <Navbar />
+      <Navbar hasLogined={true} />
       <main
         style={{ direction: "rtl" }}
         className="flex flex-col font-[Vazir] max-w-[1440px] m-auto bg-[#d9f0ff] px-[80px] pb-[90px] pt-[13px] shadow-2xl shadow-[#000000]-25"

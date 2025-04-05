@@ -11,7 +11,7 @@ function Another_User_Profile() {
       <Navbar />
       <main
         style={{ direction: "rtl" }}
-        className="flex flex-col font-[Vazir] max-w-[1440px] m-auto bg-[#d9f0ff] pr-[80px] pb-[107px] pt-[13px] shadow-2xl shadow-[#000000]-25 items-center"
+        className="flex flex-col font-[Vazir] max-w-[1440px] m-auto bg-[#d9f0ff] pr-[80px] pb-[107px] pt-[13px] shadow-2xl shadow-[#000000]-25 items-center overflow-hidden"
       >
         <button
           className="bg-[#2663cd] text-[#ffffff] items-center rounded-[46px] py-[8px] px-[18px] mt-[15px] mb-[24px] ml-auto shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
@@ -96,8 +96,16 @@ function Another_User_Profile() {
             </div>
           </div>
 
-          <div className="bg-[#ffffff] rounded-[20px] px-[17px] pt-[41px] pb-[28px] mt-[32px] mr-auto shadow-lg shadow-[#000000]/25">
-            <img src="/photos/favorite_book.png" alt="favoritebook" />
+          <div className="bg-[#] rounded-[20px] w-[242px] h-[368px] mt-[32px] mr-auto shadow-lg shadow-[#000000]/25">
+            <BookCard
+              title="تست"
+              author="تست"
+              coverImage="/photos/book_sample.png"
+              description="این متن صرفا جهت تست است..."
+              chapters={85}
+              height="368px"
+              width="242px"
+            />
           </div>
         </div>
 
@@ -111,53 +119,67 @@ function Another_User_Profile() {
           </button>
           <div className="flex gap-[25px] z-1 carousel-items">
             <BookCard
-              title="کیر"
-              author="عمو جانی"
+              title="تست"
+              author="تست"
               coverImage="/photos/book_sample.png"
-              description="کون کص صصصصصصصصص کیر رررررررررررررررررررررررررررررررررررررررر"
+              description="این متن صرفا جهت تست است..."
               chapters={85}
+              height="254px"
+              width="180px"
             />
             <BookCard
-              title="kir"
-              author="amoo johny"
+              title="test"
+              author="test"
               coverImage="/photos/book_sample2.png"
-              description="koon  fseklmgd dflbcmkfrd   srvzgjirkl"
+              description="lkdf  fseklmgd dflbcmkfrd   srvzgjirkl"
               chapters={85}
+              height="254px"
+              width="180px"
             />
             <BookCard
-              title="kir"
-              author="amoo johny"
+              title="test"
+              author="test"
               coverImage="/photos/book_sample3.png"
-              description="koon"
+              description="xklcm"
               chapters={85}
+              height="254px"
+              width="180px"
             />
             <BookCard
-              title="kir"
-              author="amoo johny"
+              title="test"
+              author="test"
               coverImage="/photos/book_sample4.png"
-              description="koon"
+              description="djfxn"
               chapters={85}
+              height="254px"
+              width="180px"
             />
             <BookCard
-              title="kir"
-              author="amoo johny"
+              title="test"
+              author="test"
               coverImage="/photos/book_sample5.png"
-              description="koon"
+              description="test"
               chapters={85}
+              height="254px"
+              width="180px"
             />
             <BookCard
-              title="kir"
-              author="amoo johny"
+              title="test"
+              author="test"
               coverImage="/photos/book_sample6.png"
-              description="koon"
+              description="tsfxsdj"
               chapters={85}
+              height="254px"
+              width="180px"
             />
             <BookCard
-              title="kir"
-              author="amoo johny"
+              title="test"
+              author="test"
               coverImage="/photos/book_sample6.png"
-              description="koon"
+              description="sefnk"
               chapters={85}
+              height="254px"
+              width="180px"
             />
           </div>
         </div>
@@ -172,53 +194,67 @@ function Another_User_Profile() {
           </button>
           <div className="flex gap-[25px] z-1">
             <BookCard
-              title="کیر"
-              author="عمو جانی"
+              title="تست"
+              author="تست"
               coverImage="/photos/book_sample.png"
-              description="کون کص صصصصصصصصص کیر رررررررررررررررررررررررررررررررررررررررر"
+              description="این متن صرفا جهت تست میباشد..."
               chapters={85}
+              height="254px"
+              width="180px"
             />
             <BookCard
-              title="kir"
-              author="amoo johny"
+              title="test"
+              author="test"
               coverImage="/photos/book_sample2.png"
-              description="koon  fseklmgd dflbcmkfrd   srvzgjirkl"
+              description="jxdfvnd  fseklmgd dflbcmkfrd   srvzgjirkl"
               chapters={85}
+              height="254px"
+              width="180px"
             />
             <BookCard
-              title="kir"
-              author="amoo johny"
+              title="test"
+              author="test"
               coverImage="/photos/book_sample3.png"
-              description="koon"
+              description="test"
               chapters={85}
+              height="254px"
+              width="180px"
             />
             <BookCard
-              title="kir"
-              author="amoo johny"
+              title="test"
+              author="test"
               coverImage="/photos/book_sample4.png"
-              description="koon"
+              description="setgjnkd"
               chapters={85}
+              height="254px"
+              width="180px"
             />
             <BookCard
-              title="kir"
-              author="amoo johny"
+              title="test"
+              author="test"
               coverImage="/photos/book_sample5.png"
-              description="koon"
+              description="tesset"
               chapters={85}
+              height="254px"
+              width="180px"
             />
             <BookCard
-              title="kir"
-              author="amoo johny"
+              title="test"
+              author="test"
               coverImage="/photos/book_sample6.png"
-              description="koon"
+              description="tsesexgdf"
               chapters={85}
+              height="254px"
+              width="180px"
             />
             <BookCard
-              title="kir"
-              author="amoo johny"
+              title="test"
+              author="test"
               coverImage="/photos/book_sample6.png"
-              description="koon"
+              description="settg"
               chapters={85}
+              height="254px"
+              width="180px"
             />
           </div>
         </div>

@@ -138,7 +138,7 @@ function Footer() {
             BatBooks
           </h1>
           <div className="flex mr-auto gap-[22px] ">
-            <button className="flex bg-[#001F54] rounded-[12px] text-[#ffffff] gap-[18px] pr-[23px] pl-[15px] min-w-[150px] py-[7px]">
+            <button className="flex bg-[#001F54] rounded-[12px] text-[#ffffff] gap-[18px] pr-[23px] pl-[15px] min-w-[150px] py-[7px] cursor-pointer">
               <div className="flex flex-col m-auto">
                 <span className="text-[10px] mb-[-7px] font-[300] uppercase">
                   get it on
@@ -151,7 +151,7 @@ function Footer() {
                 alt="myket"
               />
             </button>
-            <button className="flex bg-[#001F54] rounded-[12px] text-[#ffffff] gap-[18px] pr-[23px] pl-[15px] min-w-[150px] py-[7px]">
+            <button className="flex bg-[#001F54] rounded-[12px] text-[#ffffff] gap-[18px] pr-[23px] pl-[15px] min-w-[150px] py-[7px] cursor-pointer">
               <div className="flex flex-col m-auto">
                 <span className="text-[10px] mb-[-7px] uppercase font-[300]">
                   get it on
