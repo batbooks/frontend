@@ -1,12 +1,13 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router";
 import Signup from "./features/Auth/SignUp/signup";
 import Login from "./features/Auth/Login/login";
-import Profile from "./features/Profiles/UserProfile/userprofile";
+import Profile from "./features/Profiles/UserProfile/userProfile";
 import Another_User_Profile from "./features/Profiles/AnotherUserProfile/anotheruserprofile";
 import BookPage from "./features/Bookpage/Bookpage";
 import Forget_password from "./features/Auth/forget_password/Forget_password";
 import Vf from "./features/Auth/forget_password/Vf";
 import Footer from "./common/Footer/footer";
+import Navbar from "./common/Navbar/navbar";
 
 function AppRoutes() {
   return (
@@ -23,6 +24,7 @@ function AppRoutes() {
           element={<Another_User_Profile />}
         ></Route>
         <Route path="/footer" element={<Footer />} />
+        <Route path="/navbar" element={<Navbar />} />
       </Routes>
     </Router>
   );
