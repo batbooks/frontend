@@ -6,6 +6,7 @@ import Another_User_Profile from "./features/Profiles/AnotherUserProfile/another
 import BookPage from "./features/Bookpage/Bookpage";
 import Forget_password from "./features/Auth/forget_password/Forget_password";
 import Vf from "./features/Auth/forget_password/Vf";
+import ReadingPage from "./features/ReadingChapter/chapterView";
 function AppRoutes() {
   return (
     <Router>
@@ -20,6 +21,7 @@ function AppRoutes() {
           path="/profiles/anotheruserprofile"
           element={<Another_User_Profile />}
         ></Route>
+        <Route path='/readingchapter' element={<ReadingPage/>}/>
       </Routes>
     </Router>
   );
