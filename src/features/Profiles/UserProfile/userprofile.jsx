@@ -1,325 +1,190 @@
-import React from "react";
-import "./userprofile.css";
-import Footer from "../../../common/Footer/footer";
+import Footer from "/src/common/Footer/footer";
+import Navbar from "/src/common/Navbar/navbar";
+import { Rating } from "@mui/material";
 
-function Profile() {
+export default function Profile() {
   return (
-    <div className="profile-container">
-      <header className="header">
-        <nav className="nav">
-          <img
-            className="user-image"
-            src="/photos/user_image2.png"
-            alt="User Image 2"
-          />
-          <ul>
-            <li>
-              <a href="#home">صفحه اصلی</a>
-            </li>
-            <li>
-              <a href="#mybooks">کتاب‌های من</a>
-            </li>
-            <li>
-              <div style={{ display: "flex" }}>
-                <img className="arrow" src="/photos/arrow.png" alt="Arrow" />
-                <a href="#lists">پنل ارتباطی</a>
-              </div>
-            </li>
-            <li>
-              <a href="#contact">ارتباط با ما</a>
-            </li>
-          </ul>
-        </nav>
-        <div className="logo">
-          <img src="/photos/logo.png" alt="Logo" />
-        </div>
-      </header>
-
-      <main style={{ padding: "13px 80px 116px 80px" }}>
-        <div style={{ display: "flex" }}>
-          <div style={{ marginTop: "28px", marginBottom: "24px" }}>
-            <button className="edit-profile-button">
-              <img style={{ marginRight: "8px" }} src="/photos/edit_sign.png" />
-              <span style={{ marginLeft: "18px" }}>ویرایش پروفایل</span>
-            </button>
-          </div>
-          <h1 className="page-title">پروفایل کاربری</h1>
-        </div>
-
-        <div className="profile-info-section">
-          <div className="user-profile-image">
+    <>
+      <Navbar hasLogined={true} />
+      <main
+        style={{ direction: "rtl" }}
+        className="flex flex-col font-[Vazir] max-w-[1440px] m-auto bg-[#d9f0ff] px-[80px] pb-[90px] pt-[13px] shadow-2xl shadow-[#000000]-25"
+      >
+        <div className="flex justify-between">
+          <button className="flex gap-[15px] bg-[#2663cd] text-[#ffffff] items-center rounded-[46px] py-[8px] px-[18px] mt-[15px] mb-[24px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
             <img
-              style={{ width: "236px", height: "267px" }}
-              src="/photos/user_image.png"
-              alt="User Image"
+              className="w-[22px] h-[22px]"
+              src="/photos/edit_sign.png"
+              alt="edit"
             />
-            <h1
-              style={{
-                fontSize: "24px",
-                margin: "8px 6px 12px",
-                color: "#000000",
-              }}
-            >
+            <span className="font-[400]">ویرایش پروفایل</span>
+          </button>
+          <h1 className="text-[#265073] text-[32px] font-[700] ">
+            پروفایل کاربری
+          </h1>
+          <button className="bg-[#2663cd] font-[400] text-[#ffffff] items-center rounded-[46px] px-[32px] py-[8px] mt-[15px] mb-[24px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
+            خروج از حساب کاربری
+          </button>
+        </div>
+
+        <div className="flex bg-[#A4C0ED] rounded-[35px] shadow-lg shadow-[#000000]/25 mb-[40px] pl-[52px] pb-[52px] pr-[23px] pt-[20px] gap-[39px] border-[2px] border-[#000000]/8">
+          <div>
+            <img
+              className="w-[236px] h-[267px] shadow-lg shadow-[#000000]/25 rounded-[30px]"
+              src="/photos/user_image.png"
+              alt="userimage"
+            />
+            <h2 className="text-[24px] text-[#000000] font-[400] mt-[8px] mb-[12px]">
               جزئیات
-            </h1>
-            <span style={{ fontSize: "16px", margin: "6px", color: "#000000" }}>
+            </h2>
+            <span className="text-[16px] text-[#000000] font-[300]">
               جنسیت ذکر نشده، شهر
             </span>
-            <div style={{ display: "flex", margin: "12px 6px", gap: "7.5px" }}>
+            <div className="mt-[12px] flex gap-[7.5px] items-center">
               <img
-                style={{ width: "25px", height: "25px" }}
+                className="w-[25px] h-[25px]"
                 src="/photos/gift_sign.png"
-                alt="Gift"
+                alt="gift"
               />
-              <span style={{ fontSize: "16px", color: "#000000" }}>
-                روز تولد: روز/ماه/سال
-              </span>
+              <div>
+                <sapn className="text-[16px] font-[400]">روز تولد: </sapn>
+                <span className="text-[16px] font-[300]">روز/ماه/سال</span>
+              </div>
             </div>
           </div>
 
-          <div style={{ margin: "28px 0px" }}>
-            <h2 className="username">نام کاربری</h2>
-            <div className="stats">
-              <button className="stat">
-                <span className="number">8</span>
-                <span className="label">نفر دنبال شده</span>
+          <div>
+            <h3 className="text-[24px] font-[300] mt-[8px] mb-[26px]">
+              نام کاربری
+            </h3>
+
+            <div className="flex gap-[20px] mb-[19px]">
+              <button className="flex flex-col bg-[#ffffff] px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:bg-[#2663cd]/90 hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none">
+                <span className="text-[24px] font-[600] text-[#265073] mb-[-5px]">
+                  100
+                </span>
+                <span className="font-[400] text-[#000000]/70 text-[14px]">
+                  کتاب موردعلاقه
+                </span>
               </button>
-              <button className="stat">
-                <span className="number">10</span>
-                <span className="label">کتاب تالیف شده</span>
+              <button className="flex flex-col bg-[#ffffff] px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:bg-[#2663cd]/90 hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none">
+                <span className="text-[24px] font-[600] text-[#265073] mb-[-5px]">
+                  10
+                </span>
+                <span className="font-[400] text-[#000000]/70 text-[14px]">
+                  کتاب تالیف شده
+                </span>
               </button>
-              <button className="stat">
-                <span className="number">100</span>
-                <span className="label">کتاب موردعلاقه</span>
+              <button className="flex flex-col bg-[#ffffff] px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:bg-[#2663cd]/90 hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none">
+                <span className="text-[24px] font-[600] text-[#265073] mb-[-5px]">
+                  8
+                </span>
+                <span className="font-[400] text-[#000000]/70 text-[14px]">
+                  نفر دنبال شده
+                </span>
               </button>
             </div>
+
             <div>
-              <h3 style={{ fontSize: "24px", color: "#000000" }}>جزئیات:</h3>
-              <p
-                style={{
-                  fontSize: "16px",
-                  marginBottom: "18px",
-                  color: "#000000",
-                }}
-              >
+              <h3 className="text-[24px] text-[#000000] font-[400]">جزئیات:</h3>
+              <p className="text-[16px] font-[300] mb-[18px]">
                 ملحق شده در روز/ماه/سال
               </p>
-              <h4 style={{ fontSize: "16px", color: "#000000" }}>
-                ژانرهای موردعلاقه:
-              </h4>
-              <p
-                style={{
-                  color: "#000000",
-                  opacity: "0.7",
-                  fontSize: "14px",
-                  marginBottom: "18px",
-                }}
-              >
+              <h4 className="text-[16px] font-[300]">ژانرهای موردعلاقه:</h4>
+              <p className="text-[#000000]/70 text-[14px] font-[300] mb-[18px]">
                 علمی-تخیلی، رمان(داستانی)، معمایی
               </p>
-              <h5 style={{ fontSize: "16px", color: "#000000" }}>درباره من:</h5>
-              <p
-                style={{
-                  color: "#000000",
-                  opacity: "0.7",
-                  fontSize: "14px",
-                }}
-              >
+              <h5 className="text-[16px] font-[300] mb-1">درباره من:</h5>
+              <p className="text-[#000000]/70 text-[14px] font-[300]">
+                این متن صرفا جهت تست میباشد...
+              </p>
+              <p className="text-[#000000]/70 text-[14px] font-[300]">
                 این متن صرفا جهت تست میباشد...
               </p>
             </div>
           </div>
 
-          <div
-            style={{
-              backgroundColor: "#FFFFFF",
-              margin: "52px 177px 52px 52px",
-              borderRadius: "20px",
-              width: "242px",
-              height: "368px",
-            }}
-          >
-            <img
-              style={{ width: "208px", height: "299px", margin: "41px 17px" }}
-              src="/photos/favorite_book.png"
-              alt="Favorite Book"
-            />
+          <div className="bg-[#ffffff] rounded-[20px] px-[17px] pt-[41px] pb-[28px] mt-[32px] mr-auto shadow-lg shadow-[#000000]/25">
+            <img src="/photos/favorite_book.png" alt="favoritebook" />
           </div>
         </div>
 
-        <h6
-          style={{ fontSize: "24px", color: "#265073", marginBottom: "25px" }}
-        >
-          اخیرا مطالعه میکرده ام...
-        </h6>
-        <div className="reading-book">
-          <img
-            style={{
-              width: "153px",
-              height: "189px",
-              margin: "26px",
-            }}
-            src="/photos/book_sample.png"
-            alt="Book"
-          ></img>
-          <div style={{ marginLeft: "89px" }}>
-            <h6
-              style={{
-                fontSize: "30px",
-                margin: "53px 0px 5px 0px",
-                color: "#000000",
-              }}
-            >
-              نام کتاب
-            </h6>
-            <p
-              style={{
-                fontSize: "20px",
-                margin: "0px 0px 5px 0px",
-                color: "#000000",
-              }}
-            >
-              نام نویسنده
-            </p>
-            <div style={{ display: "flex", gap: "13.39px" }}>
-              <img src="/photos/rated.png" alt="Rated"></img>
-              <img src="/photos/rated.png" alt="Rated"></img>
-              <img src="/photos/rated.png" alt="Rated"></img>
-              <img src="/photos/rated.png" alt="Rated"></img>
-              <img src="/photos/unrated.png" alt="Unrated"></img>
+        <div>
+          <h6 className="text-[24px] font-[400] text-[#265073] mb-[25px]">
+            اخیرا مطالعه میکرده ام...
+          </h6>
+          <div className="flex py-[26px] pr-[26px] pl-[41px] bg-[#a4c0ed] rounded-[25px] mb-[46px] items-center border-[2px] border-[#000000]/8 justify-between">
+            <div className="flex">
+              <img
+                className="shadow-lg shadow-[#000000]/25 rounded-[20px] w-[153px] h-[189px]"
+                src="/photos/book_sample.png"
+                alt="book"
+              ></img>
+              <div className="flex flex-col mr-[26px] mt-[27px]">
+                <h6 className="text-[32px] font-[400] mb-[5px]">نام کتاب</h6>
+                <p className="mb-[5px] text-[20px] font-[400]">نام نویسنده</p>
+                <Rating
+                  style={{ direction: "ltr" }}
+                  name="half-rating-read"
+                  defaultValue={4.5}
+                  precision={0.5}
+                  readOnly
+                />
+              </div>
             </div>
-          </div>
-          <div style={{ display: "flex", marginTop: "109px" }}>
-            <div className="progress-bar">
-              <div className="progress"></div>
+            <div className="flex items-center">
+              <div className="w-[538px] h-[21px] bg-[#ffffff] rounded-[30px] shadow-lg shadow-[#000000]/25">
+                <div className="w-[83%] h-[100%] bg-[#26A541] rounded-[30px] shadow-lg shadow-[#000000]/25"></div>
+              </div>
+              <p className="text-[16px] font-[400] mr-3">83%</p>
             </div>
-            <p className="progress-percent">83%</p>
-          </div>
-          <button
-            style={{
-              backgroundColor: "#2663CD",
-              width: "138px",
-              height: "42px",
-              borderRadius: "10px",
-              margin: "100px 70px 99px 41px",
-              color: "#ffffff",
-            }}
-          >
-            ادامه دادن
-          </button>
-        </div>
-
-        <h6
-          style={{ fontSize: "24px", color: "#265073", marginBottom: "25px" }}
-        >
-          در حال تالیف هستم...
-        </h6>
-        <div style={{ display: "flex", gap: "42px" }}>
-          <div className="writing-book">
-            <img
-              style={{
-                width: "159px",
-                height: "189px",
-                margin: "26px",
-              }}
-              src="/photos/book_sample.png"
-              alt="Book"
-            ></img>
-            <div style={{ marginLeft: "140px" }}>
-              <h6
-                style={{
-                  fontSize: "30px",
-                  margin: "53px 0px 5px 0px",
-                  color: "#000000",
-                }}
-              >
-                نام کتاب
-              </h6>
-              <p
-                style={{
-                  fontSize: "20px",
-                  color: "#000000",
-                }}
-              >
-                فصل فلان ام
-              </p>
-            </div>
-            <button
-              style={{
-                backgroundColor: "#2663CD",
-                width: "138px",
-                height: "42px",
-                borderRadius: "10px",
-                marginLeft: "20px",
-                marginTop: "100px",
-                color: "#ffffff",
-              }}
-            >
-              ادامه دادن
-            </button>
-          </div>
-          <div className="writing-book">
-            <img
-              style={{
-                width: "159px",
-                height: "189px",
-                margin: "26px",
-              }}
-              src="/photos/book_sample.png"
-              alt="Book"
-            ></img>
-            <div style={{ marginLeft: "140px" }}>
-              <h6
-                style={{
-                  fontSize: "30px",
-                  margin: "53px 0px 5px 0px",
-                  color: "#000000",
-                }}
-              >
-                نام کتاب
-              </h6>
-              <p
-                style={{
-                  fontSize: "20px",
-                  color: "#000000",
-                }}
-              >
-                فصل فلان ام
-              </p>
-            </div>
-            <button
-              style={{
-                backgroundColor: "#2663CD",
-                width: "138px",
-                height: "42px",
-                borderRadius: "10px",
-                marginLeft: "20px",
-                marginTop: "100px",
-                color: "#ffffff",
-              }}
-            >
+            <button className="bg-[#2663CD] rounded-[10px] text-[#ffffff] text-[16px] font-[400] py-[9px] px-[32px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
               ادامه دادن
             </button>
           </div>
         </div>
-        <button
-          style={{
-            backgroundColor: "#2663CD",
-            fontWeight: "bold",
-            color: "#FFFFFF",
-            borderRadius: "46px",
-            marginRight: "1027px",
-            width: "253px",
-            height: "48px",
-          }}
-        >
-          خروج از حساب کاربری
-        </button>
+
+        <div>
+          <h6 className="text-[24px] font-[400] text-[#265073] mb-[25px]">
+            در حال تالیف هستم...
+          </h6>
+          <div className="flex gap-[42px] items-center">
+            <div className="bg-[#a4c0ed] py-[22px] pr-[27px] pl-[41px] flex rounded-[25px] border-[2px] border-[#000000]/8 items-center gap-[152px]">
+              <div className="flex items-center gap-[26px]">
+                <img
+                  className="w-[127px] h-[156px] shadow-lg shadow-[#000000]/25 rounded-[20px]"
+                  src="/photos/book_sample.png"
+                  alt="book"
+                ></img>
+                <div className="flex flex-col gap-[5px] m-auto">
+                  <h6 className="text-[32px] font-[400]">نام کتاب</h6>
+                  <span className="text-[20px] font-[400]">فصل فلان ام</span>
+                </div>
+              </div>
+              <button className="bg-[#2663CD] rounded-[10px] text-[#ffffff] text-[16px] font-[400] py-[5.5px] px-[32px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
+                ادامه دادن
+              </button>
+            </div>
+            <div className="bg-[#a4c0ed] py-[22px] pr-[27px] pl-[41px] flex rounded-[25px] border-[2px] border-[#000000]/8 items-center gap-[152px]">
+              <div className="flex items-center gap-[26px]">
+                <img
+                  className="w-[127px] h-[156px] shadow-lg shadow-[#000000]/25 rounded-[20px]"
+                  src="/photos/book_sample.png"
+                  alt="book"
+                ></img>
+                <div className="flex flex-col gap-[5px] m-auto">
+                  <h6 className="text-[32px] font-[400]">نام کتاب</h6>
+                  <span className="text-[20px] font-[400]">فصل فلان ام</span>
+                </div>
+              </div>
+              <button className="bg-[#2663CD] rounded-[10px] text-[#ffffff] text-[16px] font-[400] py-[5.5px] px-[32px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
+                ادامه دادن
+              </button>
+            </div>
+          </div>
+        </div>
       </main>
-
       <Footer />
-    </div>
+    </>
   );
 }
-
-export default Profile;
