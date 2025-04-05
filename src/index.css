@@ -1,1 +1,10 @@
 @import "tailwindcss";
+@font-face {
+  font-family: "Vazir";
+  src: url("./fonts/Vazir-Light-FD-WOL.ttf") format("truetype");
+  src: url("./fonts/Vazir-Light-FD-WOL.woff") format("woff");
+  src: url("./fonts/Vazir-Light-FD-WOL.woff2") format("woff2");
+}
+body {
+  font-family: "Vazir", sans-serif;
+}
