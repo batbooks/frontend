@@ -8,15 +8,20 @@ body {
 }
 @font-face {
   font-family: "Vazir";
-  src: url("../fonts/Vazir-Light-FD-WOL.ttf") format("truetype");
-  src: url("../fonts/Vazir-Light-FD-WOL.woff") format("woff");
-  src: url("../fonts/Vazir-Light-FD-WOL.woff2") format("woff2");
+  src: url("./fonts/Vazir-Light-FD-WOL.ttf") format("truetype");
+  src: url("./fonts/Vazir-Light-FD-WOL.woff") format("woff");
+  src: url("./fonts/Vazir-Light-FD-WOL.woff2") format("woff2");
 }
 
 body {
   font-family: "Vazir", sans-serif;
 }
 
+body {
+  /* background-color: var(--bg-light) !important; */
+  color: var(--text-color);
+  font-family: "Vazir", sans-serif;
+}
 /* :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
