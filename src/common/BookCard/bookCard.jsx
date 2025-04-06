@@ -6,20 +6,18 @@ export default function BookCard({
   coverImage,
   description,
   chapters,
-  width,
-  height,
 }) {
   const [isFlipped, setIsFlipped] = useState(false);
 
   return (
     <div
-      className={`relative w-[${width}] h-[${height}] cursor-pointer`}
+      className="relative w-full h-full cursor-pointer"
       onMouseEnter={() => setIsFlipped(!isFlipped)}
       onMouseLeave={() => setIsFlipped(!isFlipped)}
     >
       {/* Front Side */}
       <div
-        className={`inset-0 absolute ${isFlipped ? "rotate-y-180" : ""} transition-transform duration-700 preserve-3d transform-origin-center`}
+        className={`absolute w-full h-full ${isFlipped ? "rotate-y-180" : ""} transition-transform duration-700 preserve-3d transform-origin-center`}
       >
         <img
           src={coverImage}

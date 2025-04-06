@@ -10,7 +10,7 @@ function Navbar({ hasLogined = false }) {
   return (
     <header
       dir="rtl"
-      className="max-w-[1440px] m-auto font-[Vazir] flex bg-[#a3d5ff] justify-between py-[22px] pl-[50px] pr-[30px] shadow-lg shadow-[#000000]/25"
+      className="max-w-screen m-auto flex bg-[#a3d5ff] justify-between py-[22px] pl-[50px] pr-[30px] shadow-lg shadow-[#000000]/25"
     >
       <nav className="flex items-center gap-[60px]">
         <div className="relative flex flex-col">
@@ -42,13 +42,13 @@ function Navbar({ hasLogined = false }) {
             {hasLogined ? (
               <img
                 className="w-[50px] h-[50px]"
-                src="/photos/user_image2.png"
+                src="/images/user_image2.png"
                 alt="User Image 2"
               />
             ) : (
               <img
                 className="w-[50px] h-[50px]"
-                src="/photos/user_none.png"
+                src="/images/user_none.png"
                 alt="User Image 3"
               />
             )}
@@ -163,7 +163,7 @@ function Navbar({ hasLogined = false }) {
             >
               <img
                 className="w-[24px] h-[24px]"
-                src="/photos/arrow.png"
+                src="/images/arrow.png"
                 alt="arrow"
               />
               <span>پنل ارتباطی</span>

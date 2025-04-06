@@ -11,7 +11,7 @@ function Another_User_Profile() {
       <Navbar />
       <main
         style={{ direction: "rtl" }}
-        className="flex flex-col font-[Vazir] max-w-[1440px] m-auto bg-[#d9f0ff] pr-[80px] pb-[107px] pt-[13px] shadow-2xl shadow-[#000000]-25 items-center overflow-hidden"
+        className="flex flex-col max-w-screen m-auto bg-[#d9f0ff] pr-[80px] pb-[107px] pt-[13px] shadow-2xl shadow-[#000000]-25 items-center overflow-hidden"
       >
         <button
           className="bg-[#2663cd] text-[#ffffff] items-center rounded-[46px] py-[8px] px-[18px] mt-[15px] mb-[24px] ml-auto shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
@@ -31,7 +31,7 @@ function Another_User_Profile() {
           <div>
             <img
               className="w-[236px] h-[267px] shadow-lg shadow-[#000000]/25 rounded-[30px]"
-              src="/photos/user_image.png"
+              src="/src/assets/images/user_image.png"
               alt="userimage"
             />
             <h2 className="text-[24px] text-[#000000] font-[400] mt-[8px] mb-[12px]">
@@ -43,7 +43,7 @@ function Another_User_Profile() {
             <div className="mt-[12px] flex gap-[7.5px] items-center">
               <img
                 className="w-[25px] h-[25px]"
-                src="/photos/gift_sign.png"
+                src="/src/assets/images/gift_sign.png"
                 alt="gift"
               />
               <div>
@@ -96,15 +96,13 @@ function Another_User_Profile() {
             </div>
           </div>
 
-          <div className="bg-[#] rounded-[20px] w-[242px] h-[368px] mt-[32px] mr-auto shadow-lg shadow-[#000000]/25">
+          <div className="rounded-[20px] w-[242px] h-[368px] mt-[32px] mr-auto shadow-lg shadow-[#000000]/25">
             <BookCard
               title="تست"
               author="تست"
-              coverImage="/photos/book_sample.png"
+              coverImage={"/src/assets/images/book_sample.png"}
               description="این متن صرفا جهت تست است..."
               chapters={85}
-              height="368px"
-              width="242px"
             />
           </div>
         </div>
@@ -115,72 +113,72 @@ function Another_User_Profile() {
 
         <div className="ml-auto mb-[46px]">
           <button className="absolute rounded-full bg-[#000000] z-2 mt-[107px] mr-[1280px] cursor-pointer">
-            <img src="/photos/slider.svg" alt="slider"></img>
+            <img src="/src/assets/images/slider.svg" alt="slider"></img>
           </button>
-          <div className="flex gap-[25px] z-1 carousel-items">
-            <BookCard
-              title="تست"
-              author="تست"
-              coverImage="/photos/book_sample.png"
-              description="این متن صرفا جهت تست است..."
-              chapters={85}
-              height="254px"
-              width="180px"
-            />
-            <BookCard
-              title="test"
-              author="test"
-              coverImage="/photos/book_sample2.png"
-              description="lkdf  fseklmgd dflbcmkfrd   srvzgjirkl"
-              chapters={85}
-              height="254px"
-              width="180px"
-            />
-            <BookCard
-              title="test"
-              author="test"
-              coverImage="/photos/book_sample3.png"
-              description="xklcm"
-              chapters={85}
-              height="254px"
-              width="180px"
-            />
-            <BookCard
-              title="test"
-              author="test"
-              coverImage="/photos/book_sample4.png"
-              description="djfxn"
-              chapters={85}
-              height="254px"
-              width="180px"
-            />
-            <BookCard
-              title="test"
-              author="test"
-              coverImage="/photos/book_sample5.png"
-              description="test"
-              chapters={85}
-              height="254px"
-              width="180px"
-            />
-            <BookCard
-              title="test"
-              author="test"
-              coverImage="/photos/book_sample6.png"
-              description="tsfxsdj"
-              chapters={85}
-              height="254px"
-              width="180px"
-            />
-            <BookCard
-              title="test"
-              author="test"
-              coverImage="/photos/book_sample6.png"
-              description="sefnk"
-              chapters={85}
-              height="254px"
-              width="180px"
-            />
+          <div className="flex gap-[25px] z-1">
+            <div className="w-[180px] h-[254px]">
+              <BookCard
+                title="تست"
+                author="تست"
+                coverImage={"/src/assets/images/book_sample.png"}
+                description="این متن صرفا جهت تست است..."
+                chapters={85}
+              />
+            </div>
+            <div className="w-[180px] h-[254px]">
+              <BookCard
+                title="test"
+                author="test"
+                coverImage="/src/assets/images/book_sample2.png"
+                description="lkdf  fseklmgd dflbcmkfrd   srvzgjirkl"
+                chapters={85}
+              />
+            </div>
+            <div className="w-[180px] h-[254px]">
+              <BookCard
+                title="test"
+                author="test"
+                coverImage="/src/assets/images/book_sample3.png"
+                description="xklcm"
+                chapters={85}
+              />
+            </div>
+            <div className="w-[180px] h-[254px]">
+              <BookCard
+                title="test"
+                author="test"
+                coverImage="/src/assets/images/book_sample4.png"
+                description="djfxn"
+                chapters={85}
+              />
+            </div>
+            <div className="w-[180px] h-[254px]">
+              <BookCard
+                title="test"
+                author="test"
+                coverImage="/src/assets/images/book_sample5.png"
+                description="test"
+                chapters={85}
+              />
+            </div>
+            <div className="w-[180px] h-[254px]">
+              <BookCard
+                title="test"
+                author="test"
+                coverImage="/src/assets/images/book_sample6.png"
+                description="tsfxsdj"
+                chapters={85}
+              />
+            </div>
+            <div className="w-[180px] h-[254px]">
+              <BookCard
+                title="test"
+                author="test"
+                coverImage="/src/assets/images/book_sample6.png"
+                description="sefnk"
+                chapters={85}
+              />
+            </div>
           </div>
         </div>
 
@@ -190,72 +188,72 @@ function Another_User_Profile() {
 
         <div className="ml-auto">
           <button className="absolute rounded-full bg-[#000000] z-2 mt-[107px] mr-[1280px] cursor-pointer">
-            <img src="/photos/slider.svg" alt="slider"></img>
+            <img src="/src/assets/images/slider.svg" alt="slider"></img>
           </button>
           <div className="flex gap-[25px] z-1">
-            <BookCard
-              title="تست"
-              author="تست"
-              coverImage="/photos/book_sample.png"
-              description="این متن صرفا جهت تست میباشد..."
-              chapters={85}
-              height="254px"
-              width="180px"
-            />
-            <BookCard
-              title="test"
-              author="test"
-              coverImage="/photos/book_sample2.png"
-              description="jxdfvnd  fseklmgd dflbcmkfrd   srvzgjirkl"
-              chapters={85}
-              height="254px"
-              width="180px"
-            />
-            <BookCard
-              title="test"
-              author="test"
-              coverImage="/photos/book_sample3.png"
-              description="test"
-              chapters={85}
-              height="254px"
-              width="180px"
-            />
-            <BookCard
-              title="test"
-              author="test"
-              coverImage="/photos/book_sample4.png"
-              description="setgjnkd"
-              chapters={85}
-              height="254px"
-              width="180px"
-            />
-            <BookCard
-              title="test"
-              author="test"
-              coverImage="/photos/book_sample5.png"
-              description="tesset"
-              chapters={85}
-              height="254px"
-              width="180px"
-            />
-            <BookCard
-              title="test"
-              author="test"
-              coverImage="/photos/book_sample6.png"
-              description="tsesexgdf"
-              chapters={85}
-              height="254px"
-              width="180px"
-            />
-            <BookCard
-              title="test"
-              author="test"
-              coverImage="/photos/book_sample6.png"
-              description="settg"
-              chapters={85}
-              height="254px"
-              width="180px"
-            />
+            <div className="w-[180px] h-[254px]">
+              <BookCard
+                title="تست"
+                author="تست"
+                coverImage="/src/assets/images/book_sample.png"
+                description="این متن صرفا جهت تست میباشد..."
+                chapters={85}
+              />
+            </div>
+            <div className="w-[180px] h-[254px]">
+              <BookCard
+                title="test"
+                author="test"
+                coverImage="/src/assets/images/book_sample2.png"
+                description="jxdfvnd  fseklmgd dflbcmkfrd   srvzgjirkl"
+                chapters={85}
+              />
+            </div>
+            <div className="w-[180px] h-[254px]">
+              <BookCard
+                title="test"
+                author="test"
+                coverImage="/src/assets/images/book_sample3.png"
+                description="test"
+                chapters={85}
+              />
+            </div>
+            <div className="w-[180px] h-[254px]">
+              <BookCard
+                title="test"
+                author="test"
+                coverImage="/src/assets/images/book_sample4.png"
+                description="setgjnkd"
+                chapters={85}
+              />
+            </div>
+            <div className="w-[180px] h-[254px]">
+              <BookCard
+                title="test"
+                author="test"
+                coverImage="/src/assets/images/book_sample5.png"
+                description="tesset"
+                chapters={85}
+              />
+            </div>
+            <div className="w-[180px] h-[254px]">
+              <BookCard
+                title="test"
+                author="test"
+                coverImage="/src/assets/images/book_sample6.png"
+                description="tsesexgdf"
+                chapters={85}
+              />
+            </div>
+            <div className="w-[180px] h-[254px]">
+              <BookCard
+                title="test"
+                author="test"
+                coverImage="/src/assets/images/book_sample6.png"
+                description="settg"
+                chapters={85}
+              />
+            </div>
           </div>
         </div>
       </main>
