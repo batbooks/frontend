@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { AiFillLike, AiFillDislike } from 'react-icons/ai';
+import { AiFillLike, AiFillDislike,AiOutlineLike,AiOutlineDislike } from 'react-icons/ai';
 import {FaArrowLeft,FaArrowRight} from 'react-icons/fa'
 const Comments = ({ chapter }) => {
   const [allComments, setAllComments] = useState([]);
@@ -33,20 +33,35 @@ const Comments = ({ chapter }) => {
   function LikeButton() {
     
     const handleClick = () => {
-      setLiked(!liked);
+      setLiked(true);
       // send to api
     };
     if(liked)
-      return (<AiFillLike
+      return (<AiFillLike className=""
         color="blue" 
-        size="25" 
+        size="20" 
+        onClick={handleClick}/>)
+    return (<AiOutlineLike
+      color="red" 
+      size="20" 
+      onClick={handleClick}/>)  
+  }
+  function DislikeButton() {
+    
+    const handleClick = () => {
+      setLiked(false);
+      // send to api
+    };
+    if(liked)
+      return (<AiOutlineDislike
+        color="blue" 
+        size="20" 
         onClick={handleClick}/>)
     return (<AiFillDislike
       color="red" 
-      size="25" 
+      size="20" 
       onClick={handleClick}/>)  
   }
-  
   const fetchReplies = async (commentId) => {
     const offset = replyOffsets[commentId] || 0;
 
@@ -123,14 +138,24 @@ const Comments = ({ chapter }) => {
         allComments.map((comment) => (
           <div key={comment.id} className="mt-10">
             <div className="flex flex-row gap-10 rounded-lg p-10">
+              <div className="flex flex-col relative m-auto mt-3 ml-40 gap-4 ">
+                {/* {liked ?((<div>57</div>)) :((<div>56</div>))} */}
+                {/* {liked ?((<div className="ml-100">57</div>)) :((<div>56</div>))}  */}
+
+                  <LikeButton className="inline"/>
+                  {liked ?((<div className="absolute top-4.5 -left-7">57</div>)) :((<div className="absolute top-4.5 -left-7">56</div>))} 
+
+                 <DislikeButton className="inline"/>
+                 {liked ?((<div className="absolute top-4.5 left-6.5">50</div>)) :((<div className="absolute top-4.5 left-6.5">50</div>))} 
+
+              </div>
               <div className="w-200 break-words mr-5">
                 <div className="text-[16px] text-right text-gray-600 mb-6">{comment.created}</div>
                 <div className="text-[16px] text-right text-gray-800">{comment.body}</div>
-                <div className="flex flex-row mt-10 ml-190">
-                  <LikeButton/>
-                 {liked ?((<div>57</div>)) :((<div>56</div>))}
-                </div>
+               
+                
               </div>
+              
               <div className="w-1/4">
                 <section className="flex flex-row">
                   <p className="w-1/2 text-[16px] font-medium text-right mr-3">{comment.user}</p>
@@ -157,7 +182,7 @@ const Comments = ({ chapter }) => {
                   <p className="text-gray-800">{reply.text}</p>
                 </div>
               ))}
-              <div className="text-right">
+              <div className="text-center">
                 <button
                   className="text-blue-700 hover:underline"
                   onClick={() => fetchReplies(comment.id)}
