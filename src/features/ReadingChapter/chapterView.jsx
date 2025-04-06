@@ -1,7 +1,7 @@
 import React from "react";
 import "./Reading.css";
 import book from "./chapter.png";
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import Footer from "../../common/Footer/footer";
 import { Rating } from "@mui/material";
 

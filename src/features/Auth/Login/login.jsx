@@ -44,7 +44,7 @@ function Login() {
       </div>
       <main className="w-[700px] h-[450px] m-auto bg-[#A4C0ED] rounded-[13px] justify-center mt-14 pt-10 relatvie">
         <h2 className="font-bold text-center text-[20px] ">خوش آمدید</h2>
-        <h3 className="text-center text-[16px] mt-1.5 mb-12.5">
+        <h3 className="text-center text-[16px] mt-1.5 mb-12">
           برای ادامه وارد شوید
         </h3>
         <form onSubmit={handleSubmit}>

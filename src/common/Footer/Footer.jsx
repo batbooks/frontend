@@ -1,300 +1,173 @@
 import React from "react";
-import "./footer.css";
 
 function Footer() {
   return (
-    <footer className="footer-container">
-      <div style={{ display: "flex" }}>
-        <div
-          style={{
-            marginTop: "35px",
-            marginRight: "80px",
-            marginBottom: "121px",
-            marginLeft: "101px",
-          }}
-        >
-          <h1
-            style={{
-              fontSize: "16px",
-              fontWeight: "bolder",
-              color: "#265073",
-              marginBottom: "10px",
-            }}
-          >
-            شرکت BatBooks
-          </h1>
-          <ul>
-            <li style={{ marginBottom: "10px" }}>
-              <a
-                style={{
-                  fontSize: "14px",
-                  color: "#000000",
-                }}
-              >
-                درباره ما
-              </a>
-            </li>
-            <li style={{ marginBottom: "10px" }}>
-              <a
-                style={{
-                  fontSize: "14px",
-                  color: "#000000",
-                  marginBottom: "10px",
-                }}
-              >
-                قوانین و مقررات
-              </a>
-            </li>
-            <li style={{ marginBottom: "10px" }}>
-              <a
-                style={{
-                  fontSize: "14px",
-                  color: "#000000",
-                  marginBottom: "10px",
-                }}
-              >
-                پیشنهادات و انتقادات
-              </a>
-            </li>
-            <li style={{ marginBottom: "10px" }}>
-              <a
-                style={{
-                  fontSize: "14px",
-                  color: "#000000",
-                  marginBottom: "10px",
-                }}
-              >
-                پرسش های متداول
-              </a>
-            </li>
-            <li>
-              <a
-                style={{
-                  fontSize: "14px",
-                  color: "#000000",
-                  marginBottom: "10px",
-                }}
-              >
-                ارتباط با ما
-              </a>
-            </li>
-          </ul>
+    <footer
+      style={{ direction: "rtl" }}
+      className="max-w-[1440px] m-auto font-[Vazir] bg-[#a3d5ff] flex flex-col pt-[35px] pb-[23px] divide-y divide-[#2F4F4F]/50 px-[80px] shadow-lg shadow-[#000000]/25"
+    >
+      <div className="flex pb-[57.5px] gap-[10px]">
+        <div className="flex grow-677 justify-between gap-[10px]">
+          <div className="space-y-2.5">
+            <h1 className="text-[16px] text-[#265073] font-bold">
+              شرکت BatBooks
+            </h1>
+            <ul className="space-y-2.5">
+              <li>
+                <a
+                  className="text-[14px] text-[#000000] font-[400]"
+                  href="#about_us"
+                >
+                  درباره ما
+                </a>
+              </li>
+              <li>
+                <a
+                  className="text-[14px] text-[#000000] font-[400]"
+                  href="#rules"
+                >
+                  قوانین و مقررات
+                </a>
+              </li>
+              <li>
+                <a
+                  className="text-[14px] text-[#000000] font-[400]"
+                  href="#suggestions"
+                >
+                  پیشنهادات و انتقادات
+                </a>
+              </li>
+              <li>
+                <a
+                  className="text-[14px] text-[#000000] font-[400]"
+                  href="#FAQ"
+                >
+                  پرسش های متداول
+                </a>
+              </li>
+              <li>
+                <a
+                  className="text-[14px] text-[#000000] font-[400]"
+                  href="#contact_us"
+                >
+                  ارتباط با ما
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div className="space-y-2.5">
+            <h1 className="text-[16px] text-[#265073] font-bold">
+              همکاری با ما
+            </h1>
+            <ul className="space-y-2.5">
+              <li>
+                <a
+                  className="text-[14px] text-[#000000] font-[400]"
+                  href="#contact_creature"
+                >
+                  ارتباط با ناشران و چاپ اثر
+                </a>
+              </li>
+              <li>
+                <a className="text-[14px] text-[#000000] font-[400]">
+                  ما را در شبکه های اجتماعی
+                </a>
+                <br />
+                <a className="text-[14px] text-[#000000] font-[400]">
+                  به دیگران معرفی کنید...
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div className="space-y-2.5">
+            <h1 className="text-[16px] font-bold text-[#265073]">
+              مسیرهای ارتباطی
+            </h1>
+            <ul className="space-y-2.5">
+              <li>
+                <span className="text-[14px] text-[#000000] font-[400]">
+                  تلفن ثابت: 53227747 - (021)
+                </span>
+              </li>
+              <li>
+                <span className="text-[14px] text-[#000000] font-[400]">
+                  آدرس ایمیل: Email.iust.ac.ir
+                </span>
+              </li>
+              <li>
+                <span className="text-[14px] text-[#000000] font-[400]">
+                  نشانی: تهران، میدان رسالت،
+                </span>
+                <br />
+                <span className="text-[14px] text-[#000000] font-[400]">
+                  دانشگاه علم و صنعت ایران
+                </span>
+                <br />
+                <span className="text-[14px] text-[#000000] font-[400]">
+                  خیابان هنگام، خیابان دانشگاه،{" "}
+                </span>
+              </li>
+              <li className="flex gap-[15px] mt-[7px]">
+                <button className=" w-[25.65px] h-[25.65px] cursor-pointer ">
+                  <img
+                    src="/photos/whatsapp-logo.svg"
+                    alt="whatsapp"
+                    className="m-auto"
+                  ></img>
+                </button>
+                <button className=" w-[25.65px] h-[25.65px] cursor-pointer">
+                  <img
+                    src="/photos/telegram-logo.svg"
+                    alt="telegram"
+                    className="m-auto"
+                  ></img>
+                </button>
+                <button className=" w-[25.65px] h-[25.65px] cursor-pointer">
+                  <img
+                    src="/photos/instagram_logo.svg"
+                    alt="instagram"
+                    className="m-auto"
+                  ></img>
+                </button>
+              </li>
+            </ul>
+          </div>
         </div>
-        <div
-          style={{
-            marginTop: "35px",
-            marginLeft: "104px",
-          }}
-        >
-          <h1
-            style={{
-              fontSize: "16px",
-              fontWeight: "bolder",
-              color: "#265073",
-              marginBottom: "10px",
-            }}
-          >
-            همکاری با ما
-          </h1>
-          <ul>
-            <li style={{ marginBottom: "10px" }}>
-              <a
-                style={{
-                  fontSize: "14px",
-                  color: "#000000",
-                  marginBottom: "10px",
-                }}
-              >
-                ارتباط با ناشران و چاپ اثر
-              </a>
-            </li>
-            <li>
-              <a
-                style={{
-                  fontSize: "14px",
-                  color: "#000000",
-                }}
-              >
-                ما را در شبکه های اجتماعی
-              </a>
-            </li>
-            <li style={{ marginBottom: "10px" }}>
-              <a
-                style={{
-                  fontSize: "14px",
-                  color: "#000000",
-                }}
-              >
-                به دیگران معرفی کنید...
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div
-          style={{
-            marginTop: "35px",
-            marginLeft: "220px",
-          }}
-        >
-          <h1
-            style={{
-              fontSize: "16px",
-              fontWeight: "bolder",
-              color: "#265073",
-              marginBottom: "10px",
-            }}
-          >
-            مسیرهای ارتباطی
-          </h1>
-          <ul>
-            <li style={{ marginBottom: "10px" }}>
-              <span
-                style={{
-                  fontSize: "14px",
-                  color: "#000000",
-                  marginBottom: "10px",
-                }}
-              >
-                تلفن ثابت: 53227747 - (021)
-              </span>
-            </li>
-            <li style={{ marginBottom: "10px" }}>
-              <span
-                style={{
-                  fontSize: "14px",
-                  color: "#000000",
-                }}
-              >
-                آدرس ایمیل: Email.iust.ac.ir
-              </span>
-            </li>
-            <li>
-              <span
-                style={{
-                  fontSize: "14px",
-                  color: "#000000",
-                }}
-              >
-                نشانی: تهران، میدان رسالت،
-              </span>
-            </li>
-            <li>
-              <span
-                style={{
-                  fontSize: "14px",
-                  color: "#000000",
-                }}
-              >
-                خیابان هنگام، خیابان دانشگاه،{" "}
-              </span>
-            </li>
-            <li style={{ marginBottom: "10px" }}>
-              <span
-                style={{
-                  fontSize: "14px",
-                  color: "#000000",
-                }}
-              >
-                دانشگاه علم و صنعت ایران
-              </span>
-            </li>
-            <li style={{ display: "flex", gap: "5px", marginRight: "-7px" }}>
-              <button className="whatsapp-button"></button>
-              <button className="telegram-button"></button>
-              <button className="instagram-button"></button>
-            </li>
-          </ul>
-        </div>
-        <div>
-          <h1
-            style={{
-              fontSize: "32px",
-              fontWeight: "bolder",
-              color: "#000000",
-              marginRight: "86px",
-              marginTop: "37px",
-              marginBottom: "39px",
-            }}
-          >
+        <div className="flex flex-col gap-[39px] grow-603 ml-[57px] ">
+          <h1 className="mr-auto text-[32px] font-[700] text-[#000000] ml-[90px]">
             BatBooks
           </h1>
-          <button
-            style={{
-              width: "150px",
-              height: "52px",
-              backgroundColor: "#001F54",
-              color: "#FFFFFF",
-              marginLeft: "11px",
-              borderRadius: "12px",
-            }}
-          >
-            <div style={{ display: "flex", gap: "18px", marginRight: "8px" }}>
-              <div>
-                <span
-                  style={{
-                    display: "block",
-                    fontSize: "10px",
-                    marginBottom: "-7px",
-                  }}
-                >
-                  GET IT ON
+          <div className="flex mr-auto gap-[22px] ">
+            <button className="flex bg-[#001F54] rounded-[12px] text-[#ffffff] gap-[18px] pr-[23px] pl-[15px] min-w-[150px] py-[7px] cursor-pointer">
+              <div className="flex flex-col m-auto">
+                <span className="text-[10px] mb-[-7px] font-[300] uppercase">
+                  get it on
                 </span>
-                <span
-                  style={{
-                    fontSize: "20px",
-                  }}
-                >
-                  myket
-                </span>
+                <span className="text-[20px] font-[400]">myket</span>
               </div>
               <img
-                style={{ width: "30px", height: "30px" }}
+                className="w-[30px] h-[30px] my-auto"
                 src="/photos/myket.png"
-                alt="Myket"
+                alt="myket"
               />
-            </div>
-          </button>
-          <button
-            style={{
-              width: "150px",
-              height: "52px",
-              backgroundColor: "#001F54",
-              color: "#FFFFFF",
-              marginRight: "11px",
-              borderRadius: "12px",
-            }}
-          >
-            <div style={{ display: "flex", gap: "18px", marginRight: "8px" }}>
-              <div>
-                <span
-                  style={{
-                    display: "block",
-                    fontSize: "10px",
-                    marginBottom: "-7px",
-                  }}
-                >
-                  GET IT ON
+            </button>
+            <button className="flex bg-[#001F54] rounded-[12px] text-[#ffffff] gap-[18px] pr-[23px] pl-[15px] min-w-[150px] py-[7px] cursor-pointer">
+              <div className="flex flex-col m-auto">
+                <span className="text-[10px] mb-[-7px] uppercase font-[300]">
+                  get it on
                 </span>
-                <span
-                  style={{
-                    fontSize: "20px",
-                  }}
-                >
-                  Bazzar
-                </span>
+                <span className="text-[20px] font-[400]">Bazzar</span>
               </div>
               <img
-                style={{ width: "30px", height: "30px" }}
+                className="w-[30px] h-[30px] my-auto"
                 src="/photos/bazzar.png"
-                alt="Bazzar"
+                alt="bazzar"
               />
-            </div>
-          </button>
+            </button>
+          </div>
         </div>
       </div>
-      <p
-        style={{ fontSize: "12px", textAlign: "center", marginBottom: "23px" }}
-      >
+      <p className="text-[12px] m-auto font-[300] mt-[40.5px]">
         Copyright © 73b4 - m485 BatBooks. All rights reserved
       </p>
     </footer>
