@@ -20,7 +20,7 @@ const Comments = ({ chapter }) => {
         console.log(data)
         setAllComments(data.results );
         setnextcomment(data.links.next)
-        setprevcomment(data.links.prev)
+        setprevcomment(data.links.previous)
       } catch (err) {
         console.error(err);
         
