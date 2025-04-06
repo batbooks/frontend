@@ -31,7 +31,7 @@ function AppRoutes() {
 
         <Route
           path="/comments"
-          element={<Comments chapter_id={1}/>}
+          element={<Comments chapter={1}/>}
         ></Route>
 
         <Route path="/footer" element={<Footer />} />
