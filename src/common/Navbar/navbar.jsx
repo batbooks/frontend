@@ -62,7 +62,7 @@ function Navbar({ hasLogined = false }) {
                   onClick={() => setSelectedItem(0)}
                   className="w-full h-full rounded-t-[10px] cursor-pointer pl-[68px] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
-                  <span className="text-[13px] font-[300] text-[#000000]/70">
+                  <span className="text-[13px] font-bold text-[#000000]/70">
                     پروفایل کاربری
                   </span>
                 </button>
@@ -72,7 +72,7 @@ function Navbar({ hasLogined = false }) {
                   onClick={() => setSelectedItem(0)}
                   className="w-full h-full rounded-b-[10px] cursor-pointer pl-[28px] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
-                  <span className="text-[13px] font-[300] text-[#000000]/70">
+                  <span className="text-[13px] font-bold text-[#000000]/70">
                     خروج از حساب کاربری
                   </span>
                 </button>
@@ -87,7 +87,7 @@ function Navbar({ hasLogined = false }) {
                   onClick={() => setSelectedItem(0)}
                   className="w-full h-full rounded-t-[10px] cursor-pointer pl-[102px] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
-                  <span className="text-[13px] font-[300] text-[#000000]/70">
+                  <span className="text-[13px] font-bold text-[#000000]/70">
                     ثبت نام
                   </span>
                 </button>
@@ -97,7 +97,7 @@ function Navbar({ hasLogined = false }) {
                   onClick={() => setSelectedItem(0)}
                   className="w-full h-full rounded-b-[10px] cursor-pointer pl-[119px] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
-                  <span className="text-[13px] font-[300] text-[#000000]/70">
+                  <span className="text-[13px] font-bold text-[#000000]/70">
                     ورود
                   </span>
                 </button>
@@ -176,7 +176,7 @@ function Navbar({ hasLogined = false }) {
                   onClick={() => setSelectedItem(0)}
                   className="w-full h-full rounded-t-[10px] cursor-pointer pl-[89px] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
-                  <span className="text-[13px] font-[300] text-[#000000]/70">
+                  <span className="text-[13px] font-bold text-[#000000]/70">
                     تالار گفتگو
                   </span>
                 </button>
@@ -186,7 +186,7 @@ function Navbar({ hasLogined = false }) {
                   onClick={() => setSelectedItem(0)}
                   className="w-full h-full rounded-b-[10px] cursor-pointer pl-[118px] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
-                  <span className="text-[13px] font-[300] text-[#000000]/70">
+                  <span className="text-[13px] font-bold text-[#000000]/70">
                     افراد
                   </span>
                 </button>

@@ -9,6 +9,7 @@ import Forget_password from "./features/Auth/forget_password/Forget_password";
 import Vf from "./features/Auth/forget_password/Vf";
 import Footer from "./common/Footer/footer";
 import Navbar from "./common/Navbar/navbar";
+import EditProfile from "./features/Profiles/EditProfile/editProfile.jsx";
 
 function AppRoutes() {
   return (
@@ -17,16 +18,17 @@ function AppRoutes() {
         <Route path="/auth/signup" element={<Signup />}></Route>
         <Route path="/auth/otp" element={<Otp />}></Route>
         <Route path="/auth/login" element={<Login />}></Route>
-        <Route path="/profiles/userprofile" element={<Profile />}></Route>
+        <Route path="/userprofile" element={<Profile />}></Route>
         <Route path="/book/:id" element={<BookPage />}></Route>
         <Route path="/Forget_password" element={<Forget_password />} />
         <Route path="/Vf" element={<Vf />} />
         <Route
-          path="/profiles/anotheruserprofile"
+          path="/anotheruserprofile"
           element={<Another_User_Profile />}
         ></Route>
         <Route path="/footer" element={<Footer />} />
         <Route path="/navbar" element={<Navbar />} />
+        <Route path="/editprofile" element={<EditProfile />} />
       </Routes>
     </Router>
   );
