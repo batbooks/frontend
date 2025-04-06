@@ -65,6 +65,7 @@ export default function Vf() {
     } finally {
       setLoading(false);
       setSuccess("رمز عبور با موفقیت تغییر کرد.");
+      navigate('/auth/login')
     }
   };
   const gotoloinpage=()=>{
