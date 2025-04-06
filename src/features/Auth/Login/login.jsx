@@ -7,7 +7,7 @@ function Login() {
   const [password, setPassword] = useState("");
 
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  let navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -99,7 +99,10 @@ function Login() {
           >
             {loading ? "...در حال ورود" : "ورود"}
           </button>
-          <button className="mx-auto flex cursor-pointer justify-center">
+          <button
+            className="mx-auto flex cursor-pointer justify-center"
+            onClick={() => navigate("/Forget_password")}
+          >
             رمز عبور را فراموش کرده ام
           </button>
         </form>

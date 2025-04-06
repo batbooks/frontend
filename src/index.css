@@ -6,7 +6,6 @@ body {
 .p-rating .p-rating-icon {
   font-size: 5rem !important;
 }
-
 @font-face {
   font-family: "Vazir";
   src: url("./fonts/Vazir-Light-FD-WOL.ttf") format("truetype");
@@ -15,11 +14,14 @@ body {
 }
 
 body {
-  background-color: var(--bg-light) !important;
-  color: var(--text-color);
   font-family: "Vazir", sans-serif;
 }
 
+body {
+  /* background-color: var(--bg-light) !important; */
+  color: var(--text-color);
+  font-family: "Vazir", sans-serif;
+}
 /* :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
