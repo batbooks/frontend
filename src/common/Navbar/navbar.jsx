@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
+import { Link } from "react-router";
 
 function Navbar({ hasLogined = false }) {
   const [isVisiblePanel, setIsVisiblePanel] = useState(false);
@@ -6,6 +8,8 @@ function Navbar({ hasLogined = false }) {
   const [selectedItem, setSelectedItem] = useState(0);
   const [isVisibleUser, setIsVisibleUser] = useState(false);
   const [isClickedUser, setIsClickedUser] = useState(false);
+
+  let navigate = useNavigate();
 
   return (
     <header
@@ -59,7 +63,10 @@ function Navbar({ hasLogined = false }) {
             >
               <li className="w-[155px] h-[38px] bg-[#ffffff] rounded-t-[10px]">
                 <button
-                  onClick={() => setSelectedItem(0)}
+                  onClick={() => {
+                    setSelectedItem(0);
+                    navigate("/profiles/userprofile");
+                  }}
                   className="w-full h-full rounded-t-[10px] cursor-pointer pl-[68px] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
                   <span className="text-[13px] font-bold text-[#000000]/70">
@@ -84,17 +91,26 @@ function Navbar({ hasLogined = false }) {
             >
               <li className="w-[155px] h-[38px] bg-[#ffffff] rounded-t-[10px]">
                 <button
-                  onClick={() => setSelectedItem(0)}
+                  onClick={() => {
+                    setSelectedItem(0);
+                    navigate("/auth/signup");
+                  }}
                   className="w-full h-full rounded-t-[10px] cursor-pointer pl-[102px] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
-                  <span className="text-[13px] font-bold text-[#000000]/70">
+                  <span
+                    to={"/auth/signup"}
+                    className="text-[13px] font-[300] text-[#000000]/70"
+                  >
                     ثبت نام
                   </span>
                 </button>
               </li>
               <li className="w-[155px] h-[38px] bg-[#ffffff] rounded-b-[10px]">
                 <button
-                  onClick={() => setSelectedItem(0)}
+                  onClick={() => {
+                    setSelectedItem(0);
+                    navigate("/auth/login");
+                  }}
                   className="w-full h-full rounded-b-[10px] cursor-pointer pl-[119px] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
                   <span className="text-[13px] font-bold text-[#000000]/70">

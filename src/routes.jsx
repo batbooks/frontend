@@ -6,10 +6,13 @@ import Another_User_Profile from "./features/Profiles/AnotherUserProfile/another
 import BookPage from "./features/Bookpage/Bookpage";
 import Forget_password from "./features/Auth/forget_password/Forget_password";
 import Vf from "./features/Auth/forget_password/Vf";
+import ReadingPage from "./features/ReadingChapter/chapterView";
+
 import Comments from "./common/comments/Comments";
 import Footer from "./common/Footer/footer";
 import Navbar from "./common/Navbar/navbar";
 import Profile from "./features/Profiles/UserProfile/userprofile.jsx";
+import CreateChapter from "./features/CreateChapter/createChapter.jsx";
 
 function AppRoutes() {
   return (
@@ -26,7 +29,11 @@ function AppRoutes() {
           path="/anotheruserprofile"
           element={<Another_User_Profile />}
         ></Route>
+        <Route path="/readingchapter" element={<ReadingPage />} />
+        <Route path="/createChpter" element={<CreateChapter />} />
+
         <Route path="/comments" element={<Comments chapter={1} />}></Route>
+
         <Route path="/footer" element={<Footer />} />
         <Route path="/navbar" element={<Navbar />} />
       </Routes>
