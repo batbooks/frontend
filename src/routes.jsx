@@ -10,6 +10,7 @@ import Vf from "./features/Auth/forget_password/Vf";
 import ReadingPage from "./features/ReadingChapter/chapterView";
 import Footer from "./common/Footer/footer";
 import Navbar from "./common/Navbar/navbar";
+import CreateChapter from "./features/CreateChapter/createChapter.jsx";
 
 function AppRoutes() {
   return (
@@ -29,6 +30,7 @@ function AppRoutes() {
         <Route path='/readingchapter' element={<ReadingPage/>}/>
         <Route path="/footer" element={<Footer />} />
         <Route path="/navbar" element={<Navbar />} />
+        <Route path="/createChpter" element={<CreateChapter />} />
       </Routes>
     </Router>
   );
