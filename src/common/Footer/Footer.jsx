@@ -4,7 +4,7 @@ function Footer() {
   return (
     <footer
       style={{ direction: "rtl" }}
-      className="max-w-[1440px] m-auto font-[Vazir] bg-[#a3d5ff] flex flex-col pt-[35px] pb-[23px] divide-y divide-[#2F4F4F]/50 px-[80px] shadow-lg shadow-[#000000]/25"
+      className="max-w-screen m-auto font-[Vazir] bg-[#a3d5ff] flex flex-col pt-[35px] pb-[23px] divide-y divide-[#2F4F4F]/50 px-[80px] shadow-lg shadow-[#000000]/25"
     >
       <div className="flex pb-[57.5px] gap-[10px]">
         <div className="flex grow-677 justify-between gap-[10px]">
@@ -110,21 +110,21 @@ function Footer() {
               <li className="flex gap-[15px] mt-[7px]">
                 <button className=" w-[25.65px] h-[25.65px] cursor-pointer ">
                   <img
-                    src="/photos/whatsapp-logo.svg"
+                    src="/images/whatsapp-logo.svg"
                     alt="whatsapp"
                     className="m-auto"
                   ></img>
                 </button>
                 <button className=" w-[25.65px] h-[25.65px] cursor-pointer">
                   <img
-                    src="/photos/telegram-logo.svg"
+                    src="/images/telegram-logo.svg"
                     alt="telegram"
                     className="m-auto"
                   ></img>
                 </button>
                 <button className=" w-[25.65px] h-[25.65px] cursor-pointer">
                   <img
-                    src="/photos/instagram_logo.svg"
+                    src="/images/instagram_logo.svg"
                     alt="instagram"
                     className="m-auto"
                   ></img>
@@ -147,7 +147,7 @@ function Footer() {
               </div>
               <img
                 className="w-[30px] h-[30px] my-auto"
-                src="/photos/myket.png"
+                src="/images/myket.png"
                 alt="myket"
               />
             </button>
@@ -160,7 +160,7 @@ function Footer() {
               </div>
               <img
                 className="w-[30px] h-[30px] my-auto"
-                src="/photos/bazzar.png"
+                src="/images/bazzar.png"
                 alt="bazzar"
               />
             </button>
