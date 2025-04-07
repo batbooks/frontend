@@ -82,9 +82,12 @@ function Forget_password() {
   //   }
   // };
   const gotoloinpage=()=>{
-    navigate('/Forget_password')
+    navigate('/auth/login')
    }
-  return ( <>
+  return ( <div className='w-screen h-screen bg-[#D9F0FF]'>
+    <h2 className="text-[24px] mt-1.5 ml-2 font-bold text-[#002D54] absolute top-0 left-0">
+          Bat<span className="text-[#2663CD]">Books</span>
+        </h2>
     <div style={styles.container} className='flex flex-col m-auto mt-24 h-80 w-[39vw] bg-[#A4C0ED] rounded-lg'>
       <h2 style={styles.title} className='font-bold'> بازیابی رمز عبور </h2>
       <form  onSubmit={handleSendCode} style={styles.form}>
@@ -100,7 +103,7 @@ function Forget_password() {
           />
             <div className="absolute inset-y-0 left-[27.5vw] flex items-center pl-[1vw] pointer-events-none ">
     <img
-      src="user.png" // Replace with the path to your icon
+      src="/src/assets/images/user.png" // Replace with the path to your icon
       alt="Email Icon"
       className="h-4.5  w-[1.2vw] opacity-90"
     />
@@ -135,19 +138,19 @@ function Forget_password() {
 
 
 
-      <h1 onClick={gotoloinpage} className="text-[1vw] text-[#2663CD] absolute top-83 left-[46vw] underline"> بازگشت به صفحه ورود </h1>  
-      <img src="middle-left.png" alt="mid-right" className="w-45 absolute top-53 left-[30vw] "/>
+      <h1 onClick={gotoloinpage} className="text-[1vw] text-[#2663CD] absolute top-83 left-[46vw] underline cursor-pointer"> بازگشت به صفحه ورود </h1>  
+      <img src="/src/assets/images/mid-left.png" alt="mid-right" className="w-45 absolute top-53 left-[30vw] "/>
       {/* <img src="batbooks.png" alt="mid-right" className="w-[5.2vw] absolute top-3 left-0 "/> */}
 
-      <p className="text-[1.5vw] font-bold absolute top-8 left-[2vw] ">BatBooks</p>
-      <img src="bottom-right.png" alt="bottom-left" className="w-[35vw]  absolute top-52 right-0 min-w-100"/>
-      <img src="bottomleft.png" alt="bottom-left" className="w-[17vw] absolute top-123 left-0 min-w-50"/>
+      
+      <img src="/src/assets/images/bottom-right.png" alt="bottom-right" className="absolute right-[0px] bottom-0 w-[33vw] ascept-auto"/>
+      <img src="/src/assets/images/bottom-left.png" alt="bottom-left" className="absolute left-0 bottom-0 w-[25vw] aspect-auto"/>
 
-      <img src="middle-right-login.png" alt="mid-right" className="w-[13vw]   absolute -top-1 left-[62.3vw] min-w-32"/>
+      <img src="/src/assets/images/mid-right.png" alt="mid-right" className="w-[13vw]   absolute -top-1 left-[62.3vw] min-w-32"/>
     </div>
     
     
-    </>
+    </div>
   );
 };
 

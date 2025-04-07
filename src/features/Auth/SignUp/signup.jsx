@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 function Signup() {
   const [showPassword, setShowPassword] = useState(false);
@@ -8,10 +7,40 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmit(e) {
-    e.prevent.default;
-  }
+  let navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+    try {
+      const response = await fetch(
+        "https://batbooks.liara.run/auth/register/",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password, c_password: repeatPassword }),
+        }
+      );
+      console.log("Response status:", response.status);
+      console.log("Response headers:", [...response.headers]);
+      const data = await response.json();
+      console.log("Response data:", data);
+      if (response.ok) {
+        navigate("/auth/otp", { state: { email: { email } } });
+      } else {
+        setError(data[0]);
+        throw new Error(data[0]);
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   function handleShowPassword() {
     setShowPassword((show) => !show);
@@ -35,7 +64,7 @@ function Signup() {
         <h3 className="text-center text-[16px] mt-1.5 mb-12.5">
           برای ادامه دادن ثبت نام کنید
         </h3>
-        <form typeof="submit" onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <div className="flex justify-center relative mb-3">
             <input
               className="bg-[#FFFFFF] mx-auto flex justify-center pl-14 px-4 items-center  w-[60%] h-[4.58vh] rounded-[40px] placeholder:text-right placeholder:mr-[72px]"
@@ -107,9 +136,16 @@ function Signup() {
               />
             )}
           </div>
-          <button className="bg-[#2663CD] shadow-lg shadow-[#000]/25 text-white mx-auto flex justify-center items-center  w-[143px] h-[38px] rounded-[46px] cursor-pointer focus:shadow-none focus:bg-[#2663CD]/90 focus:outline-none focus:ring-[#2663CD] focus:ring-offset-2 focus:ring-[2px] hover:bg-[#2663CD]/90 active:bg-[#2663CD]/30 active:duration-300 active:outline-none active:ring-0 active:ring-offset-0 disabled:cursor-auto disabled:shadow-none disabled:bg-[#2663CD]/60 disabled:ring-0 disabled:ring-offset-0 ">
-            ثبت نام
+          <button
+            type="submit"
+            className="bg-[#2663CD] shadow-lg shadow-[#000]/25 text-white mx-auto flex justify-center items-center  w-[143px] h-[38px] rounded-[46px] cursor-pointer focus:shadow-none focus:bg-[#2663CD]/90 focus:outline-none focus:ring-[#2663CD] focus:ring-offset-2 focus:ring-[2px] hover:bg-[#2663CD]/90 active:bg-[#2663CD]/30 active:duration-300 active:outline-none active:ring-0 active:ring-offset-0 disabled:cursor-auto disabled:shadow-none disabled:bg-[#2663CD]/60 disabled:ring-0 disabled:ring-offset-0 "
+            disabled={loading}
+          >
+            {loading ? "...در حال ثبت نام" : "ثبت نام"}
           </button>
+          {error != "" ? (
+            <p className="text-red-600 text-center mt-5">{error}</p>
+          ) : null}
         </form>
         <img
           src="/src/assets/images/mid-left.png"
@@ -130,7 +166,7 @@ function Signup() {
       <img
         src="/src/assets/images/bottom-right.png"
         alt="bottom-right"
-        className=" absolute right-[0px] bottom-0 w-[33vw] ascept-auto"
+        className=" absolute right-[0px] bottom-0 w-[33vw] aspect-auto"
       />
     </div>
   );

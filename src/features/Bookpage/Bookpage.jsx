@@ -6,6 +6,7 @@ import { Editor } from "primereact/editor";
 
 import SearchBar from "../../Searchbar";
 import Comments from "../../common/comments/Comments";
+import Reviews from "./reviews";
 
 const Pagination = ({ totalPages, currentPage, onPageChange }) => {
   return (
@@ -199,7 +200,7 @@ const BookPage = () => {
           </div>
         </div>
         <div className="w-350 p-10 pl-28">
-          <Comments chapter={2}></Comments>
+          {/* <Reviews book={1}></Reviews> */}
         </div>
       </div>
       

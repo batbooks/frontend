@@ -8,6 +8,9 @@ import BookPage from "./features/Bookpage/Bookpage";
 import Forget_password from "./features/Auth/forget_password/Forget_password";
 import Vf from "./features/Auth/forget_password/Vf";
 import ReadingPage from "./features/ReadingChapter/chapterView";
+
+import Comments from "./common/comments/Comments";
+
 import Footer from "./common/Footer/footer";
 import Navbar from "./common/Navbar/navbar";
 import CreateChapter from "./features/CreateChapter/createChapter.jsx";
@@ -31,6 +34,15 @@ function AppRoutes() {
         <Route path="/footer" element={<Footer />} />
         <Route path="/navbar" element={<Navbar />} />
         <Route path="/createChpter" element={<CreateChapter />} />
+
+        <Route
+          path="/comments"
+          element={<Comments chapter={1}/>}
+        ></Route>
+
+        <Route path="/footer" element={<Footer />} />
+        <Route path="/navbar" element={<Navbar />} />
+
       </Routes>
     </Router>
   );
