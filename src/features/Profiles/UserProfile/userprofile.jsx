@@ -14,7 +14,7 @@ export default function Profile() {
           <button className="flex gap-[15px] bg-[#2663cd] text-[#ffffff] items-center rounded-[46px] py-[8px] px-[18px] mt-[15px] mb-[24px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
             <img
               className="w-[22px] h-[22px]"
-              src="/photos/edit_sign.png"
+              src="/src/assets/images/edit_sign.png"
               alt="edit"
             />
             <span className="font-[400]">ویرایش پروفایل</span>
@@ -31,7 +31,7 @@ export default function Profile() {
           <div>
             <img
               className="w-[236px] h-[267px] shadow-lg shadow-[#000000]/25 rounded-[30px]"
-              src="/photos/user_image.png"
+              src="/src/assets/images/user_image.png"
               alt="userimage"
             />
             <h2 className="text-[24px] text-[#000000] font-[400] mt-[8px] mb-[12px]">
@@ -43,7 +43,7 @@ export default function Profile() {
             <div className="mt-[12px] flex gap-[7.5px] items-center">
               <img
                 className="w-[25px] h-[25px]"
-                src="/photos/gift_sign.png"
+                src="/src/assets/images/gift_sign.png"
                 alt="gift"
               />
               <div>
@@ -105,7 +105,7 @@ export default function Profile() {
           </div>
 
           <div className="bg-[#ffffff] rounded-[20px] px-[17px] pt-[41px] pb-[28px] mt-[32px] mr-auto shadow-lg shadow-[#000000]/25">
-            <img src="/photos/favorite_book.png" alt="favoritebook" />
+            <img src="/src/assets/images/favorite_book.png" alt="favoritebook" />
           </div>
         </div>
 
@@ -117,7 +117,7 @@ export default function Profile() {
             <div className="flex">
               <img
                 className="shadow-lg shadow-[#000000]/25 rounded-[20px] w-[153px] h-[189px]"
-                src="/photos/book_sample.png"
+                src="/src/assets/images/book_sample.png"
                 alt="book"
               ></img>
               <div className="flex flex-col mr-[26px] mt-[27px]">
@@ -153,7 +153,7 @@ export default function Profile() {
               <div className="flex items-center gap-[26px]">
                 <img
                   className="w-[127px] h-[156px] shadow-lg shadow-[#000000]/25 rounded-[20px]"
-                  src="/photos/book_sample.png"
+                  src="/src/assets/images/book_sample.png"
                   alt="book"
                 ></img>
                 <div className="flex flex-col gap-[5px] m-auto">
@@ -169,7 +169,7 @@ export default function Profile() {
               <div className="flex items-center gap-[26px]">
                 <img
                   className="w-[127px] h-[156px] shadow-lg shadow-[#000000]/25 rounded-[20px]"
-                  src="/photos/book_sample.png"
+                  src="/src/assets/images/book_sample.png"
                   alt="book"
                 ></img>
                 <div className="flex flex-col gap-[5px] m-auto">
