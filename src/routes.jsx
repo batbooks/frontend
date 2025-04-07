@@ -33,7 +33,7 @@ function AppRoutes() {
         <Route path='/readingchapter' element={<ReadingPage/>}/>
         <Route path="/footer" element={<Footer />} />
         <Route path="/navbar" element={<Navbar />} />
-        <Route path="/createChpter" element={<CreateChapter />} />
+        <Route path="/createChapter" element={<CreateChapter />} />
 
         <Route
           path="/comments"
