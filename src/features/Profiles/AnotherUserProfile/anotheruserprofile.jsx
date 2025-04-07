@@ -11,7 +11,7 @@ function Another_User_Profile() {
       <Navbar />
       <main
         style={{ direction: "rtl" }}
-        className="flex flex-col max-w-screen m-auto bg-[#d9f0ff] pr-[80px] pb-[107px] pt-[13px] shadow-2xl shadow-[#000000]-25 items-center overflow-hidden"
+        className="flex flex-col max-w-screen m-auto bg-[#d9f0ff] px-[80px] pb-[107px] pt-[13px] shadow-2xl shadow-[#000000]-25 items-center overflow-hidden"
       >
         <button
           className="bg-[#2663cd] text-[#ffffff] items-center rounded-[46px] py-[8px] px-[18px] mt-[15px] mb-[24px] ml-auto shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
@@ -27,7 +27,7 @@ function Another_User_Profile() {
           پروفایل کاربری
         </h1>
 
-        <div className="ml-auto flex bg-[#A4C0ED] rounded-[35px] shadow-lg shadow-[#000000]/25 mb-[40px] pl-[52px] pb-[52px] pr-[23px] pt-[20px] gap-[39px] min-w-[1280px] border-[2px] border-[#000000]/8">
+        <div className="ml-auto flex bg-[#A4C0ED] rounded-[35px] shadow-lg shadow-[#000000]/25 mb-[40px] pl-[52px] pb-[52px] pr-[23px] pt-[20px] gap-[39px] border-[2px] border-[#000000]/8 w-full">
           <div>
             <img
               className="w-[236px] h-[267px] shadow-lg shadow-[#000000]/25 rounded-[30px]"
@@ -38,19 +38,8 @@ function Another_User_Profile() {
               جزئیات
             </h2>
             <span className="text-[16px] text-[#000000] font-[300]">
-              جنسیت ذکر نشده، شهر
+              جنسیت ذکر نشده
             </span>
-            <div className="mt-[12px] flex gap-[7.5px] items-center">
-              <img
-                className="w-[25px] h-[25px]"
-                src="/src/assets/images/gift_sign.png"
-                alt="gift"
-              />
-              <div>
-                <sapn className="text-[16px] font-[400]">روز تولد: </sapn>
-                <span className="text-[16px] font-[300]">روز/ماه/سال</span>
-              </div>
-            </div>
           </div>
 
           <div>
@@ -82,15 +71,18 @@ function Another_User_Profile() {
               <p className="text-[16px] font-[300] mb-[18px]">
                 ملحق شده در روز/ماه/سال
               </p>
-              <h4 className="text-[16px] font-[300]">ژانرهای موردعلاقه:</h4>
-              <p className="text-[#000000]/70 text-[14px] font-[300] mb-[18px]">
-                علمی-تخیلی، رمان(داستانی)، معمایی
-              </p>
               <h5 className="text-[16px] font-[300] mb-1">درباره من:</h5>
               <p className="text-[#000000]/70 text-[14px] font-[300]">
                 این متن صرفا جهت تست میباشد...
-              </p>
-              <p className="text-[#000000]/70 text-[14px] font-[300]">
+                <br />
+                این متن صرفا جهت تست میباشد...
+                <br />
+                این متن صرفا جهت تست میباشد...
+                <br />
+                این متن صرفا جهت تست میباشد...
+                <br />
+                این متن صرفا جهت تست میباشد...
+                <br />
                 این متن صرفا جهت تست میباشد...
               </p>
             </div>
