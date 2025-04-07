@@ -5,6 +5,7 @@ const Comments = ({ chapter }) => {
   const [allComments, setAllComments] = useState([]);
   const [nextcomment,setnextcomment]=useState("")
   const [prevcomment,setprevcomment]=useState("")
+  const [nextreplyLink,setnextreplyLink]=useState({})
   const [replies, setReplies] = useState({});
   const [replyOffsets, setReplyOffsets] = useState({});
   const [userfollowed, setUserFollowed] = useState(true);
@@ -16,11 +17,11 @@ const Comments = ({ chapter }) => {
         
         if (!response.ok) throw new Error("Failed to fetch comments");
 
-        const data = await response.json();
-        console.log(data)
-        setAllComments(data.results );
-        setnextcomment(data.links.next)
-        setprevcomment(data.links.previous)
+        const data1 = await response.json();
+        console.log(data1)
+        setAllComments(data1.results );
+        setnextcomment(data1.links.next)
+        setprevcomment(data1.links.previous)
       } catch (err) {
         console.error(err);
         
@@ -29,7 +30,7 @@ const Comments = ({ chapter }) => {
     };
     
     fetchComments();
-  }, [chapter]);
+  }, []);
   function LikeButton() {
     
     const handleClick = () => {
@@ -48,27 +49,47 @@ const Comments = ({ chapter }) => {
   }
   
   const fetchReplies = async (commentId) => {
-    const offset = replyOffsets[commentId] || 0;
-
+    let address=`https://batbooks.liara.run/comments/comment/${commentId}/`
+    if (nextreplyLink.hasOwnProperty(commentId)) {
+        console.log(address)
+        address=nextreplyLink[commentId]
+        
+    }
     try {
       const response = await fetch(
-        `https://batbooks.liara.run/comments/comment/${commentId}/`
+        address
       );
       if (!response.ok) throw new Error("Failed to fetch replies");
 
       const data = await response.json();
-     console.log(data)
+     
       setReplies((prev) => ({
         ...prev,
-        [commentId]: [...(prev[commentId] || []), ...data],
-      }));
+        [commentId]: [...(prev[commentId] || []), ...data.results],
+      })|| {[commentId]:data.results});
+      if(data.links.next!=null){
+      setnextreplyLink((prev)=> ({
+        ...prev,[commentId]:data.links.next
+      }))}
+      if(data.links.next==null){
+        setnextreplyLink((prev)=> ({
+          ...prev,[commentId]:""
+        }))
+        throw new Error("replies are over");
+      }
+      const updated = {
+        ...nextreplyLink,
+        [commentId]: data.links.next
+      };
+      console.log(updated)
+      console.log(data)
 
       // setReplyOffsets((prev) => ({
       //   ...prev,
       //   [commentId]: offset + 10,
       // }));
     } catch (err) {
-      console.error(err);
+      console.error(err.message);
       
     }
   };
@@ -112,7 +133,7 @@ const Comments = ({ chapter }) => {
       //   [commentId]: offset + 10,
       // }));
     } catch (err) {
-      // console.error(err);
+      console.error(err);
       
     }
   };
@@ -153,8 +174,8 @@ const Comments = ({ chapter }) => {
             <div className="ml-20 mr-10">
               {(replies[comment.id] || []).map((reply) => (
                 <div key={reply.id} className="border right-4 border-gray-300 p-4 rounded-lg mb-3 bg-white text-right">
-                  <p className="text-sm text-gray-500">{reply.date}</p>
-                  <p className="text-gray-800">{reply.text}</p>
+                  <p className="text-sm text-gray-500">{reply.created}</p>
+                  <p className="text-gray-800">{reply.body}</p>
                 </div>
               ))}
               <div className="text-right">
