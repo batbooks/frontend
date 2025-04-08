@@ -212,6 +212,7 @@ const Comments = ({ chapter }) => {
                 </div>
                 <div className="flex flex-row mt-10 ml-190"></div>
               </div>
+              
               <div className="w-1/4">
                 <section className="flex flex-row">
                   <p className="w-1/2 text-[16px] font-medium text-right mr-3 ">

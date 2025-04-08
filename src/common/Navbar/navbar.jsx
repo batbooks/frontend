@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
+import { Link } from "react-router";
 
 function Navbar({ hasLogined = false }) {
   const [isVisiblePanel, setIsVisiblePanel] = useState(false);
@@ -7,10 +9,12 @@ function Navbar({ hasLogined = false }) {
   const [isVisibleUser, setIsVisibleUser] = useState(false);
   const [isClickedUser, setIsClickedUser] = useState(false);
 
+  let navigate = useNavigate();
+
   return (
     <header
       dir="rtl"
-      className="max-w-[1440px] m-auto font-[Vazir] flex bg-[#a3d5ff] justify-between py-[22px] pl-[50px] pr-[30px] shadow-lg shadow-[#000000]/25"
+      className="max-w-screen m-auto flex mb-3 bg-[#a3d5ff] justify-between py-[1px] pl-[50px] pr-[30px] shadow-lg shadow-[#000000]/25"
     >
       <nav className="flex items-center gap-[60px]">
         <div className="relative flex flex-col">
@@ -42,13 +46,13 @@ function Navbar({ hasLogined = false }) {
             {hasLogined ? (
               <img
                 className="w-[50px] h-[50px]"
-                src="/photos/user_image2.png"
+                src="/images/user_image2.png"
                 alt="User Image 2"
               />
             ) : (
               <img
                 className="w-[50px] h-[50px]"
-                src="/photos/user_none.png"
+                src="/images/user_none.png"
                 alt="User Image 3"
               />
             )}
@@ -59,10 +63,13 @@ function Navbar({ hasLogined = false }) {
             >
               <li className="w-[155px] h-[38px] bg-[#ffffff] rounded-t-[10px]">
                 <button
-                  onClick={() => setSelectedItem(0)}
+                  onClick={() => {
+                    setSelectedItem(0);
+                    navigate("/profiles/userprofile");
+                  }}
                   className="w-full h-full rounded-t-[10px] cursor-pointer pl-[68px] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
-                  <span className="text-[13px] font-[300] text-[#000000]/70">
+                  <span className="text-[13px] font-bold text-[#000000]/70">
                     پروفایل کاربری
                   </span>
                 </button>
@@ -72,7 +79,7 @@ function Navbar({ hasLogined = false }) {
                   onClick={() => setSelectedItem(0)}
                   className="w-full h-full rounded-b-[10px] cursor-pointer pl-[28px] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
-                  <span className="text-[13px] font-[300] text-[#000000]/70">
+                  <span className="text-[13px] font-bold text-[#000000]/70">
                     خروج از حساب کاربری
                   </span>
                 </button>
@@ -84,20 +91,29 @@ function Navbar({ hasLogined = false }) {
             >
               <li className="w-[155px] h-[38px] bg-[#ffffff] rounded-t-[10px]">
                 <button
-                  onClick={() => setSelectedItem(0)}
+                  onClick={() => {
+                    setSelectedItem(0);
+                    navigate("/auth/signup");
+                  }}
                   className="w-full h-full rounded-t-[10px] cursor-pointer pl-[102px] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
-                  <span className="text-[13px] font-[300] text-[#000000]/70">
+                  <span
+                    to={"/auth/signup"}
+                    className="text-[13px] font-[300] text-[#000000]/70"
+                  >
                     ثبت نام
                   </span>
                 </button>
               </li>
               <li className="w-[155px] h-[38px] bg-[#ffffff] rounded-b-[10px]">
                 <button
-                  onClick={() => setSelectedItem(0)}
+                  onClick={() => {
+                    setSelectedItem(0);
+                    navigate("/auth/login");
+                  }}
                   className="w-full h-full rounded-b-[10px] cursor-pointer pl-[119px] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
-                  <span className="text-[13px] font-[300] text-[#000000]/70">
+                  <span className="text-[13px] font-bold text-[#000000]/70">
                     ورود
                   </span>
                 </button>
@@ -109,7 +125,7 @@ function Navbar({ hasLogined = false }) {
         <ul className="flex items-center gap-[66px]">
           <li className="flex flex-col items-center">
             <a
-              onClick={() => setSelectedItem(1)}
+              onClick={() => {setSelectedItem(1);navigate("/");} }
               className={`text-[16px] hover:underline hover:text-[#2663CD] active:text-[#2663CD]/50 active:no-underline active:transition-all active:duration-100 focus:outline-none focus:text-[#2663CD] ${selectedItem === 1 ? "text-[#265073]" : ""}`}
               href="#home"
             >
@@ -163,7 +179,7 @@ function Navbar({ hasLogined = false }) {
             >
               <img
                 className="w-[24px] h-[24px]"
-                src="/photos/arrow.png"
+                src="/images/arrow.png"
                 alt="arrow"
               />
               <span>پنل ارتباطی</span>
@@ -176,7 +192,7 @@ function Navbar({ hasLogined = false }) {
                   onClick={() => setSelectedItem(0)}
                   className="w-full h-full rounded-t-[10px] cursor-pointer pl-[89px] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
-                  <span className="text-[13px] font-[300] text-[#000000]/70">
+                  <span className="text-[13px] font-bold text-[#000000]/70">
                     تالار گفتگو
                   </span>
                 </button>
@@ -186,7 +202,7 @@ function Navbar({ hasLogined = false }) {
                   onClick={() => setSelectedItem(0)}
                   className="w-full h-full rounded-b-[10px] cursor-pointer pl-[118px] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
-                  <span className="text-[13px] font-[300] text-[#000000]/70">
+                  <span className="text-[13px] font-bold text-[#000000]/70">
                     افراد
                   </span>
                 </button>
@@ -224,8 +240,8 @@ function Navbar({ hasLogined = false }) {
         </ul>
       </nav>
       <div className="flex ">
-        <h1 className="text-[56px] font-[700] text-[#2663CD]">Books</h1>
-        <h1 className="text-[56px] font-[700] text-[#002d54]">Bat</h1>
+        <h1 className="text-[40px] font-[700] text-[#2663CD]">Books</h1>
+        <h1 className="text-[40px] font-[700] text-[#002d54]">Bat</h1>
       </div>
     </header>
   );
