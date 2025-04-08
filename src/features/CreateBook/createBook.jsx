@@ -2,7 +2,6 @@ import Footer from "/src/common/Footer/footer";
 import Navbar from "/src/common/Navbar/navbar";
 import { useState } from "react";
 // import { useNavigate } from "react-router";
-import { Editor } from "primereact/editor";
 import LongParagraphInput from "../../common/LongParagraphInput/longParagraphInput";
 
 function CreateBook() {
@@ -19,36 +18,14 @@ function CreateBook() {
     "کمدی",
     "کمیک",
     "ترسناک",
-    "فانتزی",
-    "علمی-تخیلی",
-    "رمان(داستانی)",
-    "تاریخی",
-    "جنایی و کارآگاهی",
-    "معمایی",
-    "زندگی نامه",
-    "توسعه فردی",
-    "عاشقانه",
-    "کمدی",
-    "کمیک",
-    "ترسناک",
-    "کمدی",
-    "کمیک",
-    "ترسناک",
-    "فانتزی",
-    "علمی-تخیلی",
-    "رمان(داستانی)",
-    "تاریخی",
-    "جنایی و کارآگاهی",
-    "معمایی",
-    "زندگی نامه",
-    "توسعه فردی",
-    "عاشقانه",
-    "کمدی",
-    "کمیک",
-    "ترسناک",
   ];
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [name, setName] = useState("");
+  const [img, setImg] = useState("");
+  const [description, setDescription] = useState("");
 
   function handleAddGenres(genre) {
     if (!selectedGenres.includes(genre)) {
@@ -59,6 +36,39 @@ function CreateBook() {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setSelectedFile(file);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("book", 3);
+      formData.append("name", name);
+      formData.append("description", description);
+      formData.append("image", selectedFile);
+      formData.append("rating", 5);
+      formData.append("status", "O");
+
+      const response = await fetch(`https://batbooks.liara.run/book/create/`, {
+        method: "POST",
+        body: formData,
+        headers: {
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ0NjIwMTM4LCJpYXQiOjE3NDQwMTUzMzgsImp0aSI6ImZjMmY3OWRkMGQ2YzRlNjk5MDYwOTg1MDZkOGRlZTg5IiwidXNlcl9pZCI6M30.HSlLIAfOT8IpD-OgqjibWMaSAHnA42XJmBG7qGAEtEc`,
+        },
+      });
+
+      const data = await response.json();
+      console.log(data);
+    } catch (err) {
+      console.error(err.message);
+
+      console.log("asdad");
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <div>
@@ -102,8 +112,10 @@ function CreateBook() {
               نام کتاب:
             </h3>
             <input
+              value={name}
               dir="rtl"
               className="bg-[#FFFFFF] mx-auto flex justify-center pl-14 px-4 items-center  w-[492px] h-[53px] rounded-[12px] placeholder:text-right placeholder:mr-[72px]"
+              onChange={(e) => setName(e.target.value)}
             />
           </div>
         </div>
@@ -112,7 +124,10 @@ function CreateBook() {
             خلاصه داستان:
           </h3>
           <div dir="rtl" className="w-[1020px] h-[211px]">
-            <LongParagraphInput />
+            <LongParagraphInput
+              setinputValue={setDescription}
+              //onChange={(e) => setDescription(e.target.value)}
+            />
           </div>
           {/* <Editor
             value={editor}
@@ -141,6 +156,7 @@ function CreateBook() {
               <div className="grid grid-cols-3 gap-[15px] mb-[15px]">
                 {selectedGenres.map((genreName) => (
                   <SelectedGenre
+                    key={genreName}
                     selectedGenres={selectedGenres}
                     setSelectedGenres={setSelectedGenres}
                     genreName={genreName}
@@ -160,8 +176,14 @@ function CreateBook() {
             </div>
           </div>
         </div>
-        <button className="bg-[#2663CD] shadow-lg shadow-[#000]/25 text-white mx-auto flex justify-center items-center mt-[60px]  w-[213px] h-[52px] rounded-[12px] cursor-pointer focus:shadow-none focus:bg-[#2663CD]/90 focus:outline-none focus:ring-[#2663CD] focus:ring-offset-2 focus:ring-[2px] hover:bg-[#2663CD]/90 active:bg-[#2663CD]/30 active:duration-300 active:outline-none active:ring-0 active:ring-offset-0 disabled:cursor-auto disabled:shadow-none disabled:bg-[#2663CD]/60 disabled:ring-0 disabled:ring-offset-0 ">
-          ایجاد کتاب
+        <button
+          onClick={(e) => {
+            handleSubmit(e);
+          }}
+          disabled={loading}
+          className="bg-[#2663CD] shadow-lg shadow-[#000]/25 text-white mx-auto flex justify-center items-center mt-[60px]  w-[213px] h-[52px] rounded-[12px] cursor-pointer focus:shadow-none focus:bg-[#2663CD]/90 focus:outline-none focus:ring-[#2663CD] focus:ring-offset-2 focus:ring-[2px] hover:bg-[#2663CD]/90 active:bg-[#2663CD]/30 active:duration-300 active:outline-none active:ring-0 active:ring-offset-0 disabled:cursor-auto disabled:shadow-none disabled:bg-[#2663CD]/60 disabled:ring-0 disabled:ring-offset-0 "
+        >
+          {loading ? "...در حال ایجاد" : "ایجاد کتاب"}
         </button>
       </main>
       <Footer />

@@ -87,7 +87,7 @@ function Navbar({ hasLogined = false }) {
             </ul>
           ) : (
             <ul
-              className={`absolute w-[155px] h-[76px] divide-y divide-[#2F4F4F]/50 shadow-lg shadow-[#000000]/25 mt-[60px] rounded-[10px] ${isVisibleUser ? "opacity-100" : "opacity-0"} ${isVisibleUser ? "visible" : "invisible"} transition-opacity duration-1000 ease-in-out`}
+              className={`absolute w-[155px] h-[76px] divide-y z-10 divide-[#2F4F4F]/50 shadow-lg shadow-[#000000]/25 mt-[60px] rounded-[10px] ${isVisibleUser ? "opacity-100" : "opacity-0"} ${isVisibleUser ? "visible" : "invisible"} transition-opacity duration-1000 ease-in-out`}
             >
               <li className="w-[155px] h-[38px] bg-[#ffffff] rounded-t-[10px]">
                 <button
@@ -99,7 +99,7 @@ function Navbar({ hasLogined = false }) {
                 >
                   <span
                     to={"/auth/signup"}
-                    className="text-[13px] font-[300] text-[#000000]/70"
+                    className="text-[13px] font-[300]  text-[#000000]/70"
                   >
                     ثبت نام
                   </span>
