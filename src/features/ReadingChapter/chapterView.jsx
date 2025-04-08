@@ -2,14 +2,16 @@ import React from "react";
 import "./Reading.css";
 import Footer from "../../common/Footer/footer";
 import { Rating } from "@mui/material";
+import Navbar from "../../common/Navbar/navbar";
 
 const ReadingPage = () => {
   return (
-    <>
-      <div className="max-w-[1440px] mx-auto font-[Vazir] shadow-2xl">
+    <div className="w-screen">
+      <Navbar />
+      <div className="main-div m-auto font-[Vazir] shadow-2xl">
         <div
           dir="rtl"
-          className="main-div flex items-center gap-[27px] pr-[71px] py-[19px]"
+          className=" flex items-center gap-[27px] pr-[71px] py-[19px]"
         >
           <img
             className="w-[179px] h-[247px] rounded-[15px]"
@@ -77,7 +79,7 @@ const ReadingPage = () => {
         </div>
       </div>
       <Footer />
-    </>
+    </div>
   );
 };
 
