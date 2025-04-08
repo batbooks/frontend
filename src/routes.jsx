@@ -1,20 +1,20 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router";
-import Signup from "./src/features/Auth/SignUp/signup.jsx";
-import Login from "./src/features/Auth/Login/login.jsx";
-import Otp from "./src/features/Auth/SignUp/otpCheck.jsx";
-import Another_User_Profile from "./src/features/Profiles/AnotherUserProfile/anotheruserprofile.jsx";
-import BookPage from "./src/features/Bookpage/Bookpage.jsx";
-import Forget_password from "./src/features/Auth/forget_password/Forget_password.jsx";
-import Vf from "./src/features/Auth/forget_password/Vf.jsx";
-import CreateBook from "./src/features/CreateBook/createBook.jsx";
-import ReadingPage from "./src/features/ReadingChapter/chapterView.jsx";
+import Signup from "./features/Auth/SignUp/signup.jsx";
+import Login from "./features/Auth/Login/login.jsx";
+import Otp from "./features/Auth/SignUp/otpCheck.jsx";
+import Another_User_Profile from "./features/Profiles/AnotherUserProfile/anotheruserprofile.jsx";
+import BookPage from "./features/Bookpage/Bookpage.jsx";
+import Forget_password from "./features/Auth/forget_password/Forget_password.jsx";
+import Vf from "./features/Auth/forget_password/Vf.jsx";
+import CreateBook from "./features/CreateBook/createBook.jsx";
+import ReadingPage from "./features/ReadingChapter/chapterView.jsx";
 
-import Comments from "./src/common/comments/Comments.jsx";
-import Footer from "./src/common/Footer/footer.jsx";
-import Navbar from "./src/common/Navbar/navbar.jsx";
-import Profile from "./src/features/Profiles/UserProfile/userprofile.jsx";
-import CreateChapter from "./src/features/CreateChapter/createChapter.jsx";
-import Homepage from "./src/homepage/Homepage.jsx";
+import Comments from "./common/comments/Comments.jsx";
+import Footer from "./common/Footer/footer.jsx";
+import Navbar from "./common/Navbar/navbar.jsx";
+import Profile from "./features/Profiles/UserProfile/userprofile.jsx";
+import CreateChapter from "./features/CreateChapter/createChapter.jsx";
+import Homepage from "./homepage/Homepage.jsx";
 function AppRoutes() {
   return (
     <Router>

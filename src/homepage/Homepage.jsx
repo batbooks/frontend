@@ -7,19 +7,22 @@ import Banner from "./banner";
 import Right from "./right";
 import Left from "./left";
 import Navbar from "../common/Navbar/navbar";
-import Footer from '../common/Footer/footer'
+import Footer from '../common/Footer/footer';
+import SearchBar from "../Searchbar";
+
 Navbar;
 export default function Homepage() {
   return (
     <div className="">
       <Navbar  className=""/>
 
+        <SearchBar/>
       <div className="flex flex-row justify-between ">
         <div className="sticky-content-l">
           <Left></Left>
         </div>
         <div className="">
-          <h1 className="text-center my-4 text-4xl  "> کتاب های پرطرفدار </h1>
+          <h1 className="text-center my-10 text-2xl  "> کتاب های پرطرفدار </h1>
           <Banner></Banner>
 
           <h1 className="text-center mb-8 text-4xl  "> تازه ترین ها </h1>
