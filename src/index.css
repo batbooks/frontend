@@ -1,5 +1,28 @@
 @import "tailwindcss";
 
+
+.backface-hidden {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+@layer utilities {
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  
+  .backface-hidden {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+  
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
+}
 body {
   background-color: #d9f0ff;
 }
@@ -7,16 +30,26 @@ body {
   font-size: 5rem !important;
 }
 @font-face {
-  font-family: 'Vazir';
-  src: url('./fonts/Vazir-Light-FD-WOL.ttf') format('truetype');
-  src: url('./fonts/Vazir-Light-FD-WOL.woff') format('woff');
-  src: url('./fonts/Vazir-Light-FD-WOL.woff2') format('woff2');
+  font-family: "Vazir";
+  src: url("./fonts/Vazir-Light-FD-WOL.ttf") format("truetype");
+  src: url("./fonts/Vazir-Light-FD-WOL.woff") format("woff");
+  src: url("./fonts/Vazir-Light-FD-WOL.woff2") format("woff2");
 }
 
 body {
-  /* background-color: var(--bg-light) !important; */
+  font-family: "Vazir", sans-serif;
+}
+
+body {
   color: var(--text-color);
-  font-family: 'Vazir', sans-serif;
+  font-family: "Vazir", sans-serif;
+}
+
+textarea {
+  width: 667.2px;
+  line-height: 20px;
+  resize: none;
+  box-sizing: border-box;
 }
 /* :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;

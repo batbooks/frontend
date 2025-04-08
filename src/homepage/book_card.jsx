@@ -1,23 +1,23 @@
 import { useState } from "react";
 
-export default function BookCard({
+export default function Book_card({
   title,
   author,
   coverImage,
-  description,
   chapters,
+  description
 }) {
   const [isFlipped, setIsFlipped] = useState(false);
 
   return (
     <div
-      className="relative w-full h-full cursor-pointer"
+      className="relative  border-0 hover:shadow-white rounded-2xl w-full h-full cursor-pointer hover: transition-all duration-500"
       onMouseEnter={() => setIsFlipped(!isFlipped)}
       onMouseLeave={() => setIsFlipped(!isFlipped)}
     >
       {/* Front Side */}
       <div
-        className={`absolute w-full h-full ${isFlipped ? "rotate-y-180" : ""} transition-transform duration-700 preserve-3d transform-origin-center`}
+        className={`absolute w-full h-full shadow-[0_5px_15px_rgba(0,0,0,.8)] rounded-2xl ${isFlipped ? "rotate-y-180" : ""} transition-transform duration-700 preserve-3d transform-origin-center`}
       >
         <img
           src={coverImage}
