@@ -33,7 +33,7 @@ function AppRoutes() {
           element={<Another_User_Profile />}
         ></Route>
         <Route path="/readingchapter" element={<ReadingPage />} />
-        <Route path="/createChpter" element={<CreateChapter />} />
+        <Route path="/createChapter" element={<CreateChapter />} />
 
         <Route path="/comments" element={<Comments chapter={1} />}></Route>
 
