@@ -1,18 +1,24 @@
 
-import { Provider } from 'react-redux';
 
-import { store } from './redux/store'
+
+
 import './App.css'
-import Homepage from './homepage/Homepage';
+
+import {} from "react-redux";
+import React from "react";
+import "./App.css";
+import { decrement, increment, incrementByAmount } from "./redux/infoSlice";
+import { Provider, useSelector, useDispatch } from "react-redux";
+
+import { store } from "./redux/store";
+import AppRoutes from "./routes";
 
 function App() {
-
-  
   return (
-    
-      <Homepage />
-    
+    <Provider store={store}>
+      <AppRoutes />
+    </Provider>
   );
 }
 
-export default App
+export default App;
