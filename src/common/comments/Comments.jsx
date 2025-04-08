@@ -182,11 +182,11 @@ const Comments = ({ chapter }) => {
       {allComments.length > 0 ? (
         allComments.map((comment) => (
           <div key={comment.id} className="mt-10">
-            <div className="flex flex-row gap-10 rounded-lg p-10">  
+            <div className="flex flex-row gap-10 rounded-lg p-10">
               <div className="ml-60">
                 <article className="flex text-center justify-center gap-5">
                   {liked[comment.id] == 1 ? (
-                    <div className="w-8" >{comment.like.length + 1}</div>
+                    <div className="w-8">{comment.like.length + 1}</div>
                   ) : (
                     <div className="w-8">{comment.like.length}</div>
                   )}
@@ -194,13 +194,12 @@ const Comments = ({ chapter }) => {
                   <LikeButton commentId={comment.id} />
                 </article>
                 <article className="flex text-center justify-center gap-5 mb-3.5">
-
-                {liked[comment.id] == -1 ? (
-                  <div className="w-8 mt-3" >{comment.dislike.length + 1}</div>
-                ) : (
-                  <div className="w-8 mt-3">{comment.dislike.length}</div>
-                )}
-                <DislikeButton commentId={comment.id} />
+                  {liked[comment.id] == -1 ? (
+                    <div className="w-8 mt-3">{comment.dislike.length + 1}</div>
+                  ) : (
+                    <div className="w-8 mt-3">{comment.dislike.length}</div>
+                  )}
+                  <DislikeButton commentId={comment.id} />
                 </article>
               </div>
               <div className="w-200 break-words mr-5">
@@ -212,7 +211,7 @@ const Comments = ({ chapter }) => {
                 </div>
                 <div className="flex flex-row mt-10 ml-190"></div>
               </div>
-              
+
               <div className="w-1/4">
                 <section className="flex flex-row">
                   <p className="w-1/2 text-[16px] font-medium text-right mr-3 ">
@@ -256,24 +255,32 @@ const Comments = ({ chapter }) => {
                   className=" right-4  p-4 pl-70  rounded-lg mb-3 bg-[#D9F0FF] text-right"
                 >
                   <div className="flex flex-row justify-end max-w-200   gap-5 min-h-30">
-                    <div  >
-                      <p className="text-sm text-gray-500 p-2">{reply.created}</p>
-                      <p className="text-blue-600 hover:bg-blue-600 hover:text-white inline cursor-pointer duration-150 p-0.5 rounded-sm ml-1.5">{reply.tag}</p>
+                    <div>
+                      <p className="text-sm text-gray-500 p-2">
+                        {reply.created}
+                      </p>
+                      <p className="text-blue-600 hover:bg-blue-600 hover:text-white inline cursor-pointer duration-150 p-0.5 rounded-sm ml-1.5">
+                        {reply.tag}
+                      </p>
                       <br />
-                      <p className="text-gray-800 mt-5 inline-block  "  > {reply.body} </p>
-                  
+                      <p className="text-gray-800 mt-5 inline-block  ">
+                        {" "}
+                        {reply.body}{" "}
+                      </p>
                     </div>
                     <div className="grid place-items-end h-20 min-w-12">
                       <section className=" text-center text-blue-600 hover:bg-blue-600 hover:text-white inline cursor-pointer duration-150 p-0.5 rounded-sm ml-1.5">
                         {reply.user}
                       </section>
-                      <img className="w-10  rounded-full " src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2uLl8zBoK0_iM5pNwJAC8hQ2f68YKtlgc7Q&s" alt="" />
+                      <img
+                        className="w-10  rounded-full "
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2uLl8zBoK0_iM5pNwJAC8hQ2f68YKtlgc7Q&s"
+                        alt=""
+                      />
                     </div>
                   </div>
-            <div className="w-[60vw] mt-8 mr-80 border-t-2 border-gray-500 mx-auto "></div>
-
+                  <div className="w-[60vw] mt-8 mr-80 border-t-2 border-gray-500 mx-auto "></div>
                 </div>
-                
               ))}
               <div className="text-right mb-13 mt-10">
                 <button
