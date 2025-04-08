@@ -50,7 +50,7 @@ const author = [
 ];
 export default function Popular_authors(){
     return(
-<div className="grid grid-cols-2 gap-3 h-[23vh] w-[70vw] m-auto mt-9">
+<div className="grid grid-cols-2 gap-3 h-[23vh] w-[60vw] m-auto mt-9">
         <div className="  grid grid-cols-2 gap-2 justify-items-end p-2  rounded-2xl bg-[#A4C0ED]">
             <article className="grid  grid-cols-2 gap-2 w-full place-content-around">
                 <section className="trending_img">
