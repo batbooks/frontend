@@ -7,12 +7,13 @@ import BookPage from "./features/Bookpage/Bookpage";
 import Forget_password from "./features/Auth/forget_password/Forget_password";
 import Vf from "./features/Auth/forget_password/Vf";
 import ReadingPage from "./features/ReadingChapter/chapterView";
-
+import Comment from "./common/comments/comment";
 import Comments from "./common/comments/Comments";
 import Footer from "./common/Footer/footer";
 import Navbar from "./common/Navbar/navbar";
 import Profile from "./features/Profiles/UserProfile/userprofile.jsx";
 import CreateChapter from "./features/CreateChapter/createChapter.jsx";
+import VoteAndReview from "./common/comments/voteAndReview.jsx";
 
 function AppRoutes() {
   return (
@@ -36,6 +37,8 @@ function AppRoutes() {
 
         <Route path="/footer" element={<Footer />} />
         <Route path="/navbar" element={<Navbar />} />
+        <Route path="/voteandreview" element={<VoteAndReview />} />
+        <Route path="/comment" element={<Comment />} />
       </Routes>
     </Router>
   );
