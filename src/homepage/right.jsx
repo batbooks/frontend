@@ -7,9 +7,9 @@ import "react-bootstrap";
 const Right = () => {
   return ( 
     <>
-    <div className="">
+    <div className="shadow-[0_5px_15px_rgba(0,0,0,.7)] rounded-2xl">
       
-      <div className="my-div2 sticky right-0">
+      <div className="my-div2 ">
         <div className="text-center">به بت بوکس خوش آمدید </div>
         <div className="text-center">...</div>
         <div className="text-center">کتاب های مورد علاقه تان را پیدا کنید. در تالار گفتگو درباره کتاب ها تبادل نظر کنید و به صورت هدفمند کتابخوانی کنید</div>

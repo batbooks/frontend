@@ -50,8 +50,8 @@ const author = [
 ];
 export default function Most_active_authors(){
     return(
-<div className="grid grid-cols-2 gap-3 h-[23vh] w-[60vw] m-auto mt-60">
-        <div className="  grid grid-cols-2 gap-2 justify-items-end p-2  rounded-2xl bg-[#A4C0ED]">
+<div className="grid grid-cols-2 gap-3 m-auto">
+        <div className=" shadow-[0_5px_15px_rgba(0,0,0,.3)] grid grid-cols-2 gap-2 justify-items-end p-2  rounded-2xl bg-[#A4C0ED]">
             <article className="grid  grid-cols-2 gap-2 w-full place-content-around">
                 <section className="trending_img">
                     <img
@@ -69,7 +69,7 @@ export default function Most_active_authors(){
             <section className=" place-content-center m-2"> <button className="w-[8vw] h- bg-blue-700 rounded-full text-amber-50 ">follow</button></section>
                                     {/* <button className="bg-blue-700 text-amber-50 place-content-center">follow</button> */}
         </div>
-        <div className="  grid grid-cols-2 gap-2 justify-items-end p-2  rounded-2xl bg-[#A4C0ED]">
+        <div className="shadow-[0_5px_15px_rgba(0,0,0,.3)]  grid grid-cols-2 gap-2 justify-items-end p-2  rounded-2xl bg-[#A4C0ED]">
             <article className="grid  grid-cols-2 gap-2 w-full place-content-around">
                 <section className="trending_img">
                     <img
@@ -87,7 +87,7 @@ export default function Most_active_authors(){
             <section className=" place-content-center m-2"> <button className="w-[8vw] h- bg-blue-700 rounded-full text-amber-50 ">follow</button></section>
                                     {/* <button className="bg-blue-700 text-amber-50 place-content-center">follow</button> */}
         </div>        
-        <div className="  grid grid-cols-2 gap-2 justify-items-end p-2  rounded-2xl bg-[#A4C0ED]">
+        <div className=" shadow-[0_5px_15px_rgba(0,0,0,.3)] grid grid-cols-2 gap-2 justify-items-end p-2  rounded-2xl bg-[#A4C0ED]">
             <article className="grid  grid-cols-2 gap-2 w-full place-content-around">
                 <section className="trending_img">
                     <img
@@ -105,7 +105,7 @@ export default function Most_active_authors(){
             <section className=" place-content-center m-2"> <button className="w-[8vw] h- bg-blue-700 rounded-full text-amber-50 ">follow</button></section>
                                     {/* <button className="bg-blue-700 text-amber-50 place-content-center">follow</button> */}
         </div>
-        <div className="  grid grid-cols-2 gap-2 justify-items-end p-2  rounded-2xl bg-[#A4C0ED]">
+        <div className=" shadow-[0_5px_15px_rgba(0,0,0,.3)] grid grid-cols-2 gap-2 justify-items-end p-2  rounded-2xl bg-[#A4C0ED]">
             <article className="grid  grid-cols-2 gap-2 w-full place-content-around">
                 <section className="trending_img">
                     <img
@@ -123,7 +123,7 @@ export default function Most_active_authors(){
             <section className=" place-content-center m-2"> <button className="w-[8vw] h- bg-blue-700 rounded-full text-amber-50 ">follow</button></section>
                                     {/* <button className="bg-blue-700 text-amber-50 place-content-center">follow</button> */}
         </div>
-        <div className="  grid grid-cols-2 gap-2 justify-items-end p-2  rounded-2xl bg-[#A4C0ED]">
+        <div className=" shadow-[0_5px_15px_rgba(0,0,0,.3)] grid grid-cols-2 gap-2 justify-items-end p-2  rounded-2xl bg-[#A4C0ED]">
             <article className="grid  grid-cols-2 gap-2 w-full place-content-around">
                 <section className="trending_img">
                     <img
@@ -141,7 +141,7 @@ export default function Most_active_authors(){
             <section className=" place-content-center m-2"> <button className="w-[8vw] h- bg-blue-700 rounded-full text-amber-50 ">follow</button></section>
                                     {/* <button className="bg-blue-700 text-amber-50 place-content-center">follow</button> */}
         </div>
-        <div className="  grid grid-cols-2 gap-2 justify-items-end p-2  rounded-2xl bg-[#A4C0ED]">
+        <div className=" shadow-[0_5px_15px_rgba(0,0,0,.3)] grid grid-cols-2 gap-2 justify-items-end p-2  rounded-2xl bg-[#A4C0ED]">
             <article className="grid  grid-cols-2 gap-2 w-full place-content-around">
                 <section className="trending_img">
                     <img

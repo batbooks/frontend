@@ -1,8 +1,5 @@
 @import "tailwindcss";
 
-body{
-  background-color: #D9F0FF;
-}
 
 .backface-hidden {
   -webkit-backface-visibility: hidden;

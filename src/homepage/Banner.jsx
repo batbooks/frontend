@@ -42,16 +42,16 @@ export default function Banner() {
 
   return (
     <div className="relative flex items-center justify-center mt-30 mb-20 bg-[D9F0FF]">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-gray-900 via-gray-900 to-cyan-900/20 z-0 mt-0" />
+      <div className=" w-[300px] absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-gray-900 via-gray-900 to-cyan-900/20 z-0 mt-0" />
       
-      <button 
+      <button
         onClick={showPreviousBook}
-        className="absolute left-20 z-10 p-2 rounded-full bg-gray-800/50 hover:bg-gray-800 transition-colors"
+        className="absolute left-7 z-10 p-2 rounded-full bg-gray-800/50 hover:bg-gray-800 transition-colors"
       >
         <ChevronLeft className="w-6 h-6 text-cyan-400" />
       </button>
 
-      <div className="flex gap-8 items-center justify-center">
+      <div className="flex gap-8 items-center justify-center w-[700px]">
         {/* Previous Book (Dimmed) */}
         <div className="opacity-40 scale-75 transition-all duration-500">
           <div className='h-100 w-55  '>
@@ -76,7 +76,7 @@ export default function Banner() {
 
       <button 
         onClick={showNextBook}
-        className="absolute right-20 z-10 p-2 rounded-full bg-gray-800/50 hover:bg-gray-800 transition-colors"
+        className="absolute right-7 z-10 p-2 rounded-full bg-gray-800/50 hover:bg-gray-800 transition-colors"
       >
         <ChevronRight className="w-6 h-6 text-cyan-400" />
       </button>

@@ -14,7 +14,7 @@ function Navbar({ hasLogined = false }) {
   return (
     <header
       dir="rtl"
-      className="max-w-screen m-auto flex bg-[#a3d5ff] justify-between py-[22px] pl-[50px] pr-[30px] shadow-lg shadow-[#000000]/25"
+      className="max-w-[98vw] m-auto flex mb-3 bg-[#a3d5ff] justify-between py-[22px] pl-[50px] pr-[30px] shadow-lg shadow-[#000000]/25"
     >
       <nav className="flex items-center gap-[60px]">
         <div className="relative flex flex-col">

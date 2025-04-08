@@ -7,8 +7,8 @@ import "react-bootstrap";
 const Left = () => {
   return ( 
     <>
-    <div className="">
-      <div className="my-div ">
+    <div className="shadow-[0_5px_15px_rgba(0,0,0,.7)] rounded-2xl">
+      <div className="my-div">
         <div className="text-center">چالش کتابخوانی</div>
         <div className="text-center">امسال برای کتابخوانی هدف گذاری کن</div>
         <div> 
