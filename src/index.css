@@ -1,5 +1,27 @@
 @import "tailwindcss";
 
+.backface-hidden {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+@layer utilities {
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
+}
 body {
   background-color: #d9f0ff;
 }
@@ -18,12 +40,12 @@ body {
 }
 
 body {
-  /* background-color: var(--bg-light) !important; */
   color: var(--text-color);
   font-family: "Vazir", sans-serif;
 }
 
 textarea {
+  width: 667.2px;
   line-height: 20px;
   resize: none;
   box-sizing: border-box;
