@@ -8,6 +8,7 @@ const CreateChapter = () => {
   const [selectValue, setSelectValue] = useState("--انتخاب کنید--");
   const [chapterName, setChapterName] = useState("");
   const [chapterContent, setChapterContent] = useState("");
+  const [chapterMode, setChapterMode] = useState(0);
   const handlesubmit = async (e) => {
     try {
       const response = await fetch(
@@ -26,13 +27,11 @@ const CreateChapter = () => {
         }
       );
 
-      if (!response.ok) throw new Error("Failed to fetch comments");
 
       const data = await response.json();
       console.log(data);
     } catch (err) {
-      console.error(err);
-
+      console.error(err.message)
       console.log("asdad");
     }
   };
@@ -53,7 +52,10 @@ const CreateChapter = () => {
           className="mx-auto flex flex-col px-[75px] pt-[27px] pb-[72px] shadow-lg border-[2px] border-[#000000]/21"
         >
           <div className="flex justify-around">
-            <button className="mb-[27px] flex items-center w-[225px] h-[38px] bg-[#2663CD] rounded-[40px] gap-[10px] justify-center text-[#ffffff] text-[15px] font-[400] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
+            <button
+              onClick={() => setChapterMode(1)}
+              className="mb-[27px] flex items-center w-[225px] h-[38px] bg-[#2663CD] rounded-[40px] gap-[10px] justify-center text-[#ffffff] text-[15px] font-[400] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
+            >
               <span>اضافه کردن فصل جدید</span>
               <img
                 src="/src/assets/images/add_sign.svg"
@@ -62,7 +64,12 @@ const CreateChapter = () => {
               />
             </button>
             <div className="flex gap-[10px]">
-              <button className="mb-[27px] flex items-center w-[120px] h-[38px] bg-[#2663CD] rounded-[40px] gap-[10px] justify-center text-[#ffffff] text-[15px] font-[400] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
+              <button
+                onClick={() =>
+                  selectValue !== "--انتخاب کنید--" ? setChapterMode(2) : null
+                }
+                className="mb-[27px] flex items-center w-[120px] h-[38px] bg-[#2663CD] rounded-[40px] gap-[10px] justify-center text-[#ffffff] text-[15px] font-[400] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
+              >
                 <span>ویرایش </span>
               </button>
               <div>
@@ -108,43 +115,51 @@ const CreateChapter = () => {
               </div>
             </div>
           </div>
-          <h2 style={{}} className="text-[26px] text-[#265073] font-[700]">
-            فصل nام:
-          </h2>
-          <div>
-            <br />
-            <label className="text-[#333333] font-[400] text-[20px] ml-[190px]">
-              {" "}
-              نام فصل :{" "}
-            </label>
-            <input
-              type="text"
-              onChange={(e) => {
-                setChapterName(e.target.value);
-              }}
-              className="px-[26.6px] bg-[#ffffff] rounded-[12px] w-[492px] h-[54px] mb-[27px] border-[2px] border-[#000000]/21"
-            />
-          </div>
-          <div className="flex flex-col">
-            <br />
-            <label className="text-[#333333] font-[400] text-[20px] mb-[1px]">
-              {" "}
-              محتوای فصل :{" "}
-            </label>
-            <Editor
-              value={reviewContent}
-              onTextChange={(e) => setReviewContent(e.htmlValue)}
-              style={{ height: "286px" }}
-              className="border-[2px] border-[#000000]/21 bg-white"
-            />
-          </div>
-          <div className="mx-auto">
-            <button
-              onClick={handlesubmit}
-              className="mt-[36px] text-[16.8px] font-[400] text-[#ffffff] rounded-[12px] border-[2px] border-[#000000]/21 px-[86px] py-[13.5px] bg-[#2663CD] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
-            >
-              انتشار
-            </button>
+          <div
+            className={`${chapterMode ? "visible" : "hidden"} flex flex-col`}
+          >
+            <h2 style={{}} className="text-[26px] text-[#265073] font-[700]">
+              فصل nام:
+            </h2>
+            <div>
+              <br />
+              <label className="text-[#333333] font-[400] text-[20px] ml-[190px]">
+                {" "}
+                نام فصل :{" "}
+              </label>
+              <input
+                type="text"
+                onChange={(e) => {
+                  setChapterName(e.target.value);
+                }}
+                className="px-[26.6px] bg-[#ffffff] rounded-[12px] w-[492px] h-[54px] mb-[27px] border-[2px] border-[#000000]/21"
+              />
+            </div>
+            <div className="flex flex-col">
+              <br />
+              <label className="text-[#333333] font-[400] text-[20px] mb-[1px]">
+                {" "}
+                محتوای فصل :{" "}
+              </label>
+              <Editor
+                value={reviewContent}
+                onTextChange={(e) => setChapterContent(e.htmlValue)}
+                style={{ height: "286px" }}
+                className="border-[2px] border-[#000000]/21 bg-white"
+              />
+            </div>
+            <div className="mx-auto">
+              <button
+                onClick={handlesubmit}
+                className="mt-[36px] text-[16.8px] font-[400] text-[#ffffff] rounded-[12px] border-[2px] border-[#000000]/21 px-[86px] py-[13.5px] bg-[#2663CD] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
+              >
+                {chapterMode === 1 ? (
+                  <span>انتشار</span>
+                ) : (
+                  <span>اعمال تغییرات</span>
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </div>
