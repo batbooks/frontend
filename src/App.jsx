@@ -1,19 +1,24 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import { Provider } from 'react-redux';
-import viteLogo from '/vite.svg'
-import { store } from './redux/store'
+
+
+
+
 import './App.css'
-import HomePage from './HomePage';
+
+import {} from "react-redux";
+import React from "react";
+import "./App.css";
+import { decrement, increment, incrementByAmount } from "./redux/infoSlice";
+import { Provider, useSelector, useDispatch } from "react-redux";
+
+import { store } from "./redux/store";
+import AppRoutes from "./routes";
 
 function App() {
-
-  
   return (
-   <Provider store={store}>
-    <HomePage></HomePage>
-   </Provider>
-  )
+    <Provider store={store}>
+      <AppRoutes />
+    </Provider>
+  );
 }
 
-export default App
+export default App;

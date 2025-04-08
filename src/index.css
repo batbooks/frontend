@@ -1,5 +1,55 @@
 @import "tailwindcss";
-:root {
+
+.backface-hidden {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+@layer utilities {
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
+}
+body {
+  background-color: #d9f0ff;
+}
+.p-rating .p-rating-icon {
+  font-size: 5rem !important;
+}
+@font-face {
+  font-family: "Vazir";
+  src: url("./fonts/Vazir-Light-FD-WOL.ttf") format("truetype");
+  src: url("./fonts/Vazir-Light-FD-WOL.woff") format("woff");
+  src: url("./fonts/Vazir-Light-FD-WOL.woff2") format("woff2");
+}
+
+body {
+  font-family: "Vazir", sans-serif;
+}
+
+body {
+  color: var(--text-color);
+  font-family: "Vazir", sans-serif;
+}
+
+textarea {
+  line-height: 20px;
+  resize: none;
+  box-sizing: border-box;
+}
+/* :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -66,4 +116,4 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
-}
+} */

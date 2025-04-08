@@ -1,0 +1,16 @@
+input{
+    background: none;
+    color: #ffa260;
+    border: 2px solid;
+    padding: 1em 2em;
+    font-size: 1em;
+
+}
+input:hover{
+    border-color: #f1ff5c;
+    color: white;
+    box-shadow: 0 0.5em 0.5em -0.4em #f1ff5c;
+    transform: translateY(-0.24em);
+    transition: color 0.2 border-color 0.2 shadow-box 0.2 transform 0.2;
+    cursor: pointer;
+}
