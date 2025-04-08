@@ -7,6 +7,7 @@ import Banner from "./banner";
 import Right from "./right";
 import Left from "./left";
 import Navbar from "../common/Navbar/navbar";
+import Footer from '../common/Footer/footer'
 Navbar;
 export default function Homepage() {
   return (
@@ -34,6 +35,7 @@ export default function Homepage() {
           <Right></Right>
         </div>
       </div>
+        <Footer>  </Footer>
     </div>
   );
 }
