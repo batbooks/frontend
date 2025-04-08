@@ -22,6 +22,12 @@ body {
   color: var(--text-color);
   font-family: "Vazir", sans-serif;
 }
+
+textarea {
+  line-height: 20px;
+  resize: none;
+  box-sizing: border-box;
+}
 /* :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
