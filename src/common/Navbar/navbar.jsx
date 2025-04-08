@@ -240,8 +240,8 @@ function Navbar({ hasLogined = false }) {
         </ul>
       </nav>
       <div className="flex ">
-        <h1 className="text-[56px] font-[700] text-[#2663CD]">Books</h1>
-        <h1 className="text-[56px] font-[700] text-[#002d54]">Bat</h1>
+        <h1 className="text-[40px] font-[700] text-[#2663CD]">Books</h1>
+        <h1 className="text-[40px] font-[700] text-[#002d54]">Bat</h1>
       </div>
     </header>
   );
