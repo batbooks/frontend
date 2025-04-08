@@ -41,7 +41,7 @@ export default function Banner() {
   };
 
   return (
-    <div className="relative flex items-center justify-center mt-30 mb-20 bg-[D9F0FF]">
+    <div className="relative flex items-center justify-center mt-10 mb-20 bg-[D9F0FF]">
       <div className=" w-[300px] absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-gray-900 via-gray-900 to-cyan-900/20 z-0 mt-0" />
       
       <button
