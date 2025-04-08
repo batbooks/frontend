@@ -42,7 +42,7 @@ export default function Book_card({
 
       {/* Back Side */}
       <div
-        className={`absolute inset-0 w-full h-full backface-hidden ${!isFlipped ? "rotate-y-180" : ""} bg-gray-800 rounded-[15px] p-2 text-xs transition-transform duration-700 preserve-3d transform-origin-center flex flex-col justify-between`}
+        className={`absolute inset-0 w-full h-full backface-hidden opacity-95  ${!isFlipped ? "rotate-y-180" : ""} bg-gray-800 rounded-[15px] p-2 text-xs transition-transform duration-700 preserve-3d transform-origin-center flex flex-col justify-between`}
       >
         <div className="flex flex-col gap-5">
           <h3 className="text-cyan-400 font-bold text-[20px] mt-1">{title}</h3>
