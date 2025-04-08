@@ -4,7 +4,7 @@ function Footer() {
   return (
     <footer
       style={{ direction: "rtl" }}
-      className="max-w-screen m-auto mt-10 bg-[#a3d5ff] flex flex-col pt-[35px] pb-[23px] divide-y divide-[#2F4F4F]/50 px-[80px] shadow-lg shadow-[#000000]/25"
+      className="max-w-screen m-auto mt-15 bg-[#a3d5ff] flex flex-col pt-[35px] pb-[23px] divide-y divide-[#2F4F4F]/50 px-[80px] shadow-lg shadow-[#000000]/25"
     >
       <div className="flex pb-[57.5px] gap-[10px]">
         <div className="flex grow-677 justify-between gap-[10px]">
