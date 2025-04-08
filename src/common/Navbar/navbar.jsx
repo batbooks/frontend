@@ -125,7 +125,7 @@ function Navbar({ hasLogined = false }) {
         <ul className="flex items-center gap-[66px]">
           <li className="flex flex-col items-center">
             <a
-              onClick={() => setSelectedItem(1)}
+              onClick={() => {setSelectedItem(1);navigate("/");} }
               className={`text-[16px] hover:underline hover:text-[#2663CD] active:text-[#2663CD]/50 active:no-underline active:transition-all active:duration-100 focus:outline-none focus:text-[#2663CD] ${selectedItem === 1 ? "text-[#265073]" : ""}`}
               href="#home"
             >
