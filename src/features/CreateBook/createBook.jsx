@@ -50,8 +50,6 @@ function CreateBook() {
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
 
-  const [editor, setEditor] = useState("");
-
   function handleAddGenres(genre) {
     if (!selectedGenres.includes(genre)) {
       setSelectedGenres([...selectedGenres, genre]);
