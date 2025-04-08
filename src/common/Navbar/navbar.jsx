@@ -14,7 +14,7 @@ function Navbar({ hasLogined = false }) {
   return (
     <header
       dir="rtl"
-      className="max-w-[98vw] m-auto flex mb-3 bg-[#a3d5ff] justify-between py-[22px] pl-[50px] pr-[30px] shadow-lg shadow-[#000000]/25"
+      className="max-w-screen m-auto flex mb-3 bg-[#a3d5ff] justify-between py-[1px] pl-[50px] pr-[30px] shadow-lg shadow-[#000000]/25"
     >
       <nav className="flex items-center gap-[60px]">
         <div className="relative flex flex-col">
@@ -177,7 +177,7 @@ function Navbar({ hasLogined = false }) {
                 setIsVisiblePanel(false);
               }}
             >
-              <img 
+              <img
                 className="w-[24px] h-[24px]"
                 src="/images/arrow.png"
                 alt="arrow"

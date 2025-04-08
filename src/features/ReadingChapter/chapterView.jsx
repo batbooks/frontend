@@ -15,7 +15,7 @@ const ReadingPage = () => {
         >
           <img
             className="w-[179px] h-[247px] rounded-[15px]"
-            src={book}
+            src="/src/assets/images/book_sample.png"
             alt="chapter"
           />
           <article className="article1">
