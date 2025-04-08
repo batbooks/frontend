@@ -13,11 +13,12 @@ import Footer from "./common/Footer/footer";
 import Navbar from "./common/Navbar/navbar";
 import Profile from "./features/Profiles/UserProfile/userprofile.jsx";
 import CreateChapter from "./features/CreateChapter/createChapter.jsx";
-
+import Homepage from "./homepage/Homepage.jsx";
 function AppRoutes() {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<Homepage />}></Route>
         <Route path="/auth/signup" element={<Signup />}></Route>
         <Route path="/auth/otp" element={<Otp />}></Route>
         <Route path="/auth/login" element={<Login />}></Route>
