@@ -46,7 +46,7 @@ export default function Banner() {
       
       <button
         onClick={showPreviousBook}
-        className="absolute left-7 z-10 p-2 rounded-full bg-gray-800/50 hover:bg-gray-800 transition-colors"
+        className="absolute left-3 z-10 p-2 rounded-full bg-gray-800/50 hover:bg-gray-800 transition-colors"
       >
         <ChevronLeft className="w-6 h-6 text-cyan-400" />
       </button>
@@ -76,7 +76,7 @@ export default function Banner() {
 
       <button 
         onClick={showNextBook}
-        className="absolute right-7 z-10 p-2 rounded-full bg-gray-800/50 hover:bg-gray-800 transition-colors"
+        className="absolute right-3 z-10 p-2 rounded-full bg-gray-800/50 hover:bg-gray-800 transition-colors"
       >
         <ChevronRight className="w-6 h-6 text-cyan-400" />
       </button>
