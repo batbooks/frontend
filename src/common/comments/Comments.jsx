@@ -16,8 +16,10 @@ const Comments = ({ chapter }) => {
   const [replyOffsets, setReplyOffsets] = useState({});
   const [userfollowed, setUserFollowed] = useState(true);
   const [liked, setLiked] = useState([]);
+  const [loading,setLoading]=useState(false)
   useEffect(() => {
     const fetchComments = async () => {
+      setLoading(true)
       try {
         const response = await fetch(
           `https://batbooks.liara.run/comments/chapter/${chapter}/`
@@ -34,6 +36,9 @@ const Comments = ({ chapter }) => {
         console.error(err);
 
         console.log("asdad");
+      }
+      finally{
+        setLoading(false)
       }
     };
 
@@ -102,6 +107,7 @@ const Comments = ({ chapter }) => {
 
   const fetchReplies = async (commentId) => {
     let address = `https://batbooks.liara.run/comments/comment/${commentId}/`;
+    setLoading(true)
     if (nextreplyLink.hasOwnProperty(commentId)) {
       console.log(address);
       address = nextreplyLink[commentId];
@@ -145,9 +151,13 @@ const Comments = ({ chapter }) => {
     } catch (err) {
       console.error(err.message);
     }
+    finally{
+      setLoading(false)
+    }
   };
 
   const nextcomments = async () => {
+    setLoading(true)
     try {
       const response = await fetch(nextcomment);
       if (!response.ok) throw new Error("Failed to fetch comments");
@@ -160,9 +170,13 @@ const Comments = ({ chapter }) => {
     } catch (err) {
       console.error(err);
     }
+    finally{
+      setLoading(false)
+    }
   };
 
   const prevcomments = async () => {
+    setLoading(true)
     try {
       const response = await fetch(prevcomment);
       if (!response.ok) throw new Error("Failed to fetch comments");
@@ -172,16 +186,20 @@ const Comments = ({ chapter }) => {
       setAllComments(data.results);
       setnextcomment(data.links.next);
       setprevcomment(data.links.previous);
+      
     } catch (err) {
       console.error(err);
       console.log(prevcomment);
+    }
+    finally{
+      setLoading(false)
     }
   };
   return (
     <div className="bg-[#D9F0FF] m-auto mt-6 p-4">
       <h2 className="text-2xl font-bold text-right mr-17">نظرات کاربران</h2>
       <VoteAndReview></VoteAndReview>
-      {allComments.length > 0 ? (
+      {allComments.length > 0 && !loading ? (
         allComments.map((comment) => (
           <div key={comment.id} className="mt-10">
             <div className="flex flex-row gap-10 rounded-lg p-10">

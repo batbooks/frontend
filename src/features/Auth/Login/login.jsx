@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Cookies from 'js-cookie';
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 function Login() {
@@ -21,7 +22,8 @@ function Login() {
           password,
         }
       );
-
+      Cookies.set('access_token',response.data.access,{expires:1})
+      Cookies.set('refresh_token',response.data.refresh,{expires:7})      
       localStorage.setItem("access_token", response.data.access);
       localStorage.setItem("refresh_token", response.data.refresh);
 
