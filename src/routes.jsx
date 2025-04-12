@@ -16,7 +16,9 @@ import CreateChapter from "./features/CreateChapter/createChapter.jsx";
 import Homepage from "./homepage/Homepage.jsx";
 import VoteAndReview from "./common/comments/voteAndReview.jsx";
 import Middleware from "./middleware.jsx";
- 
+
+
+
 function AppRoutes() {
   return (
     <Router>
