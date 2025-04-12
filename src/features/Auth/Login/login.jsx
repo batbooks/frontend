@@ -8,7 +8,34 @@ function Login() {
 
   const [loading, setLoading] = useState(false);
   let navigate = useNavigate();
-
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+   
+    try {
+      const response = await fetch(
+        "https://batbooks.liara.run/auth/register/",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password, c_password: repeatPassword }),
+        }
+      );
+      console.log("Response status:", response.status);
+      console.log("Response headers:", [...response.headers]);
+      const data = await response.json();
+      console.log("Response data:", data);
+      if (response.ok) {
+        navigate("/auth/otp", { state: { email: { email } } });
+      } else {
+        setError(data[0]);
+        throw new Error(data[0]);
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
   async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
@@ -21,11 +48,22 @@ function Login() {
           password,
         }
       );
-
+      // Cookies.set('access_token', 'value', { expires: 7,secure:true , path:'/'  } );
+      // Cookies.set('refresh_token', 'value', { expires: 7,secure:true , path:'/'  } );
+      if (response.ok){
       localStorage.setItem("access_token", response.data.access);
       localStorage.setItem("refresh_token", response.data.refresh);
-
       navigate("/");
+      const user = { username }; 
+
+      
+      dispatch(loginSuccess({
+        user,
+        access: response.data.access,
+        refresh: response.data.refresh
+      }));
+      }
+      
     } finally {
       setLoading(false);
     }

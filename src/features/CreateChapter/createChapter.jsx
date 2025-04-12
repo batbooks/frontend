@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Navbar from "/src/common/Navbar/navbar";
-import Footer from "../../common/Footer/footer";
+import Footer from "../../common/Footer/Footer";
 import { Editor } from "primereact/editor";
 
 const CreateChapter = () => {

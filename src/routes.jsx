@@ -9,12 +9,14 @@ import Vf from "./features/Auth/forget_password/Vf.jsx";
 import CreateBook from "./features/CreateBook/createBook.jsx";
 import ReadingPage from "./features/ReadingChapter/chapterView.jsx";
 import Comments from "./common/comments/Comments.jsx";
-import Footer from "./common/Footer/footer.jsx";
+import Footer from "./common/Footer/Footer.jsx";
 import Navbar from "./common/Navbar/navbar.jsx";
 import Profile from "./features/Profiles/UserProfile/userprofile.jsx";
 import CreateChapter from "./features/CreateChapter/createChapter.jsx";
 import Homepage from "./homepage/Homepage.jsx";
 import VoteAndReview from "./common/comments/voteAndReview.jsx";
+import Middleware from "./middleware.jsx";
+ 
 function AppRoutes() {
   return (
     <Router>
@@ -23,7 +25,12 @@ function AppRoutes() {
         <Route path="/auth/signup" element={<Signup />}></Route>
         <Route path="/auth/otp" element={<Otp />}></Route>
         <Route path="/auth/login" element={<Login />}></Route>
-        <Route path="/userprofile" element={<Profile />}></Route>
+        
+        <Route path="/userprofile" element={  
+          <Middleware>
+            < Profile/>
+          </Middleware>
+        }></Route>
         <Route path="/book/:id" element={<BookPage />}></Route>
         <Route path="/mybooks/createbook" element={<CreateBook />}></Route>
         <Route path="/Forget_password" element={<Forget_password />} />
