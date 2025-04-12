@@ -5,37 +5,31 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [userinfo,setuserinfo]=useState([])
   const [loading, setLoading] = useState(false);
   let navigate = useNavigate();
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-   
+  const fetchuserinfo = async (acces_token) => {
     try {
       const response = await fetch(
-        "https://batbooks.liara.run/auth/register/",
+        `https://batbooks.liara.run/auth/who/`,
         {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password, c_password: repeatPassword }),
+          method: "GET",
+          
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${acces_token}`,
+          },
         }
       );
-      console.log("Response status:", response.status);
-      console.log("Response headers:", [...response.headers]);
       const data = await response.json();
-      console.log("Response data:", data);
-      if (response.ok) {
-        navigate("/auth/otp", { state: { email: { email } } });
-      } else {
-        setError(data[0]);
-        throw new Error(data[0]);
-      }
+      console.log(data);
+      setuserinfo(data.userinfo)
     } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+      console.error(err.message)
+      console.log("asdad");
     }
   };
+
   async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
@@ -54,8 +48,8 @@ function Login() {
       localStorage.setItem("access_token", response.data.access);
       localStorage.setItem("refresh_token", response.data.refresh);
       navigate("/");
-      const user = { username }; 
-
+      const user = userinfo; 
+      fetchuserinfo(response.data.access)
       
       dispatch(loginSuccess({
         user,
