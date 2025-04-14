@@ -16,6 +16,7 @@ import CreateChapter from "./features/CreateChapter/createChapter.jsx";
 import Homepage from "./homepage/Homepage.jsx";
 import VoteAndReview from "./common/comments/voteAndReview.jsx";
 import Middleware from "./middleware.jsx";
+import EditChapter from "./features/EditChapter/editChapter.jsx";
 
 
 
@@ -60,6 +61,7 @@ function AppRoutes() {
         <Route path="/navbar" element={<Navbar />} />
         <Route path="/voteandreview" element={<VoteAndReview />} />
         <Route path="/comment" element={<Comment />} />
+        <Route path="/EditChapter" element={<EditChapter/>}/>
       </Routes>
     </Router>
   );
