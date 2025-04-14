@@ -1,19 +1,24 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router";
-import Signup from "./features/Auth/SignUp/signup";
-import Login from "./features/Auth/Login/login";
+import Signup from "./features/Auth/SignUp/signup.jsx";
+import Login from "./features/Auth/Login/login.jsx";
 import Otp from "./features/Auth/SignUp/otpCheck.jsx";
-import Another_User_Profile from "./features/Profiles/AnotherUserProfile/anotheruserprofile";
-import BookPage from "./features/Bookpage/Bookpage";
-import Forget_password from "./features/Auth/forget_password/Forget_password";
-import Vf from "./features/Auth/forget_password/Vf";
-import ReadingPage from "./features/ReadingChapter/chapterView";
-
-import Comments from "./common/comments/Comments";
-import Footer from "./common/Footer/footer";
-import Navbar from "./common/Navbar/navbar";
+import Another_User_Profile from "./features/Profiles/AnotherUserProfile/anotheruserprofile.jsx";
+import BookPage from "./features/Bookpage/Bookpage.jsx";
+import Forget_password from "./features/Auth/forget_password/Forget_password.jsx";
+import Vf from "./features/Auth/forget_password/Vf.jsx";
+import CreateBook from "./features/CreateBook/createBook.jsx";
+import ReadingPage from "./features/ReadingChapter/chapterView.jsx";
+import Comments from "./common/comments/Comments.jsx";
+import Footer from "./common/Footer/Footer.jsx";
+import Navbar from "./common/Navbar/navbar.jsx";
 import Profile from "./features/Profiles/UserProfile/userprofile.jsx";
 import CreateChapter from "./features/CreateChapter/createChapter.jsx";
 import Homepage from "./homepage/Homepage.jsx";
+import VoteAndReview from "./common/comments/voteAndReview.jsx";
+import Middleware from "./middleware.jsx";
+
+
+
 function AppRoutes() {
   return (
     <Router>
@@ -22,8 +27,19 @@ function AppRoutes() {
         <Route path="/auth/signup" element={<Signup />}></Route>
         <Route path="/auth/otp" element={<Otp />}></Route>
         <Route path="/auth/login" element={<Login />}></Route>
-        <Route path="/userprofile" element={<Profile />}></Route>
+        
+        <Route path="/userprofile" element={  
+          <Middleware>
+            < Profile/>
+          </Middleware>
+        }></Route>
         <Route path="/book/:id" element={<BookPage />}></Route>
+        <Route path="/mybooks/createbook" element={
+          <Middleware>
+            <CreateBook />
+          </Middleware>
+        }></Route>
+          
         <Route path="/Forget_password" element={<Forget_password />} />
         <Route path="/Vf" element={<Vf />} />
         <Route
@@ -31,12 +47,19 @@ function AppRoutes() {
           element={<Another_User_Profile />}
         ></Route>
         <Route path="/readingchapter" element={<ReadingPage />} />
-        <Route path="/createChapter" element={<CreateChapter />} />
+        <Route path="/createChapter" element={
+          <Middleware>
+          <CreateChapter />
+          </Middleware>
+          } />
+        <Route path="/chapterview" element={<ReadingPage />} />
 
         <Route path="/comments" element={<Comments chapter={1} />}></Route>
 
         <Route path="/footer" element={<Footer />} />
         <Route path="/navbar" element={<Navbar />} />
+        <Route path="/voteandreview" element={<VoteAndReview />} />
+        <Route path="/comment" element={<Comment />} />
       </Routes>
     </Router>
   );

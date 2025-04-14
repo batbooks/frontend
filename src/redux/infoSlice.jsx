@@ -1,27 +1,30 @@
 // features/counter/counterSlice.js
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  value: 0
+  user: null, // Can be { username, email, etc. }
+  accessToken: null,
+  refreshToken: null,
+  isAuthenticated: false,
 };
 
 export const infoSlice = createSlice({
-  name: 'counter',
+  name: "login_info",
   initialState,
   reducers: {
-    increment: (state) => {
-      state.value += 1;
+    loginSuccess: (state, action) => {
+      state.user = action.payload.user;
+
+      state.isAuthenticated = true;
     },
-    decrement: (state) => {
-      state.value -= 1;
-    },
-    incrementByAmount: (state, action) => {
-      state.value += action.payload;
+    logout: (state) => {
+      state.user = null;
+
+      state.isAuthenticated = false;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { increment, decrement, incrementByAmount } = infoSlice.actions;
-
+export const { loginSuccess, logout } = infoSlice.actions;
 export default infoSlice.reducer;

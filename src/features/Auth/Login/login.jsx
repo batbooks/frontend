@@ -1,13 +1,41 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useDispatch } from 'react-redux';
+import { loginSuccess, logout } from "../../../redux/infoSlice";
+// import { LogOut } from "lucide-react";
+
+
 function Login() {
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [userinfo,setuserinfo]=useState({})
   const [loading, setLoading] = useState(false);
   let navigate = useNavigate();
+  const fetchuserinfo = async (access_token) => {
+    try {
+      const response = await fetch(
+        `https://batbooks.liara.run/auth/who/`,
+        {
+          method: "GET",
+          
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+      const data = await response.json();
+      console.log(data);
+      setuserinfo(data.user_info)
+      //  
+    } catch (err) {
+      console.error(err.message)
+      console.log("asdad");
+    }
+  };
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -21,11 +49,29 @@ function Login() {
           password,
         }
       );
-
+      // Cookies.set('access_token', 'value', { expires: 7,secure:true , path:'/'  } );
+      // Cookies.set('refresh_token', 'value', { expires: 7,secure:true , path:'/'  } );
+     
       localStorage.setItem("access_token", response.data.access);
       localStorage.setItem("refresh_token", response.data.refresh);
-
       navigate("/");
+      fetchuserinfo(response.data.access)
+      // console.log(response.data.access)
+      const user = userinfo; 
+      dispatch(loginSuccess({
+        user
+        
+      }));
+      
+      
+
+      }
+      catch(err){
+        console.log(err.message)
+        dispatch(logout(
+
+        ))
+      
     } finally {
       setLoading(false);
     }

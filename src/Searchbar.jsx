@@ -12,13 +12,14 @@ export default function SearchBar() {
 
             type="text"
             onChange={(e)=>setsearched(e.target.value)}
-            placeholder="Search Your Books"
+            placeholder="کتاب مورد علاقه ات را جستجو کن"
+            dir="rtl"
             className="w-full px-12 py-2 rounded-full border border-gray-300 bg- shadow-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-700"
           />
           {/* Custom Search Icon */}
           <svg
             onClick={onSearch}
-            className="absolute left-3 top-2 w-6 h-6 text-gray-500"
+            className="absolute left-3 top-2 w-6 h-6 text-black"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 50 50"
             fill="currentColor"

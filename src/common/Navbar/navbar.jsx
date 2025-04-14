@@ -1,15 +1,17 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { Link } from "react-router";
 
-function Navbar({ hasLogined = false }) {
+function Navbar() {
   const [isVisiblePanel, setIsVisiblePanel] = useState(false);
   const [isClickedPanel, setIsClickedPanel] = useState(false);
   const [selectedItem, setSelectedItem] = useState(0);
   const [isVisibleUser, setIsVisibleUser] = useState(false);
   const [isClickedUser, setIsClickedUser] = useState(false);
-
+  
   let navigate = useNavigate();
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
 
   return (
     <header
@@ -43,10 +45,10 @@ function Navbar({ hasLogined = false }) {
               setIsVisibleUser(false);
             }}
           >
-            {hasLogined ? (
+            {isAuthenticated ? (
               <img
                 className="w-[50px] h-[50px]"
-                src="/images/user_image2.png"
+                src={user.image}
                 alt="User Image 2"
               />
             ) : (
@@ -57,7 +59,7 @@ function Navbar({ hasLogined = false }) {
               />
             )}
           </button>
-          {hasLogined ? (
+          {isAuthenticated ? (
             <ul
               className={`absolute w-[155px] h-[76px] divide-y divide-[#2F4F4F]/50 shadow-lg shadow-[#000000]/25 mt-[60px] rounded-[10px] ${isVisibleUser ? "opacity-100" : "opacity-0"} ${isVisibleUser ? "visible" : "invisible"} transition-opacity duration-1000 ease-in-out`}
             >
@@ -87,7 +89,7 @@ function Navbar({ hasLogined = false }) {
             </ul>
           ) : (
             <ul
-              className={`absolute w-[155px] h-[76px] divide-y divide-[#2F4F4F]/50 shadow-lg shadow-[#000000]/25 mt-[60px] rounded-[10px] ${isVisibleUser ? "opacity-100" : "opacity-0"} ${isVisibleUser ? "visible" : "invisible"} transition-opacity duration-1000 ease-in-out`}
+              className={`absolute w-[155px] h-[76px] divide-y z-10 divide-[#2F4F4F]/50 shadow-lg shadow-[#000000]/25 mt-[60px] rounded-[10px] ${isVisibleUser ? "opacity-100" : "opacity-0"} ${isVisibleUser ? "visible" : "invisible"} transition-opacity duration-1000 ease-in-out`}
             >
               <li className="w-[155px] h-[38px] bg-[#ffffff] rounded-t-[10px]">
                 <button
@@ -99,7 +101,7 @@ function Navbar({ hasLogined = false }) {
                 >
                   <span
                     to={"/auth/signup"}
-                    className="text-[13px] font-[300] text-[#000000]/70"
+                    className="text-[13px] font-[300]  text-[#000000]/70"
                   >
                     ثبت نام
                   </span>
@@ -240,8 +242,8 @@ function Navbar({ hasLogined = false }) {
         </ul>
       </nav>
       <div className="flex ">
-        <h1 className="text-[56px] font-[700] text-[#2663CD]">Books</h1>
-        <h1 className="text-[56px] font-[700] text-[#002d54]">Bat</h1>
+        <h1 className="text-[40px] font-[700] text-[#2663CD]">Books</h1>
+        <h1 className="text-[40px] font-[700] text-[#002d54]">Bat</h1>
       </div>
     </header>
   );

@@ -102,7 +102,11 @@ export default function EditProfile({ setEditClicked }) {
             <label className="text-[#000000]/70 text-[16.8px] font-[400] mb-[0.3px] z-3">
               درباره من
             </label>
-            <LongParagraphInput />
+            <div className="w-[667.2px] h-[211.2px]">
+              <LongParagraphInput
+                placeholder={"چند جمله درباره خودتان بنویسید..."}
+              />
+            </div>
           </div>
 
           <button className="z-4 bg-[#2663cd] text-[#ffffff] items-center text-[16.8px] font-[400] w-[213.6px] outline-[2px] outline-[#000000]/21 py-[13.9px] rounded-[12px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
