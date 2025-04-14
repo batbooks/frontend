@@ -3,10 +3,15 @@ import EditProfile from "../EditProfile/editProfile";
 import Footer from "/src/common/Footer/footer";
 import Navbar from "/src/common/Navbar/navbar";
 import { Rating } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../../redux/infoSlice";
+import { Navigate } from "react-router";
 
 export default function Profile() {
+  const dispatch = useDispatch();
   const [editClicked, setEditClicked] = useState(false);
   const [isFollowingOpened, setIsFollowingOpened] = useState(false);
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
 
   return (
     <>
@@ -30,7 +35,7 @@ export default function Profile() {
           <h1 className="text-[#265073] text-[32px] font-[700] ">
             پروفایل کاربری
           </h1>
-          <button className="bg-[#2663cd] font-[400] text-[#ffffff] items-center rounded-[46px] px-[32px] py-[8px] mt-[15px] mb-[24px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
+          <button onClick={handleLogout} className="bg-[#2663cd] font-[400] text-[#ffffff] items-center rounded-[46px] px-[32px] py-[8px] mt-[15px] mb-[24px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
             خروج از حساب کاربری
           </button>
         </div>
@@ -93,8 +98,10 @@ export default function Profile() {
                   dir="ltr"
                   className={`absolute w-[487px] rounded-[5px] overflow-y-auto transition-opacity duration-400 ease-in-out ${isFollowingOpened ? "visible opacity-100" : "hidden opacity-0"} shadow-lg shadow-[#000000]/21 border-[2px] border-[#000000]/8 h-[304px] mt-[73px] bg-[#ffffff] divide-y divide-[#2F4F4F]/50`}
                 >
-                  {Array.from({ length: 8 }, (_, i) => i).map((i) => (
+                  {Array.from({ length: 8 }, (key, i) => i).map((i) => (
+                    
                     <UserFollowing />
+                    
                   ))}
                 </ul>
               </div>

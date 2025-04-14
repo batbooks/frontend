@@ -13,8 +13,9 @@ function Login() {
   const [password, setPassword] = useState("");
   const [userinfo,setuserinfo]=useState({})
   const [loading, setLoading] = useState(false);
+  const token = localStorage.getItem("access_token")
   let navigate = useNavigate();
-  const fetchuserinfo = async (access_token) => {
+  const fetchuserinfo = async () => {
     try {
       const response = await fetch(
         `https://batbooks.liara.run/auth/who/`,
@@ -23,13 +24,19 @@ function Login() {
           
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${access_token}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
+      if(response.ok){
       const data = await response.json();
       console.log(data);
       setuserinfo(data.user_info)
+      
+    }
+    else{
+      setuserinfo(null)
+    }
       //  
     } catch (err) {
       console.error(err.message)
