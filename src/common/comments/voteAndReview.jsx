@@ -1,6 +1,7 @@
 import { Rating } from "@mui/material";
 import LongParagraphInput from "../LongParagraphInput/longParagraphInput";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 export default function VoteAndReview() {
   const [isClicked, setIsClicked] = useState(false);
@@ -8,6 +9,7 @@ export default function VoteAndReview() {
   const [chapter,setchapter]=useState(1)
   const [error,setError]=useState("")
   const [message,setMessage]=useState("")
+  const token=localStorage.getItem('access_token')
   const handleSubmitComment = async (e) => {
     e.preventDefault();
     
@@ -20,7 +22,7 @@ export default function VoteAndReview() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ0NjIwMTM4LCJpYXQiOjE3NDQwMTUzMzgsImp0aSI6ImZjMmY3OWRkMGQ2YzRlNjk5MDYwOTg1MDZkOGRlZTg5IiwidXNlcl9pZCI6M30.HSlLIAfOT8IpD-OgqjibWMaSAHnA42XJmBG7qGAEtEc`,
+          Authorization: `Bearer ${token}`,
           
         },
         body: JSON.stringify({ chapter ,body}),
@@ -45,6 +47,7 @@ export default function VoteAndReview() {
       
     }
   };
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
   return (
     <div
       dir="rtl"
@@ -102,7 +105,7 @@ export default function VoteAndReview() {
             }}
             className="text-nowrap text-[#ffffff] tezt-[20px] font-[400] py-[12px] px-[81px] my-auto bg-[#2663CD] rounded-[15px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
           >
-            <span>ثبت نظر</span>
+            <span> ثبت نظر  </span>
           </button>
         </div>
       </div>

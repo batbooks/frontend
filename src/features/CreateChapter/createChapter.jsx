@@ -22,7 +22,7 @@ const CreateChapter = () => {
           }),
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ0NjIwMTM4LCJpYXQiOjE3NDQwMTUzMzgsImp0aSI6ImZjMmY3OWRkMGQ2YzRlNjk5MDYwOTg1MDZkOGRlZTg5IiwidXNlcl9pZCI6M30.HSlLIAfOT8IpD-OgqjibWMaSAHnA42XJmBG7qGAEtEc`,
+            // Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ0NjIwMTM4LCJpYXQiOjE3NDQwMTUzMzgsImp0aSI6ImZjMmY3OWRkMGQ2YzRlNjk5MDYwOTg1MDZkOGRlZTg5IiwidXNlcl9pZCI6M30.HSlLIAfOT8IpD-OgqjibWMaSAHnA42XJmBG7qGAEtEc`,
           },
         }
       );

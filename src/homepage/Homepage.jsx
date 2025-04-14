@@ -7,16 +7,19 @@ import Banner from "./banner";
 import Right from "./right";
 import Left from "./left";
 import Navbar from "../common/Navbar/navbar";
-import Footer from '../common/Footer/footer';
+import Footer from '../common/Footer/Footer';
 import SearchBar from "../Searchbar";
+import { useSelector } from "react-redux";
 
-Navbar;
+
 export default function Homepage() {
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
+  
   return (
     <div className="">
       <Navbar  className=""/>
-
-        <SearchBar/>
+    <SearchBar/>
+        
       <div className="flex flex-row justify-between ">
         <div className="sticky-content-l">
           <Left></Left>

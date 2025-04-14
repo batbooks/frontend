@@ -34,7 +34,12 @@ function AppRoutes() {
           </Middleware>
         }></Route>
         <Route path="/book/:id" element={<BookPage />}></Route>
-        <Route path="/mybooks/createbook" element={<CreateBook />}></Route>
+        <Route path="/mybooks/createbook" element={
+          <Middleware>
+            <CreateBook />
+          </Middleware>
+        }></Route>
+          
         <Route path="/Forget_password" element={<Forget_password />} />
         <Route path="/Vf" element={<Vf />} />
         <Route
@@ -42,7 +47,11 @@ function AppRoutes() {
           element={<Another_User_Profile />}
         ></Route>
         <Route path="/readingchapter" element={<ReadingPage />} />
-        <Route path="/createChapter" element={<CreateChapter />} />
+        <Route path="/createChapter" element={
+          <Middleware>
+          <CreateChapter />
+          </Middleware>
+          } />
         <Route path="/chapterview" element={<ReadingPage />} />
 
         <Route path="/comments" element={<Comments chapter={1} />}></Route>

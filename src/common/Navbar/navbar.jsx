@@ -1,15 +1,17 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { Link } from "react-router";
 
-function Navbar({ hasLogined = false }) {
+function Navbar() {
   const [isVisiblePanel, setIsVisiblePanel] = useState(false);
   const [isClickedPanel, setIsClickedPanel] = useState(false);
   const [selectedItem, setSelectedItem] = useState(0);
   const [isVisibleUser, setIsVisibleUser] = useState(false);
   const [isClickedUser, setIsClickedUser] = useState(false);
-
+  
   let navigate = useNavigate();
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
 
   return (
     <header
@@ -43,10 +45,10 @@ function Navbar({ hasLogined = false }) {
               setIsVisibleUser(false);
             }}
           >
-            {hasLogined ? (
+            {isAuthenticated ? (
               <img
                 className="w-[50px] h-[50px]"
-                src="/images/user_image2.png"
+                src={user.image}
                 alt="User Image 2"
               />
             ) : (
@@ -57,7 +59,7 @@ function Navbar({ hasLogined = false }) {
               />
             )}
           </button>
-          {hasLogined ? (
+          {isAuthenticated ? (
             <ul
               className={`absolute w-[155px] h-[76px] divide-y divide-[#2F4F4F]/50 shadow-lg shadow-[#000000]/25 mt-[60px] rounded-[10px] ${isVisibleUser ? "opacity-100" : "opacity-0"} ${isVisibleUser ? "visible" : "invisible"} transition-opacity duration-1000 ease-in-out`}
             >
