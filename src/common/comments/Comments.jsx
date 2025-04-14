@@ -7,6 +7,7 @@ import {
   AiOutlineDislike,
 } from "react-icons/ai";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { useSelector } from "react-redux";
 const Comments = ({ chapter }) => {
   const [allComments, setAllComments] = useState([]);
   const [nextcomment, setnextcomment] = useState("");
@@ -16,6 +17,7 @@ const Comments = ({ chapter }) => {
   const [replyOffsets, setReplyOffsets] = useState({});
   const [userfollowed, setUserFollowed] = useState(true);
   const [liked, setLiked] = useState([]);
+  
   useEffect(() => {
     const fetchComments = async () => {
       try {
@@ -177,10 +179,12 @@ const Comments = ({ chapter }) => {
       console.log(prevcomment);
     }
   };
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
   return (
     <div className="bg-[#D9F0FF] m-auto mt-6 p-4">
       <h2 className="text-2xl font-bold text-right mr-17">نظرات کاربران</h2>
-      <VoteAndReview></VoteAndReview>
+      {isAuthenticated?(<VoteAndReview></VoteAndReview>):(<div></div>)}
+      
       {allComments.length > 0 ? (
         allComments.map((comment) => (
           <div key={comment.id} className="mt-10">

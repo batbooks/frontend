@@ -3,6 +3,6 @@ import infoReducer from './infoSlice';
 
 export const store = configureStore({
   reducer: {
-    counter: infoReducer,
+    auth: infoReducer,
   },
 });
