@@ -5,17 +5,23 @@ import Navbar from "/src/common/Navbar/navbar";
 import { Rating } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../../redux/infoSlice";
-import { Navigate } from "react-router";
+import { Navigate, useNavigate } from "react-router";
 
 export default function Profile() {
   const dispatch = useDispatch();
   const [editClicked, setEditClicked] = useState(false);
   const [isFollowingOpened, setIsFollowingOpened] = useState(false);
   const { user, isAuthenticated } = useSelector((state) => state.auth);
-
+ const navigate=useNavigate()
+  const handleLogout=()=>{
+    console.log("qqq")
+    localStorage.removeItem('access_token');
+    navigate("/auth/login");
+    // useDispatch(logout());
+  }
   return (
     <>
-      <Navbar hasLogined={true} />
+      <Navbar  />
       <main
         style={{ direction: "rtl" }}
         className="flex flex-col max-w-screen m-auto bg-[#d9f0ff] px-[80px] pb-[90px] pt-[13px] shadow-2xl shadow-[#000000]-25"
