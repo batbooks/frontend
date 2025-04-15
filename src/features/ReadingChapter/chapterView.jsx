@@ -1,12 +1,42 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Reading.css";
-import Footer from "../../common/Footer/footer";
+import Footer from "../../common/Footer/Footer";
 import { Rating } from "@mui/material";
 import Navbar from "../../common/Navbar/navbar";
 
 const ReadingPage = () => {
+  const [id,setId]=useState(1)
+  const [chapterBody,setChapterBody]=useState("")
+  useEffect(() => {
+    const userData = {
+      username: "ali123",
+      password: "mypassword",
+      email: "ali@example.com",
+    };
+
+    fetch("https://batbooks.liara.run/book/chapter/1/", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("درخواست موفق نبود");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data.body)
+        setChapterBody(data.body)
+      })
+      .catch((error) => {
+        console.error("خطا در ارسال به سرور:", error);
+      });
+  }, []);
   return (
-    <div className="w-screen">
+    <div className="w-full">
       <Navbar />
       <div className="main-div m-auto font-[Vazir] shadow-2xl">
         <div
@@ -54,7 +84,7 @@ const ReadingPage = () => {
           </div>
           <div className="full-width-line mb-[41px]"></div>
           <div dir="rtl" className="mb-[500px] text-[25px] font-[400]">
-            طرف میاد از اینجا داستانی که نویسنده نوشته رو میخونه...
+           {chapterBody}
           </div>
           <div className="full-width-line"></div>
           <div className="flex justify-between py-[41px]">
