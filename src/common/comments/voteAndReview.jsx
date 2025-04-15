@@ -60,10 +60,14 @@ export default function VoteAndReview() {
             alt="ratingandreviews"
             className="w-[228px] h-[53px] mb-[19px]"
           />
-          <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2uLl8zBoK0_iM5pNwJAC8hQ2f68YKtlgc7Q&s"
+          {(isAuthenticated && user.image!=null)?(<img
+            src={user.image}
             className="w-[63px] h-[63px] rounded-full mb-[15px]"
-          />
+          />):(<img
+            src="/images/user_none.png"
+            className="w-[63px] h-[63px] rounded-full mb-[15px]"
+          />)}
+          
           <h1 className="text-[24px] font-[700] mb-[8px]">نظر شما چیست؟</h1>
           <div className="flex gap-[72.5px] items-center">
             

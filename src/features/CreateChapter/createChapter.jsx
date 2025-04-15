@@ -53,7 +53,7 @@ const CreateChapter = () => {
         >
           <div className="flex justify-around">
             <button
-              onClick={() => setChapterMode(1)}
+              onClick={() => (setChapterMode(1))}
               className="mb-[27px] flex items-center w-[225px] h-[38px] bg-[#2663CD] rounded-[40px] gap-[10px] justify-center text-[#ffffff] text-[15px] font-[400] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
             >
               <span>اضافه کردن فصل جدید</span>
