@@ -67,7 +67,7 @@ function Signup() {
         <form onSubmit={handleSubmit}>
           <div className="flex justify-center relative mb-3">
             <input
-              className="bg-[#FFFFFF] mx-auto flex justify-center pl-14 px-4 items-center  w-[60%] h-[4.58vh] rounded-[40px] placeholder:text-right placeholder:mr-[72px]"
+              className="bg-[#FFFFFF] mx-auto flex justify-center pl-14 px-4 items-center  w-[60%] h-[4.58vh] rounded-[40px] placeholder:text-right placeholder:mr-[50px]"
               value={email}
               placeholder="ایمیل"
               onChange={(e) => setEmail(e.target.value)}
@@ -81,7 +81,7 @@ function Signup() {
           <div className="flex justify-center relative mb-3">
             <input
               type={showPassword ? "text" : "password"}
-              className="bg-[#FFFFFF] mx-auto flex justify-center pl-14 px-4 items-center  w-[60%] h-[4.58vh] rounded-[40px] placeholder:text-right placeholder:mr-[72px]"
+              className="bg-[#FFFFFF] mx-auto flex justify-center pl-14 px-4 items-center  w-[60%] h-[4.58vh] rounded-[40px] placeholder:text-right placeholder:mr-[50px]"
               value={password}
               placeholder="رمز عبور (8 کاراکتر)"
               onChange={(e) => setPassword(e.target.value)}
@@ -110,7 +110,7 @@ function Signup() {
           <div className="flex justify-center relative mb-3">
             <input
               type={showRepeatPassword ? "text" : "password"}
-              className="bg-[#FFFFFF] mx-auto flex justify-center pl-14 px-4 items-center  w-[60%] h-[4.58vh] rounded-[40px] placeholder:text-right placeholder:mr-[72px]"
+              className="bg-[#FFFFFF] mx-auto flex justify-center pl-14 px-4 items-center  w-[60%] h-[4.58vh] rounded-[40px] placeholder:text-right placeholder:mr-[50px]"
               value={repeatPassword}
               placeholder="تکرار رمز عبور"
               onChange={(e) => setRepeatPassword(e.target.value)}
@@ -136,11 +136,7 @@ function Signup() {
               />
             )}
           </div>
-          <button
-            type="submit"
-            className="bg-[#2663CD] shadow-lg shadow-[#000]/25 text-white mx-auto flex justify-center items-center  w-[143px] h-[38px] rounded-[46px] cursor-pointer focus:shadow-none focus:bg-[#2663CD]/90 focus:outline-none focus:ring-[#2663CD] focus:ring-offset-2 focus:ring-[2px] hover:bg-[#2663CD]/90 active:bg-[#2663CD]/30 active:duration-300 active:outline-none active:ring-0 active:ring-offset-0 disabled:cursor-auto disabled:shadow-none disabled:bg-[#2663CD]/60 disabled:ring-0 disabled:ring-offset-0 "
-            disabled={loading}
-          >
+          <button type="submit" className="btn" disabled={loading}>
             {loading ? "...در حال ثبت نام" : "ثبت نام"}
           </button>
           {error != "" ? (

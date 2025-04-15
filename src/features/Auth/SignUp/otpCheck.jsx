@@ -1,27 +1,33 @@
-import { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useState, useRef } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 function Otp() {
-  const [firstinput, setFirstInput] = useState("");
-  const [secondinput, setSecondInput] = useState("");
-  const [thirdinput, setThirdInput] = useState("");
-  const [forthinput, setForthInput] = useState("");
-  const [fifthinput, setFifthInput] = useState("");
-  const [sixthinput, setSixthInput] = useState("");
-
+  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+  const inputsRef = useRef([]);
   const location = useLocation();
   const navigate = useNavigate();
   const email = location.state?.email.email;
   const [loading, setLoading] = useState(false);
 
+  const handleChange = (index, value) => {
+    const newOtp = [...otp];
+    newOtp[index] = value;
+    setOtp(newOtp);
+
+    // اگر کاربر عددی وارد کرد، به اینپوت بعدی برو
+    if (value && index < 5) {
+      inputsRef.current[index + 1].focus();
+    }
+  };
+
+  const handleKeyDown = (index, e) => {
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
+      inputsRef.current[index - 1].focus();
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const otpCode =
-      firstinput +
-      secondinput +
-      thirdinput +
-      forthinput +
-      fifthinput +
-      sixthinput;
+    const otpCode = otp.join("");
 
     setLoading(true);
     try {
@@ -55,55 +61,21 @@ function Otp() {
           کد تایید را وارد کنید
         </h2>
         <form onSubmit={handleSubmit}>
-          <div className="card flex justify-evenly w-[60%] mx-auto mt-[70px]">
-            <input
-              type="text"
-              id="1"
-              className="bg-white h-[70px] w-[45px] rounded-[5px] text-[45px] text-center"
-              maxLength={1}
-              onChange={(e) => setFirstInput(e.target.value)}
-            />
-            <input
-              type="text"
-              id="2"
-              className="bg-white h-[70px] w-[45px] rounded-[5px] text-[45px] text-center"
-              maxLength={1}
-              onChange={(e) => setSecondInput(e.target.value)}
-            />
-            <input
-              type="text"
-              id="3"
-              className="bg-white h-[70px] w-[45px] rounded-[5px] text-[45px] text-center"
-              maxLength={1}
-              onChange={(e) => setThirdInput(e.target.value)}
-            />
-            <input
-              type="text"
-              id="4"
-              className="bg-white h-[70px] w-[45px] rounded-[5px] text-[45px] text-center"
-              maxLength={1}
-              onChange={(e) => setForthInput(e.target.value)}
-            />
-            <input
-              type="text"
-              id="5"
-              className="bg-white h-[70px] w-[45px] rounded-[5px] text-[45px] text-center"
-              maxLength={1}
-              onChange={(e) => setFifthInput(e.target.value)}
-            />
-            <input
-              type="text"
-              id="6"
-              className="bg-white h-[70px] w-[45px] rounded-[5px] text-[45px] text-center"
-              maxLength={1}
-              onChange={(e) => setSixthInput(e.target.value)}
-            />
+          <div className="card flex justify-evenly w-[60%] mx-auto mt-[70px] mb-[50px]">
+            {otp.map((digit, index) => (
+              <input
+                key={index}
+                type="text"
+                className="bg-white h-[70px] w-[45px] rounded-[5px] text-[45px] text-center"
+                maxLength={1}
+                value={digit}
+                onChange={(e) => handleChange(index, e.target.value)}
+                onKeyDown={(e) => handleKeyDown(index, e)}
+                ref={(el) => (inputsRef.current[index] = el)}
+              />
+            ))}
           </div>
-          <button
-            type="submit"
-            className="bg-[#2663CD] shadow-lg shadow-[#000]/25 text-white mx-auto mt-[50px] flex justify-center items-center  w-[143px] h-[38px] rounded-[46px] cursor-pointer focus:shadow-none focus:bg-[#2663CD]/90 focus:outline-none focus:ring-[#2663CD] focus:ring-offset-2 focus:ring-[2px] hover:bg-[#2663CD]/90 active:bg-[#2663CD]/30 active:duration-300 active:outline-none active:ring-0 active:ring-offset-0 disabled:cursor-auto disabled:shadow-none disabled:bg-[#2663CD]/60 disabled:ring-0 disabled:ring-offset-0 "
-            disabled={loading}
-          >
+          <button type="submit" className="btn " disabled={loading}>
             {loading ? "در حال بررسی کد" : "تایید"}
           </button>
         </form>

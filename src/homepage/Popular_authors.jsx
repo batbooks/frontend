@@ -109,9 +109,7 @@ export default function Popular_authors() {
         </article>
         <section className=" place-content-center m-2">
           {" "}
-          <button className="bg-[#2663CD] shadow-lg shadow-[#000]/25 text-white mx-auto flex justify-center items-center  w-[143px] h-[38px] rounded-[46px] cursor-pointer focus:shadow-none focus:bg-[#2663CD]/90 focus:outline-none focus:ring-[#2663CD] focus:ring-offset-2 focus:ring-[2px] hover:bg-[#2663CD]/90 active:bg-[#2663CD]/30 active:duration-300 active:outline-none active:ring-0 active:ring-offset-0 disabled:cursor-auto disabled:shadow-none disabled:bg-[#2663CD]/60 disabled:ring-0 disabled:ring-offset-0 ">
-            follow
-          </button>
+          <button className="btn">follow</button>
         </section>
         {/* <button className="bg-blue-700 text-amber-50 place-content-center">follow</button> */}
       </div>

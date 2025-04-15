@@ -170,11 +170,7 @@ export default function Vf() {
 
             {/* Submit Button */}
             <div className="flex justify-center">
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-[12vw] h-10 text-[1vw] bg-[#2663CD] text-white rounded-full font-semibold hover:bg-blue-700 transition-all"
-              >
+              <button type="submit" disabled={loading} className="btn">
                 {loading ? "در حال پردازش..." : "بازیابی"}
               </button>
             </div>
