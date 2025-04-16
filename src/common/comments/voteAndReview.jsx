@@ -39,15 +39,17 @@ export default function VoteAndReview() {
 
         // Adjust the route as needed
         console.log("adasd");
-        Swal.fire({
-          title: "نظر شما با موفقیت ثبت شد",
-          icon: "success",
-          confirmButtonText: "باشه",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            window.location.reload();
-          }
-        });
+        setTimeout(() => {
+          Swal.fire({
+            title: "نظر شما با موفقیت ثبت شد",
+            icon: "success",
+            confirmButtonText: "باشه",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
+            }
+          });
+        }, 100);
       } else {
         throw new Error(data.message || "failed to submit comment");
       }
