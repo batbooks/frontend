@@ -1,50 +1,63 @@
 import { Rating } from "@mui/material";
 import LongParagraphInput from "../LongParagraphInput/longParagraphInput";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import Swal from "sweetalert2";
 
 export default function VoteAndReview() {
   const [isClicked, setIsClicked] = useState(false);
   const [body, setbody] = useState("");
-  const [chapter,setchapter]=useState(1)
-  const [error,setError]=useState("")
-  const [message,setMessage]=useState("")
+  const [chapter, setchapter] = useState(1);
+  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
+  const token = localStorage.getItem("access_token");
   const handleSubmitComment = async (e) => {
     e.preventDefault();
-    
-    setError('');
-    setMessage('');
+
+    setError("");
+    setMessage("");
 
     try {
       // Replace this with your actual API endpoint
-      const response = await fetch('https://batbooks.liara.run/comments/create/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ0NjIwMTM4LCJpYXQiOjE3NDQwMTUzMzgsImp0aSI6ImZjMmY3OWRkMGQ2YzRlNjk5MDYwOTg1MDZkOGRlZTg5IiwidXNlcl9pZCI6M30.HSlLIAfOT8IpD-OgqjibWMaSAHnA42XJmBG7qGAEtEc`,
-          
-        },
-        body: JSON.stringify({ chapter ,body}),
-      });
+      const response = await fetch(
+        "https://batbooks.liara.run/comments/create/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ chapter, body }),
+        }
+      );
 
       const data = await response.json();
 
       if (response.ok) {
-        setMessage('comment sent for review');
-        window.location.reload()
+        setMessage("comment sent for review");
         // Redirect to verification page or next step after a short delay
-        
-         // Adjust the route as needed
-        console.log('adasd')
-        
+
+        // Adjust the route as needed
+        console.log("adasd");
+        setTimeout(() => {
+          Swal.fire({
+            title: "نظر شما با موفقیت ثبت شد",
+            icon: "success",
+            confirmButtonText: "باشه",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
+            }
+          });
+        }, 100);
       } else {
-        throw new Error(data.message || 'failed to submit comment');
+        throw new Error(data.message || "failed to submit comment");
       }
     } catch (err) {
-      setError(err.message || 'try again');
-    } finally {
-      
+      setError(err.message || "try again");
     }
   };
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
   return (
     <div
       dir="rtl"
@@ -57,17 +70,22 @@ export default function VoteAndReview() {
             alt="ratingandreviews"
             className="w-[228px] h-[53px] mb-[19px]"
           />
-          <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2uLl8zBoK0_iM5pNwJAC8hQ2f68YKtlgc7Q&s"
-            className="w-[63px] h-[63px] rounded-full mb-[15px]"
-          />
+          {isAuthenticated && user.image != null ? (
+            <img
+              src={user.image}
+              className="w-[63px] h-[63px] rounded-full mb-[15px]"
+            />
+          ) : (
+            <img
+              src="/images/user_none.png"
+              className="w-[63px] h-[63px] rounded-full mb-[15px]"
+            />
+          )}
+
           <h1 className="text-[24px] font-[700] mb-[8px]">نظر شما چیست؟</h1>
           <div className="flex gap-[72.5px] items-center">
-            
             <button
-              onClick={() => setIsClicked(
-              !isClicked
-              )}
+              onClick={() => setIsClicked(!isClicked)}
               className="text-nowrap text-[#ffffff] text-[16px] font-[300] py-[10px] px-[26px] bg-[#2663CD] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
             >
               <span>دیدگاهتان را بنویسید...</span>
@@ -80,7 +98,6 @@ export default function VoteAndReview() {
             alt="community"
             className="w-[252.12px] h-[53px]"
           />
-          
         </div>
       </div>
       <div className={`flex flex-col ${isClicked ? "visible" : "hidden"}`}>
@@ -96,13 +113,13 @@ export default function VoteAndReview() {
             onClick={(e) => {
               if (body) {
                 setIsClicked(false);
-                setTimeout(() => alert("نظر شما با موفقیت ثبت شد..."), 300);
-                handleSubmitComment(e)
+
+                handleSubmitComment(e);
               }
             }}
             className="text-nowrap text-[#ffffff] tezt-[20px] font-[400] py-[12px] px-[81px] my-auto bg-[#2663CD] rounded-[15px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
           >
-            <span>ثبت نظر</span>
+            <span className="span-btn"> ثبت نظر </span>
           </button>
         </div>
       </div>

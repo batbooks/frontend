@@ -1,7 +1,10 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import { Link } from "react-router";
+import { logout } from "../../redux/infoSlice";
 
-function Navbar({ hasLogined = true }) {
+function Navbar() {
   const [isVisiblePanel, setIsVisiblePanel] = useState(false);
   const [isClickedPanel, setIsClickedPanel] = useState(false);
   const [selectedItem, setSelectedItem] = useState(0);
@@ -9,7 +12,13 @@ function Navbar({ hasLogined = true }) {
   const [isClickedUser, setIsClickedUser] = useState(false);
 
   let navigate = useNavigate();
-
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
+  const handleLogout = () => {
+    console.log("qqq");
+    localStorage.removeItem("access_token");
+    navigate("/auth/login");
+    // useDispatch(logout());
+  };
   return (
     <header
       dir="rtl"
@@ -46,10 +55,10 @@ function Navbar({ hasLogined = true }) {
               }, 250)
             }
           >
-            {hasLogined ? (
+            {isAuthenticated && user.image != null ? (
               <img
                 className="w-[50px] h-[50px]"
-                src="/images/user_image2.png"
+                src={user.image}
                 alt="User Image 2"
               />
             ) : (
@@ -60,7 +69,7 @@ function Navbar({ hasLogined = true }) {
               />
             )}
           </button>
-          {hasLogined ? (
+          {isAuthenticated ? (
             <ul
               className={`w-[155px] h-[76px] divide-y divide-[#2F4F4F]/50 shadow-lg shadow-[#000000]/25 rounded-[10px] ${isVisibleUser ? "opacity-100" : "opacity-0"} ${isVisibleUser ? "visible" : "invisible"} transition-opacity duration-1000 ease-in-out`}
             >
@@ -69,7 +78,7 @@ function Navbar({ hasLogined = true }) {
                   onClick={() => {
                     setSelectedItem(0);
                     setIsVisibleUser(false);
-                    navigate("/profiles/userprofile");
+                    navigate("/userprofile");
                   }}
                   className="text-[#000000]/70 w-full h-full rounded-t-[10px] cursor-pointer pl-[68px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
@@ -81,6 +90,7 @@ function Navbar({ hasLogined = true }) {
                   onClick={() => {
                     setSelectedItem(0);
                     setIsVisibleUser(false);
+                    handleLogout();
                   }}
                   className="text-[#000000]/70 w-full h-full rounded-b-[10px] cursor-pointer pl-[28px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
