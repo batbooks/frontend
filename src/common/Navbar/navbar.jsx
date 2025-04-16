@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { Link } from "react-router";
 
 function Navbar({ hasLogined = false }) {
   const [isVisiblePanel, setIsVisiblePanel] = useState(false);
@@ -14,7 +13,7 @@ function Navbar({ hasLogined = false }) {
   return (
     <header
       dir="rtl"
-      className="max-w-screen m-auto flex mb-3 bg-[#a3d5ff] justify-between py-[1px] pl-[50px] pr-[30px] shadow-lg shadow-[#000000]/25"
+      className="h-[100px] max-w-screen m-auto flex bg-[#a3d5ff] justify-between py-[1px] pl-[50px] pr-[30px]"
     >
       <nav className="flex items-center gap-[60px]">
         <div className="relative flex flex-col">
@@ -67,19 +66,17 @@ function Navbar({ hasLogined = false }) {
                     setSelectedItem(0);
                     navigate("/profiles/userprofile");
                   }}
-                  className="w-full h-full rounded-t-[10px] cursor-pointer pl-[68px] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
+                  className="text-[#000000]/70 w-full h-full rounded-t-[10px] cursor-pointer pl-[68px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
-                  <span className="text-[13px] font-bold text-[#000000]/70">
-                    پروفایل کاربری
-                  </span>
+                  <span className="text-[13px] font-bold">پروفایل کاربری</span>
                 </button>
               </li>
               <li className="w-[155px] h-[38px] bg-[#ffffff] rounded-b-[10px]">
                 <button
                   onClick={() => setSelectedItem(0)}
-                  className="w-full h-full rounded-b-[10px] cursor-pointer pl-[28px] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
+                  className="text-[#000000]/70 w-full h-full rounded-b-[10px] cursor-pointer pl-[28px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
-                  <span className="text-[13px] font-bold text-[#000000]/70">
+                  <span className="text-[13px] font-bold">
                     خروج از حساب کاربری
                   </span>
                 </button>
@@ -95,7 +92,7 @@ function Navbar({ hasLogined = false }) {
                     setSelectedItem(0);
                     navigate("/auth/signup");
                   }}
-                  className="w-full h-full rounded-t-[10px] cursor-pointer pl-[102px] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
+                  className="text-[#000000]/70 w-full h-full rounded-t-[10px] cursor-pointer pl-[102px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
                   <span
                     to={"/auth/signup"}
@@ -111,11 +108,9 @@ function Navbar({ hasLogined = false }) {
                     setSelectedItem(0);
                     navigate("/auth/login");
                   }}
-                  className="w-full h-full rounded-b-[10px] cursor-pointer pl-[119px] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
+                  className="text-[#000000]/70 w-full h-full rounded-b-[10px] cursor-pointer pl-[119px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
-                  <span className="text-[13px] font-bold text-[#000000]/70">
-                    ورود
-                  </span>
+                  <span className="text-[13px] font-bold">ورود</span>
                 </button>
               </li>
             </ul>
@@ -125,7 +120,10 @@ function Navbar({ hasLogined = false }) {
         <ul className="flex items-center gap-[66px]">
           <li className="flex flex-col items-center">
             <a
-              onClick={() => {setSelectedItem(1);navigate("/");} }
+              onClick={() => {
+                setSelectedItem(1);
+                navigate("/");
+              }}
               className={`text-[16px] hover:underline hover:text-[#2663CD] active:text-[#2663CD]/50 active:no-underline active:transition-all active:duration-100 focus:outline-none focus:text-[#2663CD] ${selectedItem === 1 ? "text-[#265073]" : ""}`}
               href="#home"
             >
@@ -190,21 +188,17 @@ function Navbar({ hasLogined = false }) {
               <li className="w-[155px] h-[38px] bg-[#ffffff] rounded-t-[10px]">
                 <button
                   onClick={() => setSelectedItem(0)}
-                  className="w-full h-full rounded-t-[10px] cursor-pointer pl-[89px] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
+                  className="text-[#000000]/70 w-full h-full rounded-t-[10px] cursor-pointer pl-[89px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
-                  <span className="text-[13px] font-bold text-[#000000]/70">
-                    تالار گفتگو
-                  </span>
+                  <span className="text-[13px] font-bold">تالار گفتگو</span>
                 </button>
               </li>
               <li className="w-[155px] h-[38px] bg-[#ffffff] rounded-b-[10px]">
                 <button
                   onClick={() => setSelectedItem(0)}
-                  className="w-full h-full rounded-b-[10px] cursor-pointer pl-[118px] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
+                  className="text-[#000000]/70 w-full h-full rounded-b-[10px] cursor-pointer pl-[118px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
-                  <span className="text-[13px] font-bold text-[#000000]/70">
-                    افراد
-                  </span>
+                  <span className="text-[13px] font-bold">افراد</span>
                 </button>
               </li>
             </ul>
@@ -239,7 +233,7 @@ function Navbar({ hasLogined = false }) {
           </li>
         </ul>
       </nav>
-      <div className="flex ">
+      <div className="flex my-auto">
         <h1 className="text-[40px] font-[700] text-[#2663CD]">Books</h1>
         <h1 className="text-[40px] font-[700] text-[#002d54]">Bat</h1>
       </div>
