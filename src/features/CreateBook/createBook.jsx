@@ -26,7 +26,7 @@ function CreateBook() {
   const [name, setName] = useState("");
   const [img, setImg] = useState("");
   const [description, setDescription] = useState("");
-
+  const token=localStorage.getItem("access_token")
   function handleAddGenres(genre) {
     if (!selectedGenres.includes(genre)) {
       setSelectedGenres([...selectedGenres, genre]);
@@ -56,7 +56,7 @@ function CreateBook() {
         method: "POST",
         body: formData,
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ0NjIwMTM4LCJpYXQiOjE3NDQwMTUzMzgsImp0aSI6ImZjMmY3OWRkMGQ2YzRlNjk5MDYwOTg1MDZkOGRlZTg5IiwidXNlcl9pZCI6M30.HSlLIAfOT8IpD-OgqjibWMaSAHnA42XJmBG7qGAEtEc`,
+          Authorization: `Bearer ${token}`,
         },
       });
 

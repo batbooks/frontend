@@ -16,6 +16,7 @@ import CreateChapter from "./features/CreateChapter/createChapter.jsx";
 import Homepage from "./homepage/Homepage.jsx";
 import VoteAndReview from "./common/comments/voteAndReview.jsx";
 import MyBooks from "./features/MyBooks/myBooks.jsx";
+import Middleware from "./middleware.jsx";
 
 function AppRoutes() {
   return (
@@ -25,9 +26,25 @@ function AppRoutes() {
         <Route path="/auth/signup" element={<Signup />}></Route>
         <Route path="/auth/otp" element={<Otp />}></Route>
         <Route path="/auth/login" element={<Login />}></Route>
-        <Route path="/userprofile" element={<Profile />}></Route>
+
+        <Route
+          path="/userprofile"
+          element={
+            <Middleware>
+              <Profile />
+            </Middleware>
+          }
+        ></Route>
         <Route path="/book/:id" element={<BookPage />}></Route>
-        <Route path="/mybooks/createbook" element={<CreateBook />}></Route>
+        <Route
+          path="/mybooks/createbook"
+          element={
+            <Middleware>
+              <CreateBook />
+            </Middleware>
+          }
+        ></Route>
+
         <Route path="/Forget_password" element={<Forget_password />} />
         <Route path="/Vf" element={<Vf />} />
         <Route
@@ -35,7 +52,14 @@ function AppRoutes() {
           element={<Another_User_Profile />}
         ></Route>
         <Route path="/readingchapter" element={<ReadingPage />} />
-        <Route path="/createChapter" element={<CreateChapter />} />
+        <Route
+          path="/createChapter"
+          element={
+            <Middleware>
+              <CreateChapter />
+            </Middleware>
+          }
+        />
         <Route path="/chapterview" element={<ReadingPage />} />
         <Route path="/mybooks" element={<MyBooks />} />
         <Route path="/comments" element={<Comments chapter={1} />}></Route>
