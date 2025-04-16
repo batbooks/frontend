@@ -11,6 +11,7 @@ import Footer from "../common/Footer/Footer";
 import SearchBar from "../Searchbar";
 import { useSelector } from "react-redux";
 import Loading from "../common/Loading/Loading";
+import Swal from "sweetalert2";
 
 export default function Homepage() {
   const { user, isAuthenticated } = useSelector((state) => state.auth);

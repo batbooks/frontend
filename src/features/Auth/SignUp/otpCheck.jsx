@@ -76,7 +76,9 @@ function Otp() {
             ))}
           </div>
           <button type="submit" className="btn " disabled={loading}>
-            {loading ? "در حال بررسی کد" : "تایید"}
+            <span className="span-btn">
+              {loading ? "در حال بررسی کد" : "تایید"}
+            </span>
           </button>
         </form>
         <img

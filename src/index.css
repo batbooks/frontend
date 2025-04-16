@@ -22,9 +22,7 @@
     transform: rotateY(180deg);
   }
 }
-.btn {
-  @apply bg-[#2663CD] shadow-lg shadow-[#000]/25 text-white mx-auto mb-5 flex justify-center items-center  w-[143px] h-[38px] rounded-[46px] cursor-pointer focus:shadow-none focus:bg-[#2663CD]/90 focus:outline-none focus:ring-[#2663CD] focus:ring-offset-2 focus:ring-[2px] hover:bg-[#2663CD]/90 active:bg-[#2663CD]/30 active:duration-300 active:outline-none active:ring-0 active:ring-offset-0 disabled:cursor-auto disabled:shadow-none disabled:bg-[#2663CD]/60 disabled:ring-0 disabled:ring-offset-0;
-}
+
 body {
   background-color: #d9f0ff;
 }
@@ -99,4 +97,43 @@ textarea {
 }
 .step-5 {
   animation-delay: 1s;
+}
+
+/*  button-hover  */
+@utility circle-2 {
+  .circle-2 {
+    overflow: hidden;
+  }
+  .circle-2::before {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    background-color: #6a4c93;
+    border-radius: 50%;
+    right: 0;
+    bottom: 0;
+    transform: translate(50%, 50%);
+    transition: all 0.3s ease-in-out;
+  }
+  .circle-2:hover::before {
+    width: 450px;
+    height: 450px;
+  }
+  .circle-2 span {
+    position: relative;
+    z-index: 2;
+    transition: color 0.3s ease-in-out;
+  }
+  .circle-2:hover span {
+    color: white;
+  }
+}
+
+.btn {
+  @apply relative overflow-hidden hover:ease-in-out hover:before:w-[450px] hover:before:h-[450px] before:absolute before:w-0 before:h-0 before:bg-[#6a4c93] before:rounded-[50%] before:right-0 before:bottom-0 before:translate-[50%] before:transition-all before:delay-[0.2s] bg-[#2663CD] shadow-lg shadow-[#000]/25 text-white mx-auto mb-5 flex justify-center items-center  w-[143px] h-[38px] rounded-[46px] cursor-pointer focus:shadow-none focus:bg-[#2663CD]/90 focus:outline-none focus:ring-[#2663CD] focus:ring-offset-2 focus:ring-[2px]  active:bg-[#2663CD]/30 active:duration-300 active:outline-none active:ring-0 active:ring-offset-0 disabled:cursor-auto disabled:shadow-none disabled:bg-[#2663CD]/60 disabled:ring-0 disabled:ring-offset-0;
+}
+
+.span-btn {
+  @apply relative z-[2] transition-colors delay-[0.2s] ease-in-out;
 }

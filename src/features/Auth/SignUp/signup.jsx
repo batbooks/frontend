@@ -137,7 +137,9 @@ function Signup() {
             )}
           </div>
           <button type="submit" className="btn" disabled={loading}>
-            {loading ? "...در حال ثبت نام" : "ثبت نام"}
+            <span className="span-btn">
+              {loading ? "...در حال ثبت نام" : "ثبت نام"}
+            </span>
           </button>
           {error != "" ? (
             <p className="text-red-600 text-center mt-5">{error}</p>

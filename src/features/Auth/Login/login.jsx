@@ -130,7 +130,9 @@ function Login() {
             )}
           </div>
           <button type="submit" className="btn" disabled={loading}>
-            {loading ? "...در حال ورود" : "ورود"}
+            <span className="span-btn">
+              {loading ? "...در حال ورود" : "ورود"}
+            </span>
           </button>
           <button
             className="mx-auto flex cursor-pointer justify-center"

@@ -18,7 +18,9 @@ export default function UserCard({ user }) {
       </article>
       <section className=" place-content-center m-2">
         {" "}
-        <button className="btn ">follow</button>
+        <button className="btn ">
+          <span className="span-btn">دنبال کردن</span>
+        </button>
       </section>
     </div>
   );
