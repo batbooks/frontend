@@ -9,14 +9,18 @@ import Left from "./left";
 import Navbar from "../common/Navbar/navbar";
 import Footer from "../common/Footer/Footer";
 import SearchBar from "../Searchbar";
+import { useSelector } from "react-redux";
+import Loading from "../common/Loading/Loading";
+import Swal from "sweetalert2";
 
-Navbar;
 export default function Homepage() {
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
+
   return (
     <div className="">
       <Navbar className="" />
-
       <SearchBar />
+
       <div className="flex flex-row justify-between ">
         <div className="sticky-content-l">
           <Left></Left>

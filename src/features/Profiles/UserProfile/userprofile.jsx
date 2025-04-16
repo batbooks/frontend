@@ -4,15 +4,27 @@ import Footer from "/src/common/Footer/footer";
 import Navbar from "/src/common/Navbar/navbar";
 import { Rating } from "@mui/material";
 import BookCard from "../../../common/BookCard/bookCard";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../../redux/infoSlice";
+import { Navigate, useNavigate } from "react-router";
 
 const IsReading = [1];
 const IsWriting = [1, 2];
 const WrittenBooks = [1, 2, 3, 4, 5, 6, 7, 8];
 
 export default function Profile() {
+  const dispatch = useDispatch();
   const [editClicked, setEditClicked] = useState(false);
   const [isFollowingOpened, setIsFollowingOpened] = useState(false);
   const [isHoveredFavBook, setIsHoveredFavBook] = useState(false);
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    console.log("qqq");
+    localStorage.removeItem("access_token");
+    navigate("/auth/login");
+    // useDispatch(logout());
+  };
 
   return (
     <>
@@ -45,7 +57,10 @@ export default function Profile() {
           <h1 className="text-[#265073] text-[32px] font-[700] ">
             پروفایل کاربری
           </h1>
-          <button className="bg-[#2663cd] font-[400] text-[#ffffff] items-center rounded-[46px] px-[32px] py-[8px] mt-[15px] mb-[24px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
+          <button
+            onClick={handleLogout}
+            className="bg-[#2663cd] font-[400] text-[#ffffff] items-center rounded-[46px] px-[32px] py-[8px] mt-[15px] mb-[24px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
+          >
             خروج از حساب کاربری
           </button>
         </div>
