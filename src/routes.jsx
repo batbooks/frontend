@@ -17,8 +17,6 @@ import Homepage from "./homepage/Homepage.jsx";
 import VoteAndReview from "./common/comments/voteAndReview.jsx";
 import Middleware from "./middleware.jsx";
 
-
-
 function AppRoutes() {
   return (
     <Router>
@@ -27,19 +25,25 @@ function AppRoutes() {
         <Route path="/auth/signup" element={<Signup />}></Route>
         <Route path="/auth/otp" element={<Otp />}></Route>
         <Route path="/auth/login" element={<Login />}></Route>
-        
-        <Route path="/userprofile" element={  
-          <Middleware>
-            < Profile/>
-          </Middleware>
-        }></Route>
+
+        <Route
+          path="/userprofile"
+          element={
+            <Middleware>
+              <Profile />
+            </Middleware>
+          }
+        ></Route>
         <Route path="/book/:id" element={<BookPage />}></Route>
-        <Route path="/mybooks/createbook" element={
-          <Middleware>
-            <CreateBook />
-          </Middleware>
-        }></Route>
-          
+        <Route
+          path="/mybooks/createbook"
+          element={
+            <Middleware>
+              <CreateBook />
+            </Middleware>
+          }
+        ></Route>
+
         <Route path="/Forget_password" element={<Forget_password />} />
         <Route path="/Vf" element={<Vf />} />
         <Route
@@ -47,11 +51,14 @@ function AppRoutes() {
           element={<Another_User_Profile />}
         ></Route>
         <Route path="/readingchapter" element={<ReadingPage />} />
-        <Route path="/createChapter" element={
-          <Middleware>
-            <CreateChapter />
-          </Middleware>
-          } />
+        <Route
+          path="/createChapter"
+          element={
+            <Middleware>
+              <CreateChapter />
+            </Middleware>
+          }
+        />
         <Route path="/chapterview" element={<ReadingPage />} />
 
         <Route path="/comments" element={<Comments chapter={1} />}></Route>
@@ -59,7 +66,6 @@ function AppRoutes() {
         <Route path="/footer" element={<Footer />} />
         <Route path="/navbar" element={<Navbar />} />
         <Route path="/voteandreview" element={<VoteAndReview />} />
-        <Route path="/comment" element={<Comment />} />
       </Routes>
     </Router>
   );

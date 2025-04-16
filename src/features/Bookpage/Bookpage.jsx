@@ -6,6 +6,7 @@ import Footer from "../../common/Footer/Footer.jsx";
 import Navbar from "../../common/Navbar/navbar.jsx";
 import SearchBar from "../../Searchbar";
 import Reviews from "./reviews";
+import Loading from "../../common/Loading/Loading.jsx";
 
 const Pagination = ({ totalPages, currentPage, onPageChange }) => {
   return (
@@ -74,7 +75,11 @@ const BookPage = () => {
   };
 
   if (loading)
-    return <div className="text-center py-20">در حال بارگذاری...</div>;
+    return (
+      <div className="h-[100vh] grid place-items-center">
+        <Loading />
+      </div>
+    );
   if (error)
     return <div className="text-center py-20 text-red-500">خطا: {error}</div>;
   if (!book) return <div className="text-center py-20">کتاب یافت نشد</div>;

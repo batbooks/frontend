@@ -4,12 +4,12 @@ import "./index.css";
 import App from "./App";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
+import Swal from "sweetalert2";
 
 createRoot(document.getElementById("root")).render(
-  
-  <StrictMode >
+  <StrictMode>
     <Provider store={store}>
-    <App />
+      <App />
     </Provider>
   </StrictMode>
 );
