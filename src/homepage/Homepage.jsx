@@ -7,16 +7,16 @@ import Banner from "./banner";
 import Right from "./right";
 import Left from "./left";
 import Navbar from "../common/Navbar/navbar";
-import Footer from '../common/Footer/footer';
+import Footer from "../common/Footer/Footer";
 import SearchBar from "../Searchbar";
 
 Navbar;
 export default function Homepage() {
   return (
     <div className="">
-      <Navbar  className=""/>
+      <Navbar className="" />
 
-        <SearchBar/>
+      <SearchBar />
       <div className="flex flex-row justify-between ">
         <div className="sticky-content-l">
           <Left></Left>
@@ -29,16 +29,22 @@ export default function Homepage() {
           <Newest_books></Newest_books>
           <h1 className="text-center mb-8 text-4xl  "> پیشنهادی </h1>
           <Suggestions></Suggestions>
-          <h1 className="text-center my-10 text-2xl  "> محبوب ترین نویسنده ها </h1>
+          <h1 className="text-center my-10 text-2xl  ">
+            {" "}
+            محبوب ترین نویسنده ها{" "}
+          </h1>
           <Popular_authors></Popular_authors>
-          <h1 className="text-center my-10 text-2xl  "> فعالترین نویسنده ها </h1>
+          <h1 className="text-center my-10 text-2xl  ">
+            {" "}
+            فعالترین نویسنده ها{" "}
+          </h1>
           <Most_active_authors></Most_active_authors>
         </div>
         <div className="sticky-content-r">
           <Right></Right>
         </div>
       </div>
-        <Footer>  </Footer>
+      <Footer> </Footer>
     </div>
   );
 }
