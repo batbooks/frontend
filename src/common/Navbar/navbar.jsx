@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { Link } from "react-router";
+import { logout } from "../../redux/infoSlice";
 
 function Navbar() {
   const [isVisiblePanel, setIsVisiblePanel] = useState(false);
@@ -12,7 +13,12 @@ function Navbar() {
   
   let navigate = useNavigate();
   const { user, isAuthenticated } = useSelector((state) => state.auth);
-
+  const handleLogout=()=>{
+    console.log("qqq")
+    localStorage.removeItem('access_token');
+    navigate("/auth/login");
+    // useDispatch(logout());
+  }
   return (
     <header
       dir="rtl"
@@ -45,7 +51,7 @@ function Navbar() {
               setIsVisibleUser(false);
             }}
           >
-            {isAuthenticated ? (
+            {isAuthenticated && user.image!=null ? (
               <img
                 className="w-[50px] h-[50px]"
                 src={user.image}
@@ -67,7 +73,7 @@ function Navbar() {
                 <button
                   onClick={() => {
                     setSelectedItem(0);
-                    navigate("/profiles/userprofile");
+                    navigate("/userprofile");
                   }}
                   className="w-full h-full rounded-t-[10px] cursor-pointer pl-[68px] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
@@ -78,7 +84,7 @@ function Navbar() {
               </li>
               <li className="w-[155px] h-[38px] bg-[#ffffff] rounded-b-[10px]">
                 <button
-                  onClick={() => setSelectedItem(0)}
+                  onClick={() => {handleLogout();setSelectedItem(0)}}
                   className="w-full h-full rounded-b-[10px] cursor-pointer pl-[28px] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
                   <span className="text-[13px] font-bold text-[#000000]/70">

@@ -227,14 +227,13 @@ const Comments = ({ chapter }) => {
                     {comment.image == null ? (
                       <img
                         className="rounded-full"
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2uLl8zBoK0_iM5pNwJAC8hQ2f68YKtlgc7Q&s"
-
+                        src="/images/user_none.png"
                         alt="author avatar"
                       />
                     ) : (
                       <img
                         className="rounded-full"
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2uLl8zBoK0_iM5pNwJAC8hQ2f68YKtlgc7Q&s"
+                        src={comment.image} 
                         alt="author avatar"
                       />
                     )}
