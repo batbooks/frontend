@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import Footer from "/src/common/Footer/footer";
 import Navbar from "/src/common/Navbar/navbar";
 import BookCard from "../../../common/BookCard/bookCard";
+import "./anotheruserprofile.css";
 
 const WrittenBooks = [1, 2, 3, 4, 5, 6, 7, 8];
 const FavoriteBooks = [1, 2, 3, 4, 5, 6, 7, 8];

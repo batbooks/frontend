@@ -22,7 +22,7 @@ function Navbar() {
   return (
     <header
       dir="rtl"
-      className="h-[100px] max-w-screen m-auto flex bg-[#a3d5ff] justify-between py-[1px] pl-[50px] pr-[30px]"
+      className="relative z-100 h-[100px] max-w-screen m-auto flex bg-[#a3d5ff] justify-between py-[1px] pl-[50px] pr-[30px]"
     >
       <nav className="flex items-center gap-[60px]">
         <div
@@ -102,7 +102,7 @@ function Navbar() {
             </ul>
           ) : (
             <ul
-              className={`w-[155px] h-[76px] divide-y z-10 divide-[#2F4F4F]/50 shadow-lg shadow-[#000000]/25 rounded-[10px] ${isVisibleUser ? "opacity-100" : "opacity-0"} ${isVisibleUser ? "visible" : "invisible"} transition-opacity duration-1000 ease-in-out`}
+              className={`w-[155px] h-[76px] divide-y divide-[#2F4F4F]/50 shadow-lg shadow-[#000000]/25 rounded-[10px] ${isVisibleUser ? "opacity-100" : "opacity-0"} ${isVisibleUser ? "visible" : "invisible"} transition-opacity duration-1000 ease-in-out`}
             >
               <li className="w-[155px] h-[38px] bg-[#ffffff] rounded-t-[10px]">
                 <button

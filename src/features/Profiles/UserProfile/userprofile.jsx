@@ -23,13 +23,8 @@ export default function Profile() {
     console.log("qqq");
     localStorage.removeItem("access_token");
     navigate("/auth/login");
-
-    useDispatch(logout());
-  }
-
     // useDispatch(logout());
   };
-
 
   return (
     <>
