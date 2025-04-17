@@ -51,6 +51,15 @@ textarea {
   box-sizing: border-box;
 }
 
+.scrollbar-opacity-0::-webkit-scrollbar {
+  visibility: hidden;
+}
+
+/* :root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
 /* ######################## animations  ##############*/
 /*  loading  */
 

@@ -15,6 +15,7 @@ import Profile from "./features/Profiles/UserProfile/userprofile.jsx";
 import CreateChapter from "./features/CreateChapter/createChapter.jsx";
 import Homepage from "./homepage/Homepage.jsx";
 import VoteAndReview from "./common/comments/voteAndReview.jsx";
+import MyBooks from "./features/MyBooks/myBooks.jsx";
 import Middleware from "./middleware.jsx";
 
 function AppRoutes() {
@@ -60,6 +61,7 @@ function AppRoutes() {
           }
         />
         <Route path="/chapterview" element={<ReadingPage />} />
+        <Route path="/mybooks" element={<MyBooks />} />
         <Route path="/comments" element={<Comments chapter={1} />}></Route>
         <Route path="/footer" element={<Footer />} />
         <Route path="/navbar" element={<Navbar />} />

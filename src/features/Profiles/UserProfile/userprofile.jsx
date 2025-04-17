@@ -233,7 +233,7 @@ export default function Profile() {
       </div>
     </>
   );
-}
+
 
 function UserFollowing() {
   return (
