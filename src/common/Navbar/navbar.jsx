@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { Link } from "react-router";
+import { logout } from "../../redux/infoSlice";
 
 function Navbar() {
   const [isVisiblePanel, setIsVisiblePanel] = useState(false);
@@ -12,24 +13,35 @@ function Navbar() {
 
   let navigate = useNavigate();
   const { user, isAuthenticated } = useSelector((state) => state.auth);
-
+  const handleLogout = () => {
+    console.log("qqq");
+    localStorage.removeItem("access_token");
+    navigate("/auth/login");
+    // useDispatch(logout());
+  };
   return (
     <header
       dir="rtl"
+<<<<<<< HEAD
       className="max-w-screen m-auto flex bg-[#a3d5ff] justify-between py-[1px] pl-[50px] pr-[30px] shadow-lg shadow-[#000000]/25"
+=======
+      className="relative z-100 h-[100px] max-w-screen m-auto flex bg-[#a3d5ff] justify-between py-[1px] pl-[50px] pr-[30px]"
+>>>>>>> 6307cf23c49f5c8de447ed800a6b8117a9a4db9b
     >
       <nav className="flex items-center gap-[60px]">
-        <div className="relative flex flex-col">
+        <div
+          onMouseLeave={() => {
+            if (!isClickedUser) {
+              setIsVisibleUser(false);
+            }
+          }}
+          className="flex flex-col mt-[86px] gap-[10px] rounded-full"
+        >
           <button
             className="rounded-full cursor-pointer hover:outline-none focus:outline-none"
             onMouseEnter={() => {
               if (!isClickedUser) {
                 setIsVisibleUser(true);
-              }
-            }}
-            onMouseLeave={() => {
-              if (!isClickedUser) {
-                setIsVisibleUser(false);
               }
             }}
             onClick={() => {
@@ -40,12 +52,14 @@ function Navbar() {
               }
               setIsClickedUser(!isClickedUser);
             }}
-            onBlur={() => {
-              setIsClickedUser(false);
-              setIsVisibleUser(false);
-            }}
+            onBlur={() =>
+              setTimeout(() => {
+                setIsClickedUser(false);
+                setIsVisibleUser(false);
+              }, 250)
+            }
           >
-            {isAuthenticated ? (
+            {isAuthenticated && user.image != null ? (
               <img
                 className="w-[50px] h-[50px]"
                 src={user.image}
@@ -61,27 +75,30 @@ function Navbar() {
           </button>
           {isAuthenticated ? (
             <ul
-              className={`absolute w-[155px] h-[76px] divide-y divide-[#2F4F4F]/50 shadow-lg shadow-[#000000]/25 mt-[60px] rounded-[10px] ${isVisibleUser ? "opacity-100" : "opacity-0"} ${isVisibleUser ? "visible" : "invisible"} transition-opacity duration-1000 ease-in-out`}
+              className={`w-[155px] h-[76px] divide-y divide-[#2F4F4F]/50 shadow-lg shadow-[#000000]/25 rounded-[10px] ${isVisibleUser ? "opacity-100" : "opacity-0"} ${isVisibleUser ? "visible" : "invisible"} transition-opacity duration-1000 ease-in-out`}
             >
               <li className="w-[155px] h-[38px] bg-[#ffffff] rounded-t-[10px]">
                 <button
                   onClick={() => {
                     setSelectedItem(0);
-                    navigate("/profiles/userprofile");
+                    setIsVisibleUser(false);
+                    navigate("/userprofile");
                   }}
-                  className="w-full h-full rounded-t-[10px] cursor-pointer pl-[68px] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
+                  className="text-[#000000]/70 w-full h-full rounded-t-[10px] cursor-pointer pl-[68px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
-                  <span className="text-[13px] font-bold text-[#000000]/70">
-                    پروفایل کاربری
-                  </span>
+                  <span className="text-[13px] font-bold">پروفایل کاربری</span>
                 </button>
               </li>
               <li className="w-[155px] h-[38px] bg-[#ffffff] rounded-b-[10px]">
                 <button
-                  onClick={() => setSelectedItem(0)}
-                  className="w-full h-full rounded-b-[10px] cursor-pointer pl-[28px] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
+                  onClick={() => {
+                    setSelectedItem(0);
+                    setIsVisibleUser(false);
+                    handleLogout();
+                  }}
+                  className="text-[#000000]/70 w-full h-full rounded-b-[10px] cursor-pointer pl-[28px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
-                  <span className="text-[13px] font-bold text-[#000000]/70">
+                  <span className="text-[13px] font-bold">
                     خروج از حساب کاربری
                   </span>
                 </button>
@@ -89,20 +106,18 @@ function Navbar() {
             </ul>
           ) : (
             <ul
-              className={`absolute w-[155px] h-[76px] divide-y z-10 divide-[#2F4F4F]/50 shadow-lg shadow-[#000000]/25 mt-[60px] rounded-[10px] ${isVisibleUser ? "opacity-100" : "opacity-0"} ${isVisibleUser ? "visible" : "invisible"} transition-opacity duration-1000 ease-in-out`}
+              className={`w-[155px] h-[76px] divide-y divide-[#2F4F4F]/50 shadow-lg shadow-[#000000]/25 rounded-[10px] ${isVisibleUser ? "opacity-100" : "opacity-0"} ${isVisibleUser ? "visible" : "invisible"} transition-opacity duration-1000 ease-in-out`}
             >
               <li className="w-[155px] h-[38px] bg-[#ffffff] rounded-t-[10px]">
                 <button
                   onClick={() => {
                     setSelectedItem(0);
+                    setIsVisibleUser(false);
                     navigate("/auth/signup");
                   }}
-                  className="w-full h-full rounded-t-[10px] cursor-pointer pl-[102px] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
+                  className="text-[#000000]/70 w-full h-full rounded-t-[10px] cursor-pointer pl-[102px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
-                  <span
-                    to={"/auth/signup"}
-                    className="text-[13px] font-[300]  text-[#000000]/70"
-                  >
+                  <span to={"/auth/signup"} className="text-[13px] font-bold">
                     ثبت نام
                   </span>
                 </button>
@@ -111,20 +126,19 @@ function Navbar() {
                 <button
                   onClick={() => {
                     setSelectedItem(0);
+                    setIsVisibleUser(false);
                     navigate("/auth/login");
                   }}
-                  className="w-full h-full rounded-b-[10px] cursor-pointer pl-[119px] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
+                  className="text-[#000000]/70 w-full h-full rounded-b-[10px] cursor-pointer pl-[119px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
-                  <span className="text-[13px] font-bold text-[#000000]/70">
-                    ورود
-                  </span>
+                  <span className="text-[13px] font-bold">ورود</span>
                 </button>
               </li>
             </ul>
           )}
         </div>
 
-        <ul className="flex items-center gap-[66px]">
+        <ul className="flex items-center gap-[66px] mr-[-105px]">
           <li className="flex flex-col items-center">
             <a
               onClick={() => {
@@ -156,17 +170,19 @@ function Navbar() {
               <span></span>
             )}
           </li>
-          <li className="relative flex flex-col w-[155px] items-center mr-[-29px]">
+          <li
+            onMouseLeave={() => {
+              if (!isClickedPanel) {
+                setIsVisiblePanel(false);
+              }
+            }}
+            className="gap-[10px] mt-[81px] flex flex-col w-[155px] items-center mr-[-29px] rounded-full"
+          >
             <button
               className="cursor-pointer flex focus:outline-none"
               onMouseEnter={() => {
                 if (!isClickedPanel) {
                   setIsVisiblePanel(true);
-                }
-              }}
-              onMouseLeave={() => {
-                if (!isClickedPanel) {
-                  setIsVisiblePanel(false);
                 }
               }}
               onClick={() => {
@@ -177,10 +193,12 @@ function Navbar() {
                 }
                 setIsClickedPanel(!isClickedPanel);
               }}
-              onBlur={() => {
-                setIsClickedPanel(false);
-                setIsVisiblePanel(false);
-              }}
+              onBlur={() =>
+                setTimeout(() => {
+                  setIsClickedPanel(false);
+                  setIsVisiblePanel(false);
+                }, 250)
+              }
             >
               <img
                 className="w-[24px] h-[24px]"
@@ -190,26 +208,28 @@ function Navbar() {
               <span>پنل ارتباطی</span>
             </button>
             <ul
-              className={`absolute w-[155px] h-[76px] divide-y divide-[#2F4F4F]/50 shadow-lg shadow-[#000000]/25 mt-[44px] rounded-[10px] ${isVisiblePanel ? "opacity-100" : "opacity-0"} ${isVisiblePanel ? "visible" : "invisible"} transition-opacity duration-1000 ease-in-out`}
+              className={`w-[155px] h-[76px] divide-y divide-[#2F4F4F]/50 shadow-lg shadow-[#000000]/25 rounded-[10px] ${isVisiblePanel ? "opacity-100" : "opacity-0"} ${isVisiblePanel ? "visible" : "invisible"} transition-opacity duration-1000 ease-in-out`}
             >
               <li className="w-[155px] h-[38px] bg-[#ffffff] rounded-t-[10px]">
                 <button
-                  onClick={() => setSelectedItem(0)}
-                  className="w-full h-full rounded-t-[10px] cursor-pointer pl-[89px] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
+                  onClick={() => {
+                    setSelectedItem(0);
+                    setIsVisiblePanel(false);
+                  }}
+                  className="text-[#000000]/70 w-full h-full rounded-t-[10px] cursor-pointer pl-[89px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
-                  <span className="text-[13px] font-bold text-[#000000]/70">
-                    تالار گفتگو
-                  </span>
+                  <span className="text-[13px] font-bold">تالار گفتگو</span>
                 </button>
               </li>
               <li className="w-[155px] h-[38px] bg-[#ffffff] rounded-b-[10px]">
                 <button
-                  onClick={() => setSelectedItem(0)}
-                  className="w-full h-full rounded-b-[10px] cursor-pointer pl-[118px] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
+                  onClick={() => {
+                    setSelectedItem(0);
+                    setIsVisiblePanel(false);
+                  }}
+                  className="text-[#000000]/70 w-full h-full rounded-b-[10px] cursor-pointer pl-[118px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
-                  <span className="text-[13px] font-bold text-[#000000]/70">
-                    افراد
-                  </span>
+                  <span className="text-[13px] font-bold">افراد</span>
                 </button>
               </li>
             </ul>
@@ -244,7 +264,7 @@ function Navbar() {
           </li>
         </ul>
       </nav>
-      <div className="flex ">
+      <div className="flex my-auto">
         <h1 className="text-[40px] font-[700] text-[#2663CD]">Books</h1>
         <h1 className="text-[40px] font-[700] text-[#002d54]">Bat</h1>
       </div>

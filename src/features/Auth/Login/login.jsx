@@ -1,38 +1,35 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 import { loginSuccess, logout } from "../../../redux/infoSlice";
 // import { LogOut } from "lucide-react";
-
 
 function Login() {
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userinfo,setuserinfo]=useState({})
+  const [userinfo, setuserinfo] = useState({});
   const [loading, setLoading] = useState(false);
+  const token = localStorage.getItem("access_token");
   let navigate = useNavigate();
-  const fetchuserinfo = async (access_token) => {
+  const fetchuserinfo = async () => {
     try {
-      const response = await fetch(
-        `https://batbooks.liara.run/auth/who/`,
-        {
-          method: "GET",
-          
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${access_token}`,
-          },
-        }
-      );
+      const response = await fetch(`https://batbooks.liara.run/auth/who/`, {
+        method: "GET",
+
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const data = await response.json();
       console.log(data);
-      setuserinfo(data.user_info)
-      //  
+      setuserinfo(data.user_info);
+      //
     } catch (err) {
-      console.error(err.message)
+      console.error(err.message);
       console.log("asdad");
     }
   };
@@ -51,27 +48,21 @@ function Login() {
       );
       // Cookies.set('access_token', 'value', { expires: 7,secure:true , path:'/'  } );
       // Cookies.set('refresh_token', 'value', { expires: 7,secure:true , path:'/'  } );
-     
+
       localStorage.setItem("access_token", response.data.access);
       localStorage.setItem("refresh_token", response.data.refresh);
       navigate("/");
-      fetchuserinfo(response.data.access)
+      fetchuserinfo(response.data.access);
       // console.log(response.data.access)
-      const user = userinfo; 
-      dispatch(loginSuccess({
-        user
-        
-      }));
-      
-      
-
-      }
-      catch(err){
-        console.log(err.message)
-        dispatch(logout(
-
-        ))
-      
+      const user = userinfo;
+      dispatch(
+        loginSuccess({
+          user,
+        })
+      );
+    } catch (err) {
+      console.log(err.message);
+      dispatch(logout());
     } finally {
       setLoading(false);
     }
@@ -96,7 +87,7 @@ function Login() {
         <form onSubmit={handleSubmit}>
           <div className="flex justify-center relative mb-3">
             <input
-              className="bg-[#FFFFFF] mx-auto flex justify-center pl-14 px-4 items-center  w-[60%] h-[4.58vh] rounded-[40px] placeholder:text-right placeholder:mr-[72px]"
+              className="bg-[#FFFFFF] mx-auto flex justify-center pl-14 px-4 items-center  w-[60%] h-[4.58vh] rounded-[40px] placeholder:text-right placeholder:mr-[50px]"
               value={email}
               dir="ltr"
               placeholder="ایمیل"
@@ -111,7 +102,7 @@ function Login() {
           <div className="flex justify-center relative mb-3">
             <input
               type={showPassword ? "text" : "password"}
-              className="bg-[#FFFFFF] mx-auto flex justify-center pl-14 px-4 items-center  w-[60%] h-[4.58vh] rounded-[40px] placeholder:text-right placeholder:mr-[72px]"
+              className="bg-[#FFFFFF] mx-auto flex justify-center pl-14 px-4 items-center  w-[60%] h-[4.58vh] rounded-[40px] placeholder:text-right placeholder:mr-[50px]"
               value={password}
               dir="ltr"
               placeholder="رمز عبور"
@@ -138,12 +129,10 @@ function Login() {
               />
             )}
           </div>
-          <button
-            type="submit"
-            className="bg-[#2663CD] shadow-lg shadow-[#000]/25 cursor-pointer transition-colors duration-200 text-white mx-auto mb-5 text-center flex justify-center items-center  w-[143px] h-[38px] rounded-[46px] focus:shadow-none focus:bg-[#2663CD]/90 focus:outline-none focus:ring-[#2663CD] focus:ring-offset-2 focus:ring-[2px] hover:bg-[#2663CD]/90 active:bg-[#2663CD]/30 active:duration-300 active:outline-none active:ring-0 active:ring-offset-0 disabled:cursor-auto disabled:shadow-none disabled:bg-[#2663CD]/60 disabled:ring-0 disabled:ring-offset-0"
-            disabled={loading}
-          >
-            {loading ? "...در حال ورود" : "ورود"}
+          <button type="submit" className="btn" disabled={loading}>
+            <span className="span-btn">
+              {loading ? "...در حال ورود" : "ورود"}
+            </span>
           </button>
           <button
             className="mx-auto flex cursor-pointer justify-center"

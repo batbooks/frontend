@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import VoteAndReview from "./voteAndReview";
+import Loading from "../Loading/Loading";
+
 import {
   AiFillLike,
   AiFillDislike,
@@ -17,9 +19,12 @@ const Comments = ({ chapter }) => {
   const [replyOffsets, setReplyOffsets] = useState({});
   const [userfollowed, setUserFollowed] = useState(true);
   const [liked, setLiked] = useState([]);
-  
+  const [loading, setLoading] = useState([false, false, false, false]);
+
   useEffect(() => {
     const fetchComments = async () => {
+      setLoading((prev) => [...prev, (prev[0] = true)]);
+
       try {
         const response = await fetch(
           `https://batbooks.liara.run/comments/chapter/${chapter}/`
@@ -36,6 +41,8 @@ const Comments = ({ chapter }) => {
         console.error(err);
 
         console.log("asdad");
+      } finally {
+        setLoading((prev) => [...prev, (prev[0] = false)]);
       }
     };
 
@@ -103,6 +110,8 @@ const Comments = ({ chapter }) => {
   }
 
   const fetchReplies = async (commentId) => {
+    setLoading((prev) => [...prev, (prev[1] = true)]);
+
     let address = `https://batbooks.liara.run/comments/comment/${commentId}/`;
     if (nextreplyLink.hasOwnProperty(commentId)) {
       console.log(address);
@@ -146,10 +155,14 @@ const Comments = ({ chapter }) => {
       // }));
     } catch (err) {
       console.error(err.message);
+    } finally {
+      setLoading((prev) => [...prev, (prev[1] = false)]);
     }
   };
 
   const nextcomments = async () => {
+    setLoading((prev) => [...prev, (prev[2] = true)]);
+
     try {
       const response = await fetch(nextcomment);
       if (!response.ok) throw new Error("Failed to fetch comments");
@@ -161,10 +174,14 @@ const Comments = ({ chapter }) => {
       setprevcomment(data.links.previous);
     } catch (err) {
       console.error(err);
+    } finally {
+      setLoading((prev) => [...prev, (prev[2] = false)]);
     }
   };
 
   const prevcomments = async () => {
+    setLoading((prev) => [...prev, (prev[3] = true)]);
+
     try {
       const response = await fetch(prevcomment);
       if (!response.ok) throw new Error("Failed to fetch comments");
@@ -177,15 +194,20 @@ const Comments = ({ chapter }) => {
     } catch (err) {
       console.error(err);
       console.log(prevcomment);
+    } finally {
+      setLoading((prev) => [...prev, (prev[3] = false)]);
     }
   };
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   return (
     <div className="bg-[#D9F0FF] m-auto mt-6 p-4">
       <h2 className="text-2xl font-bold text-right mr-17">نظرات کاربران</h2>
-      {isAuthenticated?(<VoteAndReview></VoteAndReview>):(<div></div>)}
-      
-      {allComments.length > 0 ? (
+      {isAuthenticated ? <VoteAndReview></VoteAndReview> : <div></div>}
+      {loading[0] || loading[2] || loading[3] ? (
+        <div className="mt-[50px] grid place-items-center">
+          <Loading />
+        </div>
+      ) : allComments.length > 0 ? (
         allComments.map((comment) => (
           <div key={comment.id} className="mt-10">
             <div className="flex flex-row gap-10 rounded-lg p-10">
@@ -227,14 +249,13 @@ const Comments = ({ chapter }) => {
                     {comment.image == null ? (
                       <img
                         className="rounded-full"
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2uLl8zBoK0_iM5pNwJAC8hQ2f68YKtlgc7Q&s"
-
+                        src="/images/user_none.png"
                         alt="author avatar"
                       />
                     ) : (
                       <img
                         className="rounded-full"
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2uLl8zBoK0_iM5pNwJAC8hQ2f68YKtlgc7Q&s"
+                        src={comment.image}
                         alt="author avatar"
                       />
                     )}
@@ -255,60 +276,67 @@ const Comments = ({ chapter }) => {
             </div>
 
             {/* Replies Section */}
-            <div className="ml-20 mr-60">
-              {(replies[comment.id] || []).map((reply) => (
-                <div
-                  key={reply.id}
-                  className=" right-4  p-4 pl-70  rounded-lg mb-3 bg-[#D9F0FF] text-right"
-                >
-                  <div className="flex flex-row justify-end max-w-200   gap-5 min-h-30">
-                    <div>
-                      <p className="text-sm text-gray-500 p-2">
-                        {reply.created}
-                      </p>
-                      <p className="text-blue-600 hover:bg-blue-600 hover:text-white inline cursor-pointer duration-150 p-0.5 rounded-sm ml-1.5">
-                        {reply.tag}
-                      </p>
-                      <br />
-                      <p className="text-gray-800 mt-5 inline-block  ">
-                        {" "}
-                        {reply.body}{" "}
-                      </p>
-                    </div>
-                    <div className="grid place-items-end h-20 min-w-12">
-                      <section className=" text-center text-blue-600 hover:bg-blue-600 hover:text-white inline cursor-pointer duration-150 p-0.5 rounded-sm ml-1.5">
-                        {reply.user}
-                      </section>
-                      <img
-                        className="w-10  rounded-full "
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2uLl8zBoK0_iM5pNwJAC8hQ2f68YKtlgc7Q&s"
-                        alt=""
-                      />
-                    </div>
-                  </div>
-                  <div className="w-[60vw] mt-8 mr-80 border-t-2 border-gray-500 mx-auto "></div>
-                </div>
-              ))}
-              <div className="text-right mb-13 mt-10">
-                <button
-                  className="text-blue-700 hover:underline "
-                  onClick={() => fetchReplies(comment.id)}
-                >
-                  {nextreplyLink[comment.id] != null &&
-                  nextreplyLink[comment.id] != ""
-                    ? "نمایش پاسخ‌های بیشتر"
-                    : ""}
-                </button>
-                <button
-                  className="text-blue-700 hover:underline"
-                  onClick={() => fetchReplies(comment.id)}
-                >
-                  {comment.reply_count > 0 && nextreplyLink[comment.id] == null
-                    ? "نمایش پاسخ‌ها "
-                    : ""}
-                </button>
+            {loading[1] ? (
+              <div className="mt-[50px] grid place-items-center">
+                <Loading />
               </div>
-            </div>
+            ) : (
+              <div className="ml-20 mr-60">
+                {(replies[comment.id] || []).map((reply) => (
+                  <div
+                    key={reply.id}
+                    className=" right-4  p-4 pl-70  rounded-lg mb-3 bg-[#D9F0FF] text-right"
+                  >
+                    <div className="flex flex-row justify-end max-w-200   gap-5 min-h-30">
+                      <div>
+                        <p className="text-sm text-gray-500 p-2">
+                          {reply.created}
+                        </p>
+                        <p className="text-blue-600 hover:bg-blue-600 hover:text-white inline cursor-pointer duration-150 p-0.5 rounded-sm ml-1.5">
+                          {reply.tag}
+                        </p>
+                        <br />
+                        <p className="text-gray-800 mt-5 inline-block  ">
+                          {" "}
+                          {reply.body}{" "}
+                        </p>
+                      </div>
+                      <div className="grid place-items-end h-20 min-w-12">
+                        <section className=" text-center text-blue-600 hover:bg-blue-600 hover:text-white inline cursor-pointer duration-150 p-0.5 rounded-sm ml-1.5">
+                          {reply.user}
+                        </section>
+                        <img
+                          className="w-10  rounded-full "
+                          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2uLl8zBoK0_iM5pNwJAC8hQ2f68YKtlgc7Q&s"
+                          alt=""
+                        />
+                      </div>
+                    </div>
+                    <div className="w-[60vw] mt-8 mr-80 border-t-2 border-gray-500 mx-auto "></div>
+                  </div>
+                ))}
+                <div className="text-right mb-13 mt-10">
+                  <button
+                    className="text-blue-700 hover:underline "
+                    onClick={() => fetchReplies(comment.id)}
+                  >
+                    {nextreplyLink[comment.id] != null &&
+                    nextreplyLink[comment.id] != ""
+                      ? "نمایش پاسخ‌های بیشتر"
+                      : ""}
+                  </button>
+                  <button
+                    className="text-blue-700 hover:underline"
+                    onClick={() => fetchReplies(comment.id)}
+                  >
+                    {comment.reply_count > 0 &&
+                    nextreplyLink[comment.id] == null
+                      ? "نمایش پاسخ‌ها "
+                      : ""}
+                  </button>
+                </div>
+              </div>
+            )}
 
             <div className="w-4/5 border-t-2 border-gray-500 mx-auto "></div>
           </div>
@@ -319,14 +347,17 @@ const Comments = ({ chapter }) => {
       <div className="flex flex-row justify-between m-15 mt-10 ">
         <div className="flex flex-row justify-center gap-2.5 bg-[#2663CD] shadow-lg shadow-[#000]/25 text-white     w-[143px] h-[38px] rounded-[46px] cursor-pointer focus:shadow-none focus:bg-[#2663CD]/90 focus:outline-none focus:ring-[#2663CD] focus:ring-offset-2 focus:ring-[2px] hover:bg-[#2663CD]/90 active:bg-[#2663CD]/30 active:duration-300 active:outline-none active:ring-0 active:ring-offset-0 disabled:cursor-auto disabled:shadow-none disabled:bg-[#2663CD]/60 disabled:ring-0 disabled:ring-offset-0">
           <FaArrowLeft className="my-auto"></FaArrowLeft>
-          <button className="mb-[3px] " onClick={() => prevcomments()}>
+          <button
+            className="mb-[3px] cursor-pointer"
+            onClick={() => prevcomments()}
+          >
             {" "}
             قبلی{" "}
           </button>
           {/* <img className="w-1" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAZlBMVEX///8AAAC3t7fLy8vIyMi6urq1tbW8vLyysrI+Pj7g4ODMzMzm5ubj4+Pv7+9eXl40NDRWVlampqb5+fmFhYVvb28nJycvLy+Li4tpaWk7OztjY2N/f3/z8/MbGxvW1taamppMTEzLYhRGAAACgElEQVR4nO3d21JaQRBG4Y0aw0FQRIgmMcL7v2RMNCkRmBxqprpm9fquvei/pmf3sKGcYZAkSZIkSZIkSZIkSf9nMb6e3EyWt/PoQhpZ3Y1+WS+ii2lhuhm9MYsup77paN9ZdEG1rT69Szj6GF1SZffvA9JWcXUYEBbx7FjC0Yfosip6OJqQtBcnxxOCGvXgSYqL+PlUQkyjfjmZkLKK49MJIREfCwkhEb+WIiL24uM3/Co+lRIyIl4UIyIOcOf8iOVVTNCoiIjlRkUMjXJExComaNQEERPsxQSrmD4i4nTjAS66vBoSREwwNDzARZdXQ4KIDo3o8mpIH9Gh0Yf0jYqI6AEuurwaEjRqgoge4KLLqyFBRIdGdHk1JGjUBBEdGtHl1ZA+IqJRHRrR5dVQjngZXV4N6Q9wiFVM0KgJHjezYsT9uTjfLou/Qe7Sm0a9WkcX08bl3y12z14btbxh+3bxs0Wjq2jq6jkhdA++enh+ikbX0Nh82EaX0Nh22EWX0Nhu2Pz5j7q2GaIraC7BGu6iS2hsl+BZyp+H/DNNgnMp/7NFgs+HCT7jJ3hP06t/edfWJfz7Uvw7b/z3FvjvnvAtin/I4L/Hx/8WA9+i+ID437XhVxAfED8mkh/VACuID+iY6B0+oGOid/gWxQfE70H8/1TAtyg+oEe13uED4seER7Xe4QMmHxP4gIAWxQd0TPQOH9CjWu/wLYoP6FGtd/j7nvh3duHvXePfnce//5B/hyX/HlL+XbL8+4D5dzrz7+Xm360+3NMDDquDpyloD76Yslfwh+neP3iYRZfTwurud771IrqYRhbj68nNZHk7jy5EkiRJkiRJkiRJkqQA3wFABCtCO91OvAAAAABJRU5ErkJggg==" alt="" /> */}
         </div>
         <div className="flex flex-row justify-center gap-2.5 bg-[#2663CD] shadow-lg shadow-[#000]/25 text-white     w-[143px] h-[38px] rounded-[46px] cursor-pointer focus:shadow-none focus:bg-[#2663CD]/90 focus:outline-none focus:ring-[#2663CD] focus:ring-offset-2 focus:ring-[2px] hover:bg-[#2663CD]/90 active:bg-[#2663CD]/30 active:duration-300 active:outline-none active:ring-0 active:ring-offset-0 disabled:cursor-auto disabled:shadow-none disabled:bg-[#2663CD]/60 disabled:ring-0 disabled:ring-offset-0">
-          <button className=" mb-[3px]" onClick={() => nextcomments()}>
+          <button className="cursor-pointer" onClick={() => nextcomments()}>
             {" "}
             بعدی{" "}
           </button>
@@ -334,7 +365,6 @@ const Comments = ({ chapter }) => {
           {/* <img className="w-1" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAZlBMVEX///8AAAC3t7fLy8vIyMi6urq1tbW8vLyysrI+Pj7g4ODMzMzm5ubj4+Pv7+9eXl40NDRWVlampqb5+fmFhYVvb28nJycvLy+Li4tpaWk7OztjY2N/f3/z8/MbGxvW1taamppMTEzLYhRGAAACgElEQVR4nO3d21JaQRBG4Y0aw0FQRIgmMcL7v2RMNCkRmBxqprpm9fquvei/pmf3sKGcYZAkSZIkSZIkSZIkSf9nMb6e3EyWt/PoQhpZ3Y1+WS+ii2lhuhm9MYsup77paN9ZdEG1rT69Szj6GF1SZffvA9JWcXUYEBbx7FjC0Yfosip6OJqQtBcnxxOCGvXgSYqL+PlUQkyjfjmZkLKK49MJIREfCwkhEb+WIiL24uM3/Co+lRIyIl4UIyIOcOf8iOVVTNCoiIjlRkUMjXJExComaNQEERPsxQSrmD4i4nTjAS66vBoSREwwNDzARZdXQ4KIDo3o8mpIH9Gh0Yf0jYqI6AEuurwaEjRqgoge4KLLqyFBRIdGdHk1JGjUBBEdGtHl1ZA+IqJRHRrR5dVQjngZXV4N6Q9wiFVM0KgJHjezYsT9uTjfLou/Qe7Sm0a9WkcX08bl3y12z14btbxh+3bxs0Wjq2jq6jkhdA++enh+ikbX0Nh82EaX0Nh22EWX0Nhu2Pz5j7q2GaIraC7BGu6iS2hsl+BZyp+H/DNNgnMp/7NFgs+HCT7jJ3hP06t/edfWJfz7Uvw7b/z3FvjvnvAtin/I4L/Hx/8WA9+i+ID437XhVxAfED8mkh/VACuID+iY6B0+oGOid/gWxQfE70H8/1TAtyg+oEe13uED4seER7Xe4QMmHxP4gIAWxQd0TPQOH9CjWu/wLYoP6FGtd/j7nvh3duHvXePfnce//5B/hyX/HlL+XbL8+4D5dzrz7+Xm360+3NMDDquDpyloD76Yslfwh+neP3iYRZfTwurud771IrqYRhbj68nNZHk7jy5EkiRJkiRJkiRJkqQA3wFABCtCO91OvAAAAABJRU5ErkJggg==" alt="" /> */}
         </div>
       </div>
-      
     </div>
   );
 };

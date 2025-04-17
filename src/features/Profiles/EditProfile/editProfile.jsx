@@ -3,12 +3,22 @@ import LongParagraphInput from "../../../common/LongParagraphInput/longParagraph
 
 export default function EditProfile({ setEditClicked }) {
   const [isSelectOpened, setIsSelectOpened] = useState(false);
+  const [userName, setUserName] = useState(
+    "نام کاربری کنونی کاربر (ایمیل برای اولین بار)"
+  );
   const [selectValue, setIsSelectValue] = useState("--انتخاب کنید--");
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [bio, setBio] = useState("");
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setSelectedFile(file);
+  };
 
   return (
     <div
       dir="rtl"
-      className="z-1 absolute m-auto w-[806px] h-[641px] rounded-[36px] bg-[#A4C0ED] shadow-lg shadow-[#000000]/25 border-[2px] border-[#000000]/21 pl-[69.4px] pr-[69px] pt-[49px] pb-[87.6px]"
+      className="z-1 absolute m-auto w-[806px] h-[747.6px] rounded-[36px] bg-[#A4C0ED] shadow-lg shadow-[#000000]/25 border-[2px] border-[#000000]/21 pl-[69.4px] pr-[69px] pt-[49px] pb-[87.6px]"
     >
       <img
         className="absolute w-[420px] h-[594px] bottom-0 left-0 ml-[10.2px] z-2"
@@ -37,7 +47,11 @@ export default function EditProfile({ setEditClicked }) {
                 نام کاربری
               </label>
               <input
-                value={"نام کاربری کنونی کاربر (ایمیل برای اولین بار)"}
+                value={userName}
+                onChange={(e) => {
+                  e.preventDefault();
+                  setUserName(e.target.value);
+                }}
                 className="bg-[#ffffff] w-[315.6px] h-[52.8px] text-[15px] rounded-[12px] px-[25.6px] outline-[2px] outline-[#000000]/21 z-6"
               ></input>
             </div>
@@ -100,11 +114,43 @@ export default function EditProfile({ setEditClicked }) {
 
           <div className="flex flex-col z-2">
             <label className="text-[#000000]/70 text-[16.8px] font-[400] mb-[0.3px] z-3">
+              عکس پروفایل
+            </label>
+            <div className="bg-[#ffffff] w-[667.2px] py-[8.5px] text-[15px] rounded-[12px] px-[25.6px] outline-[2px] outline-[#000000]/21 z-3 flex items-center gap-[10px]">
+              <label
+                htmlFor="image-input"
+                className="bg-[#DDDDDD] rounded-[5px] py-[5px] px-[22.5px] border-[2px] border-[#000000]/31 cursor-pointer text-[17px] font-[400] z-4"
+              >
+                انتخاب فایل
+              </label>
+              <input
+                className="hidden z-4"
+                id="image-input"
+                type="file"
+                onChange={handleFileChange}
+                accept=".png,.jpg,.jpeg"
+              />
+
+              {selectedFile ? (
+                <span className="text-[17px] font-[400] z-4">
+                  {selectedFile.name}
+                </span>
+              ) : (
+                <span className="text-[17px] font-[400] z-4">
+                  فایلی انتخاب نشده است
+                </span>
+              )}
+            </div>
+          </div>
+
+          <div className="flex flex-col z-2">
+            <label className="text-[#000000]/70 text-[16.8px] font-[400] mb-[0.3px] z-3">
               درباره من
             </label>
             <div className="w-[667.2px] h-[211.2px]">
               <LongParagraphInput
                 placeholder={"چند جمله درباره خودتان بنویسید..."}
+                setinputValue={setBio}
               />
             </div>
           </div>
