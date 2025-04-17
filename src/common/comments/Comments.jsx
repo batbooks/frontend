@@ -11,6 +11,7 @@ import {
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { useSelector } from "react-redux";
 const Comments = ({ chapter }) => {
+
   const [allComments, setAllComments] = useState([]);
   const [nextcomment, setnextcomment] = useState("");
   const [prevcomment, setprevcomment] = useState("");
@@ -199,7 +200,9 @@ const Comments = ({ chapter }) => {
     }
   };
   const { user, isAuthenticated } = useSelector((state) => state.auth);
+  const { chapterId } = useParams();
   return (
+    
     <div className="bg-[#D9F0FF] m-auto mt-6 p-4">
       <h2 className="text-2xl font-bold text-right mr-17">نظرات کاربران</h2>
       {isAuthenticated ? <VoteAndReview></VoteAndReview> : <div></div>}

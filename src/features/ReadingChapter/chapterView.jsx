@@ -5,6 +5,7 @@ import { Rating } from "@mui/material";
 import Navbar from "../../common/Navbar/navbar";
 
 const ReadingPage = () => {
+  
   return (
     <div className="w-screen">
       <Navbar />
