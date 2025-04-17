@@ -164,20 +164,14 @@ export default function MyBooks() {
                     )
                   )
                 ) : (
-                  <div className="flex gap-[10px] items-center">
-                    <span>موردی برای نمایش وجود ندارد...</span>
-                    <button className="w-[254px] h-[38px] flex items-center py-[7px] px-[23px] gap-[10px] bg-[#2663CD] rounded-full text-[16px] text-white font-[400] text-nowrap shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
-                      <span>اضافه کردن کتاب موردعلاقه</span>
-                      <img src="/src/assets/images/add_sign.svg" alt="add" />
-                    </button>
-                  </div>
+                  <span>موردی برای نمایش وجود ندارد...</span>
                 )}
               </div>
             </div>
             {FavoriteBooks[1] ? (
-              <button className="mx-[31%] mb-[38px] w-[254px] h-[38px] flex items-center py-[7px] px-[23px] gap-[10px] bg-[#2663CD] rounded-full text-[16px] text-white font-[400] text-nowrap shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
-                <span>اضافه کردن کتاب موردعلاقه</span>
-                <img src="/src/assets/images/add_sign.svg" alt="add" />
+              <button className="mx-[31%] mb-[38px] w-[197px] h-[38px] flex items-center py-[7px] px-[23px] gap-[10px] bg-[#2663CD] rounded-full text-[16px] text-white font-[400] text-nowrap shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
+                <span>مشاهده همه موارد</span>
+                <img src="/src/assets/images/arrow-right.png" alt="right" />
               </button>
             ) : null}
             <h3 className="mr-[11px] text-[16px] font-[700] text-[#1A365D] mb-[40px]">
