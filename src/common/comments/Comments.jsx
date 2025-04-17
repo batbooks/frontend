@@ -7,10 +7,11 @@ import {
   AiFillDislike,
   AiOutlineLike,
   AiOutlineDislike,
-} from "react-icons/ai";
+} 
+from "react-icons/ai";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { useSelector } from "react-redux";
-const Comments = ({ chapter }) => {
+const Comments = ({ chapterId }) => {
 
   const [allComments, setAllComments] = useState([]);
   const [nextcomment, setnextcomment] = useState("");
@@ -28,7 +29,7 @@ const Comments = ({ chapter }) => {
 
       try {
         const response = await fetch(
-          `https://batbooks.liara.run/comments/chapter/${chapter}/`
+          `https://batbooks.liara.run/comments/chapter/${chapterId}/`
         );
 
         if (!response.ok) throw new Error("Failed to fetch comments");
@@ -200,7 +201,7 @@ const Comments = ({ chapter }) => {
     }
   };
   const { user, isAuthenticated } = useSelector((state) => state.auth);
-  const { chapterId } = useParams();
+  
   return (
     
     <div className="bg-[#D9F0FF] m-auto mt-6 p-4">

@@ -17,6 +17,7 @@ import Homepage from "./homepage/Homepage.jsx";
 import VoteAndReview from "./common/comments/voteAndReview.jsx";
 import MyBooks from "./features/MyBooks/myBooks.jsx";
 import Middleware from "./middleware.jsx";
+import EditChapter from "./features/EditChapter/editChapter.jsx";
 
 function AppRoutes() {
   return (
@@ -51,6 +52,12 @@ function AppRoutes() {
           path="/anotheruserprofile"
           element={<Another_User_Profile />}
         ></Route>
+       
+        <Route path="/createChapter/:id" element={
+          <Middleware>
+          <CreateChapter />
+          </Middleware>
+          } />
         <Route path="/readingchapter" element={<ReadingPage />} />
         <Route
           path="/createChapter"
@@ -60,12 +67,11 @@ function AppRoutes() {
             </Middleware>
           }
         />
-        <Route path="/chapterview" element={<ReadingPage />} />
+        <Route path="/chapter/:chapterId" element={<ReadingPage />} />
         <Route path="/mybooks" element={<MyBooks />} />
-        <Route path="/comments/:commentId" element={<Comments  />}></Route>
-        <Route path="/footer" element={<Footer />} />
-        <Route path="/navbar" element={<Navbar />} />
-        <Route path="/voteandreview" element={<VoteAndReview />} />
+        
+        
+        
       </Routes>
     </Router>
   );
