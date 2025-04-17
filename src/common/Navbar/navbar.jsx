@@ -22,7 +22,11 @@ function Navbar() {
   return (
     <header
       dir="rtl"
+<<<<<<< HEAD
+      className="max-w-screen m-auto flex bg-[#a3d5ff] justify-between py-[1px] pl-[50px] pr-[30px] shadow-lg shadow-[#000000]/25"
+=======
       className="relative z-100 h-[100px] max-w-screen m-auto flex bg-[#a3d5ff] justify-between py-[1px] pl-[50px] pr-[30px]"
+>>>>>>> 6307cf23c49f5c8de447ed800a6b8117a9a4db9b
     >
       <nav className="flex items-center gap-[60px]">
         <div
