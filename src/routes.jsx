@@ -60,9 +60,7 @@ function AppRoutes() {
           }
         />
         <Route path="/chapterview" element={<ReadingPage />} />
-
         <Route path="/comments" element={<Comments chapter={1} />}></Route>
-
         <Route path="/footer" element={<Footer />} />
         <Route path="/navbar" element={<Navbar />} />
         <Route path="/voteandreview" element={<VoteAndReview />} />

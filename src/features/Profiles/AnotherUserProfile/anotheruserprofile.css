@@ -1,0 +1,3 @@
+.scrollbar-opacity-0::-webkit-scrollbar {
+  visibility: hidden;
+}
