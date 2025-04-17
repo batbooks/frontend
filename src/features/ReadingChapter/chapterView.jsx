@@ -3,37 +3,43 @@ import "./Reading.css";
 import Footer from "../../common/Footer/Footer";
 import { Rating } from "@mui/material";
 import Navbar from "../../common/Navbar/navbar";
+import { format } from "date-fns";
 
-const ReadingPage = () => {
-  const [id,setId]=useState(1)
+const ReadingPage = ({chapterId}) => {
+  const [id,setId]=useState()
   const [chapterBody,setChapterBody]=useState("")
+  const [bookName,setbookName]= useState("")
+  const [author,setAuthor]= useState("")
+  const[season,setSeason]= useState("")
+  const[published,setPublished]= useState("")
   useEffect(() => {
-    const userData = {
-      username: "ali123",
-      password: "mypassword",
-      email: "ali@example.com",
-    };
+    const fetchChapter = async () => {
+      try {
+        const response = await fetch(`https://batbooks.liara.run/book/chapter/${chapterId}/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          
+        });
 
-    fetch("https://batbooks.liara.run/book/chapter/1/", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(),
-    })
-      .then((res) => {
-        if (!res.ok) {
+        if (!response.ok) {
           throw new Error("درخواست موفق نبود");
         }
-        return res.json();
-      })
-      .then((data) => {
-        console.log(data.body)
-        setChapterBody(data.body)
-      })
-      .catch((error) => {
+
+        const data = await response.json();
+        console.log(data.body);
+        setChapterBody(data.body);
+        setbookName(data.book);
+        setAuthor(data.Author);
+        setSeason(data.title)
+        setPublished(format(new Date(data.created_at), "yyyy/MM/dd"));
+      } catch (error) {
         console.error("خطا در ارسال به سرور:", error);
-      });
+      }
+    };
+
+    fetchChapter();
   }, []);
   return (
     <div className="w-full">
@@ -49,10 +55,13 @@ const ReadingPage = () => {
             alt="chapter"
           />
           <article className="article1">
-            <h2 className="text-[36px] font-[400]">نام کتاب :فلان </h2>
-            <p className="text-[25px] font-[400] mb-[10px]">نام نویسنده</p>
+            <div className="flex">
+            <h2 className="text-[36px] font-[400]">نام کتاب :{bookName} </h2>
+            <h2 className="text-[27px] font-[400] mr-[400px]">تاریخ انتشار :{published} </h2>
+            </div>
+            <p className="text-[25px] font-[400] mb-[10px]">{author}</p>
             <h1 className="text-[45px] font-[400] mb-[10px]">
-              فصل فلان : نام فصل
+              فصل : {season}  
             </h1>
             <Rating
               style={{ direction: "ltr" }}

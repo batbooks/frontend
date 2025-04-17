@@ -47,7 +47,7 @@ function AppRoutes() {
           path="/anotheruserprofile"
           element={<Another_User_Profile />}
         ></Route>
-        <Route path="/readingchapter" element={<ReadingPage />} />
+        <Route path="/readingchapter" element={<ReadingPage chapterId={1} />} />
         <Route path="/createChapter/:id" element={
           <Middleware>
           <CreateChapter />
