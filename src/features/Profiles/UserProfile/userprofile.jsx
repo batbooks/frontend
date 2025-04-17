@@ -234,83 +234,83 @@ export default function Profile() {
     </>
   );
 
-
-function UserFollowing() {
-  return (
-    <li className="flex items-center h-[152px] pr-[33px] pl-[21px] justify-between">
-      <button className="h-[35px] text-[14px] text-[#ffffff] font-[300] py-[7px] px-[24px] bg-[#2663cd] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
-        دنبال نکردن
-      </button>
-      <button className="flex items-center gap-[18px] cursor-pointer rounded-full">
-        <div className="flex flex-col gap-[5px]">
-          <span className="ml-auto text-[20px] font-[600]">نام کاربری</span>
-          <span dir="rtl" className="text-[12px] font-[400] text-[#265073]">
-            1342 کتاب موردعلاقه
-          </span>
-        </div>
-        <img
-          src="/src/assets/images/following.png"
-          alt="following"
-          className="rounded-full w-[110px] h-[110px]"
-        />
-      </button>
-    </li>
-  );
-}
-
-function ReadingBook() {
-  return (
-    <div className="grid grid-cols-1">
-      <div className="flex py-[26px] pr-[26px] pl-[41px] bg-[#a4c0ed] rounded-[25px] mb-[46px] items-center border-[2px] border-[#000000]/8 justify-between">
-        <div className="flex">
+  function UserFollowing() {
+    return (
+      <li className="flex items-center h-[152px] pr-[33px] pl-[21px] justify-between">
+        <button className="h-[35px] text-[14px] text-[#ffffff] font-[300] py-[7px] px-[24px] bg-[#2663cd] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
+          دنبال نکردن
+        </button>
+        <button className="flex items-center gap-[18px] cursor-pointer rounded-full">
+          <div className="flex flex-col gap-[5px]">
+            <span className="ml-auto text-[20px] font-[600]">نام کاربری</span>
+            <span dir="rtl" className="text-[12px] font-[400] text-[#265073]">
+              1342 کتاب موردعلاقه
+            </span>
+          </div>
           <img
-            className="shadow-lg shadow-[#000000]/25 rounded-[20px] w-[153px] h-[189px]"
+            src="/src/assets/images/following.png"
+            alt="following"
+            className="rounded-full w-[110px] h-[110px]"
+          />
+        </button>
+      </li>
+    );
+  }
+
+  function ReadingBook() {
+    return (
+      <div className="grid grid-cols-1">
+        <div className="flex py-[26px] pr-[26px] pl-[41px] bg-[#a4c0ed] rounded-[25px] mb-[46px] items-center border-[2px] border-[#000000]/8 justify-between">
+          <div className="flex">
+            <img
+              className="shadow-lg shadow-[#000000]/25 rounded-[20px] w-[153px] h-[189px]"
+              src="/src/assets/images/book_sample1.png"
+              alt="book"
+            ></img>
+            <div className="flex flex-col mr-[26px] mt-[27px]">
+              <h6 className="text-[32px] font-[400] mb-[5px]">نام کتاب</h6>
+              <p className="mb-[5px] text-[20px] font-[400]">نام نویسنده</p>
+              <Rating
+                style={{ direction: "ltr" }}
+                name="half-rating-read"
+                defaultValue={4.5}
+                precision={0.5}
+                readOnly
+              />
+            </div>
+          </div>
+          <div className="flex items-center">
+            <div className="w-[538px] h-[21px] bg-[#ffffff] rounded-[30px] shadow-lg shadow-[#000000]/25">
+              <div className="w-[83%] h-[100%] bg-[#26A541] rounded-[30px] shadow-lg shadow-[#000000]/25"></div>
+            </div>
+            <p className="text-[16px] font-[400] mr-3">83%</p>
+          </div>
+          <button className="bg-[#2663CD] rounded-[10px] text-[#ffffff] text-[16px] font-[400] py-[9px] px-[32px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
+            ادامه دادن
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  function WritingBook() {
+    return (
+      <div className="bg-[#a4c0ed] py-[22px] pr-[27px] pl-[41px] flex rounded-[25px] border-[2px] border-[#000000]/8 items-center justify-between grow-1">
+        <div className="flex items-center gap-[26px]">
+          <img
+            className="w-[127px] h-[156px] shadow-lg shadow-[#000000]/25 rounded-[20px]"
             src="/src/assets/images/book_sample1.png"
             alt="book"
           ></img>
-          <div className="flex flex-col mr-[26px] mt-[27px]">
-            <h6 className="text-[32px] font-[400] mb-[5px]">نام کتاب</h6>
-            <p className="mb-[5px] text-[20px] font-[400]">نام نویسنده</p>
-            <Rating
-              style={{ direction: "ltr" }}
-              name="half-rating-read"
-              defaultValue={4.5}
-              precision={0.5}
-              readOnly
-            />
+          <div className="flex flex-col gap-[5px] m-auto">
+            <h6 className="text-[32px] font-[400]">نام کتاب</h6>
+            <span className="text-[20px] font-[400]">فصل فلان ام</span>
           </div>
         </div>
-        <div className="flex items-center">
-          <div className="w-[538px] h-[21px] bg-[#ffffff] rounded-[30px] shadow-lg shadow-[#000000]/25">
-            <div className="w-[83%] h-[100%] bg-[#26A541] rounded-[30px] shadow-lg shadow-[#000000]/25"></div>
-          </div>
-          <p className="text-[16px] font-[400] mr-3">83%</p>
-        </div>
-        <button className="bg-[#2663CD] rounded-[10px] text-[#ffffff] text-[16px] font-[400] py-[9px] px-[32px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
+        <button className="bg-[#2663CD] rounded-[10px] text-[#ffffff] text-[16px] font-[400] py-[5.5px] px-[32px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
           ادامه دادن
         </button>
       </div>
-    </div>
-  );
-}
-
-function WritingBook() {
-  return (
-    <div className="bg-[#a4c0ed] py-[22px] pr-[27px] pl-[41px] flex rounded-[25px] border-[2px] border-[#000000]/8 items-center justify-between grow-1">
-      <div className="flex items-center gap-[26px]">
-        <img
-          className="w-[127px] h-[156px] shadow-lg shadow-[#000000]/25 rounded-[20px]"
-          src="/src/assets/images/book_sample1.png"
-          alt="book"
-        ></img>
-        <div className="flex flex-col gap-[5px] m-auto">
-          <h6 className="text-[32px] font-[400]">نام کتاب</h6>
-          <span className="text-[20px] font-[400]">فصل فلان ام</span>
-        </div>
-      </div>
-      <button className="bg-[#2663CD] rounded-[10px] text-[#ffffff] text-[16px] font-[400] py-[5.5px] px-[32px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
-        ادامه دادن
-      </button>
-    </div>
-  );
+    );
+  }
 }
