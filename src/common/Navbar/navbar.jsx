@@ -57,13 +57,13 @@ function Navbar() {
           >
             {isAuthenticated && user.image != null ? (
               <img
-                className="w-[50px] h-[50px]"
-                src={user.image}
+                className="w-[50px] h-[50px] rounded-full"
+                src={`https://batbooks.liara.run${user.image}`}
                 alt="User Image 2"
               />
             ) : (
               <img
-                className="w-[50px] h-[50px]"
+                className="w-[50px] h-[50px] rounded-full"
                 src="/images/user_none.png"
                 alt="User Image 3"
               />

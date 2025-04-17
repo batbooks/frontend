@@ -1,6 +1,6 @@
 import React from "react";
 import "./Reading.css";
-import Footer from "../../common/Footer/footer";
+import Footer from "../../common/Footer/Footer";
 import { Rating } from "@mui/material";
 import Navbar from "../../common/Navbar/navbar";
 
