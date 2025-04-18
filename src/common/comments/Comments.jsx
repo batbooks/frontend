@@ -200,7 +200,7 @@ const Comments = ({ chapterId }) => {
       setLoading((prev) => [...prev, (prev[3] = false)]);
     }
   };
-  const { user, isAuthenticated } = useSelector((state) => state.auth);
+  const {  isAuthenticated } = useSelector((state) => state.auth);
   
   return (
     

@@ -7,6 +7,7 @@ import BookCard from "../../../common/BookCard/bookCard";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../../redux/infoSlice";
 import { Navigate, useNavigate } from "react-router";
+import Loading from "../../../common/Loading/Loading";
 
 const IsReading = [1];
 const IsWriting = [1, 2];
@@ -61,7 +62,12 @@ export default function Profile() {
   }
 
     
- 
+   if (loading)
+       return (
+         <div className="h-[100vh] grid place-items-center">
+           <Loading />
+         </div>
+       );
 
 
   return (

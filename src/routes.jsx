@@ -62,7 +62,11 @@ function AppRoutes() {
           }
         />
         <Route path="/chapter/:chapterId" element={<ReadingPage />} />
-        <Route path="/mybooks" element={<MyBooks />} />
+
+        <Route path="/mybooks" element={
+            <Middleware>
+              <MyBooks />
+            </Middleware>} />
         
         
         
