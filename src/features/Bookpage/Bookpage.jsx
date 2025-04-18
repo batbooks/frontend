@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { Rating } from "@mui/material";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Editor } from "primereact/editor";
 import Footer from "../../common/Footer/Footer.jsx";
 import Navbar from "../../common/Navbar/navbar.jsx";
 import SearchBar from "../../Searchbar";
 import Reviews from "./reviews";
+import Loading from "../../common/Loading/Loading.jsx";
 
 const Pagination = ({ totalPages, currentPage, onPageChange }) => {
   return (
@@ -26,7 +27,8 @@ const Pagination = ({ totalPages, currentPage, onPageChange }) => {
 };
 
 const BookPage = () => {
-  const { id } = useParams();
+  const navigate=useNavigate()
+  const { bookId} = useParams();
   const [book, setBook] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -43,7 +45,7 @@ const BookPage = () => {
   useEffect(() => {
     const fetchBook = async () => {
       try {
-        const response = await fetch(`https://batbooks.liara.run/book/${id}/`);
+        const response = await fetch(`https://batbooks.liara.run/book/${bookId}/`);
         if (!response.ok) throw new Error("Failed to fetch book");
         const data = await response.json();
         setBook(data);
@@ -55,7 +57,7 @@ const BookPage = () => {
     };
 
     fetchBook();
-  }, [id]);
+  }, [bookId]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -74,7 +76,11 @@ const BookPage = () => {
   };
 
   if (loading)
-    return <div className="text-center py-20">در حال بارگذاری...</div>;
+    return (
+      <div className="h-[100vh] grid place-items-center">
+        <Loading />
+      </div>
+    );
   if (error)
     return <div className="text-center py-20 text-red-500">خطا: {error}</div>;
   if (!book) return <div className="text-center py-20">کتاب یافت نشد</div>;
@@ -189,9 +195,11 @@ const BookPage = () => {
                     )
                     .map((chapter, index) => (
                       <tr
+                      onClick={()=>navigate(`/chapter/${chapter.id}`,{ state: {index,bookId } })}
                         key={chapter.id || index}
                         className="border-b hover:bg-blue-100 cursor-pointer"
                       >
+                        {console.log(book)}
                         <td className="p-3">
                           {chapter.title || `فصل ${index + 1}`}
                         </td>
@@ -267,7 +275,7 @@ const BookPage = () => {
       </div>
 
       <div className="w-350 p-10 pl-28">
-        <Reviews bookId={id} />
+        <Reviews bookId={bookId} />
       </div>
 
       <Footer />
