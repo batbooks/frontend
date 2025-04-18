@@ -7,10 +7,12 @@ import {
   AiFillDislike,
   AiOutlineLike,
   AiOutlineDislike,
-} from "react-icons/ai";
+} 
+from "react-icons/ai";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { useSelector } from "react-redux";
-const Comments = ({ chapter }) => {
+const Comments = ({ chapterId }) => {
+
   const [allComments, setAllComments] = useState([]);
   const [nextcomment, setnextcomment] = useState("");
   const [prevcomment, setprevcomment] = useState("");
@@ -27,7 +29,7 @@ const Comments = ({ chapter }) => {
 
       try {
         const response = await fetch(
-          `https://batbooks.liara.run/comments/chapter/${chapter}/`
+          `https://batbooks.liara.run/comments/chapter/${chapterId}/`
         );
 
         if (!response.ok) throw new Error("Failed to fetch comments");
@@ -199,8 +201,10 @@ const Comments = ({ chapter }) => {
     }
   };
   const { user, isAuthenticated } = useSelector((state) => state.auth);
+  
   return (
-    <div className="bg-[#D9F0FF] m-auto mt-6 p-4">
+    
+    <div className="bg-[#D9F0FF] m-auto  p-4 pt-40">
       <h2 className="text-2xl font-bold text-right mr-17">نظرات کاربران</h2>
       {isAuthenticated ? <VoteAndReview></VoteAndReview> : <div></div>}
       {loading[0] || loading[2] || loading[3] ? (
@@ -210,6 +214,7 @@ const Comments = ({ chapter }) => {
       ) : allComments.length > 0 ? (
         allComments.map((comment) => (
           <div key={comment.id} className="mt-10">
+            {/* {console.log(comment)} */}
             <div className="flex flex-row gap-10 rounded-lg p-10">
               <div className="ml-60">
                 <article className="flex text-center justify-center gap-5">
@@ -255,7 +260,7 @@ const Comments = ({ chapter }) => {
                     ) : (
                       <img
                         className="rounded-full"
-                        src={comment.image}
+                        src={`https://batbooks.liara.run${comment.image}`}
                         alt="author avatar"
                       />
                     )}
@@ -283,10 +288,12 @@ const Comments = ({ chapter }) => {
             ) : (
               <div className="ml-20 mr-60">
                 {(replies[comment.id] || []).map((reply) => (
+                  
                   <div
                     key={reply.id}
                     className=" right-4  p-4 pl-70  rounded-lg mb-3 bg-[#D9F0FF] text-right"
                   >
+                    {console.log(reply)}
                     <div className="flex flex-row justify-end max-w-200   gap-5 min-h-30">
                       <div>
                         <p className="text-sm text-gray-500 p-2">
@@ -305,17 +312,27 @@ const Comments = ({ chapter }) => {
                         <section className=" text-center text-blue-600 hover:bg-blue-600 hover:text-white inline cursor-pointer duration-150 p-0.5 rounded-sm ml-1.5">
                           {reply.user}
                         </section>
-                        <img
-                          className="w-10  rounded-full "
-                          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2uLl8zBoK0_iM5pNwJAC8hQ2f68YKtlgc7Q&s"
-                          alt=""
-                        />
+                        {reply.image!=null?
+                      (<img
+                        className="w-10  rounded-full "
+                        src={`https://batbooks.liara.run${reply.image}`}
+                        alt="asd"
+                      />):
+                      (<img
+                        className="w-10  rounded-full "
+                        src="/src/assets/images/user-image1.png"
+                        alt="user-png"
+                      />)  
+                      
+                      
+                      }
+                        
                       </div>
                     </div>
                     <div className="w-[60vw] mt-8 mr-80 border-t-2 border-gray-500 mx-auto "></div>
                   </div>
                 ))}
-                <div className="text-right mb-13 mt-10">
+                <div className="text-right  mt-10">
                   <button
                     className="text-blue-700 hover:underline "
                     onClick={() => fetchReplies(comment.id)}

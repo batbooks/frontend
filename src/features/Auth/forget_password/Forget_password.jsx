@@ -110,7 +110,7 @@ function Forget_password() {
             />
             <div className="absolute inset-y-0 left-[27.5vw] flex items-center pl-[1vw] pointer-events-none ">
               <img
-                src="/src/assets/images/user.png" // Replace with the path to your icon
+                src="/src/assets/images/user.png" 
                 alt="Email Icon"
                 className="h-4.5  w-[1.2vw] opacity-90"
               />

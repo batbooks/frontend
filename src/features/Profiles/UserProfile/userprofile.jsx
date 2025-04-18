@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EditProfile from "../EditProfile/editProfile";
 import Footer from "/src/common/Footer/footer";
 import Navbar from "/src/common/Navbar/navbar";
@@ -11,8 +11,41 @@ import { Navigate, useNavigate } from "react-router";
 const IsReading = [1];
 const IsWriting = [1, 2];
 const WrittenBooks = [1, 2, 3, 4, 5, 6, 7, 8];
-
+const token = localStorage.getItem("access_token");
 export default function Profile() {
+  const [loading, setLoading] = useState(true);
+  const [userInfo, setUserInfo] = useState([]);
+  useEffect(() => {
+    const auth = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(`https://batbooks.liara.run/auth/who/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log(token);
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data);
+          setUserInfo(data.user_info);
+        } else {
+          setUserInfo([]);
+          console.log("na");
+        }
+      } catch (err) {
+        console.error("Error:", err.message);
+        setUserInfo([]);
+        console.log("na");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    auth();
+  }, []);
   const dispatch = useDispatch();
   const [editClicked, setEditClicked] = useState(false);
   const [isFollowingOpened, setIsFollowingOpened] = useState(false);
@@ -23,7 +56,8 @@ export default function Profile() {
     console.log("qqq");
     localStorage.removeItem("access_token");
     navigate("/auth/login");
-    // useDispatch(logout());
+
+    useDispatch(logout());
   };
 
   return (
@@ -67,16 +101,25 @@ export default function Profile() {
 
         <div className="flex bg-[#A4C0ED] rounded-[35px] shadow-lg shadow-[#000000]/25 mb-[40px] pl-[52px] pb-[52px] pr-[23px] pt-[20px] gap-[39px] border-[2px] border-[#000000]/8">
           <div className="min-w-[236px]">
-            <img
-              className="w-[236px] h-[267px] shadow-lg shadow-[#000000]/25 rounded-[30px]"
-              src="/src/assets/images/user_image.png"
-              alt="userimage"
-            />
+            {userInfo.image == null ? (
+              <img
+                className="w-[236px] h-[267px] shadow-lg shadow-[#000000]/25 rounded-[30px]"
+                src="assets\images\user_image.png"
+                alt="userimage"
+              />
+            ) : (
+              <img
+                className="w-[236px] h-[267px] shadow-lg shadow-[#000000]/25 rounded-[30px]"
+                src={`https://batbooks.liara.run${userInfo.image}`}
+                alt="userimage"
+              />
+            )}
+
             <h2 className="text-[24px] text-[#000000] font-[400] mt-[8px] mb-[12px]">
               جزئیات
             </h2>
             <p className="text-[16px] text-[#000000] font-[300]">
-              جنسیت ذکر نشده
+              {userInfo.gender}
             </p>
             <p className="text-[16px] font-[300] mt-[12px]">
               ملحق شده در روز/ماه/سال
@@ -85,13 +128,13 @@ export default function Profile() {
 
           <div className="w-[100%]">
             <h3 className="text-[24px] font-[300] mt-[8px] mb-[15px]">
-              نام کاربری
+              {userInfo.user}
             </h3>
 
             <div className="flex gap-[20px] mb-[19px]">
               <button className="flex flex-col bg-[#ffffff] px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:bg-[#2663cd]/90 hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none">
                 <span className="text-[24px] font-[600] text-[#265073] mb-[-5px]">
-                  100
+                  {userInfo.favorite_count}
                 </span>
                 <span className="font-[400] text-[#000000]/70 text-[14px]">
                   کتاب موردعلاقه
@@ -116,7 +159,7 @@ export default function Profile() {
                   className="flex flex-col bg-[#ffffff] px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:bg-[#2663cd]/90 hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none"
                 >
                   <span className="text-[24px] font-[600] text-[#265073] mb-[-5px]">
-                    8
+                    {userInfo.follower_count}
                   </span>
                   <span className="font-[400] text-[#000000]/70 text-[14px]">
                     نفر دنبال شده
@@ -135,23 +178,9 @@ export default function Profile() {
 
             <div>
               <h5 className="text-[16px] font-[300] mb-1">مشخصات:</h5>
-              <div className="bg-white px-[25.7px] py-[16.6px] rounded-[10px] shadow-lg shadow-[#000000]/25">
+              <div className="min-h-[230px] bg-white px-[25.7px] py-[16.6px] rounded-[10px] shadow-lg shadow-[#000000]/25">
                 <p className="text-[#000000]/70 text-[14px] font-[300]">
-                  این متن صرفا جهت تست میباشد...
-                  <br />
-                  این متن صرفا جهت تست میباشد...
-                  <br />
-                  <br />
-                  این متن صرفا جهت تست میباشد...این متن صرفا جهت تست
-                  میباشد...این متن صرفا جهت تست میباشد...این متن صرفا جهت تست
-                  میباشد...این متن صرفا جهت تست میباشد...این متن صرفا جهت تست
-                  میباشد...این متن صرفا جهت تست میباشد...این متن صرفا جهت تست
-                  میباشد...
-                  <br />
-                  <br />
-                  این متن صرفا جهت تست میباشد...
-                  <br />
-                  این متن صرفا جهت تست میباشد...
+                  {userInfo.bio}
                 </p>
               </div>
             </div>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useParams } from "react-router";
 
 export default function BookCard({
   title,
@@ -8,7 +9,7 @@ export default function BookCard({
   description,
 }) {
   const [isFlipped, setIsFlipped] = useState(false);
-
+ 
   return (
     <div
       className="relative  border-0 hover:shadow-white rounded-2xl w-full h-full cursor-pointer hover: transition-all duration-500"

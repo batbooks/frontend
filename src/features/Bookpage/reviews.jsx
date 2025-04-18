@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { AiFillLike, AiFillDislike } from 'react-icons/ai';
-const Reviews = ({ book }) => {
+const Reviews = ({ bookId }) => {
   const [allreviews, setAllreviews] = useState([]);
 //   const [replies, setReplies] = useState({});
 //   const [replyOffsets, setReplyOffsets] = useState({});
@@ -9,7 +9,7 @@ const Reviews = ({ book }) => {
   useEffect(() => {
     const fetchreviews = async () => {
       try {
-        const response = await fetch(`https://batbooks.liara.run/reviews/chapter/${book}/`);
+        const response = await fetch(`https://batbooks.liara.run/comments/book/${bookId}/reviews/`);
         
         if (!response.ok) throw new Error("Failed to fetch reviews");
 

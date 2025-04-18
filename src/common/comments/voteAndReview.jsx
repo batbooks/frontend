@@ -72,7 +72,7 @@ export default function VoteAndReview() {
           />
           {isAuthenticated && user.image != null ? (
             <img
-              src={user.image}
+              src={`https://batbooks.liara.run${user.image}`}
               className="w-[63px] h-[63px] rounded-full mb-[15px]"
             />
           ) : (

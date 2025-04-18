@@ -8,16 +8,11 @@ import Forget_password from "./features/Auth/forget_password/Forget_password.jsx
 import Vf from "./features/Auth/forget_password/Vf.jsx";
 import CreateBook from "./features/CreateBook/createBook.jsx";
 import ReadingPage from "./features/ReadingChapter/chapterView.jsx";
-import Comments from "./common/comments/Comments.jsx";
-import Footer from "./common/Footer/Footer.jsx";
-import Navbar from "./common/Navbar/navbar.jsx";
 import Profile from "./features/Profiles/UserProfile/userprofile.jsx";
 import CreateChapter from "./features/CreateChapter/createChapter.jsx";
 import Homepage from "./homepage/Homepage.jsx";
-import VoteAndReview from "./common/comments/voteAndReview.jsx";
 import MyBooks from "./features/MyBooks/myBooks.jsx";
 import Middleware from "./middleware.jsx";
-import EditChapter from "./features/EditChapter/editChapter.jsx";
 
 function AppRoutes() {
   return (
@@ -36,7 +31,7 @@ function AppRoutes() {
             </Middleware>
           }
         ></Route>
-        <Route path="/book/:id" element={<BookPage />}></Route>
+        <Route path="/book/:bookId" element={<BookPage />}></Route>
         <Route
           path="/mybooks/createbook"
           element={
@@ -49,7 +44,7 @@ function AppRoutes() {
         <Route path="/Forget_password" element={<Forget_password />} />
         <Route path="/Vf" element={<Vf />} />
         <Route
-          path="/anotheruserprofile"
+          path="/anotheruserprofile/:userId"
           element={<Another_User_Profile />}
         ></Route>
         <Route path="/readingchapter" element={<ReadingPage chapterId={1} />} />
@@ -71,12 +66,8 @@ function AppRoutes() {
             </Middleware>
           }
         />
-        <Route path="/chapterview" element={<ReadingPage />} />
+        <Route path="/chapter/:chapterId" element={<ReadingPage />} />
         <Route path="/mybooks" element={<MyBooks />} />
-        <Route path="/comments" element={<Comments chapter={1} />}></Route>
-        <Route path="/footer" element={<Footer />} />
-        <Route path="/navbar" element={<Navbar />} />
-        <Route path="/voteandreview" element={<VoteAndReview />} />
       </Routes>
     </Router>
   );
