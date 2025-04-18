@@ -7,12 +7,10 @@ import {
   AiFillDislike,
   AiOutlineLike,
   AiOutlineDislike,
-} 
-from "react-icons/ai";
+} from "react-icons/ai";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { useSelector } from "react-redux";
 const Comments = ({ chapterId }) => {
-
   const [allComments, setAllComments] = useState([]);
   const [nextcomment, setnextcomment] = useState("");
   const [prevcomment, setprevcomment] = useState("");
@@ -22,6 +20,7 @@ const Comments = ({ chapterId }) => {
   const [userfollowed, setUserFollowed] = useState(true);
   const [liked, setLiked] = useState([]);
   const [loading, setLoading] = useState([false, false, false, false]);
+  const [replyLoading, setReplyLoading] = useState([]);
 
   useEffect(() => {
     const fetchComments = async () => {
@@ -112,7 +111,7 @@ const Comments = ({ chapterId }) => {
   }
 
   const fetchReplies = async (commentId) => {
-    setLoading((prev) => [...prev, (prev[1] = true)]);
+    setReplyLoading((prev) => [...prev, (prev[commentId] = true)]);
 
     let address = `https://batbooks.liara.run/comments/comment/${commentId}/`;
     if (nextreplyLink.hasOwnProperty(commentId)) {
@@ -158,7 +157,7 @@ const Comments = ({ chapterId }) => {
     } catch (err) {
       console.error(err.message);
     } finally {
-      setLoading((prev) => [...prev, (prev[1] = false)]);
+      setReplyLoading((prev) => [...prev, (prev[commentId] = false)]);
     }
   };
 
@@ -201,9 +200,8 @@ const Comments = ({ chapterId }) => {
     }
   };
   const { user, isAuthenticated } = useSelector((state) => state.auth);
-  
+
   return (
-    
     <div className="bg-[#D9F0FF] m-auto  p-4 pt-40">
       <h2 className="text-2xl font-bold text-right mr-17">نظرات کاربران</h2>
       {isAuthenticated ? <VoteAndReview></VoteAndReview> : <div></div>}
@@ -281,14 +279,13 @@ const Comments = ({ chapterId }) => {
             </div>
 
             {/* Replies Section */}
-            {loading[1] ? (
+            {replyLoading[comment.id] ? (
               <div className="mt-[50px] grid place-items-center">
                 <Loading />
               </div>
             ) : (
               <div className="ml-20 mr-60">
                 {(replies[comment.id] || []).map((reply) => (
-                  
                   <div
                     key={reply.id}
                     className=" right-4  p-4 pl-70  rounded-lg mb-3 bg-[#D9F0FF] text-right"
@@ -312,21 +309,19 @@ const Comments = ({ chapterId }) => {
                         <section className=" text-center text-blue-600 hover:bg-blue-600 hover:text-white inline cursor-pointer duration-150 p-0.5 rounded-sm ml-1.5">
                           {reply.user}
                         </section>
-                        {reply.image!=null?
-                      (<img
-                        className="w-10  rounded-full "
-                        src={`https://batbooks.liara.run${reply.image}`}
-                        alt="asd"
-                      />):
-                      (<img
-                        className="w-10  rounded-full "
-                        src="/src/assets/images/user-image1.png"
-                        alt="user-png"
-                      />)  
-                      
-                      
-                      }
-                        
+                        {reply.image != null ? (
+                          <img
+                            className="w-10  rounded-full "
+                            src={`https://batbooks.liara.run${reply.image}`}
+                            alt="asd"
+                          />
+                        ) : (
+                          <img
+                            className="w-10  rounded-full "
+                            src="/src/assets/images/user-image1.png"
+                            alt="user-png"
+                          />
+                        )}
                       </div>
                     </div>
                     <div className="w-[60vw] mt-8 mr-80 border-t-2 border-gray-500 mx-auto "></div>
