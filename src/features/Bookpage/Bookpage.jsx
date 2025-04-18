@@ -195,10 +195,11 @@ const BookPage = () => {
                     )
                     .map((chapter, index) => (
                       <tr
-                      onClick={()=>navigate(`/chapter/${chapter.id}`)}
+                      onClick={()=>navigate(`/chapter/${chapter.id}`,{ state: {index,bookId } })}
                         key={chapter.id || index}
                         className="border-b hover:bg-blue-100 cursor-pointer"
                       >
+                        {console.log(book)}
                         <td className="p-3">
                           {chapter.title || `فصل ${index + 1}`}
                         </td>

@@ -4,7 +4,7 @@ import Footer from "../../common/Footer/Footer";
 import { Rating } from "@mui/material";
 import Navbar from "../../common/Navbar/navbar";
 import { format } from "date-fns";
-import { useParams } from "react-router";
+import { useLocation, useParams } from "react-router";
 import Comments from "../../common/comments/Comments";
 import Loading from "../../common/Loading/Loading";
 const ReadingPage = () => {
@@ -12,7 +12,10 @@ const ReadingPage = () => {
   const [id,setId]=useState()
   const [chapterBody,setChapterBody]=useState("")
   const [bookCover,setbookCover]=useState("")
-
+  const location=useLocation()
+  const chapterNumber=location.state?.index+1
+  const bookId=location.state?.bookId
+  console.log(bookId)
   const [bookName,setbookName]= useState("")
   const [author,setAuthor]= useState("")
   const[season,setSeason]= useState("")
@@ -22,6 +25,7 @@ const ReadingPage = () => {
   useEffect(() => {
     const fetchChapter = async () => {
       setLoading(true)
+      
       try {
         const response = await fetch(`https://batbooks.liara.run/book/chapter/${chapterId}/`, {
           method: "GET",
