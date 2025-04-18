@@ -4,16 +4,28 @@ import Footer from "../../common/Footer/Footer";
 import { Rating } from "@mui/material";
 import Navbar from "../../common/Navbar/navbar";
 import { format } from "date-fns";
-
-const ReadingPage = ({chapterId}) => {
+import { useLocation, useParams } from "react-router";
+import Comments from "../../common/comments/Comments";
+import Loading from "../../common/Loading/Loading";
+const ReadingPage = () => {
+  const {chapterId}=useParams();
   const [id,setId]=useState()
   const [chapterBody,setChapterBody]=useState("")
+  const [bookCover,setbookCover]=useState("")
+  const location=useLocation()
+  const chapterNumber=location.state?.index+1
+  const bookId=location.state?.bookId
+  console.log(bookId)
   const [bookName,setbookName]= useState("")
   const [author,setAuthor]= useState("")
   const[season,setSeason]= useState("")
   const[published,setPublished]= useState("")
+  const [loading,setLoading]=useState(true)
+  
   useEffect(() => {
     const fetchChapter = async () => {
+      setLoading(true)
+      
       try {
         const response = await fetch(`https://batbooks.liara.run/book/chapter/${chapterId}/`, {
           method: "GET",
@@ -28,7 +40,8 @@ const ReadingPage = ({chapterId}) => {
         }
 
         const data = await response.json();
-        console.log(data.body);
+        console.log(data);
+        setbookCover(data.book_image)
         setChapterBody(data.body);
         setbookName(data.book);
         setAuthor(data.Author);
@@ -36,24 +49,39 @@ const ReadingPage = ({chapterId}) => {
         setPublished(format(new Date(data.created_at), "yyyy/MM/dd"));
       } catch (error) {
         console.error("خطا در ارسال به سرور:", error);
+      }finally{
+        setLoading(false)
       }
     };
 
     fetchChapter();
   }, []);
+  if (loading)
+      return (
+        <div className="h-[100vh] grid place-items-center">
+          <Loading />
+        </div>
+      );
   return (
     <div className="w-full">
       <Navbar />
       <div className="main-div m-auto font-[Vazir] shadow-2xl">
         <div
           dir="rtl"
-          className=" flex items-center gap-[27px] pr-[71px] py-[19px]"
+          className=" flex items-center gap-[27px]  pr-[71px] py-[19px]"
         >
-          <img
+        {bookCover!=null ?
+          (<img
             className="w-[179px] h-[247px] rounded-[15px]"
-            src="/src/assets/images/book_sample.png"
+            src={`https://batbooks.liara.run${bookCover}`}
             alt="chapter"
-          />
+          />) :
+          (<img
+            className="w-[179px] h-[247px] rounded-[15px]"
+            src="/src/assets/images/book_sample2.png"
+            alt="chapter"
+          />)
+        }
           <article className="article1">
             <div className="flex">
             <h2 className="text-[36px] font-[400]">نام کتاب :{bookName} </h2>
@@ -114,9 +142,10 @@ const ReadingPage = ({chapterId}) => {
               </span>
             </button>
           </div>
-          <div className="full-width-line"></div>
+          {/* <div className="full-width-line"></div> */}
         </div>
       </div>
+      <Comments chapterId={chapterId}></Comments>
       <Footer />
     </div>
   );

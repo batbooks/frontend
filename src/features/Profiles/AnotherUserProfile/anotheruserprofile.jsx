@@ -3,15 +3,32 @@ import Footer from "/src/common/Footer/footer";
 import Navbar from "/src/common/Navbar/navbar";
 import BookCard from "../../../common/BookCard/bookCard";
 import "./anotheruserprofile.css";
+import { useParams } from "react-router";
 
 const WrittenBooks = [1, 2, 3, 4, 5, 6, 7, 8];
 const FavoriteBooks = [1, 2, 3, 4, 5, 6, 7, 8];
 
 export default function Another_User_Profile() {
+  const {userId}=useParams();
   const [following, setFollowing] = useState(true);
   const containerRef1 = useRef(null);
   const containerRef2 = useRef(null);
+useEffect(() => {
+    const fetchBook = async () => {
+      try {
+        const response = await fetch(`https://batbooks.liara.run/user/info/${userId}/`);
+        if (!response.ok) throw new Error("Failed to fetch book");
+        const data = await response.json();
+        setBook(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    fetchBook();
+  }, [userId]);
   const handleScrollDown = (amount) => {
     const scrollAmount = document.documentElement.clientHeight * amount;
     window.scrollTo({
