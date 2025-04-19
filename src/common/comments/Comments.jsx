@@ -7,12 +7,11 @@ import {
   AiFillDislike,
   AiOutlineLike,
   AiOutlineDislike,
-} 
-from "react-icons/ai";
+} from "react-icons/ai";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { useSelector } from "react-redux";
+import { data } from "react-router";
 const Comments = ({ chapterId }) => {
-
   const [allComments, setAllComments] = useState([]);
   const [nextcomment, setnextcomment] = useState("");
   const [prevcomment, setprevcomment] = useState("");
@@ -22,7 +21,10 @@ const Comments = ({ chapterId }) => {
   const [userfollowed, setUserFollowed] = useState(true);
   const [liked, setLiked] = useState([]);
   const [loading, setLoading] = useState([false, false, false, false]);
-
+  const token = localStorage.getItem("access_token");
+  const [allLikes, setAllLikes] = useState([]);
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const [isLikedbyUser, setIsLikedbyUser] = useState([]);
   useEffect(() => {
     const fetchComments = async () => {
       setLoading((prev) => [...prev, (prev[0] = true)]);
@@ -35,10 +37,16 @@ const Comments = ({ chapterId }) => {
         if (!response.ok) throw new Error("Failed to fetch comments");
 
         const data1 = await response.json();
-        console.log("next", nextcomment);
+        // console.log("next", nextcomment);
         setAllComments(data1.results);
         setnextcomment(data1.links.next);
         setprevcomment(data1.links.previous);
+        isinOneCommentLikes(data1.results);
+        for (i in data.results) {
+        }
+        setAllLikes((prev) => {
+          return [...prev, data1.results.like];
+        });
       } catch (err) {
         console.error(err);
 
@@ -50,9 +58,58 @@ const Comments = ({ chapterId }) => {
 
     fetchComments();
   }, []);
+  useEffect(() => {
+    console.log("isLikedbyUser updated:", isLikedbyUser);
+  }, [isLikedbyUser]);
 
-  function LikeButton({ commentId }) {
-    const handleClick = () => {
+  // useEffect(() => {
+  //   const handleLikedComments = async () => {
+  //     try {
+  //       const response = await fetch(
+  //         `https://batbooks.liara.run/comments/chapter/${chapterId}/`
+  //       );
+
+  //       if (!response.ok) throw new Error("Failed to fetch comments");
+
+  //       const data = await response.json();
+
+  //     } catch (err) {
+  //       console.error(err);
+
+  //       console.log("asdad");
+  //     } finally {
+
+  //     }
+  //   };
+
+  // });
+  const isinOneCommentLikes = (comments) => {
+    console.log(user.id);
+    console.log(comments);
+    if (isAuthenticated) {
+      comments?.forEach((comment) => {
+        if (comment.like.includes(user.id)) {
+          setIsLikedbyUser((prev) => ({
+            ...prev,
+            [comment.id]: 1,
+          }));
+        } else if (comment.dislike.includes(user.id)) {
+          setIsLikedbyUser((prev) => ({
+            ...prev,
+            [comment.id]: -1,
+          }));
+        } else {
+          setIsLikedbyUser((prev) => ({
+            ...prev,
+            [comment.id]: 0,
+          }));
+        }
+      });
+    }
+  };
+
+  const LikeButton = ({ commentId }) => {
+    const handleClick = async () => {
       if (liked.hasOwnProperty(commentId) && liked[commentId] == 1) {
         setLiked((prev) => ({
           ...prev,
@@ -64,18 +121,65 @@ const Comments = ({ chapterId }) => {
           [commentId]: 1,
         }));
       }
+      try {
+        const response = await fetch(
+          `https://batbooks.liara.run/comments/like/${commentId}/`,
+          {
+            method: "GET",
 
-      //TODO :  send to api
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (response.ok) {
+          console.log(data);
+          setFollowing(!following);
+          console.log(following);
+        }
+      } catch (err) {
+        console.log(err.message);
+        console.log("asdad");
+      }
     };
-    if (liked[commentId] == 1) {
+    console.log(liked);
+    if (
+      (liked[commentId] == 1 || isLikedbyUser[commentId] == 1) &&
+      !(liked[commentId] == 1 && isLikedbyUser[commentId] == 1)
+    ) {
       return <AiFillLike color="blue" size="25" onClick={handleClick} />;
     }
-
+    if (liked[commentId] == 0) {
+      return <AiOutlineLike color="blue" size="25" onClick={handleClick} />;
+    }
+    if (liked[commentId] == 1 && isLikedbyUser[commentId] == 1) {
+      return <AiOutlineLike color="blue" size="25" onClick={handleClick} />;
+    }
     return <AiOutlineLike color="blue" size="25" onClick={handleClick} />;
-  }
+  };
+
+  // function LikeButton({ commentId }) {
+  //   const handleClick = () => {
+
+  //     if (liked.hasOwnProperty(commentId) && liked[commentId] == 1) {
+  //       setLiked((prev) => ({
+  //         ...prev,
+  //         [commentId]: 0,
+  //       }));
+  //     } else {
+  //       setLiked((prev) => ({
+  //         ...prev,
+  //         [commentId]: 1,
+  //       }));
+  //     }
+
+  //     //TODO :  send to api
+  //   };
+  // }
 
   function DislikeButton({ commentId }) {
-    const handleclick = () => {
+    const handleclick = async () => {
       if (liked.hasOwnProperty(commentId) && liked[commentId] == -1) {
         setLiked((prev) => ({
           ...prev,
@@ -87,7 +191,27 @@ const Comments = ({ chapterId }) => {
           [commentId]: -1,
         }));
       }
+      try {
+        const response = await fetch(
+          `https://batbooks.liara.run/comments/dislike/${commentId}/`,
+          {
+            method: "GET",
 
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (response.ok) {
+          console.log(data);
+          setFollowing(!following);
+          console.log(following);
+        }
+      } catch (err) {
+        console.log(err.message);
+        console.log("asdad");
+      }
       // send to api
     };
     if (liked[commentId] == -1) {
@@ -200,10 +324,8 @@ const Comments = ({ chapterId }) => {
       setLoading((prev) => [...prev, (prev[3] = false)]);
     }
   };
-  const {  isAuthenticated } = useSelector((state) => state.auth);
-  
+
   return (
-    
     <div className="bg-[#D9F0FF] m-auto  p-4 pt-40">
       <h2 className="text-2xl font-bold text-right mr-17">نظرات کاربران</h2>
       {isAuthenticated ? <VoteAndReview></VoteAndReview> : <div></div>}
@@ -218,19 +340,32 @@ const Comments = ({ chapterId }) => {
             <div className="flex flex-row gap-10 rounded-lg p-10">
               <div className="ml-60">
                 <article className="flex text-center justify-center gap-5">
-                  {liked[comment.id] == 1 ? (
+                  {/* {liked[comment.id] == 1  && isLikedbyUser[comment.id]!=1 ? (
                     <div className="w-8">{comment.like.length + 1}</div>
                   ) : (
                     <div className="w-8">{comment.like.length}</div>
-                  )}
+                  )} */}
 
+                  {liked[comment.id] == 1 && isLikedbyUser[comment.id] != 1 && (
+                    <div className="w-8">{comment.like.length + 1}</div>
+                  )}
+                  {liked[comment.id] == 1 && isLikedbyUser[comment.id] == 1 && (
+                    <div className="w-8">{comment.like.length - 1}</div>
+                  )}
+                  {liked[comment.id] !=1  && (
+                    <div className="w-8">{comment.like.length }</div>
+                  )}
                   <LikeButton commentId={comment.id} />
                 </article>
                 <article className="flex text-center justify-center gap-5 mb-3.5">
-                  {liked[comment.id] == -1 ? (
-                    <div className="w-8 mt-3">{comment.dislike.length + 1}</div>
-                  ) : (
-                    <div className="w-8 mt-3">{comment.dislike.length}</div>
+                {liked[comment.id] == -1 && isLikedbyUser[comment.id] != -1 && (
+                    <div className="w-8">{comment.like.length + 1}</div>
+                  )}
+                  {liked[comment.id] == -1 && isLikedbyUser[comment.id] == -1 && (
+                    <div className="w-8">{comment.like.length - 1}</div>
+                  )}
+                  {liked[comment.id] !=-1  && (
+                    <div className="w-8">{comment.like.length }</div>
                   )}
                   <DislikeButton commentId={comment.id} />
                 </article>
@@ -288,7 +423,6 @@ const Comments = ({ chapterId }) => {
             ) : (
               <div className="ml-20 mr-60">
                 {(replies[comment.id] || []).map((reply) => (
-                  
                   <div
                     key={reply.id}
                     className=" right-4  p-4 pl-70  rounded-lg mb-3 bg-[#D9F0FF] text-right"
@@ -312,21 +446,19 @@ const Comments = ({ chapterId }) => {
                         <section className=" text-center text-blue-600 hover:bg-blue-600 hover:text-white inline cursor-pointer duration-150 p-0.5 rounded-sm ml-1.5">
                           {reply.user}
                         </section>
-                        {reply.image!=null?
-                      (<img
-                        className="w-10  rounded-full "
-                        src={`https://batbooks.liara.run${reply.image}`}
-                        alt="asd"
-                      />):
-                      (<img
-                        className="w-10  rounded-full "
-                        src="/src/assets/images/user-image1.png"
-                        alt="user-png"
-                      />)  
-                      
-                      
-                      }
-                        
+                        {reply.image != null ? (
+                          <img
+                            className="w-10  rounded-full "
+                            src={`https://batbooks.liara.run${reply.image}`}
+                            alt="asd"
+                          />
+                        ) : (
+                          <img
+                            className="w-10  rounded-full "
+                            src="/src/assets/images/user-image1.png"
+                            alt="user-png"
+                          />
+                        )}
                       </div>
                     </div>
                     <div className="w-[60vw] mt-8 mr-80 border-t-2 border-gray-500 mx-auto "></div>

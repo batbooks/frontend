@@ -29,7 +29,7 @@ function AppContent() {
           console.log(data);
           dispatch(
             loginSuccess({
-              user: data.user_info,
+              user: data,
             })
           );
         } else {
