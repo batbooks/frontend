@@ -11,6 +11,7 @@ import {
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { data } from "react-router";
+const cache = {};
 const Comments = ({ chapterId }) => {
   const [allComments, setAllComments] = useState([]);
   const [nextcomment, setnextcomment] = useState("");
@@ -24,7 +25,7 @@ const Comments = ({ chapterId }) => {
   const token = localStorage.getItem("access_token");
   const [allLikes, setAllLikes] = useState([]);
   const { isAuthenticated, user } = useSelector((state) => state.auth);
-  const [isLikedbyUser, setIsLikedbyUser] = useState([]);
+
   useEffect(() => {
     const fetchComments = async () => {
       setLoading((prev) => [...prev, (prev[0] = true)]);
@@ -58,9 +59,6 @@ const Comments = ({ chapterId }) => {
 
     fetchComments();
   }, []);
-  useEffect(() => {
-    console.log("isLikedbyUser updated:", isLikedbyUser);
-  }, [isLikedbyUser]);
 
   // useEffect(() => {
   //   const handleLikedComments = async () => {
@@ -89,17 +87,18 @@ const Comments = ({ chapterId }) => {
     if (isAuthenticated) {
       comments?.forEach((comment) => {
         if (comment.like.includes(user.id)) {
-          setIsLikedbyUser((prev) => ({
+          console.log("has liked");
+          setLiked((prev) => ({
             ...prev,
             [comment.id]: 1,
           }));
         } else if (comment.dislike.includes(user.id)) {
-          setIsLikedbyUser((prev) => ({
+          setLiked((prev) => ({
             ...prev,
             [comment.id]: -1,
           }));
         } else {
-          setIsLikedbyUser((prev) => ({
+          setLiked((prev) => ({
             ...prev,
             [comment.id]: 0,
           }));
@@ -135,8 +134,6 @@ const Comments = ({ chapterId }) => {
         );
         if (response.ok) {
           console.log(data);
-          setFollowing(!following);
-          console.log(following);
         }
       } catch (err) {
         console.log(err.message);
@@ -144,18 +141,10 @@ const Comments = ({ chapterId }) => {
       }
     };
     console.log(liked);
-    if (
-      (liked[commentId] == 1 || isLikedbyUser[commentId] == 1) &&
-      !(liked[commentId] == 1 && isLikedbyUser[commentId] == 1)
-    ) {
+    if (liked[commentId] == 1) {
       return <AiFillLike color="blue" size="25" onClick={handleClick} />;
     }
-    if (liked[commentId] == 0) {
-      return <AiOutlineLike color="blue" size="25" onClick={handleClick} />;
-    }
-    if (liked[commentId] == 1 && isLikedbyUser[commentId] == 1) {
-      return <AiOutlineLike color="blue" size="25" onClick={handleClick} />;
-    }
+
     return <AiOutlineLike color="blue" size="25" onClick={handleClick} />;
   };
 
@@ -203,11 +192,6 @@ const Comments = ({ chapterId }) => {
             },
           }
         );
-        if (response.ok) {
-          console.log(data);
-          setFollowing(!following);
-          console.log(following);
-        }
       } catch (err) {
         console.log(err.message);
         console.log("asdad");
@@ -298,6 +282,7 @@ const Comments = ({ chapterId }) => {
       setAllComments(data.results);
       setnextcomment(data.links.next);
       setprevcomment(data.links.previous);
+      isinOneCommentLikes(data.results);
     } catch (err) {
       console.error(err);
     } finally {
@@ -317,6 +302,7 @@ const Comments = ({ chapterId }) => {
       setAllComments(data.results);
       setnextcomment(data.links.next);
       setprevcomment(data.links.previous);
+      isinOneCommentLikes(data.results);
     } catch (err) {
       console.error(err);
       console.log(prevcomment);
@@ -338,34 +324,44 @@ const Comments = ({ chapterId }) => {
           <div key={comment.id} className="mt-10">
             {/* {console.log(comment)} */}
             <div className="flex flex-row gap-10 rounded-lg p-10">
-              <div className="ml-60">
+              <div className="ml-60 ">
                 <article className="flex text-center justify-center gap-5">
-                  {/* {liked[comment.id] == 1  && isLikedbyUser[comment.id]!=1 ? (
-                    <div className="w-8">{comment.like.length + 1}</div>
+                  {liked[comment.id] == 1 ? (
+                    <div className="w-8">{comment.like.length}</div>
                   ) : (
                     <div className="w-8">{comment.like.length}</div>
-                  )} */}
+                  )}
+                  <LikeButton commentId={comment.id} />
 
-                  {liked[comment.id] == 1 && isLikedbyUser[comment.id] != 1 && (
+                  {/* {liked[comment.id] == 1 && isLikedbyUser[comment.id] != 1 && (
                     <div className="w-8">{comment.like.length + 1}</div>
                   )}
                   {liked[comment.id] == 1 && isLikedbyUser[comment.id] == 1 && (
                     <div className="w-8">{comment.like.length - 1}</div>
                   )}
-                  {liked[comment.id] !=1  && (
-                    <div className="w-8">{comment.like.length }</div>
+                  {liked[comment.id] != 1 && (
+                    <div className="w-8">{comment.like.length}</div>
                   )}
                   <LikeButton commentId={comment.id} />
                 </article>
                 <article className="flex text-center justify-center gap-5 mb-3.5">
-                {liked[comment.id] == -1 && isLikedbyUser[comment.id] != -1 && (
-                    <div className="w-8">{comment.like.length + 1}</div>
-                  )}
-                  {liked[comment.id] == -1 && isLikedbyUser[comment.id] == -1 && (
-                    <div className="w-8">{comment.like.length - 1}</div>
-                  )}
-                  {liked[comment.id] !=-1  && (
-                    <div className="w-8">{comment.like.length }</div>
+                  {liked[comment.id] == -1 &&
+                    isLikedbyUser[comment.id] != -1 && (
+                      <div className="w-8">{comment.dislike.length + 1}</div>
+                    )}
+                  {liked[comment.id] == -1 &&
+                    isLikedbyUser[comment.id] == -1 && (
+                      <div className="w-8">{comment.dislike.length - 1}</div>
+                    )}
+                  {liked[comment.id] != -1 && (
+                    <div className="w-8">{comment.dislike.length}</div>
+                  )} */}
+                </article>
+                <article className="flex text-center justify-center gap-5">
+                  {liked[comment.id] == -1 ? (
+                    <div className="w-8 mt-2">{comment.dislike.length}</div>
+                  ) : (
+                    <div className="w-8 mt-2">{comment.dislike.length}</div>
                   )}
                   <DislikeButton commentId={comment.id} />
                 </article>
@@ -429,10 +425,20 @@ const Comments = ({ chapterId }) => {
                   >
                     {console.log(reply)}
                     <div className="flex flex-row justify-end max-w-200   gap-5 min-h-30">
+                      
                       <div>
+                        
                         <p className="text-sm text-gray-500 p-2">
                           {reply.created}
                         </p>
+                        <div className="pr-140 flex text-center justify-center gap-5">
+                        {liked[comment.id] == -1 ? (
+                    <div className="w-8 ">{reply.like.length}</div>
+                  ) : (
+                    <div className="w-8 ">{reply.like.length}</div>
+                  )}
+                          <LikeButton commentId={comment.id} />
+                          </div>
                         <p className="text-blue-600 hover:bg-blue-600 hover:text-white inline cursor-pointer duration-150 p-0.5 rounded-sm ml-1.5">
                           {reply.tag}
                         </p>
