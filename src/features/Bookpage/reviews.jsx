@@ -5,6 +5,7 @@ const Reviews = ({ bookId }) => {
   //   const [replies, setReplies] = useState({});
   //   const [replyOffsets, setReplyOffsets] = useState({});
   const [userfollowed, setUserFollowed] = useState(true);
+  const [liked, setLiked] = useState(false);
   useEffect(() => {
     const fetchreviews = async () => {
       try {
@@ -26,6 +27,15 @@ const Reviews = ({ bookId }) => {
 
     fetchreviews();
   }, []);
+  function LikeButton() {
+    const handleClick = () => {
+      setLiked(!liked);
+      // send to api
+    };
+    if (liked)
+      return <AiFillLike color="blue" size="25" onClick={handleClick} />;
+    return <AiFillDislike color="red" size="25" onClick={handleClick} />;
+  }
 
   // const fetchReplies = async (reviewId) => {
   //   const offset = replyOffsets[reviewId] || 0;
