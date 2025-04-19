@@ -47,12 +47,17 @@ function AppRoutes() {
           path="/anotheruserprofile/:userId"
           element={<Another_User_Profile />}
         ></Route>
-       
-        <Route path="/createChapter/:id" element={
-          <Middleware>
-          <CreateChapter />
-          </Middleware>
-          } />
+        <Route path="/readingchapter" element={<ReadingPage chapterId={1} />} />
+        <Route
+          path="/createChapter/:id"
+          element={
+            <Middleware>
+              <CreateChapter />
+            </Middleware>
+          }
+        />
+        <Route path="/readingchapter" element={<ReadingPage />} />
+        <Route path="/editchapter" element={<EditChapter />} />
         <Route
           path="/createChapter"
           element={
@@ -63,9 +68,6 @@ function AppRoutes() {
         />
         <Route path="/chapter/:chapterId" element={<ReadingPage />} />
         <Route path="/mybooks" element={<MyBooks />} />
-        
-        
-        
       </Routes>
     </Router>
   );
