@@ -25,7 +25,7 @@ const Comments = ({ chapterId }) => {
   const token = localStorage.getItem("access_token");
   const [allLikes, setAllLikes] = useState([]);
   const { isAuthenticated, user } = useSelector((state) => state.auth);
-
+  const [likeReplies, setLikedReplies] = useState({});
   useEffect(() => {
     const fetchComments = async () => {
       setLoading((prev) => [...prev, (prev[0] = true)]);
@@ -81,6 +81,40 @@ const Comments = ({ chapterId }) => {
   //   };
 
   // });
+  const isinOneReplyLikes = (replies, commentId) => {
+    console.log(user.id);
+    console.log(replies);
+    if (isAuthenticated) {
+      replies?.forEach((reply) => {
+        if (reply.like.includes(user.id)) {
+          console.log("has liked");
+          setLikedReplies((prev) => ({
+            ...prev,
+            [commentId]: {
+              ...(prev[commentId] || {}), // make sure it exists
+              [reply.id]: 1,
+            },
+          }));
+        } else if (reply.dislike.includes(user.id)) {
+          setLikedReplies((prev) => ({
+            ...prev,
+            [commentId]: {
+              ...(prev[commentId] || {}), // make sure it exists
+              [reply.id]: -1,
+            },
+          }));
+        } else {
+          setLikedReplies((prev) => ({
+            ...prev,
+            [commentId]: {
+              ...(prev[commentId] || {}), // make sure it exists
+              [reply.id]: 0,
+            },
+          }));
+        }
+      });
+    }
+  };
   const isinOneCommentLikes = (comments) => {
     console.log(user.id);
     console.log(comments);
@@ -147,7 +181,106 @@ const Comments = ({ chapterId }) => {
 
     return <AiOutlineLike color="blue" size="25" onClick={handleClick} />;
   };
+  const LikeButtonReply = ({ replyId, commentId }) => {
+    const handleClick = async () => {
+      if (
+        likeReplies.hasOwnProperty(commentId) &&
+        likeReplies[commentId].hasOwnProperty(replyId) &&
+        likeReplies[commentId]?.[replyId] == 1
+      ) {
+        setLikedReplies((prev) => ({
+          ...prev,
+          [commentId]: {
+            ...(prev[commentId] || {}), // make sure it exists
+            [replyId]: 0,
+          },
+        }));
+      } else {
+        setLikedReplies((prev) => ({
+          ...prev,
+          [commentId]: {
+            ...(prev[commentId] || {}), // make sure it exists
+            [replyId]: 1,
+          },
+        }));
+      }
+      try {
+        const response = await fetch(
+          `https://batbooks.liara.run/comments/like/${replyId}/`,
+          {
+            method: "GET",
 
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (response.ok) {
+          console.log(data);
+        }
+      } catch (err) {
+        console.log(err.message);
+        console.log("asdad");
+      }
+    };
+    console.log(liked);
+    if (likeReplies[commentId]?.[replyId] == 1) {
+      return <AiFillLike color="blue" size="25" onClick={handleClick} />;
+    }
+
+    return <AiOutlineLike color="blue" size="25" onClick={handleClick} />;
+  };
+  const DisLikeButtonReply = ({ replyId, commentId }) => {
+    const handleClick = async () => {
+      if (
+        likeReplies.hasOwnProperty(commentId) &&
+        likeReplies[commentId].hasOwnProperty(replyId) &&
+        likeReplies[commentId]?.[replyId] == -1
+      ) {
+        setLikedReplies((prev) => ({
+          ...prev,
+          [commentId]: {
+            ...(prev[commentId] || {}), // make sure it exists
+            [replyId]: 0,
+          },
+        }));
+      } else {
+        setLikedReplies((prev) => ({
+          ...prev,
+          [commentId]: {
+            ...(prev[commentId] || {}), // make sure it exists
+            [replyId]: -1,
+          },
+        }));
+      }
+      try {
+        const response = await fetch(
+          `https://batbooks.liara.run/comments/dislike/${replyId}/`,
+          {
+            method: "GET",
+
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (response.ok) {
+          console.log(data);
+        }
+      } catch (err) {
+        console.log(err.message);
+        console.log("asdad");
+      }
+    };
+    console.log(liked);
+    if (likeReplies[commentId]?.[replyId] == -1) {
+      return <AiFillDislike color="red" size="25" onClick={handleClick} />;
+    }
+
+    return <AiOutlineDislike color="red" size="25" onClick={handleClick} />;
+  };
   // function LikeButton({ commentId }) {
   //   const handleClick = () => {
 
@@ -232,7 +365,7 @@ const Comments = ({ chapterId }) => {
       if (!response.ok) throw new Error("Failed to fetch replies");
 
       const data = await response.json();
-
+      isinOneReplyLikes(data.results, commentId);
       setReplies(
         (prev) =>
           ({
@@ -321,9 +454,9 @@ const Comments = ({ chapterId }) => {
         </div>
       ) : allComments.length > 0 ? (
         allComments.map((comment) => (
-          <div key={comment.id} className="mt-10">
+          <div key={comment.id} className="mt-4">
             {/* {console.log(comment)} */}
-            <div className="flex flex-row gap-10 rounded-lg p-10">
+            <div className="flex flex-row gap-10 rounded-lg p-10 pb-0">
               <div className="ml-60 ">
                 <article className="flex text-center justify-center gap-5">
                   {liked[comment.id] == 1 ? (
@@ -417,7 +550,7 @@ const Comments = ({ chapterId }) => {
                 <Loading />
               </div>
             ) : (
-              <div className="ml-20 mr-60">
+              <div className="ml-20 mr-60 ">
                 {(replies[comment.id] || []).map((reply) => (
                   <div
                     key={reply.id}
@@ -425,28 +558,32 @@ const Comments = ({ chapterId }) => {
                   >
                     {console.log(reply)}
                     <div className="flex flex-row justify-end max-w-200   gap-5 min-h-30">
-                      
                       <div>
-                        
-                        <p className="text-sm text-gray-500 p-2">
+                        <p className="text-sm text-gray-500 p-2 ">
                           {reply.created}
                         </p>
-                        <div className="pr-140 flex text-center justify-center gap-5">
-                        {liked[comment.id] == -1 ? (
-                    <div className="w-8 ">{reply.like.length}</div>
-                  ) : (
-                    <div className="w-8 ">{reply.like.length}</div>
-                  )}
-                          <LikeButton commentId={comment.id} />
+                        <div className="flex  relative justify-end mb-7">
+                          <div className="flex flex-col gap-3 absolute right-190">
+                            <div className="flex text-center gap-4 justify-center">
+                              <div className="w-8 ">{reply.like.length}</div>
+                              <LikeButtonReply
+                                commentId={comment.id}
+                                replyId={reply.id}
+                              />
+                            </div>
+                            <div className="flex text-center gap-4 justify-center">
+                              <div className="w-8 ">{reply.dislike.length}</div>
+                              <DisLikeButtonReply
+                                commentId={comment.id}
+                                replyId={reply.id}
+                              />
+                            </div>
                           </div>
-                        <p className="text-blue-600 hover:bg-blue-600 hover:text-white inline cursor-pointer duration-150 p-0.5 rounded-sm ml-1.5">
-                          {reply.tag}
-                        </p>
-                        <br />
-                        <p className="text-gray-800 mt-5 inline-block  ">
-                          {" "}
-                          {reply.body}{" "}
-                        </p>
+                          <p className=" text-blue-600 hover:bg-blue-600 hover:text-white inline cursor-pointer duration-150 p-0.5 rounded-sm ml-1.5">
+                            {reply.tag}
+                          </p>
+                        </div>
+                        <p className="text-gray-800  "> {reply.body} </p>
                       </div>
                       <div className="grid place-items-end h-20 min-w-12">
                         <section className=" text-center text-blue-600 hover:bg-blue-600 hover:text-white inline cursor-pointer duration-150 p-0.5 rounded-sm ml-1.5">
@@ -465,12 +602,13 @@ const Comments = ({ chapterId }) => {
                             alt="user-png"
                           />
                         )}
+                        
                       </div>
                     </div>
                     <div className="w-[60vw] mt-8 mr-80 border-t-2 border-gray-500 mx-auto "></div>
                   </div>
                 ))}
-                <div className="text-right  mt-10">
+                <div className="text-right  mt-2">
                   <button
                     className="text-blue-700 hover:underline "
                     onClick={() => fetchReplies(comment.id)}
@@ -481,13 +619,13 @@ const Comments = ({ chapterId }) => {
                       : ""}
                   </button>
                   <button
-                    className="text-blue-700 hover:underline"
+                    className="text-blue-700 hover:underline cursor-pointer  mr-25 mb-4"
                     onClick={() => fetchReplies(comment.id)}
                   >
                     {comment.reply_count > 0 &&
-                    nextreplyLink[comment.id] == null
-                      ? "نمایش پاسخ‌ها "
-                      : ""}
+                      nextreplyLink[comment.id] == null && (
+                        <section> نمایش پاسخ ها </section>
+                      )}
                   </button>
                 </div>
               </div>
