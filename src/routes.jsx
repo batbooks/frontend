@@ -13,6 +13,7 @@ import CreateChapter from "./features/CreateChapter/createChapter.jsx";
 import Homepage from "./homepage/Homepage.jsx";
 import MyBooks from "./features/MyBooks/myBooks.jsx";
 import Middleware from "./middleware.jsx";
+import EditChapter from "./features/EditChapter/editChapter.jsx";
 
 function AppRoutes() {
   return (
@@ -47,12 +48,17 @@ function AppRoutes() {
           path="/anotheruserprofile/:userId"
           element={<Another_User_Profile />}
         ></Route>
-       
-        <Route path="/createChapter/:id" element={
-          <Middleware>
-          <CreateChapter />
-          </Middleware>
-          } />
+        <Route path="/readingchapter" element={<ReadingPage chapterId={1} />} />
+        <Route
+          path="/createChapter/:id"
+          element={
+            <Middleware>
+              <CreateChapter />
+            </Middleware>
+          }
+        />
+        <Route path="/readingchapter" element={<ReadingPage />} />
+        <Route path="/editchapter" element={<EditChapter />} />
         <Route
           path="/createChapter"
           element={
@@ -62,6 +68,7 @@ function AppRoutes() {
           }
         />
         <Route path="/chapter/:chapterId" element={<ReadingPage />} />
+<<<<<<< HEAD
 
         <Route path="/mybooks" element={
             <Middleware>
@@ -70,6 +77,9 @@ function AppRoutes() {
         
         
         
+=======
+        <Route path="/mybooks" element={<MyBooks />} />
+>>>>>>> 91df40a9562ac34e9fc7314e53e127d4a53e71f9
       </Routes>
     </Router>
   );
