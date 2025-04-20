@@ -26,7 +26,7 @@ const Comments = ({ chapterId }) => {
   const [allLikes, setAllLikes] = useState([]);
   const { isAuthenticated, user } = useSelector((state) => state.auth);
   const [likeReplies, setLikedReplies] = useState({});
-  const [replyLoading,setReplyLoading]=useState([])
+  const [replyLoading, setReplyLoading] = useState([]);
   useEffect(() => {
     const fetchComments = async () => {
       setLoading((prev) => [...prev, (prev[0] = true)]);
@@ -588,7 +588,7 @@ const Comments = ({ chapterId }) => {
                       </div>
                       <div className="grid place-items-end h-20 min-w-12">
                         <section className=" text-center text-blue-600 hover:bg-blue-600 hover:text-white inline cursor-pointer duration-150 p-0.5 rounded-sm ml-1.5">
-                          {reply.user.name  }
+                          {reply.user.name}
                         </section>
                         {reply.image != null ? (
                           <img
@@ -603,7 +603,6 @@ const Comments = ({ chapterId }) => {
                             alt="user-png"
                           />
                         )}
-                        
                       </div>
                     </div>
                     <div className="w-[60vw] mt-8 mr-80 border-t-2 border-gray-500 mx-auto "></div>
