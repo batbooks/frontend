@@ -1,11 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../../common/Navbar/navbar";
 import Footer from "../../common/Footer/Footer";
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router-dom";
 
-const EditChapter = ({ id = 1 }) => {
-  let navigate = useNavigate();
+const EditChapter = () => {
+  const { bookId } = useParams();
+  const navigate = useNavigate();
   const [chapterMode, setChapterMode] = useState(0);
+  const [bookData, setBookData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchBook = async () => {
+      try {
+        
+        const res = await fetch(`https://batbooks.liara.run/book/${bookId}/`);
+        const data = await res.json();
+        setBookData(data);
+      } catch (err) {
+        console.error("Error fetching book data:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBook();
+  }, [bookId]);
+    
+  if (loading) return <p className="text-center mt-20">در حال بارگذاری...</p>;
+  if (!bookData)
+    return <p className="text-center mt-20">خطا در دریافت اطلاعات کتاب.</p>;
 
   return (
     <>
@@ -15,9 +39,8 @@ const EditChapter = ({ id = 1 }) => {
           <button
             onClick={() => {
               setChapterMode(1);
-              navigate(`/createChapter/${id}`, {
-                state: { id: { id } },
-                chapterMode: { chapterMode },
+              navigate(`/createChapter/`, {
+                state: { id: bookId },
               });
             }}
             className="absolute right-0 flex gap-[10px] justify-center mx-auto bg-[#2663CD] py-[7px] px-[23px] rounded-full text-[16px] font-medium text-white mb-[54px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
@@ -25,10 +48,11 @@ const EditChapter = ({ id = 1 }) => {
             <img src="/src/assets/images/add_sign.svg" alt="add" />
             اضافه کردن فصل جدید
           </button>
-          <span className=" font-bold text-[32px] text-[#265073]">
-            نام کتاب : هری پاتر
+          <span className="font-bold text-[32px] text-[#265073]">
+            نام کتاب : {bookData.name}
           </span>
         </div>
+
         <div className="py-[47px]">
           <table className="rounded-[10px] min-w-full text-center text-sm bg-white shadow-lg shadow-[#000000]/31">
             <thead className="bg-[#2663cd]/90 rounded-[10px]">
@@ -40,7 +64,7 @@ const EditChapter = ({ id = 1 }) => {
                   آخرین ویرایش
                 </th>
                 <th className="px-[12px] py-[18px] text-[12px] text-white font-semibold w-[139px] text-center border-l-[2px] border-[#B9B9B9]">
-                  تعداد صفحات
+                  امتیاز
                 </th>
                 <th className="px-[12px] py-[18px] text-[12px] text-white font-semibold text-right border-l-[2px] border-[#B9B9B9]">
                   نام فصل
@@ -51,13 +75,16 @@ const EditChapter = ({ id = 1 }) => {
               </tr>
             </thead>
             <tbody>
-              {Array.from({ length: 10 }, (_, i) => i + 1).map((i) => (
+              {bookData.chapters.map((chapter, index) => (
                 <Chapter
-                  chapterNum={i}
-                  chapterName={`تست ${i}`}
-                  chapterPages={`${5 * i + 85}  صفحه`}
-                  chapterEditedIn={"6 سال پیش"}
-                  key={i}
+                  key={chapter.id}
+                  chapterId={chapter.id}
+                  chapterNum={index + 1}
+                  chapterName={chapter.title}
+                  chapterPages={chapter.rating + " امتیاز"}
+                  chapterEditedIn={new Date(
+                    chapter.updated_at
+                  ).toLocaleDateString("fa-IR")}
                 />
               ))}
             </tbody>
@@ -69,38 +96,39 @@ const EditChapter = ({ id = 1 }) => {
   );
 };
 
-function Chapter({ chapterNum, chapterName, chapterEditedIn, chapterPages }) {
+function Chapter({
+  chapterId,
+  chapterNum,
+  chapterName,
+  chapterEditedIn,
+  chapterPages,
+}) {
   const navigate = useNavigate();
 
   const goToAbout = () => {
-    navigate('/createChapter');
+    navigate(`/modifiedChapter/${chapterId}`);
   };
+
   return (
     <tr>
-      <td className=" py-[7px] px-[23px] w-[139px] border-t-[2px] border-[#B9B9B9]">
+      <td className="py-[7px] px-[23px] w-[139px] border-t-[2px] border-[#B9B9B9]">
         <button
           onClick={goToAbout}
-          className="bg-[#2663CD] py-[7px] px-[23px] text-white text-[16px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
+          className="bg-[#2663CD] py-[7px] px-[23px] text-white text-[16px] rounded-[10px] shadow-lg shadow-[#000000]/25 hover:bg-[#2663cd]/90 transition duration-200"
         >
           ویرایش
         </button>
       </td>
-      <td
-        dir="rtl"
-        className=" text-center px-[12px] py-[18px] text-[12px] font-[300] border-t-[2px] border-l-[2px] border-[#B9B9B9]"
-      >
+      <td className="text-center px-[12px] py-[18px] text-[12px] font-[300] border-t-[2px] border-l-[2px] border-[#B9B9B9]">
         {chapterEditedIn}
       </td>
-      <td
-        dir="rtl"
-        className=" text-center px-[12px] py-[18px] text-[12px] font-[300] border-t-[2px] border-l-[2px] border-[#B9B9B9]"
-      >
+      <td className="text-center px-[12px] py-[18px] text-[12px] font-[300] border-t-[2px] border-l-[2px] border-[#B9B9B9]">
         {chapterPages}
       </td>
-      <td className=" text-right px-[12px] py-[18px] text-[12px] font-[300] border-t-[2px] border-l-[2px] border-[#B9B9B9]">
+      <td className="text-right px-[12px] py-[18px] text-[12px] font-[300] border-t-[2px] border-l-[2px] border-[#B9B9B9]">
         {chapterName}
       </td>
-      <td className=" text-center px-[12px] py-[18px] text-[12px] font-[300] border-t-[2px] border-l-[2px] border-[#B9B9B9]">
+      <td className="text-center px-[12px] py-[18px] text-[12px] font-[300] border-t-[2px] border-l-[2px] border-[#B9B9B9]">
         {chapterNum}
       </td>
     </tr>

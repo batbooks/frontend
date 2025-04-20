@@ -14,6 +14,7 @@ import Homepage from "./homepage/Homepage.jsx";
 import MyBooks from "./features/MyBooks/myBooks.jsx";
 import Middleware from "./middleware.jsx";
 import EditChapter from "./features/EditChapter/editChapter.jsx";
+import ModifiedChapter from "./features/CreateChapter/modifiedChapter.jsx";
 
 function AppRoutes() {
   return (
@@ -50,7 +51,7 @@ function AppRoutes() {
         ></Route>
         <Route path="/readingchapter" element={<ReadingPage chapterId={1} />} />
         <Route
-          path="/createChapter/:id"
+          path="/createAndEditChapter/:chapterId"
           element={
             <Middleware>
               <CreateChapter />
@@ -58,7 +59,7 @@ function AppRoutes() {
           }
         />
         <Route path="/readingchapter" element={<ReadingPage />} />
-        <Route path="/editchapter" element={<EditChapter />} />
+        <Route path="/editChapter/:bookId" element={<EditChapter />} />
         <Route
           path="/createChapter"
           element={
@@ -69,6 +70,7 @@ function AppRoutes() {
         />
         <Route path="/chapter/:chapterId" element={<ReadingPage />} />
         <Route path="/mybooks" element={<MyBooks />} />
+        <Route path="/modifiedChapter/:id" element={<ModifiedChapter />} />
       </Routes>
     </Router>
   );
