@@ -105,6 +105,17 @@ const BookPage = () => {
           },
         }
       );
+      setTimeout(() => {
+        Swal.fire({
+          title: `${isFavorite ? "از کتاب های مورد علاقه حذف شد" : "به کتاب های مورد علاقه اضافه شد"}`,
+          icon: "success",
+          confirmButtonText: "باشه",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.reload();
+          }
+        });
+      }, 100);
     } catch (err) {
       console.error("Error:", err.message);
       console.log("na");
