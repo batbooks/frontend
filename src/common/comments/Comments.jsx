@@ -26,6 +26,7 @@ const Comments = ({ chapterId }) => {
   const [allLikes, setAllLikes] = useState([]);
   const { isAuthenticated, user } = useSelector((state) => state.auth);
   const [likeReplies, setLikedReplies] = useState({});
+  const [replyLoading,setReplyLoading]=useState([])
   useEffect(() => {
     const fetchComments = async () => {
       setLoading((prev) => [...prev, (prev[0] = true)]);
@@ -353,7 +354,7 @@ const Comments = ({ chapterId }) => {
   }
 
   const fetchReplies = async (commentId) => {
-    setLoading((prev) => [...prev, (prev[1] = true)]);
+    setReplyLoading((prev) => [...prev, (prev[commentId] = true)]);
 
     let address = `https://batbooks.liara.run/comments/comment/${commentId}/`;
     if (nextreplyLink.hasOwnProperty(commentId)) {
@@ -399,7 +400,7 @@ const Comments = ({ chapterId }) => {
     } catch (err) {
       console.error(err.message);
     } finally {
-      setLoading((prev) => [...prev, (prev[1] = false)]);
+      setReplyLoading((prev) => [...prev, (prev[commentId] = false)]);
     }
   };
 
@@ -512,7 +513,7 @@ const Comments = ({ chapterId }) => {
               <div className="w-1/4">
                 <section className="flex flex-row">
                   <p className="w-1/2 text-[16px] font-medium text-right mr-3 ">
-                    {comment.user}
+                    {comment.user.name}
                   </p>
                   <div className="w-20 rounded-full">
                     {comment.image == null ? (
@@ -545,7 +546,7 @@ const Comments = ({ chapterId }) => {
             </div>
 
             {/* Replies Section */}
-            {loading[1] ? (
+            {replyLoading[comment.id] ? (
               <div className="mt-[50px] grid place-items-center">
                 <Loading />
               </div>
@@ -587,7 +588,7 @@ const Comments = ({ chapterId }) => {
                       </div>
                       <div className="grid place-items-end h-20 min-w-12">
                         <section className=" text-center text-blue-600 hover:bg-blue-600 hover:text-white inline cursor-pointer duration-150 p-0.5 rounded-sm ml-1.5">
-                          {reply.user}
+                          {reply.user.name  }
                         </section>
                         {reply.image != null ? (
                           <img
