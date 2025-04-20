@@ -7,6 +7,7 @@ import BookCard from "../../../common/BookCard/bookCard";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../../redux/infoSlice";
 import { Navigate, useNavigate } from "react-router";
+import Loading from "../../../common/Loading/Loading";
 
 const IsReading = [1];
 const IsWriting = [1, 2];
@@ -58,7 +59,16 @@ export default function Profile() {
     navigate("/auth/login");
 
     useDispatch(logout());
-  };
+  }
+
+    
+   if (loading)
+       return (
+         <div className="h-[100vh] grid place-items-center">
+           <Loading />
+         </div>
+       );
+
 
   return (
     <>
@@ -101,19 +111,21 @@ export default function Profile() {
 
         <div className="flex bg-[#A4C0ED] rounded-[35px] shadow-lg shadow-[#000000]/25 mb-[40px] pl-[52px] pb-[52px] pr-[23px] pt-[20px] gap-[39px] border-[2px] border-[#000000]/8">
           <div className="min-w-[236px]">
-            {userInfo.image == null ? (
-              <img
-                className="w-[236px] h-[267px] shadow-lg shadow-[#000000]/25 rounded-[30px]"
-                src="assets\images\user_image.png"
-                alt="userimage"
-              />
-            ) : (
-              <img
-                className="w-[236px] h-[267px] shadow-lg shadow-[#000000]/25 rounded-[30px]"
-                src={`https://batbooks.liara.run${userInfo.image}`}
-                alt="userimage"
-              />
-            )}
+          {userInfo.image == null ? (
+            
+          <img
+            className="w-[236px] h-[267px] shadow-lg shadow-[#000000]/25 rounded-[30px]"
+            src='src\assets\images\user_image.png'
+            alt="userimage1"
+          />
+          
+        ) : (
+          <img
+            className="w-[236px] h-[267px] shadow-lg shadow-[#000000]/25 rounded-[30px]"
+            src={`https://batbooks.liara.run${userInfo.image}`}
+            alt="userimage"
+          />
+        )}
 
             <h2 className="text-[24px] text-[#000000] font-[400] mt-[8px] mb-[12px]">
               جزئیات
