@@ -55,6 +55,7 @@ function Navbar() {
               }, 250)
             }
           >
+            {console.log(user)}
             {isAuthenticated && user.user_info.image != null ? (
               <img
                 className="w-[50px] h-[50px] rounded-full"

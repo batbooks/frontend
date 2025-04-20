@@ -12,9 +12,10 @@ function Login() {
   const [password, setPassword] = useState("");
   const [userinfo, setuserinfo] = useState({});
   const [loading, setLoading] = useState(false);
-  const token = localStorage.getItem("access_token");
+  // const token = localStorage.getItem("access_token");
   let navigate = useNavigate();
-  const fetchuserinfo = async () => {
+  const fetchuserinfo = async (token) => {
+    console.log(token)
     try {
       const response = await fetch(`https://batbooks.liara.run/auth/who/`, {
         method: "GET",
@@ -48,7 +49,7 @@ function Login() {
       );
       // Cookies.set('access_token', 'value', { expires: 7,secure:true , path:'/'  } );
       // Cookies.set('refresh_token', 'value', { expires: 7,secure:true , path:'/'  } );
-
+      console.log(response.data.access)
       localStorage.setItem("access_token", response.data.access);
       localStorage.setItem("refresh_token", response.data.refresh);
       navigate("/");
@@ -65,6 +66,7 @@ function Login() {
       dispatch(logout());
     } finally {
       setLoading(false);
+      location.reload()
     }
   }
 

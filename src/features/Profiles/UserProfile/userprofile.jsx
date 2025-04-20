@@ -113,11 +113,13 @@ export default function Profile() {
         <div className="flex bg-[#A4C0ED] rounded-[35px] shadow-lg shadow-[#000000]/25 mb-[40px] pl-[52px] pb-[52px] pr-[23px] pt-[20px] gap-[39px] border-[2px] border-[#000000]/8">
           <div className="min-w-[236px]">
           {userInfo.image == null ? (
+            
           <img
             className="w-[236px] h-[267px] shadow-lg shadow-[#000000]/25 rounded-[30px]"
-            src='assets\images\user_image.png'
-            alt="userimage"
+            src='src\assets\images\user_image.png'
+            alt="userimage1"
           />
+          
         ) : (
           <img
             className="w-[236px] h-[267px] shadow-lg shadow-[#000000]/25 rounded-[30px]"
