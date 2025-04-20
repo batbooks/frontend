@@ -1,10 +1,10 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import Footer from "../../common/Footer/Footer";
 import Navbar from "../../common/Navbar/navbar";
 import BookCard from "../../common/BookCard/bookCard";
+import ReadingGoalCard from "../../common/ReadingGoalCard/readingGoalCard";
 
 export default function MyBooks() {
-  const [bookNum, setBookNum] = useState(100);
   const WrittenBooks1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const FavoriteBooks1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const containerRef1 = useRef(null);
@@ -39,93 +39,19 @@ export default function MyBooks() {
   return (
     <>
       <Navbar />
-      <main dir="rtl" className="pt-[16px] pr-[7px] pb-[59px]">
-        <div dir="ltr" className="flex items-center mb-[16px]">
-          <div className="absolute flex items-center ml-[25px]">
-            <input
-              dir="rtl"
-              className="w-[332px] py-[14px] pr-[26px] pl-[50px] z-1 outline-[2px] outline-[#000000]/7 bg-white rounded-[25px] placeholder:text-[14px] placeholder:font-[300] placeholder:text-[#265073] focus:outline-[2px] focus:outline-[#2663cd]"
-              placeholder="جستجوی کتاب های شما"
-            />
-            <img
-              src="/src/assets/images/search.png"
-              alt="search"
-              className="w-[24px] h-[24px] z-2 ml-[15px] absolute"
-            />
-          </div>
-          <h1 className="text-[32px] font-bold mx-auto text-[#1A365D]">
-            کتاب های من
-          </h1>
-        </div>
+      <main dir="rtl" className="pt-[16px] pr-[7px] pb-[59px] text-center">
+        <h1 className="text-[32px] font-bold text-[#1A365D] mb-[16px]">
+          کتاب های من
+        </h1>
         <div className="flex gap-[26px] relative">
-          <div
-            dir="ltr"
-            className="flex flex-col w-[243px] bg-[#001F54] py-[94px] px-[29px] rounded-[20px] border-[#000000]/60 border-[2px] items-center text-center"
-          >
-            <h2 className="text-[#DDDDDD] font-[600] text-[12px] mb-[12px]">
-              چالش کتابخوانی
-            </h2>
-            <p className="text-[#DDDDDD] font-[300] text-[12px] mb-[27px]">
-              امسال برای کتابخوانی
-              <br />
-              هدفگذاری کن
-            </p>
-            <div className="bg-[#A4C0ED] rounded-[15px] mb-[26px]">
-              <img
-                src="/src/assets/images/reading_challenge.png"
-                alt="challenge"
-              />
-            </div>
-            <p className="text-[12px] font-[300] text-[#DDDDDD] text-nowrap mb-[5px]">
-              تعداد کتاب هایی که امسال قراره بخونم
-            </p>
-            <div className="flex items-center gap-[11px] bg-white py-[7px] px-[6px] rounded-[10px] mb-[15px]">
-              <button
-                className="cursor-pointer rounded-full"
-                onClick={() =>
-                  bookNum !== 100 ? setBookNum(bookNum + 1) : null
-                }
-              >
-                <img src="/src/assets/images/plus.png" alt="plus" />
-              </button>
-              <span>{bookNum}</span>
-              <button
-                className="cursor-pointer rounded-full"
-                onClick={() => (bookNum !== 0 ? setBookNum(bookNum - 1) : null)}
-              >
-                <img src="/src/assets/images/minus.png" alt="minus" />
-              </button>
-            </div>
-            <p className="text-[12px] font-[300] text-[#DDDDDD] mb-[27px]">
-              میتوانی هدفگذاری ات را هر زمان که
-              <br />
-              بخواهی تغییر دهی
-            </p>
-            <span className="text-[12px] font-[600] text-[#DDDDDD] mb-[23px]">
-              :کتاب هایی که
-            </span>
-            <div className="flex flex-col gap-[10px]">
-              <div className="flex items-center text-[#DDDDDD] text-[12px] font-[300] gap-[90px]">
-                <span>قراره بخونم</span>
-                <span>({bookNum})</span>
-              </div>
-              <div className="flex items-center text-[#DDDDDD] text-[12px] font-[300] gap-[86px]">
-                <span>دارم میخونم</span>
-                <span>(0)</span>
-              </div>
-              <div className="flex items-center text-[#DDDDDD] text-[12px] font-[300] gap-[100px]">
-                <span>خوانده ام</span>
-                <span>(0)</span>
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-col w-[100%]">
-            <h3 className="mr-[11px] text-[16px] font-[700] text-[#1A365D] mb-[40px]">
+          <ReadingGoalCard />
+          <div className="flex flex-col w-[100%] text-right">
+            <h3 className="mr-[11px] text-[16px] font-[700] text-[#1A365D] mb-[22px]">
               کتاب های مورد علاقه من
             </h3>
             <div
               ref={containerRef1}
-              className="mb-[40px] overflow-x-scroll scrollbar-opacity-0 w-[100%] ml-auto"
+              className="mb-[22px] overflow-x-scroll scrollbar-opacity-0 w-[100%] ml-auto py-[18px]"
             >
               {FavoriteBooks[1] ? (
                 <button
@@ -144,7 +70,7 @@ export default function MyBooks() {
                     src="/src/assets/images/slider.svg"
                     alt="slider"
                     className="rotate-180"
-                  ></img>
+                  />
                 </button>
               ) : null}
               <div className="flex z-1 gap-[25px]">
@@ -164,28 +90,35 @@ export default function MyBooks() {
                     )
                   )
                 ) : (
-                  <div className="flex gap-[10px] items-center">
-                    <span>موردی برای نمایش وجود ندارد...</span>
-                    <button className="w-[254px] h-[38px] flex items-center py-[7px] px-[23px] gap-[10px] bg-[#2663CD] rounded-full text-[16px] text-white font-[400] text-nowrap shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
-                      <span>اضافه کردن کتاب موردعلاقه</span>
-                      <img src="/src/assets/images/add_sign.svg" alt="add" />
-                    </button>
-                  </div>
+                  <span>موردی برای نمایش وجود ندارد...</span>
                 )}
               </div>
             </div>
             {FavoriteBooks[1] ? (
-              <button className="mx-[31%] mb-[38px] w-[254px] h-[38px] flex items-center py-[7px] px-[23px] gap-[10px] bg-[#2663CD] rounded-full text-[16px] text-white font-[400] text-nowrap shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
-                <span>اضافه کردن کتاب موردعلاقه</span>
-                <img src="/src/assets/images/add_sign.svg" alt="add" />
+              <button className="mx-[31%] mb-[38px] w-[197px] h-[38px] flex items-center py-[7px] px-[23px] gap-[10px] bg-[#2663CD] rounded-full text-[16px] text-white font-[400] text-nowrap shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
+                <span>مشاهده همه موارد</span>
+                <img src="/src/assets/images/arrow-right.png" alt="right" />
               </button>
             ) : null}
-            <h3 className="mr-[11px] text-[16px] font-[700] text-[#1A365D] mb-[40px]">
-              نوشته شده توسط من
-            </h3>
+            {WrittenBooks[1] ? (
+              <div className="flex items-center mr-[11px] mb-[22px] justify-between">
+                <h3 className="text-[16px] font-[700] text-[#1A365D]">
+                  نوشته شده توسط من
+                </h3>
+                <button className="absolute left-[20px] flex items-center py-[7px] px-[23px] gap-[10px] bg-[#2663CD] rounded-full text-[16px] text-white font-[400] text-nowrap shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
+                  <span>نوشتن کتاب جدید</span>
+                  <img src="/src/assets/images/add_sign.svg" alt="add" />
+                </button>
+              </div>
+            ) : (
+              <h3 className="text-[16px] font-[700] text-[#1A365D] mr-[11px] mb-[22px]">
+                نوشته شده توسط من
+              </h3>
+            )}
+
             <div
               ref={containerRef2}
-              className="overflow-x-scroll scrollbar-opacity-0 w-[100%] ml-auto"
+              className="mb-[-18px] overflow-x-scroll scrollbar-opacity-0 w-[100%] ml-auto py-[18px]"
             >
               {WrittenBooks[1] ? (
                 <button
@@ -238,8 +171,8 @@ export default function MyBooks() {
         </div>
         {WrittenBooks[1] ? (
           <button className="mt-[28px] mx-[50%] w-[193px] h-[38px] flex items-center py-[7px] px-[23px] gap-[10px] bg-[#2663CD] rounded-full text-[16px] text-white font-[400] text-nowrap shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
-            <span>نوشتن کتاب جدید</span>
-            <img src="/src/assets/images/add_sign.svg" alt="add" />
+            <span>مشاهده همه موارد</span>
+            <img src="/src/assets/images/arrow-right.png" alt="right" />
           </button>
         ) : null}
       </main>
