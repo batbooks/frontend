@@ -6,41 +6,102 @@ import Loading from "./common/Loading/Loading";
 import { store } from "./redux/store";
 import AppRoutes from "./routes";
 import { loginSuccess, logout } from "./redux/infoSlice";
+// import { Navigate, useNavigate } from "react-router";
 
 function AppContent() {
   const dispatch = useDispatch();
   const token = localStorage.getItem("access_token");
   const [loading, setLoading] = useState(true);
 
+  // localStorage.removeItem("access_token")
+  // const navigate = useNavigate();
   useEffect(() => {
+    const check_refresh = async () => {
+      setLoading(true);
+      console.log("refresh function called");
+      if (localStorage.getItem("refresh_token")) {
+        try {
+          const response = await fetch(
+            `https://batbooks.liara.run/auth/token/refresh/`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                refresh: localStorage.getItem("refresh_token"),
+              }),
+            }
+          );
+
+          if (response.ok) {
+            console.log("access_token reloaded");
+            const data = await response.json();
+
+            localStorage.setItem("access_token", data.access);
+            console.log(data.access)
+            if (localStorage.getItem("access_token")) {
+
+              checkAuth();
+            }
+          } else {
+            dispatch(logout());
+            localStorage.removeItem("refresh_token");
+
+            localStorage.removeItem("access_token");
+            console.log("na");
+          }
+        } catch (err) {
+          localStorage.removeItem("refresh_token");
+          localStorage.removeItem("access_token");
+          dispatch(logout());
+          console.log(err.message);
+        } finally {
+          setLoading(false)
+        }
+      }
+    };
     const checkAuth = async () => {
       setLoading(true);
-      try {
-        const response = await fetch(`https://batbooks.liara.run/auth/who/`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
 
-        if (response.ok) {
-          const data = await response.json();
-          console.log(data);
-          dispatch(
-            loginSuccess({
-              user: data.user_info,
-            })
-          );
-        } else {
+      if (localStorage.getItem("access_token")) {
+        try {
+          const response = await fetch(`https://batbooks.liara.run/auth/who/`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            console.log("response was ok user loggin in ");
+            
+            dispatch(
+              loginSuccess({
+                user: data,
+              })
+            );
+          } else {
+            dispatch(logout());
+            check_refresh();
+
+            console.log("na");
+          }
+        } catch (err) {
+          console.error("Error:", err.message);
           dispatch(logout());
-          console.log("na");
+
+          check_refresh();
+        } finally {
+          setLoading(false);
         }
-      } catch (err) {
-        console.error("Error:", err.message);
+      } else {
         dispatch(logout());
-        console.log("na");
-      } finally {
+        if (localStorage.getItem("refresh_token")) {
+          check_refresh();
+        }
         setLoading(false);
       }
     };
