@@ -1,47 +1,42 @@
 import React, { useEffect, useState } from "react";
-import { AiFillLike, AiFillDislike } from 'react-icons/ai';
+import { AiFillLike, AiFillDislike } from "react-icons/ai";
 const Reviews = ({ bookId }) => {
   const [allreviews, setAllreviews] = useState([]);
-//   const [replies, setReplies] = useState({});
-//   const [replyOffsets, setReplyOffsets] = useState({});
+  //   const [replies, setReplies] = useState({});
+  //   const [replyOffsets, setReplyOffsets] = useState({});
   const [userfollowed, setUserFollowed] = useState(true);
   const [liked, setLiked] = useState(false);
   useEffect(() => {
     const fetchreviews = async () => {
       try {
-        const response = await fetch(`https://batbooks.liara.run/comments/book/${bookId}/reviews/`);
-        
+        const response = await fetch(
+          `https://batbooks.liara.run/comments/book/${bookId}/reviews/`
+        );
+
         if (!response.ok) throw new Error("Failed to fetch reviews");
 
         const data = await response.json();
-        console.log(data.results)
-        setAllreviews(data.results );
+        console.log(data.results);
+        setAllreviews(data.results);
       } catch (err) {
         console.error(err);
-        
-        console.log("asdad")
+
+        console.log("asdad");
       }
     };
-    
+
     fetchreviews();
   }, []);
   function LikeButton() {
-    
     const handleClick = () => {
       setLiked(!liked);
       // send to api
     };
-    if(liked)
-      return (<AiFillLike
-        color="blue" 
-        size="25" 
-        onClick={handleClick}/>)
-    return (<AiFillDislike
-      color="red" 
-      size="25" 
-      onClick={handleClick}/>)  
+    if (liked)
+      return <AiFillLike color="blue" size="25" onClick={handleClick} />;
+    return <AiFillDislike color="red" size="25" onClick={handleClick} />;
   }
-  
+
   // const fetchReplies = async (reviewId) => {
   //   const offset = replyOffsets[reviewId] || 0;
 
@@ -52,7 +47,7 @@ const Reviews = ({ bookId }) => {
   //     if (!response.ok) throw new Error("Failed to fetch replies");
 
   //     const data = await response.json();
-     
+
   //     setReplies((prev) => ({
   //       ...prev,
   //       [reviewId]: [...(prev[reviewId] || []), ...data],
@@ -64,7 +59,7 @@ const Reviews = ({ bookId }) => {
   //     // }));
   //   } catch (err) {
   //     console.error(err);
-      
+
   //   }
   // };
 
@@ -76,29 +71,38 @@ const Reviews = ({ bookId }) => {
           <div key={review.id} className="mt-10">
             <div className="flex flex-row gap-10 rounded-lg p-10">
               <div className="w-200 break-words mr-5">
-                <div className="text-[16px] text-right text-gray-600 mb-6">{review.created}</div>
-                <div className="text-[16px] text-right text-gray-800">{review.body}</div>
+                <div className="text-[16px] text-right text-gray-600 mb-6">
+                  {review.created}
+                </div>
+                <div className="text-[16px] text-right text-gray-800">
+                  {review.body}
+                </div>
                 <div className="flex flex-row mt-10 ml-190">
-                  <LikeButton/>
-                 {liked ?((<div>57</div>)) :((<div>56</div>))}
+                  <LikeButton />
+                  {liked ? <div>57</div> : <div>56</div>}
                 </div>
               </div>
               <div className="w-1/4">
                 <section className="flex flex-row">
-                  <p className="w-1/2 text-[16px] font-medium text-right mr-3">{review.user}</p>
+                  <p className="w-1/2 text-[16px] font-medium text-right mr-3">
+                    {review.user}
+                  </p>
                   <div className="w-25">
                     <img src={review.image} alt="author avatar" />
                   </div>
                 </section>
                 <div className="w-50 flex flex-row justify-center ml-10 mt-4 mb-3">
                   {userfollowed ? (
-                    <button className="text-[16px] text-white bg-[#2663CD] p-2 rounded-full">دنبال کردن</button>
+                    <button className="text-[16px] text-white bg-[#2663CD] p-2 rounded-full">
+                      دنبال کردن
+                    </button>
                   ) : (
-                    <button className="text-[16px] text-white bg-[#2663CD] p-2">دنبال نکردن</button>
+                    <button className="text-[16px] text-white bg-[#2663CD] p-2">
+                      دنبال نکردن
+                    </button>
                   )}
                 </div>
               </div>
-              
             </div>
 
             {/* Replies Section
@@ -118,7 +122,7 @@ const Reviews = ({ bookId }) => {
                 </button>
               </div>
             </div> */}
-            
+
             <div className="w-1/2 border-t-2 border-gray-500 mx-auto mt-6"></div>
           </div>
         ))

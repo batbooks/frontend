@@ -12,6 +12,7 @@ import Homepage from "./homepage/Homepage.jsx";
 import MyBooks from "./features/MyBooks/myBooks.jsx";
 import Middleware from "./middleware.jsx";
 import SearchResults from "./features/SearchResults/searchResults.jsx";
+import EditChapter from "./features/EditChapter/editChapter.jsx";
 
 function AppRoutes() {
   return (
@@ -47,7 +48,35 @@ function AppRoutes() {
           element={<Another_User_Profile />}
         ></Route>
         <Route path="/searchresults" element={<SearchResults />} />
-        <Route path="/mybooks" element={<MyBooks />} />
+        <Route path="/readingchapter" element={<ReadingPage chapterId={1} />} />
+        <Route
+          path="/createChapter/:id"
+          element={
+            <Middleware>
+              <CreateChapter />
+            </Middleware>
+          }
+        />
+        <Route path="/readingchapter" element={<ReadingPage />} />
+        <Route path="/editchapter" element={<EditChapter />} />
+        <Route
+          path="/createChapter"
+          element={
+            <Middleware>
+              <CreateChapter />
+            </Middleware>
+          }
+        />
+        <Route path="/chapter/:chapterId" element={<ReadingPage />} />
+
+        <Route
+          path="/mybooks"
+          element={
+            <Middleware>
+              <MyBooks />
+            </Middleware>
+          }
+        />
       </Routes>
     </Router>
   );
