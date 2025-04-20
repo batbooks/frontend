@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Rating } from "@mui/material";
+import { Rating, Select, MenuItem, FormControl } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import { Editor } from "primereact/editor";
 import Footer from "../../common/Footer/Footer.jsx";
@@ -141,16 +141,12 @@ const BookPage = () => {
   };
 
   return (
-    <div>
+    <div className="overflow-x-hidden">
       <Navbar />
 
-      <div className="flex bg-[#D9F0FF] min-h-screen p-5 flex-row-reverse text-right">
+      <div className="flex bg-[#D9F0FF] min-h-screen p-5 flex-row-reverse text-right ">
         {/* Sidebar */}
-        <div
-          className={`w-[23.3vw] mt-14 ${
-            isSticky ? "hidden" : "fixed top-5"
-          } transition-all duration-500 ease-in-out`}
-        >
+        <div className={`w-[23.3vw]  transition-all duration-500 ease-in-out`}>
           <img
             src={
               book.coverImage ||
@@ -321,23 +317,40 @@ const BookPage = () => {
               <label className="block text-gray-600 mb-1 text-sm">
                 آخرین چپتر خوانده شده
               </label>
-              <select
-                value={lastReadChapter}
+              <Select
+                value={chapterId}
                 onChange={(e) => {
                   setLastReadChapter(e.target.key);
                   setChapterId(e.target.value);
                 }}
-                className="w-[180px] border border-gray-300 rounded-[10px] text-2xl"
+                className="w-[180px]  rounded-[10px] text-lg text-center font-vazir"
+                MenuProps={{
+                  PaperProps: {
+                    sx: { fontFamily: "Vazir" },
+                    style: {
+                      maxHeight: 6 * 36, // ارتفاع کلی منو
+                    },
+                  },
+                  MenuListProps: {
+                    style: {
+                      padding: 0,
+                    },
+                  },
+                }}
               >
-                <option className="text-sm" value={0}>
-                  چپتر
-                </option>
+                <MenuItem className="font-vazir" value={0}>
+                  انتخاب چپتر
+                </MenuItem>
                 {book.chapters.map((chapter, index) => (
-                  <option value={chapter.id} key={chapter.title}>
-                    {chapter.title}
-                  </option>
+                  <MenuItem
+                    className="font-vazir"
+                    value={chapter.id}
+                    key={chapter.title}
+                  >
+                    {index + 1}.{chapter.title}
+                  </MenuItem>
                 ))}
-              </select>
+              </Select>
               <div className="text-red-600">{error}</div>
             </div>
             <div>
