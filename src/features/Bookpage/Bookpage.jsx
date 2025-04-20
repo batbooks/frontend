@@ -42,19 +42,38 @@ const BookPage = () => {
   const [isClicked, setIsClicked] = useState(false);
   const [message, setMessage] = useState("");
   const [chapterId, setChapterId] = useState(0);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   const chaptersPerPage = 10;
   const totalPages = Math.ceil((book?.chapters?.length || 0) / chaptersPerPage);
 
   useEffect(() => {
-    const fetchBook = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch(
-          `https://batbooks.liara.run/book/${bookId}/`
-        );
-        if (!response.ok) throw new Error("Failed to fetch book");
-        const data = await response.json();
-        setBook(data);
+        setLoading(true);
+        const token = localStorage.getItem("access_token");
+
+        const [bookResponse, favoriteResponse] = await Promise.all([
+          fetch(`https://batbooks.liara.run/book/${bookId}/`),
+          fetch(
+            `https://batbooks.liara.run/book-actions/is/favorite/${bookId}/`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          ),
+        ]);
+
+        if (!bookResponse.ok || !favoriteResponse.ok) {
+          throw new Error("Failed to fetch data");
+        }
+
+        const bookData = await bookResponse.json();
+        const favoriteData = await favoriteResponse.json();
+
+        setBook(bookData);
+        setIsFavorite(favoriteData.is_favorite);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -62,7 +81,7 @@ const BookPage = () => {
       }
     };
 
-    fetchBook();
+    fetchData();
   }, [bookId]);
 
   useEffect(() => {
@@ -73,6 +92,27 @@ const BookPage = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleFavorite = async () => {
+    try {
+      const response = await fetch(
+        `https://batbooks.liara.run/book-actions/toggle/favorite/${bookId}/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    } catch (err) {
+      console.error("Error:", err.message);
+      console.log("na");
+    } finally {
+      setLoading(false);
+      setIsFavorite(!isFavorite);
+    }
+  };
 
   if (loading)
     return (
@@ -89,7 +129,6 @@ const BookPage = () => {
 
     setError("");
     setMessage("");
-    console.log(lastReadChapter);
     if (chapterId === 0) {
       setError("چپتر را انتخاب کنید");
       return;
@@ -155,22 +194,27 @@ const BookPage = () => {
             alt="Book Cover"
             className="rounded-lg shadow-lg w-full"
           />
-          <div className="grid grid-cols-1 gap-y-2 mt-4">
+          <div className="grid grid-cols-1 mt-4">
             <button
-              className={`shadow-lg rounded-full h-8 mt-1 ${
-                book.isFavorite ? "bg-[#265073] text-white" : "bg-white"
+              onClick={() => handleFavorite()}
+              className={`btn !shadow-lg !rounded-full !h-8  !w-full  ${
+                isFavorite ? "" : " !bg-[#FFFF] !text-black"
               }`}
             >
-              {book.isFavorite
-                ? "حذف از مورد علاقه ها"
-                : "اضافه کردن به مورد علاقه ها"}
+              <span className="span-btn">
+                {isFavorite
+                  ? "حذف از مورد علاقه ها"
+                  : "اضافه کردن به مورد علاقه ها"}
+              </span>
             </button>
             <button
-              className={`shadow-lg rounded-full h-8 ${
-                book.readOnce ? "bg-[#265073] text-white" : "bg-white"
+              className={`btn !shadow-lg !rounded-full !h-8  !w-full  ${
+                book.readOnce ? "" : " !bg-[#FFFF] !text-black"
               }`}
             >
-              {book.readOnce ? "تا کنون خوانده شده" : "تا کنون خوانده نشده"}
+              <span className="span-btn">
+                {book.readOnce ? "تا کنون خوانده شده" : "تا کنون خوانده نشده"}
+              </span>
             </button>
           </div>
         </div>
