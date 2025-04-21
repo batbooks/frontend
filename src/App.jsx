@@ -18,7 +18,6 @@ function AppContent() {
   useEffect(() => {
     const check_refresh = async () => {
       setLoading(true);
-      console.log("refresh function called");
       if (localStorage.getItem("refresh_token")) {
         try {
           const response = await fetch(
@@ -35,22 +34,18 @@ function AppContent() {
           );
 
           if (response.ok) {
-            console.log("access_token reloaded");
             const data = await response.json();
 
             localStorage.setItem("access_token", data.access);
-            console.log(data.access);
             if (localStorage.getItem("access_token")) {
               checkAuth();
             }
           } else {
             dispatch(logout());
-
-            console.log("na");
           }
         } catch (err) {
           dispatch(logout());
-          console.log(err.message);
+          console.error(err.message);
         } finally {
           setLoading(false);
         }
@@ -70,7 +65,6 @@ function AppContent() {
 
         if (response.ok) {
           const data = await response.json();
-          console.log("response was ok user loggin in ");
 
           dispatch(
             loginSuccess({
@@ -80,8 +74,6 @@ function AppContent() {
         } else {
           dispatch(logout());
           check_refresh();
-
-          console.log("na");
         }
       } catch (err) {
         console.error("Error:", err.message);
@@ -97,9 +89,7 @@ function AppContent() {
   }, []);
 
   const { user, isAuthenticated } = useSelector((state) => state.auth);
-  console.log(user);
-  console.log(token);
-  console.log(isAuthenticated);
+
   return !loading ? (
     <AppRoutes />
   ) : (

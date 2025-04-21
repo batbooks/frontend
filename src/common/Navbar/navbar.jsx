@@ -14,7 +14,6 @@ function Navbar() {
   let navigate = useNavigate();
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   const handleLogout = () => {
-    console.log("qqq");
     localStorage.removeItem("access_token");
     navigate("/auth/login");
     // useDispatch(logout());
@@ -55,7 +54,6 @@ function Navbar() {
               }, 250)
             }
           >
-            {console.log(user)}
             {isAuthenticated && user.user_info.image != null ? (
               <img
                 className="w-[50px] h-[50px] rounded-full"
@@ -155,7 +153,10 @@ function Navbar() {
           </li>
           <li className="flex flex-col items-center">
             <a
-              onClick={() => {setSelectedItem(2);navigate("/mybooks")}}
+              onClick={() => {
+                setSelectedItem(2);
+                navigate("/mybooks");
+              }}
               className={`text-[16px] hover:underline hover:text-[#2663CD] active:text-[#2663CD]/50 active:no-underline active:transition-all active:duration-100 focus:outline-none focus:text-[#2663CD] ${selectedItem === 2 ? "text-[#265073]" : ""}`}
               href="#mybooks"
             >

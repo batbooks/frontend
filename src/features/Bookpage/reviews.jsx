@@ -16,12 +16,9 @@ const Reviews = ({ bookId }) => {
         if (!response.ok) throw new Error("Failed to fetch reviews");
 
         const data = await response.json();
-        console.log(data.results);
         setAllreviews(data.results);
       } catch (err) {
         console.error(err);
-
-        console.log("asdad");
       }
     };
 

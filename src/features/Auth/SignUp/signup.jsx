@@ -25,10 +25,7 @@ function Signup() {
           body: JSON.stringify({ email, password, c_password: repeatPassword }),
         }
       );
-      console.log("Response status:", response.status);
-      console.log("Response headers:", [...response.headers]);
       const data = await response.json();
-      console.log("Response data:", data);
       if (response.ok) {
         navigate("/auth/otp", { state: { email: { email } } });
       } else {

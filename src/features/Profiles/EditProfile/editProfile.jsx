@@ -11,11 +11,8 @@ export default function EditProfile({ setEditClicked }) {
   function handleChangeInfo() {
     async function postData() {
       try {
-        console.log("vfd");
       } catch {
-        console.log("vfdsdjh");
       } finally {
-        console.log("vfdsdjhjkh");
       }
     }
     postData();

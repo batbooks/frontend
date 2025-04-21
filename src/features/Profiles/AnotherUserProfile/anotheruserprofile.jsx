@@ -11,26 +11,25 @@ const WrittenBooks = [1, 2, 3, 4, 5, 6, 7, 8];
 const FavoriteBooks = [1, 2, 3, 4, 5, 6, 7, 8];
 
 export default function Another_User_Profile() {
-  const {userId}=useParams();
+  const { userId } = useParams();
   const [following, setFollowing] = useState(false);
   const [loading, setLoading] = useState(false);
-  const token=localStorage.getItem("access_token")
+  const token = localStorage.getItem("access_token");
   const containerRef1 = useRef(null);
   const containerRef2 = useRef(null);
-  const [user,setUser]=useState({})
-  const [error,setError]=useState("")
-  
-useEffect(() => {
-  
+  const [user, setUser] = useState({});
+  const [error, setError] = useState("");
+
+  useEffect(() => {
     const fetchBook = async () => {
-      setLoading(true)
+      setLoading(true);
       try {
-        const response = await fetch(`https://batbooks.liara.run/user/info/${userId}/`);
+        const response = await fetch(
+          `https://batbooks.liara.run/user/info/${userId}/`
+        );
         if (!response.ok) throw new Error("Failed to fetch book");
         const data = await response.json();
         setUser(data);
-        console.log(data)
-        
       } catch (err) {
         setError(err.message);
       } finally {
@@ -39,29 +38,28 @@ useEffect(() => {
     };
 
     fetchBook();
-    
   }, [userId]);
   useEffect(() => {
     const fetchFollowing = async () => {
-      setLoading(true)
+      setLoading(true);
       try {
-        const response = await fetch(`https://batbooks.liara.run/user/is/follow/${userId}/`, {
-          method: "GET",
-  
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          `https://batbooks.liara.run/user/is/follow/${userId}/`,
+          {
+            method: "GET",
+
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         const data = await response.json();
-        console.log(data);
         setFollowing(data.is_follow);
-        console.log(data.is_follow)
       } catch (err) {
         console.error(err.message);
-        console.log("asdad");
-      }finally{
-        setLoading(false)
+      } finally {
+        setLoading(false);
       }
     };
     fetchFollowing();
@@ -74,24 +72,23 @@ useEffect(() => {
     });
   };
   const handleFollow = async () => {
-    
     try {
-      const response = await fetch(`https://batbooks.liara.run/user/toggle/follow/${userId}/`, {
-        method: "GET",
+      const response = await fetch(
+        `https://batbooks.liara.run/user/toggle/follow/${userId}/`,
+        {
+          method: "GET",
 
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if(response.ok){
-      console.log(data);
-      setFollowing(!following);
-      console.log(following)
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.ok) {
+        setFollowing(!following);
       }
     } catch (err) {
-      console.log(err.message);
-      console.log("asdad");
+      console.error(err.message);
     }
   };
   const handleScroll1 = (direction) => {
@@ -118,28 +115,35 @@ useEffect(() => {
     }
   };
   if (loading)
-      return (
-        <div className="h-[100vh] grid place-items-center">
-          <Loading />
-        </div>
-      );
-      
+    return (
+      <div className="h-[100vh] grid place-items-center">
+        <Loading />
+      </div>
+    );
+
   return (
     <>
       <Navbar />
-      
+
       <main
         style={{ direction: "rtl" }}
         className="flex flex-col max-w-screen m-auto bg-[#d9f0ff] pr-[80px] pb-[100px] pt-[13px] shadow-2xl shadow-[#000000]-25 items-center overflow-hidden"
       >
         <button
           className="bg-[#2663cd] text-[#ffffff] items-center rounded-[46px] py-[8px] px-[18px] mt-[15px] mb-[24px] ml-auto shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
-          onClick={() => {handleFollow();setFollowing(!following)}}
+          onClick={() => {
+            handleFollow();
+            setFollowing(!following);
+          }}
         >
           {!following ? (
-            <span onClick={handleFollow} className="font-[400] text-[16px]">دنبال کردن</span>
+            <span onClick={handleFollow} className="font-[400] text-[16px]">
+              دنبال کردن
+            </span>
           ) : (
-            <span onClick={handleFollow} className="font-[400] text-[16px]">دنبال نکردن</span>
+            <span onClick={handleFollow} className="font-[400] text-[16px]">
+              دنبال نکردن
+            </span>
           )}
         </button>
         <h1 className="text-[#265073] text-[32px] font-[700] mx-auto absolute ml-[80px]">
@@ -159,9 +163,7 @@ useEffect(() => {
             <p className="text-[16px] text-[#000000] font-[300]">
               {user.gender}
             </p>
-            <p className="text-[16px] font-[300] mt-[12px]">
-            ملحق شده در {}
-          </p>
+            <p className="text-[16px] font-[300] mt-[12px]">ملحق شده در {}</p>
           </div>
 
           <div className="w-[100%]">
