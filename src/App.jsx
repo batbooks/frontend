@@ -18,7 +18,6 @@ function AppContent() {
   useEffect(() => {
     const check_refresh = async () => {
       setLoading(true);
-      console.log("refresh function called");
       if (localStorage.getItem("refresh_token")) {
         try {
           const response = await fetch(
@@ -35,73 +34,53 @@ function AppContent() {
           );
 
           if (response.ok) {
-            console.log("access_token reloaded");
             const data = await response.json();
 
             localStorage.setItem("access_token", data.access);
-            console.log(data.access)
             if (localStorage.getItem("access_token")) {
-
               checkAuth();
             }
           } else {
             dispatch(logout());
-            localStorage.removeItem("refresh_token");
-
-            localStorage.removeItem("access_token");
-            console.log("na");
           }
         } catch (err) {
-          localStorage.removeItem("refresh_token");
-          localStorage.removeItem("access_token");
           dispatch(logout());
-          console.log(err.message);
+          console.error(err.message);
         } finally {
-          setLoading(false)
+          setLoading(false);
         }
       }
     };
     const checkAuth = async () => {
       setLoading(true);
 
-      if (localStorage.getItem("access_token")) {
-        try {
-          const response = await fetch(`https://batbooks.liara.run/auth/who/`, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-            },
-          });
+      try {
+        const response = await fetch(`https://batbooks.liara.run/auth/who/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        });
 
-          if (response.ok) {
-            const data = await response.json();
-            console.log("response was ok user loggin in ");
-            
-            dispatch(
-              loginSuccess({
-                user: data,
-              })
-            );
-          } else {
-            dispatch(logout());
-            check_refresh();
+        if (response.ok) {
+          const data = await response.json();
 
-            console.log("na");
-          }
-        } catch (err) {
-          console.error("Error:", err.message);
+          dispatch(
+            loginSuccess({
+              user: data,
+            })
+          );
+        } else {
           dispatch(logout());
-
           check_refresh();
-        } finally {
-          setLoading(false);
         }
-      } else {
+      } catch (err) {
+        console.error("Error:", err.message);
         dispatch(logout());
-        if (localStorage.getItem("refresh_token")) {
-          check_refresh();
-        }
+
+        check_refresh();
+      } finally {
         setLoading(false);
       }
     };
@@ -110,9 +89,7 @@ function AppContent() {
   }, []);
 
   const { user, isAuthenticated } = useSelector((state) => state.auth);
-  console.log(user);
-  console.log(token);
-  console.log(isAuthenticated);
+
   return !loading ? (
     <AppRoutes />
   ) : (
