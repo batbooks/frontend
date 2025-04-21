@@ -14,10 +14,11 @@ const IsWriting = [1, 2];
 const WrittenBooks = [1, 2, 3, 4, 5, 6, 7, 8];
 const token = localStorage.getItem("access_token");
 export default function Profile() {
-  const [userId,setUserId]=useState("")
+  const [lastBook,setLastBook]=useState("")
   const [followings,setFollowings]=useState([])
   const [loading, setLoading] = useState(true);
   const [loading1, setLoading1] = useState(true);
+  const [loading2, setLoading2] = useState(true);
   const [userInfo, setUserInfo] = useState([]);
   const [following,setFollowing]=useState([])
   const handleFollow = async (user) => {
@@ -60,6 +61,7 @@ export default function Profile() {
         if (response.ok) {
           const data = await response.json();
           console.log(data);
+          userBooks(data.id)
           setUserInfo(data.user_info)
           
         } else {
@@ -74,8 +76,34 @@ export default function Profile() {
         setLoading(false)
       }
     };
-
+    const userBooks = async (userid) => {
+      setLoading2(true);
+      
+      try {
+        const response = await fetch(`https://batbooks.liara.run/book/user/${userid}/`, {
+          method: "GET",
+          
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data.results[0]);
+          setLastBook(data.results[0])
+          
+        } else {
+          
+          console.log("na");
+        }
+      } catch (err) {
+        console.error("Error:", err.message);
+        
+        console.log("na");
+      } finally {
+        setLoading2(false)
+      }
+    };
     auth();
+    userBooks();
   }, []);
   useEffect(() => {
     const fetchFollowings = async () => {
@@ -108,6 +136,21 @@ export default function Profile() {
 
     fetchFollowings();
   }, []);
+  function getTimeAgo(dateString) {
+    const then = new Date(dateString);
+    const now = new Date();
+  
+    const diffMs = now - then;
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+  
+    if (diffHours < 24) {
+      return `${diffHours} ساعت پیش`;
+    } else {
+      const diffDays = Math.floor(diffHours / 24);
+      return `${diffDays} روز پیش`;
+    }
+  }
+  
   const dispatch = useDispatch();
   const [editClicked, setEditClicked] = useState(false);
   const [isFollowingOpened, setIsFollowingOpened] = useState(false);
@@ -123,7 +166,7 @@ export default function Profile() {
   }
 
     
-   if (loading || loading1)
+   if (loading || loading1 ||loading2)
        return (
          <div className="h-[100vh] grid place-items-center">
            <Loading />
@@ -191,12 +234,17 @@ export default function Profile() {
             <h2 className="text-[24px] text-[#000000] font-[400] mt-[8px] mb-[12px]">
               جزئیات
             </h2>
+            {console.log(user)}
             <p className="text-[16px] text-[#000000] font-[300]">
               {userInfo.gender}
             </p>
             <p className="text-[16px] font-[300] mt-[12px]">
-              ملحق شده در روز/ماه/سال
+               تاریخ ملحق شدن    
             </p>
+            <p className="text-[16px] font-[300] mt-[12px]">
+            {getTimeAgo(user.joined_date)}   
+            </p>
+
           </div>
 
           <div className="w-[100%]">
@@ -205,7 +253,7 @@ export default function Profile() {
             </h3>
 
             <div className="flex gap-[20px] mb-[19px]">
-              <button className="flex flex-col bg-[#ffffff] px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:bg-[#2663cd]/90 hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none">
+              <button onClick={()=>{navigate("/mybooks")}} className="flex flex-col bg-[#ffffff] px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:bg-[#2663cd]/90 hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none">
                 <span className="text-[24px] font-[600] text-[#265073] mb-[-5px]">
                   {userInfo.favorite_count}
                 </span>
@@ -213,7 +261,7 @@ export default function Profile() {
                   کتاب موردعلاقه
                 </span>
               </button>
-              <button className="flex flex-col bg-[#ffffff] px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:bg-[#2663cd]/90 hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none">
+              <button onClick={()=>{navigate("/mybooks")}} className="flex flex-col bg-[#ffffff] px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:bg-[#2663cd]/90 hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none">
                 <span className="text-[24px] font-[600] text-[#265073] mb-[-5px]">
                   10
                 </span>
@@ -262,13 +310,14 @@ export default function Profile() {
             </div>
           </div>
 
-          {WrittenBooks[0] ? (
+          {lastBook ? (
             <div className="min-w-[242px] h-[368px] mt-[32px]">
               <BookCard
-                title="تست"
-                author="تست"
-                coverImage={"/src/assets/images/book_sample1.png"}
-                description="این متن صرفا جهت تست است..."
+                title={lastBook.name}
+                author={lastBook.Author}
+                coverImage={lastBook.image?lastBook.image:"/src/assets/images/book_sample1.png"}
+                
+                description={lastBook.description}
                 chapters={85}
               />
             </div>
