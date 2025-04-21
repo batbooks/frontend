@@ -581,8 +581,8 @@ const Comments = ({ chapterId }) => {
                     {console.log(reply)}
                     <div className="flex flex-row justify-end max-w-200   gap-5 min-h-30">
                       <div>
-                        <p className="text-sm text-gray-500 p-2 ">
-                          {reply.created}
+                        <p className="text-sm text-gray-500 p-2 max-w-200 ">
+                          {getTimeAgo(reply.created)}
                         </p>
                         <div className="flex  relative justify-end mb-7">
                           <div className="flex flex-col gap-3 absolute right-190">
@@ -625,13 +625,15 @@ const Comments = ({ chapterId }) => {
                           />
                         )}
                       </div>
+                      
                     </div>
                     <div className="w-[60vw] mt-8 mr-80 border-t-2 border-gray-500 mx-auto "></div>
                   </div>
                 ))}
+                
                 <div className="text-right  mt-2">
                   <button
-                    className="text-blue-700 hover:underline "
+                    className="text-blue-700 hover:underline cursor-pointer  mr-25 mb-4"
                     onClick={() => fetchReplies(comment.id)}
                   >
                     {nextreplyLink[comment.id] != null &&
@@ -649,7 +651,8 @@ const Comments = ({ chapterId }) => {
                       )}
                   </button>
                 </div>
-              </div>
+                </div>
+                
             )}
 
             <div className="w-4/5 border-t-2 border-gray-500 mx-auto "></div>
