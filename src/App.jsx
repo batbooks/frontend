@@ -46,14 +46,11 @@ function AppContent() {
             }
           } else {
             dispatch(logout());
-            localStorage.removeItem("refresh_token");
-
-            localStorage.removeItem("access_token");
+            
             console.log("na");
           }
         } catch (err) {
-          localStorage.removeItem("refresh_token");
-          localStorage.removeItem("access_token");
+          
           dispatch(logout());
           console.log(err.message);
         } finally {
@@ -64,7 +61,7 @@ function AppContent() {
     const checkAuth = async () => {
       setLoading(true);
 
-      if (localStorage.getItem("access_token")) {
+      
         try {
           const response = await fetch(`https://batbooks.liara.run/auth/who/`, {
             method: "GET",
@@ -97,13 +94,7 @@ function AppContent() {
         } finally {
           setLoading(false);
         }
-      } else {
-        dispatch(logout());
-        if (localStorage.getItem("refresh_token")) {
-          check_refresh();
-        }
-        setLoading(false);
-      }
+     
     };
 
     checkAuth();
