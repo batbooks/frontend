@@ -21,7 +21,7 @@ function Navbar() {
   return (
     <header
       dir="rtl"
-      className="relative z-100 h-[100px] max-w-screen m-auto flex bg-[#a3d5ff] justify-between py-[1px] pl-[50px] pr-[30px]"
+      className={`${isVisiblePanel || isVisibleUser ? "relative" : ""} h-[100px] max-w-screen m-auto flex bg-[#a3d5ff] justify-between py-[1px] pl-[50px] pr-[30px]`}
     >
       <nav className="flex items-center gap-[60px]">
         <div
