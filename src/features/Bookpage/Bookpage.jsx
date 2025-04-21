@@ -269,7 +269,6 @@ const BookPage = () => {
             </p>
 
             <div className="mt-2">
-              <span className="font-semibold">ژانرها</span>
               {book.genres?.map((genre, index) => (
                 <span
                   key={index}
@@ -278,6 +277,22 @@ const BookPage = () => {
                   {genre}
                 </span>
               ))}
+              <span dir="rtl" className="font-semibold">
+                ژانر ها:
+              </span>
+            </div>
+            <div className="mt-5">
+              {book.tags?.map((tag, index) => (
+                <span
+                  key={index}
+                  className="bg-gray-200 px-5 py-1 rounded-lg text-sm mx-2"
+                >
+                  {tag}
+                </span>
+              ))}
+              <span dir="rtl" className="font-semibold">
+                تگ ها:
+              </span>
             </div>
           </div>
 
