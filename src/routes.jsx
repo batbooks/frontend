@@ -13,6 +13,8 @@ import MyBooks from "./features/MyBooks/myBooks.jsx";
 import Middleware from "./middleware.jsx";
 import SearchResults from "./features/SearchResults/searchResults.jsx";
 import EditChapter from "./features/EditChapter/editChapter.jsx";
+import ReadingPage from "./features/ReadingChapter/chapterView.jsx";
+import CreateChapter from "./features/CreateChapter/createChapter.jsx";
 
 function AppRoutes() {
   return (

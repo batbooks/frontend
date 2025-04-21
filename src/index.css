@@ -52,7 +52,8 @@ textarea {
 }
 
 .scrollbar-opacity-0::-webkit-scrollbar {
-  visibility: hidden;
+  visibility: collapse;
+  width: 19px;
 }
 
 /* :root {

@@ -3,13 +3,58 @@ import Footer from "../../common/Footer/Footer";
 import { useState } from "react";
 import { Rating } from "@mui/material";
 
-const books = [1, 2, 3, 4];
-const people = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-const forums = [1, 2, 3, 4, 5, 6, 7, 8];
+const genres = [
+  "فانتزی",
+  "علمی-تخیلی",
+  "رمان(داستانی)",
+  "تاریخی",
+  "جنایی",
+  "معمایی",
+  "زندگینامه",
+  "توسعه فردی",
+  "عاشقانه",
+  "ترسناک",
+  "کمیک",
+  "کمدی",
+  "فانتزی",
+  "علمی-تخیلی",
+  "رمان(داستانی)",
+  "تاریخی",
+  "جنایی",
+  "معمایی",
+  "زندگینامه",
+  "توسعه فردی",
+  "عاشقانه",
+  "ترسناک",
+  "کمیک",
+  "کمدی",
+];
 
 export default function SearchResults({ searchingItem = "book" }) {
   const [isSelectOpened, setIsSelectOpened] = useState(false);
   const [selectValue, setIsSelectValue] = useState("--انتخاب کنید--");
+  const [pageNum, setPageNum] = useState(1);
+  const [forums, setForums] = useState([1, 2, 3, 4]); //get current page forums from api
+  const [people, setPeople] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]); //get current page people from api
+  const [books, setBooks] = useState([1, 2, 3, 4]); //get current page books from api
+  const lastPageBooks = books.map((i) => {
+    if (i >= 5) {
+      return i - 4;
+    }
+  }); //get last page books from api
+  const nextPageBooks = books.map((i) => i + 4); //get next page books from api
+  const lastPagePeople = people.map((i) => {
+    if (i >= 12) {
+      return i - 12;
+    }
+  }); //get last page people from api
+  const nextPagePeople = people.map((i) => i + 12); //get next page people from api
+  const lastPageForums = forums.map((i) => {
+    if (i >= 4) {
+      return i - 4;
+    }
+  }); //get last page forums from api
+  const nextPageForums = forums.map((i) => i + 4); //get next page forums from api
 
   return (
     <>
@@ -47,7 +92,7 @@ export default function SearchResults({ searchingItem = "book" }) {
               className="w-[24px] h-[24px] z-2 ml-[15px] absolute left-0"
             />
           </div>
-          <button className="!py-[12px] !px-[28px] !rounded-[20px] !w-fit !h-fit !mb-0 !mx-fit !border-[2px] !border-[#000000]/25 btn">
+          <button className="!py-[12px] !px-[28px] !rounded-[20px] !w-fit !h-fit !mb-0 !ml-0 !mr-0 !border-[2px] !border-[#000000]/25 btn">
             <span className="span-btn !text-[16px] !font-[400]">
               جستجوی{" "}
               {searchingItem === "book"
@@ -60,7 +105,131 @@ export default function SearchResults({ searchingItem = "book" }) {
         </form>
         <div className="flex gap-[53px] w-[100%]">
           {searchingItem === "book" ? (
-            <div className="bg-[#002D54] rounded-[20px] px-[24px] py-[18px] border-[2px] border-[#000000]/25 mt-[26px] h-fit w-[358px]"></div>
+            <div className="bg-[#002D54] rounded-[20px] px-[24px] py-[17px] border-[2px] border-[#000000]/25 mt-[26px] h-fit flex flex-col gap-[34px] min-w-[375px] max-w-[375px]">
+              <div className="flex justify-between items-center">
+                <div className="flex gap-[3px] items-center">
+                  <img
+                    src="/src/assets/images/filter.png"
+                    alt="filter"
+                    className="w-[30px] h-[30px] "
+                  />
+                  <h4 className="text-[#DDDDDD] text-[20px] font-[400]">
+                    فیلترها {"(3)"}
+                  </h4>
+                </div>
+                <button className="cursor-pointer">
+                  <span className="text-[#A4C0ED] font-[400] text-[16px]">
+                    حذف فیلترها
+                  </span>
+                </button>
+              </div>
+              <div className="flex flex-col divide-y-[2px] divide-[#ffffff]/50">
+                <span className="text-white pb-[17px]">فیلترها</span>
+                <h5 className="py-[17px] text-[20px] font-[400] text-[#DDDDDD]">
+                  جستجوی کتاب بر اساس:
+                </h5>
+                <div className="flex flex-col gap-[15px] py-[17px]">
+                  <h6 className="text-[#DDDDDD] text-[20px] font-[400]">
+                    ژانر:
+                  </h6>
+                  <ul
+                    dir="ltr"
+                    className="scrollbar-opacity-0 grid grid-cols-3 bg-[#A4C0ED] py-[17px] pl-[17px] rounded-[15px] border-[2px] border-[#000000]/10 max-h-[181px] overflow-y-scroll gap-x-[25px] gap-y-[21px]"
+                  >
+                    {genres.map((g) => (
+                      <GenreButton genreName={g} />
+                    ))}
+                  </ul>
+                </div>
+                <div className="flex flex-col gap-[15px] py-[17px]">
+                  <h6 className="text-[#DDDDDD] text-[20px] font-[400]">تگ:</h6>
+                  <ul
+                    dir="ltr"
+                    className="scrollbar-opacity-0 grid grid-cols-3 bg-[#A4C0ED] py-[17px] pl-[17px] rounded-[15px] border-[2px] border-[#000000]/10 max-h-[181px] overflow-y-scroll gap-x-[25px] gap-y-[21px]"
+                  >
+                    {genres.map((g) => (
+                      <GenreButton genreName={g} />
+                    ))}
+                  </ul>
+                </div>
+                <div className="flex flex-col gap-[15px] py-[17px]">
+                  <h6 className="text-[20px] font-[400] text-[#DDDDDD]">
+                    تعداد فصل ها:
+                  </h6>
+                  <div className="flex justify-around">
+                    <div className="flex gap-[10px] items-center">
+                      <h6 className="text-[20px] font-[400] text-[#DDDDDD]">
+                        از:
+                      </h6>
+                      <input className="bg-[white] w-[70px] py-[10px] rounded-[5px] border-[2px] border-[#000000]/8 text-center text-[16px] font-[400] focus:outline-none" />
+                    </div>
+                    <div className="flex gap-[10px] items-center">
+                      <h6 className="text-[20px] font-[400] text-[#DDDDDD]">
+                        تا:
+                      </h6>
+                      <input className="bg-[white] w-[70px] py-[10px] rounded-[5px] border-[2px] border-[#000000]/8 text-center text-[16px] font-[400] focus:outline-none" />
+                    </div>
+                  </div>
+                </div>
+                <div className="flex flex-col gap-[15px] py-[17px]">
+                  <h6 className="text-[20px] font-[400] text-[#DDDDDD]">
+                    تعداد افرادی که پسندیده اند:
+                  </h6>
+                  <div className="flex justify-around">
+                    <div className="flex gap-[10px] items-center">
+                      <h6 className="text-[20px] font-[400] text-[#DDDDDD]">
+                        از:
+                      </h6>
+                      <input className="bg-[white] w-[70px] py-[10px] rounded-[5px] border-[2px] border-[#000000]/8 text-center text-[16px] font-[400] focus:outline-none" />
+                    </div>
+                    <div className="flex gap-[10px] items-center">
+                      <h6 className="text-[20px] font-[400] text-[#DDDDDD]">
+                        تا:
+                      </h6>
+                      <input className="bg-[white] w-[70px] py-[10px] rounded-[5px] border-[2px] border-[#000000]/8 text-center text-[16px] font-[400] focus:outline-none" />
+                    </div>
+                  </div>
+                </div>
+                <div className="flex flex-col gap-[15px] py-[17px]">
+                  <h6 className="text-[20px] font-[400] text-[#DDDDDD]">
+                    میانگین امتیازات کتاب:
+                  </h6>
+                  <div className="flex justify-around">
+                    <div className="flex gap-[10px] items-center">
+                      <h6 className="text-[20px] font-[400] text-[#DDDDDD]">
+                        از:
+                      </h6>
+                      <input className="bg-[white] w-[70px] py-[10px] rounded-[5px] border-[2px] border-[#000000]/8 text-center text-[16px] font-[400] focus:outline-none" />
+                    </div>
+                    <div className="flex gap-[10px] items-center">
+                      <h6 className="text-[20px] font-[400] text-[#DDDDDD]">
+                        تا:
+                      </h6>
+                      <input className="bg-[white] w-[70px] py-[10px] rounded-[5px] border-[2px] border-[#000000]/8 text-center text-[16px] font-[400] focus:outline-none" />
+                    </div>
+                  </div>
+                </div>
+                <div className="flex flex-col gap-[15px] py-[17px]">
+                  <h6 className="text-[20px] font-[400] text-[#DDDDDD]">
+                    تعداد امتیازدهندگان:
+                  </h6>
+                  <div className="flex justify-around">
+                    <div className="flex gap-[10px] items-center">
+                      <h6 className="text-[20px] font-[400] text-[#DDDDDD]">
+                        از:
+                      </h6>
+                      <input className="bg-[white] w-[70px] py-[10px] rounded-[5px] border-[2px] border-[#000000]/8 text-center text-[16px] font-[400] focus:outline-none" />
+                    </div>
+                    <div className="flex gap-[10px] items-center">
+                      <h6 className="text-[20px] font-[400] text-[#DDDDDD]">
+                        تا:
+                      </h6>
+                      <input className="bg-[white] w-[70px] py-[10px] rounded-[5px] border-[2px] border-[#000000]/8 text-center text-[16px] font-[400] focus:outline-none" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           ) : null}
           <div className="flex flex-col grow-1">
             {searchingItem !== "book" ? (
@@ -93,7 +262,7 @@ export default function SearchResults({ searchingItem = "book" }) {
                     </div>
                   </button>
                   <ul
-                    className={`flex flex-col justify-between absolute left-0 bg-[#ffffff] w-[147px] mt-[137px] h-[90px] outline-[2px] outline-[#000000]/21 z-9 divide-y divide-[#2F4F4F]/50 ${isSelectOpened ? "visible" : "hidden"}`}
+                    className={`flex flex-col justify-between absolute left-0 bg-[#ffffff] w-[147px] mt-[137px] h-[90px] outline-[2px] outline-[#000000]/21 z-9 divide-y divide-[#2F4F4F]/50 rounded-b-[12px] ${isSelectOpened ? "visible" : "hidden"}`}
                   >
                     <li className="grow-1 flex z-10">
                       <button
@@ -124,7 +293,7 @@ export default function SearchResults({ searchingItem = "book" }) {
               </div>
             )}
             {searchingItem === "book" ? (
-              <div className="grid grid-cols-1 gap-[40px]">
+              <div className="grid grid-cols-1 gap-[40px] mb-[30px]">
                 {books.map((i) => (
                   <Book
                     key={i}
@@ -133,25 +302,77 @@ export default function SearchResults({ searchingItem = "book" }) {
                 ))}
               </div>
             ) : searchingItem === "forum" ? (
-              <div>
-                <div className="grid grid-cols-2 gap-[25px]">
-                  {forums.map((i) => (
-                    <Forum
-                      key={i}
-                      coverImage={`/src/assets/images/book_sample${i}.png`}
-                    />
-                  ))}
-                </div>
+              <div className="grid grid-cols-2 gap-[25px] mb-[30px]">
+                {forums.map((i) => (
+                  <Forum
+                    key={i}
+                    coverImage={`/src/assets/images/book_sample${i}.png`}
+                  />
+                ))}
               </div>
             ) : (
-              <div>
-                <div className="grid grid-cols-3 gap-[25px]">
-                  {people.map((i) => (
-                    <Person key={i} />
-                  ))}
-                </div>
+              <div className="grid grid-cols-3 gap-[25px] mb-[30px]">
+                {people.map((i) => (
+                  <Person key={i} />
+                ))}
               </div>
             )}
+            <div className="mx-auto flex gap-[20px] items-center">
+              <button
+                onClick={() => {
+                  if (
+                    (nextPageBooks.length !== 0) &
+                    (searchingItem === "book")
+                  ) {
+                    //check if search results is finished from api
+                    setPageNum(pageNum + 1);
+                    setBooks(nextPageBooks); //update current & last & next page books
+                  } else if (
+                    (nextPagePeople.length !== 0) &
+                    (searchingItem === "people")
+                  ) {
+                    //check if search results is finished from api
+                    setPageNum(pageNum + 1);
+                    setPeople(nextPagePeople); //update current & last & next page books
+                  } else if (
+                    (nextPageForums.length !== 0) &
+                    (searchingItem === "forum")
+                  ) {
+                    //check if search results is finished from api
+                    setPageNum(pageNum + 1);
+                    setForums(nextPageForums); //update current & last & next page books
+                  }
+                }}
+                className="bg-[#E7E7E7] rounded-full w-[70px] h-[70px] text-[25px] font-bold outline-[2px] outline-[#000000]/30 relative overflow-hidden cursor-pointer hover:ease-in-out hover:before:w-full hover:before:h-full before:absolute before:w-0 before:h-0 before:bg-[#2663CD] before:inset-0 before:transition-all before:duration-[0.2s] transition-all active:before:bg-[#2663CD]/80"
+              >
+                <span className="relative z-2">{"<"}</span>
+              </button>
+              <input
+                readOnly
+                className="bg-white text-center text-[20px] py-[12px] rounded-[12px] w-[80px] outline-[2px] outline-[#000000]/8 cursor-auto"
+                value={pageNum}
+              />
+              <button
+                onClick={() => {
+                  if ((pageNum !== 1) & (searchingItem === "book")) {
+                    //check if it is first page
+                    setPageNum(pageNum - 1);
+                    setBooks(lastPageBooks); //update current & last & next page books
+                  } else if ((pageNum !== 1) & (searchingItem === "people")) {
+                    //check if it is first page
+                    setPageNum(pageNum - 1);
+                    setPeople(lastPagePeople); //update current & last & next page books
+                  } else if ((pageNum !== 1) & (searchingItem === "forum")) {
+                    //check if it is first page
+                    setPageNum(pageNum - 1);
+                    setForums(lastPageForums); //update current & last & next page books
+                  }
+                }}
+                className="bg-[#E7E7E7] rounded-full w-[70px] h-[70px] text-[25px] font-bold outline-[2px] outline-[#000000]/30 relative overflow-hidden cursor-pointer hover:ease-in-out hover:before:w-full hover:before:h-full before:absolute before:w-0 before:h-0 before:bg-[#2663CD] before:inset-0 before:transition-all before:duration-[0.2s] transition-all active:before:bg-[#2663CD]/80"
+              >
+                <span className="relative z-2">{">"}</span>
+              </button>
+            </div>
           </div>
         </div>
       </main>
@@ -178,11 +399,21 @@ function Book({
         />
         <div className="flex flex-col gap-[5px]">
           <h3 className="text-[32px] font-[400]">{bookName}</h3>
-          <sapn className="text-[20px] font-[400]">{authorName}</sapn>
-          <Rating dir="ltr" readOnly precision={0.1} value={star} />
+          <div className="flex gap-[20px]">
+            <sapn className="text-[20px] font-[400]">{authorName}</sapn>
+            <Rating dir="ltr" readOnly precision={0.1} value={star} />
+          </div>
+          <p className="text-[14px] font-[300]">
+            خلاصه داستان: این متن صرفاً جهت تست متن خلاصه کتاب می باشد.
+            <br />
+            خلاصه داستان: این متن صرفاً جهت تست متن خلاصه کتاب می باشد. خلاصه
+            داستان: این متن صرفاً جهت تست متن خلاصه کتاب می باشد.
+            <br />
+            خلاصه داستان: این متن صرفاً جهت تست متن خلاصه کتاب می باشد.
+          </p>
         </div>
       </div>
-      <button className="btn !py-[9px] !px-[32px] !rounded-[10px]">
+      <button className="btn !py-[9px] !rounded-[10px] !min-w-[203px] !h-fit !mr-0 !ml-0 !mb-0">
         <span className="span-btn">مشاهده جزئیات کتاب</span>
       </button>
     </div>
@@ -191,7 +422,7 @@ function Book({
 
 function Forum({ coverImage }) {
   return (
-    <button className="relative overflow-hidden py-[10px] pr-[10px] pl-[90px] bg-[#A4C0ED] outline-[2px] outline-[#000000]/21 rounded-[15px] gap-[38px] flex items-center cursor-pointer hover:ease-in-out hover:before:w-full hover:before:h-full before:absolute before:w-0 before:h-0 before:bg-[#2663CD]/40 before:shadow-none hover:shadow-[#000000]/21 hover:shadow-lg before:inset-0 before:transition-all before:duration-[0.2s] transition-all active:before:bg-[#2663CD]/20 active:outline-none active:shadow-none active:ring-0 active:ring-offset-0">
+    <button className="relative overflow-hidden py-[10px] pr-[10px] pl-[90px] bg-[#A4C0ED] outline-[2px] outline-[#000000]/21 rounded-[15px] gap-[38px] flex items-center cursor-pointer hover:ease-in-out hover:before:w-full hover:before:h-full before:absolute before:w-0 before:h-0 before:bg-[#2663CD]/40 before:shadow-none hover:shadow-[#000000]/21 hover:shadow-lg before:inset-0 before:transition-all before:duration-[0.2s] transition-all active:before:bg-[#2663CD]/20 active:outline-none active:shadow-none">
       <img
         src={coverImage}
         alt="image"
@@ -247,12 +478,22 @@ function Person() {
         onClick={() => {
           setIsFollowing(!isFollowing);
         }}
-        className="btn py-[7px] px-[21px] rounded-[10px]"
+        className="btn py-[7px] px-[21px] !rounded-[10px] !w-fit !h-fit !ml-0 !mr-0 !mb-0"
       >
         <span className="span-btn text-[14px] font-[300]">
           {isFollowing ? "دنبال نکردن" : "دنبال کردن"}
         </span>
       </button>
     </button>
+  );
+}
+
+function GenreButton({ genreName }) {
+  return (
+    <li>
+      <button className="btn py-[4.5px] !w-[78px] !mb-0 !mr-0 !ml-0 !h-fit !rounded-[5.5px]">
+        <span className="span-btn text-[12px] font-[300]">{genreName}</span>
+      </button>
+    </li>
   );
 }
