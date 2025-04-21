@@ -118,7 +118,6 @@ const BookPage = () => {
       }, 100);
     } catch (err) {
       console.error("Error:", err.message);
-      console.log("na");
     } finally {
       setLoading(false);
       setIsFavorite(!isFavorite);
@@ -164,13 +163,11 @@ const BookPage = () => {
       );
 
       const data = await response.json();
-      console.log(data);
       if (response.ok) {
         setMessage("comment sent for review");
         // Redirect to verification page or next step after a short delay
 
         // Adjust the route as needed
-        console.log("adasd");
         setTimeout(() => {
           Swal.fire({
             title: "نقد شما با موفقیت ثبت شد",

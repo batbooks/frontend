@@ -38,7 +38,6 @@ export default function VoteAndReview() {
         // Redirect to verification page or next step after a short delay
 
         // Adjust the route as needed
-        console.log("adasd");
         setTimeout(() => {
           Swal.fire({
             title: "نظر شما با موفقیت ثبت شد",

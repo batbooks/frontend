@@ -45,7 +45,7 @@ const Comments = ({ chapterId }) => {
         if (!response.ok) throw new Error("Failed to fetch comments");
 
         const data1 = await response.json();
-        // console.log("next", nextcomment);
+
         setAllComments(data1.results);
         setnextcomment(data1.links.next);
         setprevcomment(data1.links.previous);
@@ -57,8 +57,6 @@ const Comments = ({ chapterId }) => {
         });
       } catch (err) {
         console.error(err);
-
-        console.log("asdad");
       } finally {
         setLoading((prev) => [...prev, (prev[0] = false)]);
       }
@@ -81,7 +79,6 @@ const Comments = ({ chapterId }) => {
   //     } catch (err) {
   //       console.error(err);
 
-  //       console.log("asdad");
   //     } finally {
 
   //     }
@@ -109,9 +106,6 @@ const Comments = ({ chapterId }) => {
 
         if (response.ok) {
           // Redirect to verification page or next step after a short delay
-          console.log("successful");
-          // Adjust the route as needed
-          console.log("adasd");
           setTimeout(() => {
             Swal.fire({
               title: "نظر شما با موفقیت ثبت شد",
@@ -130,7 +124,6 @@ const Comments = ({ chapterId }) => {
     };
     const handleChange = (e) => {
       const newBody = e.target.value;
-      console.log(newBody);
       setBody(newBody);
     };
     const handleSubmit = (e) => {
@@ -147,16 +140,22 @@ const Comments = ({ chapterId }) => {
     };
     return (
       <div className="grid grid-cols-[1fr_5fr] place-items-center">
-        
         {/* Left Button */}
-        <button onClick={(e)=>{handleSubmit(e)}} className="bg-blue-500  self-end hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition">
+        <button
+          onClick={(e) => {
+            handleSubmit(e);
+          }}
+          className="bg-blue-500  self-end hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition"
+        >
           ارسال
         </button>
 
         {/* Textarea */}
         <textarea
           value={body || ""}
-          onChange={(e)=>{handleChange(e)}}
+          onChange={(e) => {
+            handleChange(e);
+          }}
           placeholder="نظر خود را بنویسید..."
           dir="rtl"
           className="w-full flex-grow resize-none border p-2 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-300"
@@ -166,12 +165,9 @@ const Comments = ({ chapterId }) => {
     );
   }
   const isinOneReplyLikes = (replies, commentId) => {
-    console.log(user.id);
-    console.log(replies);
     if (isAuthenticated) {
       replies?.forEach((reply) => {
         if (reply.like.includes(user.id)) {
-          console.log("has liked");
           setLikedReplies((prev) => ({
             ...prev,
             [commentId]: {
@@ -200,12 +196,9 @@ const Comments = ({ chapterId }) => {
     }
   };
   const isinOneCommentLikes = (comments) => {
-    console.log(user.id);
-    console.log(comments);
     if (isAuthenticated) {
       comments?.forEach((comment) => {
         if (comment.like.includes(user.id)) {
-          console.log("has liked");
           setLiked((prev) => ({
             ...prev,
             [comment.id]: 1,
@@ -251,14 +244,11 @@ const Comments = ({ chapterId }) => {
           }
         );
         if (response.ok) {
-          // console.log(data);
         }
       } catch (err) {
-        console.log(err.message);
-        console.log("asdad");
+        console.error(err.message);
       }
     };
-    // console.log(liked);
     if (liked[commentId] == 1) {
       return <AiFillLike color="blue" size="25" onClick={handleClick} />;
     }
@@ -301,14 +291,12 @@ const Comments = ({ chapterId }) => {
           }
         );
         if (response.ok) {
-          console.log(data);
         }
       } catch (err) {
-        console.log(err.message);
-        console.log("asdad");
+        console.error(err.message);
       }
     };
-    console.log(liked);
+
     if (likeReplies[commentId]?.[replyId] == 1) {
       return <AiFillLike color="blue" size="25" onClick={handleClick} />;
     }
@@ -351,14 +339,12 @@ const Comments = ({ chapterId }) => {
           }
         );
         if (response.ok) {
-          console.log(data);
         }
       } catch (err) {
-        console.log(err.message);
-        console.log("asdad");
+        console.error(err.message);
       }
     };
-    console.log(liked);
+
     if (likeReplies[commentId]?.[replyId] == -1) {
       return <AiFillDislike color="red" size="25" onClick={handleClick} />;
     }
@@ -410,8 +396,7 @@ const Comments = ({ chapterId }) => {
           }
         );
       } catch (err) {
-        console.log(err.message);
-        console.log("asdad");
+        console.error(err.message);
       }
       // send to api
     };
@@ -454,7 +439,6 @@ const Comments = ({ chapterId }) => {
 
     let address = `https://batbooks.liara.run/comments/comment/${commentId}/`;
     if (nextreplyLink.hasOwnProperty(commentId)) {
-      console.log(address);
       address = nextreplyLink[commentId];
     }
     try {
@@ -486,8 +470,6 @@ const Comments = ({ chapterId }) => {
         ...nextreplyLink,
         [commentId]: data.links.next,
       };
-      console.log(updated);
-      console.log(data);
 
       // setReplyOffsets((prev) => ({
       //   ...prev,
@@ -508,7 +490,7 @@ const Comments = ({ chapterId }) => {
       if (!response.ok) throw new Error("Failed to fetch comments");
 
       const data = await response.json();
-      console.log(data);
+
       setAllComments(data.results);
       setnextcomment(data.links.next);
       setprevcomment(data.links.previous);
@@ -528,14 +510,13 @@ const Comments = ({ chapterId }) => {
       if (!response.ok) throw new Error("Failed to fetch comments");
 
       const data = await response.json();
-      console.log(data);
+
       setAllComments(data.results);
       setnextcomment(data.links.next);
       setprevcomment(data.links.previous);
       isinOneCommentLikes(data.results);
     } catch (err) {
       console.error(err);
-      console.log(prevcomment);
     } finally {
       setLoading((prev) => [...prev, (prev[3] = false)]);
     }
@@ -552,7 +533,6 @@ const Comments = ({ chapterId }) => {
       ) : allComments.length > 0 ? (
         allComments.map((comment) => (
           <div key={comment.id} className="mt-4">
-            {/* {console.log(comment)} */}
             <div className="flex flex-row gap-10 rounded-lg p-10 pb-0">
               <div className="ml-60 ">
                 <article className="flex text-center justify-center gap-5">
@@ -647,10 +627,7 @@ const Comments = ({ chapterId }) => {
                 {user.id != comment.user.id ? (
                   <div
                     onClick={() => {
-                      navigate(
-                        `/anotheruserprofile/${comment.user.id}`,
-                        console.log("aqwqw")
-                      );
+                      navigate(`/anotheruserprofile/${comment.user.id}`);
                     }}
                     className="w-50 flex flex-row justify-center ml-10 mt-4 mb-3"
                   >
@@ -661,7 +638,7 @@ const Comments = ({ chapterId }) => {
                 ) : (
                   <div
                     onClick={() => {
-                      navigate(`/userprofile`), console.log("hi");
+                      navigate(`/userprofile`);
                     }}
                     className="w-50 flex flex-row justify-center ml-10 mt-4 mb-3"
                   >
@@ -685,7 +662,6 @@ const Comments = ({ chapterId }) => {
                     key={reply.id}
                     className=" right-4  p-4 pl-70  rounded-lg mb-3 bg-[#D9F0FF] text-right w-300"
                   >
-                    {console.log(reply)}
                     <div className="flex flex-row justify-end max-w-200   gap-5 min-h-30 ">
                       <div>
                         <p className="text-sm text-gray-500 p-2 max-w-200 ">

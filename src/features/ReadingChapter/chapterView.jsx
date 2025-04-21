@@ -8,61 +8,61 @@ import { useLocation, useParams } from "react-router";
 import Comments from "../../common/comments/Comments";
 import Loading from "../../common/Loading/Loading";
 const ReadingPage = () => {
-  const {chapterId}=useParams();
-  const [id,setId]=useState()
-  const [chapterBody,setChapterBody]=useState("")
-  const [bookCover,setbookCover]=useState("")
-  const location=useLocation()
-  const chapterNumber=location.state?.index+1
-  const bookId=location.state?.bookId
-  console.log(bookId)
-  const [bookName,setbookName]= useState("")
-  const [author,setAuthor]= useState("")
-  const[season,setSeason]= useState("")
-  const[published,setPublished]= useState("")
-  const [loading,setLoading]=useState(true)
-  const [rating,setRating]=useState(2.5)
+  const { chapterId } = useParams();
+  const [id, setId] = useState();
+  const [chapterBody, setChapterBody] = useState("");
+  const [bookCover, setbookCover] = useState("");
+  const location = useLocation();
+  const chapterNumber = location.state?.index + 1;
+  const bookId = location.state?.bookId;
+  const [bookName, setbookName] = useState("");
+  const [author, setAuthor] = useState("");
+  const [season, setSeason] = useState("");
+  const [published, setPublished] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [rating, setRating] = useState(2.5);
   useEffect(() => {
     const fetchChapter = async () => {
-      setLoading(true)
-      
+      setLoading(true);
+
       try {
-        const response = await fetch(`https://batbooks.liara.run/book/chapter/${chapterId}/`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          
-        });
+        const response = await fetch(
+          `https://batbooks.liara.run/book/chapter/${chapterId}/`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error("درخواست موفق نبود");
         }
 
         const data = await response.json();
-        console.log(data);
-        setbookCover(data.book_image)
+        setbookCover(data.book_image);
         setChapterBody(data.body);
         setbookName(data.book);
         setAuthor(data.Author);
-        setSeason(data.title)
-        setRating(data.rating)
+        setSeason(data.title);
+        setRating(data.rating);
         setPublished(format(new Date(data.created_at), "yyyy/MM/dd"));
       } catch (error) {
         console.error("خطا در ارسال به سرور:", error);
-      }finally{
-        setLoading(false)
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchChapter();
   }, []);
   if (loading)
-      return (
-        <div className="h-[100vh] grid place-items-center">
-          <Loading />
-        </div>
-      );
+    return (
+      <div className="h-[100vh] grid place-items-center">
+        <Loading />
+      </div>
+    );
   return (
     <div className="w-full">
       <Navbar />
@@ -71,27 +71,28 @@ const ReadingPage = () => {
           dir="rtl"
           className=" flex items-center gap-[27px]  pr-[71px] py-[19px]"
         >
-        {bookCover!=null ?
-          (<img
-            className="w-[179px] h-[247px] rounded-[15px]"
-            src={`https://batbooks.liara.run${bookCover}`}
-            alt="chapter"
-          />) :
-          (<img
-            className="w-[179px] h-[247px] rounded-[15px]"
-            src="/src/assets/images/book_sample2.png"
-            alt="chapter"
-          />)
-        }
+          {bookCover != null ? (
+            <img
+              className="w-[179px] h-[247px] rounded-[15px]"
+              src={`https://batbooks.liara.run${bookCover}`}
+              alt="chapter"
+            />
+          ) : (
+            <img
+              className="w-[179px] h-[247px] rounded-[15px]"
+              src="/src/assets/images/book_sample2.png"
+              alt="chapter"
+            />
+          )}
           <article className="article1">
             <div className="flex">
-            <h2 className="text-[36px] font-[400]">نام کتاب :{bookName} </h2>
-            <h2 className="text-[27px] font-[400] mr-[400px]">تاریخ انتشار :{published} </h2>
+              <h2 className="text-[36px] font-[400]">نام کتاب :{bookName} </h2>
+              <h2 className="text-[27px] font-[400] mr-[400px]">
+                تاریخ انتشار :{published}{" "}
+              </h2>
             </div>
             <p className="text-[25px] font-[400] mb-[10px]">{author}</p>
-            <h1 className="text-[45px] font-[400] mb-[10px]">
-              فصل : {season}  
-            </h1>
+            <h1 className="text-[45px] font-[400] mb-[10px]">فصل : {season}</h1>
             <Rating
               style={{ direction: "ltr" }}
               size="small"
@@ -122,7 +123,7 @@ const ReadingPage = () => {
           </div>
           <div className="full-width-line mb-[41px]"></div>
           <div dir="rtl" className="mb-[500px] text-[25px] font-[400]">
-           {chapterBody}
+            {chapterBody}
           </div>
           <div className="full-width-line"></div>
           <div className="flex justify-between py-[41px]">

@@ -57,18 +57,12 @@ export default function Vf() {
 
       if (response.data.success) {
         setSuccess("رمز عبور با موفقیت تغییر کرد.");
-        console.log("sfdsdf ");
         setTimeout(() => navigate("/login"), 2000);
       }
     } catch (err) {
       setErrors({
         general: " خطا در بازیابی رمز عبور. لطفا دوباره امتحان کنید ",
       });
-      console.log(err);
-      console.log(email);
-      console.log(code);
-      console.log(new_password);
-      console.log(new_password_conf);
     } finally {
       setLoading(false);
       setSuccess("رمز عبور با موفقیت تغییر کرد.");
