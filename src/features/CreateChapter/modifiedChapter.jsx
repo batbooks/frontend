@@ -46,11 +46,12 @@ const ModifiedChapter = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true)
+    console.log("sfdf")
     try {
       const response = await fetch(
         `https://batbooks.liara.run/book/chapter/${chapterId}/`,
         {
-          method: "PATCH",
+          method: "PUT",
           body: JSON.stringify({
             title: chapterName,
             body: chapterContent,
