@@ -45,7 +45,6 @@ function Forget_password() {
         // Redirect to verification page or next step after a short delay
 
         navigate("/Vf", { state: { email: { email } } }); // Adjust the route as needed
-        console.log("adasd");
       } else {
         throw new Error(data.message || "Failed to send verification code");
       }
@@ -110,7 +109,7 @@ function Forget_password() {
             />
             <div className="absolute inset-y-0 left-[27.5vw] flex items-center pl-[1vw] pointer-events-none ">
               <img
-                src="/src/assets/images/user.png" 
+                src="/src/assets/images/user.png"
                 alt="Email Icon"
                 className="h-4.5  w-[1.2vw] opacity-90"
               />

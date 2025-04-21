@@ -14,7 +14,6 @@ function Navbar() {
   let navigate = useNavigate();
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   const handleLogout = () => {
-    console.log("qqq");
     localStorage.removeItem("access_token");
     navigate("/auth/login");
     // useDispatch(logout());
@@ -55,7 +54,6 @@ function Navbar() {
               }, 250)
             }
           >
-            {console.log(user)}
             {isAuthenticated && user.user_info.image != null ? (
               <img
                 className="w-[50px] h-[50px] rounded-full"

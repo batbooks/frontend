@@ -15,7 +15,6 @@ function Login() {
   // const token = localStorage.getItem("access_token");
   let navigate = useNavigate();
   const fetchuserinfo = async (token) => {
-    console.log(token);
     try {
       const response = await fetch(`https://batbooks.liara.run/auth/who/`, {
         method: "GET",
@@ -26,12 +25,10 @@ function Login() {
         },
       });
       const data = await response.json();
-      console.log(data);
       setuserinfo(data.user_info);
       //
     } catch (err) {
       console.error(err.message);
-      console.log("asdad");
     }
   };
 
@@ -49,12 +46,10 @@ function Login() {
       );
       // Cookies.set('access_token', 'value', { expires: 7,secure:true , path:'/'  } );
       // Cookies.set('refresh_token', 'value', { expires: 7,secure:true , path:'/'  } );
-      console.log(response.data.access);
       localStorage.setItem("access_token", response.data.access);
       localStorage.setItem("refresh_token", response.data.refresh);
       navigate("/");
       fetchuserinfo(response.data.access);
-      // console.log(response.data.access)
       const user = userinfo;
       dispatch(
         loginSuccess({
@@ -62,7 +57,7 @@ function Login() {
         })
       );
     } catch (err) {
-      console.log(err.message);
+      console.error(err.message);
       dispatch(logout());
     } finally {
       setLoading(false);

@@ -11,7 +11,9 @@ import {
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { data, useNavigate } from "react-router";
-const cache = {};
+import LongParagraphInput from "../LongParagraphInput/longParagraphInput";
+import Swal from "sweetalert2";
+
 const Comments = ({ chapterId }) => {
   const [allComments, setAllComments] = useState([]);
   const [nextcomment, setnextcomment] = useState("");
@@ -27,8 +29,10 @@ const Comments = ({ chapterId }) => {
   const { isAuthenticated, user } = useSelector((state) => state.auth);
   const [likeReplies, setLikedReplies] = useState({});
   const [replyLoading, setReplyLoading] = useState([]);
-  const [following,setFollowing]=useState([])
-  const navigate=useNavigate()
+  const [following, setFollowing] = useState([]);
+  const [isClicked, setIsClicked] = useState([]);
+  const [body, setBody] = useState("");
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchComments = async () => {
       setLoading((prev) => [...prev, (prev[0] = true)]);
@@ -41,7 +45,7 @@ const Comments = ({ chapterId }) => {
         if (!response.ok) throw new Error("Failed to fetch comments");
 
         const data1 = await response.json();
-        // console.log("next", nextcomment);
+
         setAllComments(data1.results);
         setnextcomment(data1.links.next);
         setprevcomment(data1.links.previous);
@@ -53,8 +57,6 @@ const Comments = ({ chapterId }) => {
         });
       } catch (err) {
         console.error(err);
-
-        console.log("asdad");
       } finally {
         setLoading((prev) => [...prev, (prev[0] = false)]);
       }
@@ -77,7 +79,6 @@ const Comments = ({ chapterId }) => {
   //     } catch (err) {
   //       console.error(err);
 
-  //       console.log("asdad");
   //     } finally {
 
   //     }
@@ -85,14 +86,88 @@ const Comments = ({ chapterId }) => {
 
   // });
 
+  function CreateReply({ Id, setIsClicked }) {
+    const [body, setBody] = useState("");
+    const handleSubmitReply = async (id) => {
+      try {
+        const response = await fetch(
+          `https://batbooks.liara.run/comments/reply_to/${id}/`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ body }),
+          }
+        );
 
+        const data = await response.json();
+
+        if (response.ok) {
+          // Redirect to verification page or next step after a short delay
+          setTimeout(() => {
+            Swal.fire({
+              title: "نظر شما با موفقیت ثبت شد",
+              icon: "success",
+              confirmButtonText: "باشه",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
+            });
+          }, 100);
+        } else {
+          throw new Error(data.message || "failed to submit comment");
+        }
+      } catch (err) {}
+    };
+    const handleChange = (e) => {
+      const newBody = e.target.value;
+      setBody(newBody);
+    };
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      const comment = body;
+      if (comment?.trim()) {
+        handleSubmitReply(Id);
+        setBody("");
+        setIsClicked((prev) => ({
+          ...prev,
+          [comment.id]: !prev[comment.id],
+        }));
+      }
+    };
+    return (
+      <div className="grid grid-cols-[1fr_5fr] place-items-center">
+        {/* Left Button */}
+        <button
+          onClick={(e) => {
+            handleSubmit(e);
+          }}
+          className="bg-blue-500  self-end hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition"
+        >
+          ارسال
+        </button>
+
+        {/* Textarea */}
+        <textarea
+          value={body || ""}
+          onChange={(e) => {
+            handleChange(e);
+          }}
+          placeholder="نظر خود را بنویسید..."
+          dir="rtl"
+          className="w-full flex-grow resize-none border p-2 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-300"
+          rows={10}
+        />
+      </div>
+    );
+  }
   const isinOneReplyLikes = (replies, commentId) => {
-    console.log(user.id);
-    console.log(replies);
     if (isAuthenticated) {
       replies?.forEach((reply) => {
         if (reply.like.includes(user.id)) {
-          console.log("has liked");
           setLikedReplies((prev) => ({
             ...prev,
             [commentId]: {
@@ -121,12 +196,9 @@ const Comments = ({ chapterId }) => {
     }
   };
   const isinOneCommentLikes = (comments) => {
-    console.log(user.id);
-    console.log(comments);
     if (isAuthenticated) {
       comments?.forEach((comment) => {
         if (comment.like.includes(user.id)) {
-          console.log("has liked");
           setLiked((prev) => ({
             ...prev,
             [comment.id]: 1,
@@ -172,14 +244,11 @@ const Comments = ({ chapterId }) => {
           }
         );
         if (response.ok) {
-          console.log(data);
         }
       } catch (err) {
-        console.log(err.message);
-        console.log("asdad");
+        console.error(err.message);
       }
     };
-    console.log(liked);
     if (liked[commentId] == 1) {
       return <AiFillLike color="blue" size="25" onClick={handleClick} />;
     }
@@ -222,14 +291,12 @@ const Comments = ({ chapterId }) => {
           }
         );
         if (response.ok) {
-          console.log(data);
         }
       } catch (err) {
-        console.log(err.message);
-        console.log("asdad");
+        console.error(err.message);
       }
     };
-    console.log(liked);
+
     if (likeReplies[commentId]?.[replyId] == 1) {
       return <AiFillLike color="blue" size="25" onClick={handleClick} />;
     }
@@ -272,14 +339,12 @@ const Comments = ({ chapterId }) => {
           }
         );
         if (response.ok) {
-          console.log(data);
         }
       } catch (err) {
-        console.log(err.message);
-        console.log("asdad");
+        console.error(err.message);
       }
     };
-    console.log(liked);
+
     if (likeReplies[commentId]?.[replyId] == -1) {
       return <AiFillDislike color="red" size="25" onClick={handleClick} />;
     }
@@ -331,8 +396,7 @@ const Comments = ({ chapterId }) => {
           }
         );
       } catch (err) {
-        console.log(err.message);
-        console.log("asdad");
+        console.error(err.message);
       }
       // send to api
     };
@@ -375,7 +439,6 @@ const Comments = ({ chapterId }) => {
 
     let address = `https://batbooks.liara.run/comments/comment/${commentId}/`;
     if (nextreplyLink.hasOwnProperty(commentId)) {
-      console.log(address);
       address = nextreplyLink[commentId];
     }
     try {
@@ -407,8 +470,6 @@ const Comments = ({ chapterId }) => {
         ...nextreplyLink,
         [commentId]: data.links.next,
       };
-      console.log(updated);
-      console.log(data);
 
       // setReplyOffsets((prev) => ({
       //   ...prev,
@@ -429,7 +490,7 @@ const Comments = ({ chapterId }) => {
       if (!response.ok) throw new Error("Failed to fetch comments");
 
       const data = await response.json();
-      console.log(data);
+
       setAllComments(data.results);
       setnextcomment(data.links.next);
       setprevcomment(data.links.previous);
@@ -449,14 +510,13 @@ const Comments = ({ chapterId }) => {
       if (!response.ok) throw new Error("Failed to fetch comments");
 
       const data = await response.json();
-      console.log(data);
+
       setAllComments(data.results);
       setnextcomment(data.links.next);
       setprevcomment(data.links.previous);
       isinOneCommentLikes(data.results);
     } catch (err) {
       console.error(err);
-      console.log(prevcomment);
     } finally {
       setLoading((prev) => [...prev, (prev[3] = false)]);
     }
@@ -473,7 +533,6 @@ const Comments = ({ chapterId }) => {
       ) : allComments.length > 0 ? (
         allComments.map((comment) => (
           <div key={comment.id} className="mt-4">
-            {/* {console.log(comment)} */}
             <div className="flex flex-row gap-10 rounded-lg p-10 pb-0">
               <div className="ml-60 ">
                 <article className="flex text-center justify-center gap-5">
@@ -524,6 +583,22 @@ const Comments = ({ chapterId }) => {
                 <div className="text-[16px] mt-12 text-right text-gray-800">
                   {comment.body}
                 </div>
+                <p
+                  onClick={() => {
+                    setIsClicked((prev) => ({
+                      ...prev,
+                      [comment.id]: !prev[comment.id],
+                    }));
+                  }}
+                  className="text-blue-700 hover:underline cursor-pointer inline-block"
+                >
+                  جواب دادن
+                </p>
+                {isClicked[comment.id] ? (
+                  <CreateReply Id={comment.id} setIsClicked={setIsClicked} />
+                ) : (
+                  <div></div>
+                )}
                 <div className="flex flex-row mt-10 ml-190"></div>
               </div>
 
@@ -548,27 +623,36 @@ const Comments = ({ chapterId }) => {
                     )}
                   </div>
                 </section>
-                
-                {user.id!=comment.user.id?
-                <div onClick={()=>{navigate(`/anotheruserprofile/${comment.user.id}`,console.log("aqwqw"))}} className="w-50 flex flex-row justify-center ml-10 mt-4 mb-3">
-                 
+
+                {user.id != comment.user.id ? (
+                  <div
+                    onClick={() => {
+                      navigate(`/anotheruserprofile/${comment.user.id}`);
+                    }}
+                    className="w-50 flex flex-row justify-center ml-10 mt-4 mb-3"
+                  >
                     <button className="bg-[#2663CD] shadow-lg shadow-[#000]/25 text-white     w-[143px] h-[38px] rounded-[46px] cursor-pointer focus:shadow-none focus:bg-[#2663CD]/90 focus:outline-none focus:ring-[#2663CD] focus:ring-offset-2 focus:ring-[2px] hover:bg-[#2663CD]/90 active:bg-[#2663CD]/30 active:duration-300 active:outline-none active:ring-0 active:ring-offset-0 disabled:cursor-auto disabled:shadow-none disabled:bg-[#2663CD]/60 disabled:ring-0 disabled:ring-offset-0">
-                    صفحه پروفایل
+                      صفحه پروفایل
                     </button>
-                 
-                </div>:<div onClick={()=>{navigate(`/userprofile`),console.log("hi")}} className="w-50 flex flex-row justify-center ml-10 mt-4 mb-3">
-                 
-                 <button className="bg-[#2663CD] shadow-lg shadow-[#000]/25 text-white     w-[143px] h-[38px] rounded-[46px] cursor-pointer focus:shadow-none focus:bg-[#2663CD]/90 focus:outline-none focus:ring-[#2663CD] focus:ring-offset-2 focus:ring-[2px] hover:bg-[#2663CD]/90 active:bg-[#2663CD]/30 active:duration-300 active:outline-none active:ring-0 active:ring-offset-0 disabled:cursor-auto disabled:shadow-none disabled:bg-[#2663CD]/60 disabled:ring-0 disabled:ring-offset-0">
-                 صفحه پروفایل
-                 </button>
-              
-             </div>}
+                  </div>
+                ) : (
+                  <div
+                    onClick={() => {
+                      navigate(`/userprofile`);
+                    }}
+                    className="w-50 flex flex-row justify-center ml-10 mt-4 mb-3"
+                  >
+                    <button className="bg-[#2663CD] shadow-lg shadow-[#000]/25 text-white     w-[143px] h-[38px] rounded-[46px] cursor-pointer focus:shadow-none focus:bg-[#2663CD]/90 focus:outline-none focus:ring-[#2663CD] focus:ring-offset-2 focus:ring-[2px] hover:bg-[#2663CD]/90 active:bg-[#2663CD]/30 active:duration-300 active:outline-none active:ring-0 active:ring-offset-0 disabled:cursor-auto disabled:shadow-none disabled:bg-[#2663CD]/60 disabled:ring-0 disabled:ring-offset-0">
+                      صفحه پروفایل
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
 
             {/* Replies Section */}
             {replyLoading[comment.id] ? (
-              <div className="mt-[50px] grid place-items-center">
+              <div className="mt-[50px] grid place-items-center ">
                 <Loading />
               </div>
             ) : (
@@ -576,13 +660,12 @@ const Comments = ({ chapterId }) => {
                 {(replies[comment.id] || []).map((reply) => (
                   <div
                     key={reply.id}
-                    className=" right-4  p-4 pl-70  rounded-lg mb-3 bg-[#D9F0FF] text-right"
+                    className=" right-4  p-4 pl-70  rounded-lg mb-3 bg-[#D9F0FF] text-right w-300"
                   >
-                    {console.log(reply)}
-                    <div className="flex flex-row justify-end max-w-200   gap-5 min-h-30">
+                    <div className="flex flex-row justify-end max-w-200   gap-5 min-h-30 ">
                       <div>
-                        <p className="text-sm text-gray-500 p-2 ">
-                          {reply.created}
+                        <p className="text-sm text-gray-500 p-2 max-w-200 ">
+                          {getTimeAgo(reply.created)}
                         </p>
                         <div className="flex  relative justify-end mb-7">
                           <div className="flex flex-col gap-3 absolute right-190">
@@ -605,9 +688,28 @@ const Comments = ({ chapterId }) => {
                             {reply.tag}
                           </p>
                         </div>
-                        <p className="text-gray-800  "> {reply.body} </p>
+                        <p className="text-gray-800  w-170"> {reply.body} </p>
+                        <p
+                          onClick={() => {
+                            setIsClicked((prev) => ({
+                              ...prev,
+                              [reply.id]: !prev[reply.id],
+                            }));
+                          }}
+                          className="text-blue-700 hover:underline cursor-pointer inline-block mr-160 w-20"
+                        >
+                          جواب دادن
+                        </p>
+                        {isClicked[reply.id] ? (
+                          <CreateReply
+                            Id={reply.id}
+                            setIsClicked={setIsClicked}
+                          />
+                        ) : (
+                          <div></div>
+                        )}
                       </div>
-                      <div className="grid place-items-end h-20 min-w-12">
+                      <div className="grid place-items-center h-20 min-w-12 w-20">
                         <section className=" text-center text-blue-600 hover:bg-blue-600 hover:text-white inline cursor-pointer duration-150 p-0.5 rounded-sm ml-1.5">
                           {reply.user.name}
                         </section>
@@ -629,9 +731,10 @@ const Comments = ({ chapterId }) => {
                     <div className="w-[60vw] mt-8 mr-80 border-t-2 border-gray-500 mx-auto "></div>
                   </div>
                 ))}
+
                 <div className="text-right  mt-2">
                   <button
-                    className="text-blue-700 hover:underline "
+                    className="text-blue-700 hover:underline cursor-pointer  mr-25 mb-4"
                     onClick={() => fetchReplies(comment.id)}
                   >
                     {nextreplyLink[comment.id] != null &&

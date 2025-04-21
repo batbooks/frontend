@@ -118,7 +118,6 @@ const BookPage = () => {
       }, 100);
     } catch (err) {
       console.error("Error:", err.message);
-      console.log("na");
     } finally {
       setLoading(false);
       setIsFavorite(!isFavorite);
@@ -164,13 +163,11 @@ const BookPage = () => {
       );
 
       const data = await response.json();
-      console.log(data);
       if (response.ok) {
         setMessage("comment sent for review");
         // Redirect to verification page or next step after a short delay
 
         // Adjust the route as needed
-        console.log("adasd");
         setTimeout(() => {
           Swal.fire({
             title: "نقد شما با موفقیت ثبت شد",
@@ -269,7 +266,6 @@ const BookPage = () => {
             </p>
 
             <div className="mt-2">
-              <span className="font-semibold">ژانرها</span>
               {book.genres?.map((genre, index) => (
                 <span
                   key={index}
@@ -278,6 +274,22 @@ const BookPage = () => {
                   {genre}
                 </span>
               ))}
+              <span dir="rtl" className="font-semibold">
+                ژانر ها:
+              </span>
+            </div>
+            <div className="mt-5">
+              {book.tags?.map((tag, index) => (
+                <span
+                  key={index}
+                  className="bg-gray-200 px-5 py-1 rounded-lg text-sm mx-2"
+                >
+                  {tag}
+                </span>
+              ))}
+              <span dir="rtl" className="font-semibold">
+                تگ ها:
+              </span>
             </div>
           </div>
 

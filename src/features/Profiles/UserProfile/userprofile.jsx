@@ -22,7 +22,6 @@ export default function Profile() {
   const [userInfo, setUserInfo] = useState([]);
   const [following, setFollowing] = useState([]);
   const handleFollow = async (user) => {
-    console.log(user);
     try {
       const response = await fetch(
         `https://batbooks.liara.run/user/toggle/follow/${user.following_user_id}/`,
@@ -35,17 +34,13 @@ export default function Profile() {
           },
         }
       );
-      console.log(response);
       setFollowing((prev) => ({
         ...prev,
         [user.following_user_id]: !prev[user.following_user_id],
       }));
     } catch (err) {
-      console.log(err.message);
-      console.log("asdad");
+      console.error(err.message);
     }
-
-    console.log(following);
   };
   useEffect(() => {
     const auth = async () => {
@@ -58,20 +53,16 @@ export default function Profile() {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log(token);
         if (response.ok) {
           const data = await response.json();
-          console.log(data);
           userBooks(data.id);
           setUserInfo(data.user_info);
         } else {
           setUserInfo([]);
-          console.log("na");
         }
       } catch (err) {
         console.error("Error:", err.message);
         setUserInfo([]);
-        console.log("na");
       } finally {
         setLoading(false);
       }
@@ -89,15 +80,11 @@ export default function Profile() {
 
         if (response.ok) {
           const data = await response.json();
-          console.log(data.results[0]);
           setLastBook(data.results[0]);
         } else {
-          console.log("na");
         }
       } catch (err) {
         console.error("Error:", err.message);
-
-        console.log("na");
       } finally {
         setLoading2(false);
       }
@@ -119,18 +106,13 @@ export default function Profile() {
             },
           }
         );
-        console.log(token);
         if (response.ok) {
           const data = await response.json();
-          console.log(data);
           setFollowings(data.results);
         } else {
-          console.log("na");
         }
       } catch (err) {
         console.error("Error:", err.message);
-
-        console.log("naa");
       } finally {
         setLoading1(false);
       }
@@ -160,7 +142,6 @@ export default function Profile() {
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const handleLogout = () => {
-    console.log("qqq");
     localStorage.removeItem("access_token");
     navigate("/auth/login");
 
@@ -232,7 +213,6 @@ export default function Profile() {
             <h2 className="text-[24px] text-[#000000] font-[400] mt-[8px] mb-[12px]">
               جزئیات
             </h2>
-            {console.log(user)}
             <p className="text-[16px] text-[#000000] font-[300]">
               {userInfo.gender}
             </p>
@@ -287,7 +267,6 @@ export default function Profile() {
                   <span className="text-[24px] font-[600] text-[#265073] mb-[-5px]">
                     {userInfo.following_count}
                   </span>
-                  {console.log(userInfo)}
                   <span className="font-[400] text-[#000000]/70 text-[14px]">
                     نفر دنبال شده
                   </span>
@@ -397,7 +376,6 @@ export default function Profile() {
   function UserFollowing({ user }) {
     return (
       <li className="flex items-center h-[152px] pr-[33px] pl-[21px] justify-between">
-        {console.log(user)}
         {following[user.following_user_id] ? (
           <button
             onClick={() => handleFollow(user)}
