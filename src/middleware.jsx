@@ -1,5 +1,5 @@
+import { useSelector } from "react-redux";
 import { Navigate } from "react-router";
-
 export default function Middleware({ children }) {
   const { isAuthenticated } = useSelector((state) => state.auth);
   if (!isAuthenticated) {

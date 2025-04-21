@@ -7,14 +7,45 @@ import BookCard from "../../../common/BookCard/bookCard";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../../redux/infoSlice";
 import { Navigate, useNavigate } from "react-router";
+import Loading from "../../../common/Loading/Loading";
 
 const IsReading = [1];
-const IsWriting = [1, 2];
+const IsWriting = [1, 2]; 
 const WrittenBooks = [1, 2, 3, 4, 5, 6, 7, 8];
 const token = localStorage.getItem("access_token");
 export default function Profile() {
+  const [lastBook,setLastBook]=useState("")
+  const [followings,setFollowings]=useState([])
   const [loading, setLoading] = useState(true);
+  const [loading1, setLoading1] = useState(true);
+  const [loading2, setLoading2] = useState(true);
   const [userInfo, setUserInfo] = useState([]);
+  const [following,setFollowing]=useState([])
+  const handleFollow = async (user) => {
+    console.log(user)
+    try {
+      const response = await fetch(`https://batbooks.liara.run/user/toggle/follow/${user.following_user_id}/`, {
+        method: "GET",
+
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(response)
+      setFollowing(prev => ({
+        ...prev,
+        [user.following_user_id]: !prev[user.following_user_id]
+      }));
+      
+    } catch (err) {
+      console.log(err.message);
+      console.log("asdad");
+    }
+    
+    
+    console.log(following)
+  };
   useEffect(() => {
     const auth = async () => {
       setLoading(true);
@@ -30,7 +61,9 @@ export default function Profile() {
         if (response.ok) {
           const data = await response.json();
           console.log(data);
-          setUserInfo(data.user_info);
+          userBooks(data.id)
+          setUserInfo(data.user_info)
+          
         } else {
           setUserInfo([]);
           console.log("na");
@@ -40,12 +73,84 @@ export default function Profile() {
         setUserInfo([]);
         console.log("na");
       } finally {
-        setLoading(false);
+        setLoading(false)
+      }
+    };
+    const userBooks = async (userid) => {
+      setLoading2(true);
+      
+      try {
+        const response = await fetch(`https://batbooks.liara.run/book/user/${userid}/`, {
+          method: "GET",
+          
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data.results[0]);
+          setLastBook(data.results[0])
+          
+        } else {
+          
+          console.log("na");
+        }
+      } catch (err) {
+        console.error("Error:", err.message);
+        
+        console.log("na");
+      } finally {
+        setLoading2(false)
+      }
+    };
+    auth();
+    userBooks();
+  }, []);
+  useEffect(() => {
+    const fetchFollowings = async () => {
+      setLoading1(true);
+      try {
+        const response = await fetch(`https://batbooks.liara.run/user/following/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log(token);
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data);
+          setFollowings(data.results)
+        } else {
+          
+          console.log("na");
+        }
+      } catch (err) {
+        console.error("Error:", err.message);
+        
+        console.log("naa");
+      } finally {
+        setLoading1(false);
       }
     };
 
-    auth();
+    fetchFollowings();
   }, []);
+  function getTimeAgo(dateString) {
+    const then = new Date(dateString);
+    const now = new Date();
+  
+    const diffMs = now - then;
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+  
+    if (diffHours < 24) {
+      return `${diffHours} ساعت پیش`;
+    } else {
+      const diffDays = Math.floor(diffHours / 24);
+      return `${diffDays} روز پیش`;
+    }
+  }
+  
   const dispatch = useDispatch();
   const [editClicked, setEditClicked] = useState(false);
   const [isFollowingOpened, setIsFollowingOpened] = useState(false);
@@ -58,7 +163,16 @@ export default function Profile() {
     navigate("/auth/login");
 
     useDispatch(logout());
-  };
+  }
+
+    
+   if (loading || loading1 ||loading2)
+       return (
+         <div className="h-[100vh] grid place-items-center">
+           <Loading />
+         </div>
+       );
+
 
   return (
     <>
@@ -101,29 +215,36 @@ export default function Profile() {
 
         <div className="flex bg-[#A4C0ED] rounded-[35px] shadow-lg shadow-[#000000]/25 mb-[40px] pl-[52px] pb-[52px] pr-[23px] pt-[20px] gap-[39px] border-[2px] border-[#000000]/8">
           <div className="min-w-[236px]">
-            {userInfo.image == null ? (
-              <img
-                className="w-[236px] h-[267px] shadow-lg shadow-[#000000]/25 rounded-[30px]"
-                src="assets\images\user_image.png"
-                alt="userimage"
-              />
-            ) : (
-              <img
-                className="w-[236px] h-[267px] shadow-lg shadow-[#000000]/25 rounded-[30px]"
-                src={`https://batbooks.liara.run${userInfo.image}`}
-                alt="userimage"
-              />
-            )}
+          {userInfo.image == null ? (
+            
+          <img
+            className="w-[236px] h-[267px] shadow-lg shadow-[#000000]/25 rounded-[30px]"
+            src='src\assets\images\user_image.png'
+            alt="userimage1"
+          />
+          
+        ) : (
+          <img
+            className="w-[236px] h-[267px] shadow-lg shadow-[#000000]/25 rounded-[30px]"
+            src={`https://batbooks.liara.run${userInfo.image}`}
+            alt="userimage"
+          />
+        )}
 
             <h2 className="text-[24px] text-[#000000] font-[400] mt-[8px] mb-[12px]">
               جزئیات
             </h2>
+            {console.log(user)}
             <p className="text-[16px] text-[#000000] font-[300]">
               {userInfo.gender}
             </p>
             <p className="text-[16px] font-[300] mt-[12px]">
-              ملحق شده در روز/ماه/سال
+               تاریخ ملحق شدن    
             </p>
+            <p className="text-[16px] font-[300] mt-[12px]">
+            {getTimeAgo(user.joined_date)}   
+            </p>
+
           </div>
 
           <div className="w-[100%]">
@@ -132,7 +253,7 @@ export default function Profile() {
             </h3>
 
             <div className="flex gap-[20px] mb-[19px]">
-              <button className="flex flex-col bg-[#ffffff] px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:bg-[#2663cd]/90 hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none">
+              <button onClick={()=>{navigate("/mybooks")}} className="flex flex-col bg-[#ffffff] px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:bg-[#2663cd]/90 hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none">
                 <span className="text-[24px] font-[600] text-[#265073] mb-[-5px]">
                   {userInfo.favorite_count}
                 </span>
@@ -140,7 +261,7 @@ export default function Profile() {
                   کتاب موردعلاقه
                 </span>
               </button>
-              <button className="flex flex-col bg-[#ffffff] px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:bg-[#2663cd]/90 hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none">
+              <button onClick={()=>{navigate("/mybooks")}} className="flex flex-col bg-[#ffffff] px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:bg-[#2663cd]/90 hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none">
                 <span className="text-[24px] font-[600] text-[#265073] mb-[-5px]">
                   10
                 </span>
@@ -159,8 +280,9 @@ export default function Profile() {
                   className="flex flex-col bg-[#ffffff] px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:bg-[#2663cd]/90 hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none"
                 >
                   <span className="text-[24px] font-[600] text-[#265073] mb-[-5px]">
-                    {userInfo.follower_count}
+                    {userInfo.following_count}
                   </span>
+                  {console.log(userInfo)}
                   <span className="font-[400] text-[#000000]/70 text-[14px]">
                     نفر دنبال شده
                   </span>
@@ -169,8 +291,10 @@ export default function Profile() {
                   dir="ltr"
                   className={`absolute w-[487px] rounded-[5px] overflow-y-auto transition-opacity duration-400 ease-in-out ${isFollowingOpened ? "visible opacity-100" : "hidden opacity-0"} shadow-lg shadow-[#000000]/21 border-[2px] border-[#000000]/8 h-[304px] mt-[73px] bg-[#ffffff] divide-y divide-[#2F4F4F]/50`}
                 >
-                  {Array.from({ length: 8 }, (_, i) => i).map(() => (
-                    <UserFollowing />
+                  
+                  {followings.map((user) => (
+                    <UserFollowing user={user}/>
+                   
                   ))}
                 </ul>
               </div>
@@ -186,13 +310,14 @@ export default function Profile() {
             </div>
           </div>
 
-          {WrittenBooks[0] ? (
+          {lastBook ? (
             <div className="min-w-[242px] h-[368px] mt-[32px]">
               <BookCard
-                title="تست"
-                author="تست"
-                coverImage={"/src/assets/images/book_sample1.png"}
-                description="این متن صرفا جهت تست است..."
+                title={lastBook.name}
+                author={lastBook.Author}
+                coverImage={lastBook.image?lastBook.image:"/src/assets/images/book_sample1.png"}
+                
+                description={lastBook.description}
                 chapters={85}
               />
             </div>
@@ -263,24 +388,38 @@ export default function Profile() {
     </>
   );
 
-  function UserFollowing() {
+  function UserFollowing({user}) {
     return (
       <li className="flex items-center h-[152px] pr-[33px] pl-[21px] justify-between">
-        <button className="h-[35px] text-[14px] text-[#ffffff] font-[300] py-[7px] px-[24px] bg-[#2663cd] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
+        {console.log(user)}
+        {following[user.following_user_id]?
+        <button onClick={() => handleFollow(user)} className="h-[35px] text-[14px] text-[#ffffff] font-[300] py-[7px] px-[24px] bg-[#2663cd] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
+        دنبال کردن 
+      </button>:
+        <button onClick={() => handleFollow(user)} className="h-[35px] text-[14px] text-[#ffffff] font-[300] py-[7px] px-[24px] bg-[#2663cd] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
           دنبال نکردن
         </button>
+        }
+
         <button className="flex items-center gap-[18px] cursor-pointer rounded-full">
           <div className="flex flex-col gap-[5px]">
-            <span className="ml-auto text-[20px] font-[600]">نام کاربری</span>
+            <span className="ml-auto text-[20px] font-[600]">{user.following}</span>
             <span dir="rtl" className="text-[12px] font-[400] text-[#265073]">
-              1342 کتاب موردعلاقه
+             
             </span>
           </div>
+          {user.following_image==null?
           <img
-            src="/src/assets/images/following.png"
+            src={"/src/assets/images/following.png"}
+            alt="following"
+            className="rounded-full w-[110px] h-[110px]"
+          />:
+          <img
+            src={`batbooks.liara.run${user.following_image}`}
             alt="following"
             className="rounded-full w-[110px] h-[110px]"
           />
+          }
         </button>
       </li>
     );

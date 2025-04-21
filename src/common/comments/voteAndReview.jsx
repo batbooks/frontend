@@ -70,9 +70,9 @@ export default function VoteAndReview() {
             alt="ratingandreviews"
             className="w-[228px] h-[53px] mb-[19px]"
           />
-          {isAuthenticated && user.image != null ? (
+          {isAuthenticated && user.user_info.image != null ? (
             <img
-              src={`https://batbooks.liara.run${user.image}`}
+              src={`https://batbooks.liara.run${user.user_info.image}`}
               className="w-[63px] h-[63px] rounded-full mb-[15px]"
             />
           ) : (
