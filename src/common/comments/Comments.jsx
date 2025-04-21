@@ -10,7 +10,7 @@ import {
 } from "react-icons/ai";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { useSelector } from "react-redux";
-import { data } from "react-router";
+import { data, useNavigate } from "react-router";
 const cache = {};
 const Comments = ({ chapterId }) => {
   const [allComments, setAllComments] = useState([]);
@@ -26,7 +26,9 @@ const Comments = ({ chapterId }) => {
   const [allLikes, setAllLikes] = useState([]);
   const { isAuthenticated, user } = useSelector((state) => state.auth);
   const [likeReplies, setLikedReplies] = useState({});
-  const [replyLoading,setReplyLoading]=useState([])
+  const [replyLoading, setReplyLoading] = useState([]);
+  const [following,setFollowing]=useState([])
+  const navigate=useNavigate()
   useEffect(() => {
     const fetchComments = async () => {
       setLoading((prev) => [...prev, (prev[0] = true)]);
@@ -82,6 +84,8 @@ const Comments = ({ chapterId }) => {
   //   };
 
   // });
+
+
   const isinOneReplyLikes = (replies, commentId) => {
     console.log(user.id);
     console.log(replies);
@@ -352,7 +356,20 @@ const Comments = ({ chapterId }) => {
       />
     );
   }
+  function getTimeAgo(dateString) {
+    const then = new Date(dateString);
+    const now = new Date();
 
+    const diffMs = now - then;
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+
+    if (diffHours < 24) {
+      return ` ساعت پیش ${diffHours}`;
+    } else {
+      const diffDays = Math.floor(diffHours / 24);
+      return ` روز پیش  ${diffDays}`;
+    }
+  }
   const fetchReplies = async (commentId) => {
     setReplyLoading((prev) => [...prev, (prev[commentId] = true)]);
 
@@ -502,7 +519,7 @@ const Comments = ({ chapterId }) => {
               </div>
               <div className="w-200 break-words mr-5">
                 <div className="text-[16px] text-right text-gray-600 mb-6">
-                  {comment.created}
+                  {getTimeAgo(comment.created)}
                 </div>
                 <div className="text-[16px] mt-12 text-right text-gray-800">
                   {comment.body}
@@ -531,17 +548,21 @@ const Comments = ({ chapterId }) => {
                     )}
                   </div>
                 </section>
-                <div className="w-50 flex flex-row justify-center ml-10 mt-4 mb-3">
-                  {userfollowed ? (
+                
+                {user.id!=comment.user.id?
+                <div onClick={()=>{navigate(`/anotheruserprofile/${comment.user.id}`,console.log("aqwqw"))}} className="w-50 flex flex-row justify-center ml-10 mt-4 mb-3">
+                 
                     <button className="bg-[#2663CD] shadow-lg shadow-[#000]/25 text-white     w-[143px] h-[38px] rounded-[46px] cursor-pointer focus:shadow-none focus:bg-[#2663CD]/90 focus:outline-none focus:ring-[#2663CD] focus:ring-offset-2 focus:ring-[2px] hover:bg-[#2663CD]/90 active:bg-[#2663CD]/30 active:duration-300 active:outline-none active:ring-0 active:ring-offset-0 disabled:cursor-auto disabled:shadow-none disabled:bg-[#2663CD]/60 disabled:ring-0 disabled:ring-offset-0">
-                      دنبال کردن
+                    صفحه پروفایل
                     </button>
-                  ) : (
-                    <button className="text-[16px] text-white bg-[#2663CD] p-2">
-                      دنبال نکردن
-                    </button>
-                  )}
-                </div>
+                 
+                </div>:<div onClick={()=>{navigate(`/userprofile`),console.log("hi")}} className="w-50 flex flex-row justify-center ml-10 mt-4 mb-3">
+                 
+                 <button className="bg-[#2663CD] shadow-lg shadow-[#000]/25 text-white     w-[143px] h-[38px] rounded-[46px] cursor-pointer focus:shadow-none focus:bg-[#2663CD]/90 focus:outline-none focus:ring-[#2663CD] focus:ring-offset-2 focus:ring-[2px] hover:bg-[#2663CD]/90 active:bg-[#2663CD]/30 active:duration-300 active:outline-none active:ring-0 active:ring-offset-0 disabled:cursor-auto disabled:shadow-none disabled:bg-[#2663CD]/60 disabled:ring-0 disabled:ring-offset-0">
+                 صفحه پروفایل
+                 </button>
+              
+             </div>}
               </div>
             </div>
 
@@ -588,7 +609,7 @@ const Comments = ({ chapterId }) => {
                       </div>
                       <div className="grid place-items-end h-20 min-w-12">
                         <section className=" text-center text-blue-600 hover:bg-blue-600 hover:text-white inline cursor-pointer duration-150 p-0.5 rounded-sm ml-1.5">
-                          {reply.user.name  }
+                          {reply.user.name}
                         </section>
                         {reply.image != null ? (
                           <img
@@ -603,7 +624,6 @@ const Comments = ({ chapterId }) => {
                             alt="user-png"
                           />
                         )}
-                        
                       </div>
                     </div>
                     <div className="w-[60vw] mt-8 mr-80 border-t-2 border-gray-500 mx-auto "></div>

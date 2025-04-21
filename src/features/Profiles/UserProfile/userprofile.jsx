@@ -10,7 +10,7 @@ import { Navigate, useNavigate } from "react-router";
 import Loading from "../../../common/Loading/Loading";
 
 const IsReading = [1];
-const IsWriting = [1, 2];
+const IsWriting = [1, 2]; 
 const WrittenBooks = [1, 2, 3, 4, 5, 6, 7, 8];
 const token = localStorage.getItem("access_token");
 export default function Profile() {
