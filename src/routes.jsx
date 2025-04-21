@@ -7,13 +7,14 @@ import BookPage from "./features/Bookpage/Bookpage.jsx";
 import Forget_password from "./features/Auth/forget_password/Forget_password.jsx";
 import Vf from "./features/Auth/forget_password/Vf.jsx";
 import CreateBook from "./features/CreateBook/createBook.jsx";
-import ReadingPage from "./features/ReadingChapter/chapterView.jsx";
 import Profile from "./features/Profiles/UserProfile/userprofile.jsx";
-import CreateChapter from "./features/CreateChapter/createChapter.jsx";
 import Homepage from "./homepage/Homepage.jsx";
 import MyBooks from "./features/MyBooks/myBooks.jsx";
 import Middleware from "./middleware.jsx";
+import SearchResults from "./features/SearchResults/searchResults.jsx";
 import EditChapter from "./features/EditChapter/editChapter.jsx";
+import ReadingPage from "./features/ReadingChapter/chapterView.jsx";
+import CreateChapter from "./features/CreateChapter/createChapter.jsx";
 
 function AppRoutes() {
   return (
@@ -48,6 +49,7 @@ function AppRoutes() {
           path="/anotheruserprofile/:userId"
           element={<Another_User_Profile />}
         ></Route>
+        <Route path="/searchresults" element={<SearchResults />} />
         <Route path="/readingchapter" element={<ReadingPage chapterId={1} />} />
         <Route
           path="/createChapter/:id"
@@ -69,13 +71,14 @@ function AppRoutes() {
         />
         <Route path="/chapter/:chapterId" element={<ReadingPage />} />
 
-        <Route path="/mybooks" element={
+        <Route
+          path="/mybooks"
+          element={
             <Middleware>
               <MyBooks />
-            </Middleware>} />
-        
-        
-        
+            </Middleware>
+          }
+        />
       </Routes>
     </Router>
   );
