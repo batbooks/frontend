@@ -22,7 +22,7 @@ function Navbar() {
   return (
     <header
       dir="rtl"
-      className="relative z-100 h-[100px] max-w-screen m-auto flex bg-[#a3d5ff] justify-between py-[1px] pl-[50px] pr-[30px]"
+      className={`${isVisiblePanel || isVisibleUser ? "relative" : ""} h-[100px] max-w-screen m-auto flex bg-[#a3d5ff] justify-between py-[1px] pl-[50px] pr-[30px]`}
     >
       <nav className="flex items-center gap-[60px]">
         <div
@@ -155,7 +155,10 @@ function Navbar() {
           </li>
           <li className="flex flex-col items-center">
             <a
-              onClick={() => {setSelectedItem(2);navigate("/mybooks")}}
+              onClick={() => {
+                setSelectedItem(2);
+                navigate("/mybooks");
+              }}
               className={`text-[16px] hover:underline hover:text-[#2663CD] active:text-[#2663CD]/50 active:no-underline active:transition-all active:duration-100 focus:outline-none focus:text-[#2663CD] ${selectedItem === 2 ? "text-[#265073]" : ""}`}
               href="#mybooks"
             >

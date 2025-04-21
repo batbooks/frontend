@@ -1,5 +1,6 @@
 import { useState } from "react";
 import LongParagraphInput from "../../../common/LongParagraphInput/longParagraphInput";
+import Loading from "../../../common/Loading/Loading";
 
 export default function EditProfile({ setEditClicked }) {
   const [isSelectOpened, setIsSelectOpened] = useState(false);
@@ -7,24 +8,73 @@ export default function EditProfile({ setEditClicked }) {
   const [selectValue, setIsSelectValue] = useState("--انتخاب کنید--");
   const [selectedFile, setSelectedFile] = useState(null);
   const [bio, setBio] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  function handleChangeInfo() {
-    async function postData() {
-      try {
-        console.log("vfd");
-      } catch {
-        console.log("vfdsdjh");
-      } finally {
-        console.log("vfdsdjhjkh");
+  const handleChangeInfo = async () => {
+    setLoading(true);
+    const token = localStorage.getItem("access_token");
+    try {
+      const formData = new FormData();
+      const formData2 = new FormData();
+      if (bio) formData.append("bio", bio);
+      if (selectValue === "مرد") formData.append("gender", "male");
+      else if (selectValue === "زن") formData.append("gender", "female");
+      if (selectedFile) formData.append("image", selectedFile);
+      if (userName) formData2.append("username", userName);
+      if (formData) {
+        const response = await fetch(
+          `https://batbooks.liara.run/user/info/change/update/`,
+          {
+            method: "PUT",
+            body: formData,
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("درخواست موفق نبود");
+        }
       }
+
+      if (formData2) {
+        const response = await fetch(
+          `https://batbooks.liara.run/user/info/change/username/`,
+          {
+            method: "PUT",
+            body: formData2,
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("درخواست موفق نبود");
+        }
+      }
+
+      if (!formData && !formData2) throw new Error("هیچ تغییراتی انجام نشده!");
+    } catch (error) {
+      console.error("خطا در ارسال به سرور:", error);
+    } finally {
+      setLoading(false);
     }
-    postData();
-  }
+  };
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);
   };
+
+  if (loading) {
+    return (
+      <div className="h-[100vh] grid place-items-center">
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <div
@@ -93,7 +143,7 @@ export default function EditProfile({ setEditClicked }) {
                 </div>
               </button>
               <ul
-                className={`flex flex-col justify-between absolute bg-[#ffffff] w-[315.6px] mt-[78.1px] h-[105.6px] outline-[2px] outline-[#000000]/21 z-9 divide-y divide-[#2F4F4F]/50 ${isSelectOpened ? "visible" : "hidden"}`}
+                className={`flex flex-col justify-between absolute bg-[#ffffff] w-[315.6px] mt-[78.1px] h-[105.6px] outline-[2px] outline-[#000000]/21 z-9 divide-y divide-[#2F4F4F]/50 rounded-b-[12px] ${isSelectOpened ? "visible" : "hidden"}`}
               >
                 <li className="grow-1 flex z-10">
                   <button
@@ -167,7 +217,11 @@ export default function EditProfile({ setEditClicked }) {
           </div>
 
           <button
-            onClick={handleChangeInfo}
+            onClick={async (e) => {
+              await e.preventDefault();
+              await handleChangeInfo();
+              window.location.reload();
+            }}
             className="z-4 bg-[#2663cd] text-[#ffffff] items-center text-[16.8px] font-[400] w-[213.6px] outline-[2px] outline-[#000000]/21 py-[13.9px] rounded-[12px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
           >
             اعمال تغییرات
