@@ -21,7 +21,7 @@ const ReadingPage = () => {
   const[season,setSeason]= useState("")
   const[published,setPublished]= useState("")
   const [loading,setLoading]=useState(true)
-  
+  const [rating,setRating]=useState(2.5)
   useEffect(() => {
     const fetchChapter = async () => {
       setLoading(true)
@@ -46,6 +46,7 @@ const ReadingPage = () => {
         setbookName(data.book);
         setAuthor(data.Author);
         setSeason(data.title)
+        setRating(data.rating)
         setPublished(format(new Date(data.created_at), "yyyy/MM/dd"));
       } catch (error) {
         console.error("خطا در ارسال به سرور:", error);
@@ -94,7 +95,7 @@ const ReadingPage = () => {
             <Rating
               style={{ direction: "ltr" }}
               size="small"
-              defaultValue={4.5}
+              defaultValue={rating}
               precision={0.1}
               readOnly
             />
