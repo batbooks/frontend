@@ -39,62 +39,58 @@ function AppContent() {
             const data = await response.json();
 
             localStorage.setItem("access_token", data.access);
-            console.log(data.access)
+            console.log(data.access);
             if (localStorage.getItem("access_token")) {
-
               checkAuth();
             }
           } else {
             dispatch(logout());
-            
+
             console.log("na");
           }
         } catch (err) {
-          
           dispatch(logout());
           console.log(err.message);
         } finally {
-          setLoading(false)
+          setLoading(false);
         }
       }
     };
     const checkAuth = async () => {
       setLoading(true);
 
-      
-        try {
-          const response = await fetch(`https://batbooks.liara.run/auth/who/`, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-            },
-          });
+      try {
+        const response = await fetch(`https://batbooks.liara.run/auth/who/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        });
 
-          if (response.ok) {
-            const data = await response.json();
-            console.log("response was ok user loggin in ");
-            
-            dispatch(
-              loginSuccess({
-                user: data,
-              })
-            );
-          } else {
-            dispatch(logout());
-            check_refresh();
+        if (response.ok) {
+          const data = await response.json();
+          console.log("response was ok user loggin in ");
 
-            console.log("na");
-          }
-        } catch (err) {
-          console.error("Error:", err.message);
+          dispatch(
+            loginSuccess({
+              user: data,
+            })
+          );
+        } else {
           dispatch(logout());
-
           check_refresh();
-        } finally {
-          setLoading(false);
+
+          console.log("na");
         }
-     
+      } catch (err) {
+        console.error("Error:", err.message);
+        dispatch(logout());
+
+        check_refresh();
+      } finally {
+        setLoading(false);
+      }
     };
 
     checkAuth();
