@@ -6,6 +6,7 @@ const TagExplorer = ({ onSelectTags, onSelectGenre }) => {
   const [selectedTags, setSelectedTags] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
+
   const [error, setError] = useState("");
   const [genres, setGenres] = useState([]);
   const [tagCategories, setTagCategories] = useState([]);
@@ -19,6 +20,7 @@ const TagExplorer = ({ onSelectTags, onSelectGenre }) => {
       }
     });
   };
+
   useEffect(() => {
     onSelectGenre && onSelectGenre(selectedGenres);
   }, [selectedGenres, onSelectGenre]);
