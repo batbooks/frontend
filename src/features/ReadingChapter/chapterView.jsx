@@ -21,6 +21,7 @@ const ReadingPage = () => {
   const [published, setPublished] = useState("");
   const [loading, setLoading] = useState(true);
   const [rating, setRating] = useState(2.5);
+  const [chapterFound,setChapterFound]=useState(false)
   useEffect(() => {
     const fetchChapter = async () => {
       setLoading(true);
@@ -36,19 +37,27 @@ const ReadingPage = () => {
           }
         );
 
-        if (!response.ok) {
-          throw new Error("درخواست موفق نبود");
+        
+        if (response.status==404){
+          setChapterFound(false)
         }
+        if(response.ok){
 
-        const data = await response.json();
-        setbookCover(data.book_image);
-        setChapterBody(data.body);
-        setbookName(data.book);
-        setAuthor(data.Author);
-        setSeason(data.title);
-        setRating(data.rating);
-        setPublished(format(new Date(data.created_at), "yyyy/MM/dd"));
+          const data = await response.json();
+          setbookCover(data.book_image);
+          setChapterFound(true)
+          setChapterBody(data.body);
+          setbookName(data.book);
+          setAuthor(data.Author);
+          setSeason(data.title);
+          setRating(data.rating);
+          setPublished(format(new Date(data.created_at), "yyyy/MM/dd"));
+        }
+        
       } catch (error) {
+        
+        
+        
         console.error("خطا در ارسال به سرور:", error);
       } finally {
         setLoading(false);
@@ -63,6 +72,13 @@ const ReadingPage = () => {
         <Loading />
       </div>
     );
+    if(!chapterFound){
+      return(<div className="grid place-items-center h-[100vh]"> 
+        <h2 className="text-4xl inline-block">
+            صفحه مورد نظر یافت نشد
+            </h2> 
+       </div>)
+    }
   return (
     <div className="w-full">
       <Navbar />
