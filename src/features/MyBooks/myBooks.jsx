@@ -4,6 +4,7 @@ import Navbar from "../../common/Navbar/navbar";
 import BookCard from "../../common/BookCard/bookCard";
 import ReadingGoalCard from "../../common/ReadingGoalCard/readingGoalCard";
 import Loading from "../../common/Loading/Loading";
+import { useNavigate } from "react-router";
 
 export default function MyBooks() {
   const [loading, setLoading] = useState(false);
@@ -12,6 +13,7 @@ export default function MyBooks() {
   const containerRef2 = useRef(null);
   const [writtenBooks, setWrittenBooks] = useState([1]);
   const [favoriteBooks, setFavoriteBooks] = useState([1]);
+  let navigate = useNavigate();
 
   useEffect(() => {
     const fetchWrittenBooks = async () => {
@@ -138,6 +140,7 @@ export default function MyBooks() {
                   ? favoriteBooks.map((book, i) =>
                       i !== favoriteBooks.length - 1 ? (
                         <Book
+                          id={book.id}
                           key={i}
                           title={book.name}
                           author={book.Author}
@@ -145,11 +148,12 @@ export default function MyBooks() {
                           coverImage={
                             book.image
                               ? `https://batbooks.liara.run/${book.image}`
-                              : `/src/assets/images/book_sample${(i % 8) + 1}.png`
+                              : `/src/assets/images/book_sample1.png`
                           }
                         />
                       ) : (
                         <Book
+                          id={book.id}
                           key={i}
                           coverImage={`/src/assets/images/book_sample${i}.png`}
                           isLast={true}
@@ -173,7 +177,10 @@ export default function MyBooks() {
                 <h3 className="text-[16px] font-[700] text-[#1A365D]">
                   نوشته شده توسط من
                 </h3>
-                <button className="absolute left-[20px] flex items-center py-[7px] px-[23px] gap-[10px] bg-[#2663CD] rounded-full text-[16px] text-white font-[400] text-nowrap shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
+                <button
+                  onClick={() => navigate("./createbook")}
+                  className="absolute left-[20px] flex items-center py-[7px] px-[23px] gap-[10px] bg-[#2663CD] rounded-full text-[16px] text-white font-[400] text-nowrap shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
+                >
                   <span>نوشتن کتاب جدید</span>
                   <img src="/src/assets/images/add_sign.svg" alt="add" />
                 </button>
@@ -214,6 +221,7 @@ export default function MyBooks() {
                   ? writtenBooks.map((book, i) =>
                       i !== writtenBooks.length - 1 ? (
                         <Book
+                          id={book.id}
                           key={i}
                           title={book.name}
                           author={book.Author}
@@ -221,11 +229,12 @@ export default function MyBooks() {
                           coverImage={
                             book.image
                               ? `${book.image}`
-                              : `/src/assets/images/book_sample${(i % 8) + 1}.png`
+                              : `/src/assets/images/book_sample1.png`
                           }
                         />
                       ) : (
                         <Book
+                          id={book.id}
                           key={i}
                           coverImage={`/src/assets/images/book_sample${i}.png`}
                           isLast={true}
@@ -236,7 +245,10 @@ export default function MyBooks() {
                 {!loading && !writtenBooks[1] ? (
                   <div className="flex gap-[10px] items-center">
                     <span>موردی برای نمایش وجود ندارد...</span>
-                    <button className="w-[193px] h-[38px] flex items-center py-[7px] px-[23px] gap-[10px] bg-[#2663CD] rounded-full text-[16px] text-white font-[400] text-nowrap shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
+                    <button
+                      onClick={() => navigate("./createbook")}
+                      className="w-[193px] h-[38px] flex items-center py-[7px] px-[23px] gap-[10px] bg-[#2663CD] rounded-full text-[16px] text-white font-[400] text-nowrap shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
+                    >
                       <span>نوشتن کتاب جدید</span>
                       <img src="/src/assets/images/add_sign.svg" alt="add" />
                     </button>
@@ -269,9 +281,12 @@ export function Book({
   isLast = false,
   minw = 180,
   h = 254,
+  id,
 }) {
+  let navigate = useNavigate();
   return (
     <div
+      onClick={() => navigate(`/book/${id}`)}
       style={{
         minWidth: isLast ? `${minw + 80}px` : `${minw}px`,
         height: !isLast ? `${h}px` : "0px",
