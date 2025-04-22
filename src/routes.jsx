@@ -13,6 +13,7 @@ import MyBooks from "./features/MyBooks/myBooks.jsx";
 import Middleware from "./middleware.jsx";
 import SearchResults from "./features/SearchResults/searchResults.jsx";
 import EditChapter from "./features/EditChapter/editChapter.jsx";
+import ModifiedChapter from "./features/CreateChapter/modifiedChapter.jsx";
 import ReadingPage from "./features/ReadingChapter/chapterView.jsx";
 import CreateChapter from "./features/CreateChapter/createChapter.jsx";
 
@@ -52,7 +53,7 @@ function AppRoutes() {
         <Route path="/searchresults" element={<SearchResults />} />
         <Route path="/readingchapter" element={<ReadingPage chapterId={1} />} />
         <Route
-          path="/createChapter/:id"
+          path="/createAndEditChapter/:chapterId"
           element={
             <Middleware>
               <CreateChapter />
@@ -60,7 +61,11 @@ function AppRoutes() {
           }
         />
         <Route path="/readingchapter" element={<ReadingPage />} />
-        <Route path="/editchapter" element={<EditChapter />} />
+        <Route path="/editChapter/:bookId" 
+        element={
+        <Middleware><EditChapter />
+        </Middleware>
+        } />
         <Route
           path="/createChapter"
           element={
@@ -70,6 +75,13 @@ function AppRoutes() {
           }
         />
         <Route path="/chapter/:chapterId" element={<ReadingPage />} />
+        <Route path="/mybooks" element={<MyBooks />} />
+        <Route path="/modifiedChapter/:id" 
+        element={
+        <Middleware>
+          <ModifiedChapter />
+        </Middleware>
+        } />
 
         <Route
           path="/mybooks"
