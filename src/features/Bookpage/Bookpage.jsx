@@ -43,6 +43,7 @@ const BookPage = () => {
   const [message, setMessage] = useState("");
   const [chapterId, setChapterId] = useState(0);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [chapterFound,setChapterFound]=useState(false)
 
   const chaptersPerPage = 10;
   const totalPages = Math.ceil((book?.chapters?.length || 0) / chaptersPerPage);
@@ -65,10 +66,14 @@ const BookPage = () => {
           ),
         ]);
 
+        if (bookResponse.status==404){
+          setChapterFound(false)
+        }
+        console.log(bookResponse.status)
         if (!bookResponse.ok || !favoriteResponse.ok) {
           throw new Error("Failed to fetch data");
         }
-
+        setChapterFound(true)
         const bookData = await bookResponse.json();
         const favoriteData = await favoriteResponse.json();
 
@@ -131,7 +136,7 @@ const BookPage = () => {
       </div>
     );
 
-  if (!book) return <div className="text-center py-20">کتاب یافت نشد</div>;
+ 
 
   const token = localStorage.getItem("access_token");
   const handleSubmitReview = async (e) => {
@@ -186,7 +191,11 @@ const BookPage = () => {
       setError(err.message || "try again");
     }
   };
-
+  if (!chapterFound) {return(<div className="grid place-items-center h-[100vh]"> 
+    <h2 className="text-4xl inline-block">
+        صفحه مورد نظر یافت نشد
+        </h2> 
+   </div>)}
   return (
     <div className="overflow-x-hidden">
       <Navbar />
@@ -196,12 +205,14 @@ const BookPage = () => {
         <div className={`w-[23.3vw]  transition-all duration-500 ease-in-out`}>
           <img
             src={
-              book.coverImage ||
-              "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-book-cover-design-template-34323b0f0734dccded21e0e3bebf004c_screen.jpg?ts=1637015198"
+              book.image
+                ? `https://batbooks.liara.run/${book.image}`
+                : `https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-book-cover-design-template-34323b0f0734dccded21e0e3bebf004c_screen.jpg?ts=1637015198`
             }
             alt="Book Cover"
-            className="rounded-lg shadow-lg w-full"
+            className="rounded-lg shadow-lg w-full h-[500px]"
           />
+          {console.log(book)}
           <div className="grid grid-cols-1 mt-4">
             <button
               onClick={() => handleFavorite()}
