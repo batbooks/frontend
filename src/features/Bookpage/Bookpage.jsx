@@ -196,12 +196,14 @@ const BookPage = () => {
         <div className={`w-[23.3vw]  transition-all duration-500 ease-in-out`}>
           <img
             src={
-              book.coverImage ||
-              "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-book-cover-design-template-34323b0f0734dccded21e0e3bebf004c_screen.jpg?ts=1637015198"
+              book.image
+                ? `https://batbooks.liara.run/${book.image}`
+                : `https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-book-cover-design-template-34323b0f0734dccded21e0e3bebf004c_screen.jpg?ts=1637015198`
             }
             alt="Book Cover"
-            className="rounded-lg shadow-lg w-full"
+            className="rounded-lg shadow-lg w-full h-[500px]"
           />
+          {console.log(book)}
           <div className="grid grid-cols-1 mt-4">
             <button
               onClick={() => handleFavorite()}
