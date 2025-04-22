@@ -11,7 +11,6 @@ import Loading from "../../../common/Loading/Loading";
 
 const IsReading = [1];
 const IsWriting = [1, 2];
-const WrittenBooks = [1, 2, 3, 4, 5, 6, 7, 8];
 const token = localStorage.getItem("access_token");
 export default function Profile() {
   const [lastBook, setLastBook] = useState("");
@@ -232,12 +231,12 @@ export default function Profile() {
                 onClick={() => {
                   navigate("/mybooks");
                 }}
-                className="flex flex-col bg-[#ffffff] px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:bg-[#2663cd]/90 hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none"
+                className="group flex flex-col bg-[#ffffff] px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:text-white focus:bg-[#2663cd]/90 hover:text-white hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:text-white active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none"
               >
-                <span className="text-[24px] font-[600] text-[#265073] mb-[-5px]">
+                <span className="text-[24px] font-[600] text-[#265073] mb-[-5px] group-focus:text-white group-hover:text-white group-active:text-white">
                   {userInfo.favorite_count}
                 </span>
-                <span className="font-[400] text-[#000000]/70 text-[14px]">
+                <span className="font-[400] text-[#000000]/70 text-[14px] group-focus:text-white group-hover:text-white group-active:text-white">
                   کتاب موردعلاقه
                 </span>
               </button>
@@ -245,12 +244,12 @@ export default function Profile() {
                 onClick={() => {
                   navigate("/mybooks");
                 }}
-                className="flex flex-col bg-[#ffffff] px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:bg-[#2663cd]/90 hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none"
+                className="group flex flex-col bg-[#ffffff] px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:bg-[#2663cd]/90 hover:bg-[#2663cd]/90 hover:cursor-pointer focus:text-white hover:text-white active:text-white transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none"
               >
-                <span className="text-[24px] font-[600] text-[#265073] mb-[-5px]">
+                <span className="text-[24px] font-[600] text-[#265073] mb-[-5px] group-focus:text-white group-hover:text-white group-active:text-white">
                   10
                 </span>
-                <span className="font-[400] text-[#000000]/70 text-[14px]">
+                <span className="font-[400] text-[#000000]/70 text-[14px] group-focus:text-white group-hover:text-white group-active:text-white">
                   کتاب تالیف شده
                 </span>
               </button>
@@ -262,18 +261,18 @@ export default function Profile() {
                       setIsFollowingOpened(false);
                     }, 250)
                   }
-                  className="flex flex-col bg-[#ffffff] px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:bg-[#2663cd]/90 hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none"
+                  className="group flex flex-col bg-[#ffffff] px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:bg-[#2663cd]/90 hover:bg-[#2663cd]/90 hover:cursor-pointer focus:text-white hover:text-white active:text-white transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none"
                 >
-                  <span className="text-[24px] font-[600] text-[#265073] mb-[-5px]">
+                  <span className="text-[24px] font-[600] text-[#265073] mb-[-5px] group-focus:text-white group-hover:text-white group-active:text-white">
                     {userInfo.following_count}
                   </span>
-                  <span className="font-[400] text-[#000000]/70 text-[14px]">
+                  <span className="font-[400] text-[#000000]/70 text-[14px] group-focus:text-white group-hover:text-white group-active:text-white">
                     نفر دنبال شده
                   </span>
                 </button>
                 <ul
                   dir="ltr"
-                  className={`z-10 absolute w-[487px] rounded-[5px] overflow-y-auto transition-opacity duration-400 ease-in-out ${isFollowingOpened ? "visible opacity-100" : "hidden opacity-0"} shadow-lg shadow-[#000000]/21 border-[2px] border-[#000000]/8 h-[304px] mt-[73px] bg-[#ffffff] divide-y divide-[#2F4F4F]/50`}
+                  className={`z-10 absolute w-[487px] rounded-[5px] overflow-y-auto transition-opacity duration-400 ease-in-out ${isFollowingOpened ? "visible opacity-100" : "hidden opacity-0"} shadow-lg shadow-[#000000]/21 h-[304px] mt-[73px] bg-[#ffffff] divide-y divide-[#2F4F4F]/50`}
                 >
                   {followings.map((user) => (
                     <UserFollowing user={user} />
@@ -374,25 +373,38 @@ export default function Profile() {
   );
 
   function UserFollowing({ user }) {
+    const [isHoveredInnerButton, setIsHoveredInnerButton] = useState(false);
+
     return (
-      <li className="flex items-center h-[152px] pr-[33px] pl-[21px] justify-between">
+      <li
+        onClick={() => {
+          if (!isHoveredInnerButton) {
+            console.log("navigate to userprofile");
+          }
+        }}
+        className={`flex items-center h-[152px] pr-[33px] pl-[21px] justify-between relative overflow-hidden p-[21px] bg-[#ffffff] outline-[2px] outline-[#000000]/21 rounded-[5px] cursor-pointer ${!isHoveredInnerButton ? "hover:ease-in-out hover:before:w-full hover:before:h-full hover:shadow-[#000000]/50 hover:shadow-lg hover:text-white" : ""} before:absolute before:w-0 before:h-0 before:bg-[#2663CD]/60 before:shadow-none before:inset-0 before:transition-all before:duration-[0.2s] transition-all active:before:bg-[#2663CD]/40 active:outline-none active:shadow-none active:ring-0 active:ring-offset-0`}
+      >
         {following[user.following_user_id] ? (
           <button
             onClick={() => handleFollow(user)}
-            className="h-[35px] text-[14px] text-[#ffffff] font-[300] py-[7px] px-[24px] bg-[#2663cd] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
+            onMouseEnter={() => setIsHoveredInnerButton(true)}
+            onMouseLeave={() => setIsHoveredInnerButton(false)}
+            className="btn py-[7px] px-[21px] !rounded-[10px] !w-fit !h-fit !ml-0 !mr-0 !mb-0"
           >
-            دنبال کردن
+            <span className="span-btn text-[14px] font-[300]">دنبال کردن</span>
           </button>
         ) : (
           <button
             onClick={() => handleFollow(user)}
-            className="h-[35px] text-[14px] text-[#ffffff] font-[300] py-[7px] px-[24px] bg-[#2663cd] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
+            onMouseEnter={() => setIsHoveredInnerButton(true)}
+            onMouseLeave={() => setIsHoveredInnerButton(false)}
+            className="btn py-[7px] px-[21px] !rounded-[10px] !w-fit !h-fit !ml-0 !mr-0 !mb-0"
           >
-            دنبال نکردن
+            <span className="span-btn text-[14px] font-[300]">دنبال نکردن</span>
           </button>
         )}
 
-        <button className="flex items-center gap-[18px] cursor-pointer rounded-full">
+        <div className="relative flex items-center gap-[18px] cursor-pointer rounded-full">
           <div className="flex flex-col gap-[5px]">
             <span className="ml-auto text-[20px] font-[600]">
               {user.following}
@@ -415,7 +427,7 @@ export default function Profile() {
               className="rounded-full w-[110px] h-[110px]"
             />
           )}
-        </button>
+        </div>
       </li>
     );
   }

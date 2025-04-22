@@ -7,11 +7,11 @@ import Loading from "../../common/Loading/Loading";
 
 export default function MyBooks() {
   const [loading, setLoading] = useState(false);
-  const FavoriteBooks1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const [loading2, setLoading2] = useState(false);
   const containerRef1 = useRef(null);
   const containerRef2 = useRef(null);
   const [writtenBooks, setWrittenBooks] = useState([1]);
-  const FavoriteBooks = [...FavoriteBooks1, FavoriteBooks1.length + 1];
+  const [favoriteBooks, setFavoriteBooks] = useState([1]);
 
   useEffect(() => {
     const fetchWrittenBooks = async () => {
@@ -39,6 +39,35 @@ export default function MyBooks() {
       }
     };
 
+    const fetchFavoriteBooks = async () => {
+      setLoading2(true);
+      const token = localStorage.getItem("access_token");
+      try {
+        const response = await fetch(
+          `https://batbooks.liara.run/book-actions/get/favorite/`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("درخواست موفق نبود");
+        }
+
+        const data = await response.json();
+        setFavoriteBooks([...data.results, ...favoriteBooks]);
+      } catch (error) {
+        console.error("خطا در ارسال به سرور:", error);
+      } finally {
+        setLoading2(false);
+      }
+    };
+
+    fetchFavoriteBooks();
     fetchWrittenBooks();
   }, []);
 
@@ -83,7 +112,7 @@ export default function MyBooks() {
               ref={containerRef1}
               className="mb-[22px] overflow-x-scroll scrollbar-opacity-0 w-[100%] ml-auto py-[18px]"
             >
-              {FavoriteBooks[1] ? (
+              {favoriteBooks[1] && favoriteBooks.length > 7 ? (
                 <button
                   onClick={() => handleScroll1("left")}
                   className="absolute rounded-full bg-[#000000] z-2 mt-[107px] cursor-pointer left-0 ml-[80px]"
@@ -91,7 +120,7 @@ export default function MyBooks() {
                   <img src="/src/assets/images/slider.svg" alt="slider"></img>
                 </button>
               ) : null}
-              {FavoriteBooks[1] ? (
+              {favoriteBooks[1] && favoriteBooks.length > 7 ? (
                 <button
                   onClick={() => handleScroll1("right")}
                   className="absolute rounded-full bg-[#000000] z-2 mt-[107px] cursor-pointer"
@@ -104,27 +133,36 @@ export default function MyBooks() {
                 </button>
               ) : null}
               <div className="flex z-1 gap-[25px]">
-                {FavoriteBooks[1] ? (
-                  FavoriteBooks.map((i) =>
-                    i !== FavoriteBooks.length ? (
-                      <Book
-                        key={i}
-                        coverImage={`/src/assets/images/book_sample${i}.png`}
-                      />
-                    ) : (
-                      <Book
-                        key={i}
-                        coverImage={`/src/assets/images/book_sample${i}.png`}
-                        isLast={true}
-                      />
+                {loading2 ? <Loading /> : null}
+                {!loading2 && favoriteBooks[1]
+                  ? favoriteBooks.map((book, i) =>
+                      i !== favoriteBooks.length - 1 ? (
+                        <Book
+                          key={i}
+                          title={book.name}
+                          author={book.Author}
+                          description={book.description}
+                          coverImage={
+                            book.image
+                              ? `https://batbooks.liara.run/${book.image}`
+                              : `/src/assets/images/book_sample${(i % 8) + 1}.png`
+                          }
+                        />
+                      ) : (
+                        <Book
+                          key={i}
+                          coverImage={`/src/assets/images/book_sample${i}.png`}
+                          isLast={true}
+                        />
+                      )
                     )
-                  )
-                ) : (
+                  : null}
+                {!loading2 && !favoriteBooks[1] ? (
                   <span>موردی برای نمایش وجود ندارد...</span>
-                )}
+                ) : null}
               </div>
             </div>
-            {FavoriteBooks[1] ? (
+            {favoriteBooks[1] && favoriteBooks.length > 10 ? (
               <button className="mx-[31%] mb-[38px] w-[197px] h-[38px] flex items-center py-[7px] px-[23px] gap-[10px] bg-[#2663CD] rounded-full text-[16px] text-white font-[400] text-nowrap shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
                 <span>مشاهده همه موارد</span>
                 <img src="/src/assets/images/arrow-right.png" alt="right" />
@@ -148,7 +186,7 @@ export default function MyBooks() {
 
             <div
               ref={containerRef2}
-              className="mb-[-18px] overflow-x-scroll scrollbar-opacity-0 w-[100%] ml-auto py-[18px]"
+              className="mb-[22px] overflow-x-scroll scrollbar-opacity-0 w-[100%] ml-auto py-[18px]"
             >
               {writtenBooks[1] && writtenBooks.length > 7 ? (
                 <button
@@ -206,14 +244,14 @@ export default function MyBooks() {
                 ) : null}
               </div>
             </div>
+            {writtenBooks[1] && writtenBooks.length > 10 ? (
+              <button className="mx-[31%] w-[197px] h-[38px] flex items-center py-[7px] px-[23px] gap-[10px] bg-[#2663CD] rounded-full text-[16px] text-white font-[400] text-nowrap shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
+                <span>مشاهده همه موارد</span>
+                <img src="/src/assets/images/arrow-right.png" alt="right" />
+              </button>
+            ) : null}
           </div>
         </div>
-        {writtenBooks[1] ? (
-          <button className="mt-[28px] mx-[50%] w-[193px] h-[38px] flex items-center py-[7px] px-[23px] gap-[10px] bg-[#2663CD] rounded-full text-[16px] text-white font-[400] text-nowrap shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
-            <span>مشاهده همه موارد</span>
-            <img src="/src/assets/images/arrow-right.png" alt="right" />
-          </button>
-        ) : null}
       </main>
       <div className="mt-[-60px]">
         <Footer />
