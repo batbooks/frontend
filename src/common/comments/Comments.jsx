@@ -657,7 +657,7 @@ const Comments = ({ chapterId }) => {
               </div>
             ) : (
               <div className="ml-20 mr-60 ">
-                {(replies[comment.id] || []).map((reply) => (
+                {( replies[comment.id] || []).slice().reverse().map((reply) => (
                   <div
                     key={reply.id}
                     className=" right-4  p-4 pl-70  rounded-lg mb-3 bg-[#D9F0FF] text-right w-300"
