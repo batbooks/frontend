@@ -11,7 +11,10 @@
  /* margin-left: 1000px;    */
  /* margin-right: 0px; */
  /* padding: 10px; */
- background-color: #001F54;
+ background-color: rgba(0, 31, 84,0.9);
+ 
+ 
+ 
  border-radius: 10px;
  color: white;
     
@@ -42,7 +45,7 @@
     /* margin-left: 1000px;    */
     /* margin-right: 0px; */
     /* padding: 10px; */
-    background-color: #001F54;
+    background-color: rgba(0, 31, 84,0.9);
     border-radius: 10px;
     color: white;
 

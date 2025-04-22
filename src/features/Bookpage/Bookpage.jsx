@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Rating } from "@mui/material";
+import { Rating, Select, MenuItem, FormControl } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import { Editor } from "primereact/editor";
 import Footer from "../../common/Footer/Footer.jsx";
@@ -42,19 +42,38 @@ const BookPage = () => {
   const [isClicked, setIsClicked] = useState(false);
   const [message, setMessage] = useState("");
   const [chapterId, setChapterId] = useState(0);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   const chaptersPerPage = 10;
   const totalPages = Math.ceil((book?.chapters?.length || 0) / chaptersPerPage);
 
   useEffect(() => {
-    const fetchBook = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch(
-          `https://batbooks.liara.run/book/${bookId}/`
-        );
-        if (!response.ok) throw new Error("Failed to fetch book");
-        const data = await response.json();
-        setBook(data);
+        setLoading(true);
+        const token = localStorage.getItem("access_token");
+
+        const [bookResponse, favoriteResponse] = await Promise.all([
+          fetch(`https://batbooks.liara.run/book/${bookId}/`),
+          fetch(
+            `https://batbooks.liara.run/book-actions/is/favorite/${bookId}/`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          ),
+        ]);
+
+        if (!bookResponse.ok || !favoriteResponse.ok) {
+          throw new Error("Failed to fetch data");
+        }
+
+        const bookData = await bookResponse.json();
+        const favoriteData = await favoriteResponse.json();
+
+        setBook(bookData);
+        setIsFavorite(favoriteData.is_favorite);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -62,7 +81,7 @@ const BookPage = () => {
       }
     };
 
-    fetchBook();
+    fetchData();
   }, [bookId]);
 
   useEffect(() => {
@@ -73,6 +92,37 @@ const BookPage = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleFavorite = async () => {
+    try {
+      const response = await fetch(
+        `https://batbooks.liara.run/book-actions/toggle/favorite/${bookId}/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setTimeout(() => {
+        Swal.fire({
+          title: `${isFavorite ? "از کتاب های مورد علاقه حذف شد" : "به کتاب های مورد علاقه اضافه شد"}`,
+          icon: "success",
+          confirmButtonText: "باشه",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.reload();
+          }
+        });
+      }, 100);
+    } catch (err) {
+      console.error("Error:", err.message);
+    } finally {
+      setLoading(false);
+      setIsFavorite(!isFavorite);
+    }
+  };
 
   if (loading)
     return (
@@ -89,7 +139,6 @@ const BookPage = () => {
 
     setError("");
     setMessage("");
-    console.log(lastReadChapter);
     if (chapterId === 0) {
       setError("چپتر را انتخاب کنید");
       return;
@@ -114,13 +163,11 @@ const BookPage = () => {
       );
 
       const data = await response.json();
-      console.log(data);
       if (response.ok) {
         setMessage("comment sent for review");
         // Redirect to verification page or next step after a short delay
 
         // Adjust the route as needed
-        console.log("adasd");
         setTimeout(() => {
           Swal.fire({
             title: "نقد شما با موفقیت ثبت شد",
@@ -141,16 +188,12 @@ const BookPage = () => {
   };
 
   return (
-    <div>
+    <div className="overflow-x-hidden">
       <Navbar />
 
-      <div className="flex bg-[#D9F0FF] min-h-screen p-5 flex-row-reverse text-right">
+      <div className="flex bg-[#D9F0FF] min-h-screen p-5 flex-row-reverse text-right ">
         {/* Sidebar */}
-        <div
-          className={`w-[23.3vw] mt-14 ${
-            isSticky ? "hidden" : "fixed top-5"
-          } transition-all duration-500 ease-in-out`}
-        >
+        <div className={`w-[23.3vw]  transition-all duration-500 ease-in-out`}>
           <img
             src={
               book.coverImage ||
@@ -159,22 +202,27 @@ const BookPage = () => {
             alt="Book Cover"
             className="rounded-lg shadow-lg w-full"
           />
-          <div className="grid grid-cols-1 gap-y-2 mt-4">
+          <div className="grid grid-cols-1 mt-4">
             <button
-              className={`shadow-lg rounded-full h-8 mt-1 ${
-                book.isFavorite ? "bg-[#265073] text-white" : "bg-white"
+              onClick={() => handleFavorite()}
+              className={`btn !shadow-lg !rounded-full !h-8  !w-full  ${
+                isFavorite ? "" : " !bg-[#FFFF] !text-black"
               }`}
             >
-              {book.isFavorite
-                ? "حذف از مورد علاقه ها"
-                : "اضافه کردن به مورد علاقه ها"}
+              <span className="span-btn">
+                {isFavorite
+                  ? "حذف از مورد علاقه ها"
+                  : "اضافه کردن به مورد علاقه ها"}
+              </span>
             </button>
             <button
-              className={`shadow-lg rounded-full h-8 ${
-                book.readOnce ? "bg-[#265073] text-white" : "bg-white"
+              className={`btn !shadow-lg !rounded-full !h-8  !w-full  ${
+                book.readOnce ? "" : " !bg-[#FFFF] !text-black"
               }`}
             >
-              {book.readOnce ? "تا کنون خوانده شده" : "تا کنون خوانده نشده"}
+              <span className="span-btn">
+                {book.readOnce ? "تا کنون خوانده شده" : "تا کنون خوانده نشده"}
+              </span>
             </button>
           </div>
         </div>
@@ -218,7 +266,6 @@ const BookPage = () => {
             </p>
 
             <div className="mt-2">
-              <span className="font-semibold">ژانرها</span>
               {book.genres?.map((genre, index) => (
                 <span
                   key={index}
@@ -227,6 +274,22 @@ const BookPage = () => {
                   {genre}
                 </span>
               ))}
+              <span dir="rtl" className="font-semibold">
+                ژانر ها:
+              </span>
+            </div>
+            <div className="mt-5">
+              {book.tags?.map((tag, index) => (
+                <span
+                  key={index}
+                  className="bg-gray-200 px-5 py-1 rounded-lg text-sm mx-2"
+                >
+                  {tag}
+                </span>
+              ))}
+              <span dir="rtl" className="font-semibold">
+                تگ ها:
+              </span>
             </div>
           </div>
 
@@ -321,23 +384,40 @@ const BookPage = () => {
               <label className="block text-gray-600 mb-1 text-sm">
                 آخرین چپتر خوانده شده
               </label>
-              <select
-                value={lastReadChapter}
+              <Select
+                value={chapterId}
                 onChange={(e) => {
                   setLastReadChapter(e.target.key);
                   setChapterId(e.target.value);
                 }}
-                className="w-[180px] border border-gray-300 rounded-[10px] text-2xl"
+                className="w-[180px]  rounded-[10px] text-lg text-center font-vazir"
+                MenuProps={{
+                  PaperProps: {
+                    sx: { fontFamily: "Vazir" },
+                    style: {
+                      maxHeight: 6 * 36, // ارتفاع کلی منو
+                    },
+                  },
+                  MenuListProps: {
+                    style: {
+                      padding: 0,
+                    },
+                  },
+                }}
               >
-                <option className="text-sm" value={0}>
-                  چپتر
-                </option>
+                <MenuItem className="font-vazir" value={0}>
+                  انتخاب چپتر
+                </MenuItem>
                 {book.chapters.map((chapter, index) => (
-                  <option value={chapter.id} key={chapter.title}>
-                    {chapter.title}
-                  </option>
+                  <MenuItem
+                    className="font-vazir"
+                    value={chapter.id}
+                    key={chapter.title}
+                  >
+                    {index + 1}.{chapter.title}
+                  </MenuItem>
                 ))}
-              </select>
+              </Select>
               <div className="text-red-600">{error}</div>
             </div>
             <div>

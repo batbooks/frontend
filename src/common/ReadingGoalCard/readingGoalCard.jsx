@@ -6,7 +6,7 @@ export default function ReadingGoalCard() {
   return (
     <div
       dir="ltr"
-      className="flex flex-col w-[243px] bg-[#001F54] py-[94px] px-[29px] rounded-[20px] border-[#000000]/60 border-[2px] items-center text-center"
+      className="h-fit flex flex-col w-[243px] bg-[#001F54] py-[94px] px-[29px] rounded-[20px] border-[#000000]/60 border-[2px] items-center text-center"
     >
       <h2 className="text-[#DDDDDD] font-[600] text-[12px] mb-[12px]">
         چالش کتابخوانی

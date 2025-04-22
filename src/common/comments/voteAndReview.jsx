@@ -38,7 +38,6 @@ export default function VoteAndReview() {
         // Redirect to verification page or next step after a short delay
 
         // Adjust the route as needed
-        console.log("adasd");
         setTimeout(() => {
           Swal.fire({
             title: "نظر شما با موفقیت ثبت شد",
@@ -70,9 +69,9 @@ export default function VoteAndReview() {
             alt="ratingandreviews"
             className="w-[228px] h-[53px] mb-[19px]"
           />
-          {isAuthenticated && user.image != null ? (
+          {isAuthenticated && user.user_info.image != null ? (
             <img
-              src={`https://batbooks.liara.run${user.image}`}
+              src={`https://batbooks.liara.run${user.user_info.image}`}
               className="w-[63px] h-[63px] rounded-full mb-[15px]"
             />
           ) : (
