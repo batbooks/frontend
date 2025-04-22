@@ -4,6 +4,7 @@ import TagExplorer from "./TagExplorer";
 import { useState } from "react";
 import LongParagraphInput from "../../common/LongParagraphInput/longParagraphInput";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router";
 
 function CreateBook() {
   const [selectedGenres, setSelectedGenres] = useState([]);
@@ -14,6 +15,8 @@ function CreateBook() {
   const [description, setDescription] = useState("");
 
   const [selectedTags, setSelectedTags] = useState([]);
+
+  let navigate = useNavigate();
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -57,7 +60,7 @@ function CreateBook() {
           confirmButtonText: "باشه",
         }).then((result) => {
           if (result.isConfirmed) {
-            window.location.reload();
+            navigate("/mybooks");
           }
         });
       }, 100);
