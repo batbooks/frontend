@@ -71,7 +71,8 @@ export default function Another_User_Profile() {
       behavior: "smooth",
     });
   };
-  const handleFollow = async () => {
+  const 
+  handleFollow = async () => {
     try {
       const response = await fetch(
         `https://batbooks.liara.run/user/toggle/follow/${userId}/`,
@@ -84,9 +85,7 @@ export default function Another_User_Profile() {
           },
         }
       );
-      if (response.ok) {
-        setFollowing(!following);
-      }
+      
     } catch (err) {
       console.error(err.message);
     }
@@ -131,17 +130,14 @@ export default function Another_User_Profile() {
       >
         <button
           className="bg-[#2663cd] text-[#ffffff] items-center rounded-[46px] py-[8px] px-[18px] mt-[15px] mb-[24px] ml-auto shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
-          onClick={() => {
-            handleFollow();
-            setFollowing(!following);
-          }}
+          onClick={()=>{handleFollow();setFollowing(!following)} }
         >
           {!following ? (
-            <span onClick={handleFollow} className="font-[400] text-[16px]">
+            <span  className="font-[400] text-[16px]">
               دنبال کردن
             </span>
           ) : (
-            <span onClick={handleFollow} className="font-[400] text-[16px]">
+            <span  className="font-[400] text-[16px]">
               دنبال نکردن
             </span>
           )}

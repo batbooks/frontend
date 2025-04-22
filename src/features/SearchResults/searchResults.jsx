@@ -30,7 +30,7 @@ const genres = [
   "کمدی",
 ];
 
-export default function SearchResults({ searchingItem = "book" }) {
+export default function SearchResults({ searchingItem = "forum" }) {
   const [isSelectOpened, setIsSelectOpened] = useState(false);
   const [selectValue, setIsSelectValue] = useState("--انتخاب کنید--");
   const [pageNum, setPageNum] = useState(1);
