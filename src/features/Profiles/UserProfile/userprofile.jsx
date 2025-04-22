@@ -20,6 +20,7 @@ export default function Profile() {
   const [loading2, setLoading2] = useState(true);
   const [userInfo, setUserInfo] = useState([]);
   const [following, setFollowing] = useState([]);
+  const [writtenBooks,setWrittenBooks]=useState(0)
   const handleFollow = async (user) => {
     try {
       const response = await fetch(
@@ -79,6 +80,7 @@ export default function Profile() {
 
         if (response.ok) {
           const data = await response.json();
+          setWrittenBooks(data.count)
           setLastBook(data.results[0]);
         } else {
         }
@@ -156,11 +158,6 @@ export default function Profile() {
 
   return (
     <>
-      <div
-        className={`fixed flex justify-center top-2 w-[100%] transition-all duration-500 ${editClicked ? "visible opacity-100" : "invisible opacity-0"} z-2`}
-      >
-        <EditProfile setEditClicked={setEditClicked} />
-      </div>
       <div
         className={`${editClicked ? "bg-slate-200/20 blur-sm" : "blur-none"} transition-all duration-500`}
       >
@@ -247,7 +244,7 @@ export default function Profile() {
                 className="group flex flex-col bg-[#ffffff] px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:bg-[#2663cd]/90 hover:bg-[#2663cd]/90 hover:cursor-pointer focus:text-white hover:text-white active:text-white transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none"
               >
                 <span className="text-[24px] font-[600] text-[#265073] mb-[-5px] group-focus:text-white group-hover:text-white group-active:text-white">
-                  10
+                  {writtenBooks}
                 </span>
                 <span className="font-[400] text-[#000000]/70 text-[14px] group-focus:text-white group-hover:text-white group-active:text-white">
                   کتاب تالیف شده
@@ -292,7 +289,7 @@ export default function Profile() {
           </div>
 
           {lastBook ? (
-            <div className="min-w-[242px] h-[368px] mt-[32px]">
+            <div  className="min-w-[242px] h-[368px] mt-[32px]">
               <BookCard
                 title={lastBook.name}
                 author={lastBook.Author}
@@ -369,6 +366,11 @@ export default function Profile() {
       >
         <Footer />
       </div>
+      <div
+        className={`fixed flex justify-center top-2 w-[100%] transition-all duration-500 ${editClicked ? "visible opacity-100" : "invisible opacity-0"} z-2`}
+      >
+        <EditProfile setEditClicked={setEditClicked} />
+      </div>
     </>
   );
 
@@ -379,7 +381,7 @@ export default function Profile() {
       <li
         onClick={() => {
           if (!isHoveredInnerButton) {
-            console.log("navigate to userprofile");
+            navigate(`/anotheruserprofile/${user.following_user_id}`)
           }
         }}
         className={`flex items-center h-[152px] pr-[33px] pl-[21px] justify-between relative overflow-hidden p-[21px] bg-[#ffffff] outline-[2px] outline-[#000000]/21 rounded-[5px] cursor-pointer ${!isHoveredInnerButton ? "hover:ease-in-out hover:before:w-full hover:before:h-full hover:shadow-[#000000]/50 hover:shadow-lg hover:text-white" : ""} before:absolute before:w-0 before:h-0 before:bg-[#2663CD]/60 before:shadow-none before:inset-0 before:transition-all before:duration-[0.2s] transition-all active:before:bg-[#2663CD]/40 active:outline-none active:shadow-none active:ring-0 active:ring-offset-0`}
@@ -395,7 +397,7 @@ export default function Profile() {
           </button>
         ) : (
           <button
-            onClick={() => handleFollow(user)}
+            onClick={() => {handleFollow(user);location.reload()}}
             onMouseEnter={() => setIsHoveredInnerButton(true)}
             onMouseLeave={() => setIsHoveredInnerButton(false)}
             className="btn py-[7px] px-[21px] !rounded-[10px] !w-fit !h-fit !ml-0 !mr-0 !mb-0"
