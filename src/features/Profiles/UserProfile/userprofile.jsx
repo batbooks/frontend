@@ -159,11 +159,6 @@ export default function Profile() {
   return (
     <>
       <div
-        className={`fixed flex justify-center top-2 w-[100%] transition-all duration-500 ${editClicked ? "visible opacity-100" : "invisible opacity-0"} z-2`}
-      >
-        <EditProfile setEditClicked={setEditClicked} />
-      </div>
-      <div
         className={`${editClicked ? "bg-slate-200/20 blur-sm" : "blur-none"} transition-all duration-500`}
       >
         <Navbar hasLogined={true} />
@@ -370,6 +365,11 @@ export default function Profile() {
         className={`${editClicked ? "bg-slate-200/20 blur-sm" : "blur-none"} mt-[-60px] transition-all duration-500`}
       >
         <Footer />
+      </div>
+      <div
+        className={`fixed flex justify-center top-2 w-[100%] transition-all duration-500 ${editClicked ? "visible opacity-100" : "invisible opacity-0"} z-2`}
+      >
+        <EditProfile setEditClicked={setEditClicked} />
       </div>
     </>
   );
