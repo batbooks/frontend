@@ -294,7 +294,8 @@ export default function Profile() {
           </div>
 
           {lastBook ? (
-            <div  className="min-w-[242px] h-[368px] mt-[32px]">
+            <div onClick={()=>{navigate(`/book/${lastBook.id}`)}}  className="min-w-[242px] h-[368px] mt-[32px]">
+              {console.log(lastBook.id)}
               <BookCard
                 title={lastBook.name}
                 author={lastBook.Author}
