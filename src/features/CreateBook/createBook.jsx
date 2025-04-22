@@ -1,36 +1,19 @@
 import Footer from "/src/common/Footer/footer";
 import Navbar from "/src/common/Navbar/navbar";
 import TagExplorer from "./TagExplorer";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import LongParagraphInput from "../../common/LongParagraphInput/longParagraphInput";
 import Swal from "sweetalert2";
 
 function CreateBook() {
   const [selectedGenres, setSelectedGenres] = useState([]);
-  const [allGenres, setAllGenres] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
   const [selectedTags, setSelectedTags] = useState([]);
-
-  useEffect(() => {
-    const fetchGenres = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch("https://batbooks.liara.run/tag/genres/");
-        const data = await response.json();
-        setAllGenres(data.genres);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchGenres();
-  }, []);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
