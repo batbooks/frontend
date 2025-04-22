@@ -43,7 +43,7 @@ const BookPage = () => {
   const [message, setMessage] = useState("");
   const [chapterId, setChapterId] = useState(0);
   const [isFavorite, setIsFavorite] = useState(false);
-  const [chapterFound,setChapterFound]=useState(false)
+  const [chapterFound, setChapterFound] = useState(false);
 
   const chaptersPerPage = 10;
   const totalPages = Math.ceil((book?.chapters?.length || 0) / chaptersPerPage);
@@ -66,14 +66,14 @@ const BookPage = () => {
           ),
         ]);
 
-        if (bookResponse.status==404){
-          setChapterFound(false)
+        if (bookResponse.status == 404) {
+          setChapterFound(false);
         }
-        console.log(bookResponse.status)
+        console.log(bookResponse.status);
         if (!bookResponse.ok || !favoriteResponse.ok) {
           throw new Error("Failed to fetch data");
         }
-        setChapterFound(true)
+        setChapterFound(true);
         const bookData = await bookResponse.json();
         const favoriteData = await favoriteResponse.json();
 
@@ -136,8 +136,6 @@ const BookPage = () => {
       </div>
     );
 
- 
-
   const token = localStorage.getItem("access_token");
   const handleSubmitReview = async (e) => {
     e.preventDefault();
@@ -168,6 +166,7 @@ const BookPage = () => {
       );
 
       const data = await response.json();
+      console.log(data);
       if (response.ok) {
         setMessage("comment sent for review");
         // Redirect to verification page or next step after a short delay
@@ -185,17 +184,19 @@ const BookPage = () => {
           });
         }, 100);
       } else {
-        throw new Error(data.message || "failed to submit comment");
+        throw new Error(data.error || "failed to submit comment");
       }
     } catch (err) {
       setError(err.message || "try again");
     }
   };
-  if (!chapterFound) {return(<div className="grid place-items-center h-[100vh]"> 
-    <h2 className="text-4xl inline-block">
-        صفحه مورد نظر یافت نشد
-        </h2> 
-   </div>)}
+  if (!chapterFound) {
+    return (
+      <div className="grid place-items-center h-[100vh]">
+        <h2 className="text-4xl inline-block">صفحه مورد نظر یافت نشد</h2>
+      </div>
+    );
+  }
   return (
     <div className="overflow-x-hidden">
       <Navbar />
