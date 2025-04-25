@@ -62,7 +62,9 @@ export default function VoteAndReview() {
       dir="rtl"
       className="py-[41px] border-b-[2px] border-b-[#000000]/21 gap-[41px] mx-auto w-[1059px]"
     >
-      <div className="flex gap-[296px] items-center mb-[41px]">
+      <div
+        className={`flex justify-between items-center ${isClicked ? "mb-[41px]" : ""}`}
+      >
         <div className="flex flex-col items-center">
           <img
             src="/src/assets/images/rating-and-reviews.png"
@@ -85,27 +87,35 @@ export default function VoteAndReview() {
           <div className="flex gap-[72.5px] items-center">
             <button
               onClick={() => setIsClicked(!isClicked)}
-              className="text-nowrap text-[#ffffff] text-[16px] font-[300] py-[10px] px-[26px] bg-[#2663CD] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
+              className="btn !w-fit !h-fit !mb-0 !ml-0 !mr-0 !rounded-[10px] !py-[10px] !px-[26px]"
             >
-              <span>دیدگاهتان را بنویسید...</span>
+              <span className="span-btn !text-[16px] !font-[300]">
+                دیدگاهتان را بنویسید...
+              </span>
             </button>
           </div>
         </div>
-        <div className="flex flex-col items-center gap-[-5px]">
+        <div className="flex flex-col items-center gap-[20px] text-center">
           <img
             src="/src/assets/images/community-reviews.png"
             alt="community"
             className="w-[252.12px] h-[53px]"
           />
+          <span className="text-[16px] font-[400] text-[#000000]/70">
+            تاکنون 756 نفر دیدگاه خود را درباره این فصل به اشتراک گذاشته اند.
+            <br />
+            شما نیز کامنتی بگذارید...
+          </span>
         </div>
       </div>
       <div className={`flex flex-col ${isClicked ? "visible" : "hidden"}`}>
         <span className="text-[20px] mb-[8px]">نوشتن نظر:</span>
         <div className="flex items-end gap-[26px]">
-          <div className="w-[796px] h-[250px]">
+          <div className="w-[796px] h-[195px]">
             <LongParagraphInput
               placeholder={"دیدگاهتان را درباره فصل اینجا بنویسید..."}
-              setinputValue={setbody}
+              setInputValue={setbody}
+              heightLine="4.23px"
             />
           </div>
           <button
@@ -116,9 +126,9 @@ export default function VoteAndReview() {
                 handleSubmitComment(e);
               }
             }}
-            className="text-nowrap text-[#ffffff] tezt-[20px] font-[400] py-[12px] px-[81px] my-auto bg-[#2663CD] rounded-[15px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
+            className="btn !py-[12px] !px-[81px] !w-fit !h-fit !mb-0 !ml-0 !mr-0 !rounded-[15px]"
           >
-            <span className="span-btn"> ثبت نظر </span>
+            <span className="span-btn !text-[20px] !font-[400]"> ثبت نظر </span>
           </button>
         </div>
       </div>

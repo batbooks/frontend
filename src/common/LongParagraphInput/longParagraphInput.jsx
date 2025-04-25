@@ -1,13 +1,13 @@
 import React, { useState, useCallback } from "react";
 
-const LongParagraphInput = ({ placeholder, setinputValue }) => {
+const LongParagraphInput = ({ placeholder, setinputValue, heightLine }) => {
   const [value, setValue] = useState("");
 
   const handleChange = useCallback((e) => {
     const newValue = e.target.value;
 
     const tempTextarea = document.createElement("textarea");
-    tempTextarea.style.lineHeight = "20px";
+    tempTextarea.style.lineHeight = `${heightLine}`;
     tempTextarea.style.boxSizing = "border-box";
     tempTextarea.style.whiteSpace = "pre-wrap";
     tempTextarea.value = newValue;
