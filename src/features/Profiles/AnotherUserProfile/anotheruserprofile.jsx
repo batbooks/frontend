@@ -250,7 +250,7 @@ export default function Another_User_Profile() {
             <h2 className="text-[20px] text-[#000000] font-[400] mt-[15px]  mb-[12px]">
               جزئیات
             </h2>
-            <div className="bg-white rounded-2xl p-[10px] mt-[10px] shadow-lg shadow-[#000000]/25">
+            <div className="bg-white rounded-[10px] p-[10px] mt-[10px] shadow-lg shadow-[#000000]/25">
             <p className="text-[16px] text-[#000000] font-[300]">
               {user.gender} مرد
             </p>
