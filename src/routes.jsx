@@ -29,9 +29,9 @@ function AppRoutes() {
         <Route
           path="/userprofile"
           element={
-            <Middleware>
+            
               <Profile />
-            </Middleware>
+            
           }
         ></Route>
         <Route path="/book/:bookId" element={<BookPage />}></Route>
