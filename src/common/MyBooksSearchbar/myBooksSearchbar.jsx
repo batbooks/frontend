@@ -1,6 +1,6 @@
 export default function MyBooksSearchbar() {
   return (
-    <div className="absolute flex items-center ml-[25px]">
+    <div className="flex items-center">
       <input
         dir="rtl"
         className="w-[332px] py-[14px] pr-[26px] pl-[50px] z-1 outline-[2px] outline-[#000000]/7 bg-white rounded-[25px] placeholder:text-[14px] placeholder:font-[300] placeholder:text-[#265073] focus:outline-[2px] focus:outline-[#2663cd]"
