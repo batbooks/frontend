@@ -1,5 +1,4 @@
 import React from "react";
-import Bookcard from "./Bookcard";
 import Book_card from "./book_card";
 const books = [
     {
@@ -28,7 +27,7 @@ const books = [
 export default function Newest_books(){
 return(
     <div className="">
-    <div className="   m-auto mb-15 flex flex-row gap-17 items-center justify-center "> 
+    <div className="    mb-45 flex flex-row gap-17 items-center justify-center "> 
         <div className="w-50 h-[320px]">
         <Book_card author={books[0].author} title={books[0].title} coverImage="20.jpg" description={books[0].description} chapters={books[0].chapters}></Book_card>
         </div>
