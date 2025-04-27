@@ -16,6 +16,7 @@ import EditChapter from "./features/EditChapter/editChapter.jsx";
 import ModifiedChapter from "./features/CreateChapter/modifiedChapter.jsx";
 import ReadingPage from "./features/ReadingChapter/chapterView.jsx";
 import CreateChapter from "./features/CreateChapter/createChapter.jsx";
+import Threads from "./features/Threads/threads.jsx";
 
 function AppRoutes() {
   return (
@@ -91,6 +92,7 @@ function AppRoutes() {
             </Middleware>
           }
         />
+        <Route path="/threads" element={<Threads/>} />
       </Routes>
     </Router>
   );
