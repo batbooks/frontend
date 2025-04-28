@@ -23,7 +23,7 @@ export default function Bookcard({
         <img
           src={coverImage}
           alt={title}
-          className="w-full h-full rounded-[15px]"
+          className="w-full h-full rounded-[15px] hover:blur-[2px]"
         />
         
        

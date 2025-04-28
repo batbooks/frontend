@@ -251,13 +251,13 @@ export default function Another_User_Profile() {
               جزئیات
             </h2>
             <div className="bg-white rounded-[10px] p-[10px] mt-[10px] shadow-lg shadow-[#000000]/25">
-            <p className="text-[16px] text-[#000000] font-[300]">
-              {user.gender} مرد
-            </p>
-            <p className="text-[16px] font-[300] mt-[12px]">
-              ملحق شده در {getPersianDate("2025-04-25T14:21:14.505699+03:30")}{" "}
-              {user.joined_date}
-            </p>
+              <p className="text-[16px] text-[#000000] font-[300]">
+                {user.gender} مرد
+              </p>
+              <p className="text-[16px] font-[300] mt-[12px]">
+                ملحق شده در {getPersianDate("2025-04-25T14:21:14.505699+03:30")}{" "}
+                {user.joined_date}
+              </p>
             </div>
           </div>
 
@@ -320,14 +320,17 @@ export default function Another_User_Profile() {
             </div>
           )}
         </div>
-
-        <h5 className="text-[24px] font-[400] text-[#265073] ml-auto mb-[25px]">
-          کتاب های موردعلاقه
-        </h5>
-
+        {/* <div className="w-full flex flex-row justify-between">
+          <span className="text-[24px] font-[400] text-[#265073] mb-[25px] ">
+            کتاب های موردعلاقه
+          </span>
+          <div className="  ml-7 ">
+            <button className="btn"> مشاهده بیشتر </button>
+          </div>
+        </div>
         <div
           ref={containerRef1}
-          className="mb-[40px] overflow-x-scroll scrollbar-opacity-0 w-[100%] ml-auto"
+          className="mb-[40px] overflow-x-scroll scrollbar-opacity-0 w-full ml-auto"
         >
           {FavoriteBooks[0] ? (
             <button
@@ -369,12 +372,15 @@ export default function Another_User_Profile() {
               <span>موردی برای نمایش وجود ندارد...</span>
             )}
           </div>
+        </div> */}
+        <div className="w-full flex flex-row justify-between">
+          <h6 className="text-[24px] font-[400] text-[#265073] ml-auto mb-[25px]">
+            کتاب های تالیف شده
+          </h6>
+          <div className="  ml-7 ">
+            <button onClick={()=>{console.log("asd  ")}} className=" relative overflow-hidden hover:ease-in-out hover:text-black hover:before:w-[900px] hover:before:h-[900px] before:absolute before:w-0 before:h-0 before:bg-[#4D8AFF] before:rounded-[50%] before:right-0 before:bottom-0 before:translate-[50%] before:transition-all before:duration-[0.2s] bg-[#2663CD] shadow-lg shadow-[#000]/25 text-white mx-auto mb-5 flex justify-center items-center  w-[143px] h-[38px] rounded-[46px] cursor-pointer focus:shadow-none focus:bg-[#2663CD]/90 focus:outline-none  active:bg-[#2663CD]/30 active:duration-300 active:outline-none active:ring-0 active:ring-offset-0 disabled:cursor-auto disabled:shadow-none disabled:bg-[#2663CD]/60 disabled:ring-0 disabled:ring-offset-0" > مشاهده بیشتر </button>
+          </div>
         </div>
-
-        <h6 className="text-[24px] font-[400] text-[#265073] ml-auto mb-[25px]">
-          کتاب های تالیف شده
-        </h6>
-
         <div
           ref={containerRef2}
           className="overflow-x-scroll scrollbar-opacity-0 w-[100%] ml-auto"

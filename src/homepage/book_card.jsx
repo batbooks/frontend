@@ -22,13 +22,13 @@ export default function Book_card({
         <img
           src={coverImage}
           alt={title}
-          className="w-full h-full rounded-[15px]"
+          className="w-full h-full rounded-[15px]  "
         />
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2 text-xs rounded-[15px]">
-          <h3 className="text-cyan-400 font-bold text-[16px] mb-2.5">
+          <h3 className="text-cyan-400 font-bold text-[16px] mb-2.5 ">
             {title}
           </h3>
-          <p className="text-gray-300 mb-1">{author}</p>
+          <p className="text-gray-300 mb-1 font-bold">{author}</p>
           <div className="flex">
             <p
               style={{ direction: "rtl" }}

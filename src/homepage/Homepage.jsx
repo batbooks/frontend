@@ -12,25 +12,86 @@ import SearchBar from "../Searchbar";
 import { useSelector } from "react-redux";
 import Loading from "../common/Loading/Loading";
 import Swal from "sweetalert2";
-
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 export default function Homepage() {
   const { user, isAuthenticated } = useSelector((state) => state.auth);
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.3,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" },
+    },
+  };
 
   return (
     <div className="">
       <Navbar className="" />
-      <SearchBar />
+      {/* <SearchBar /> */}
 
       <div className="flex flex-col   ">
         {/* <div className="sticky-content-l"></div> */}
 
         {/* <h1 className="text-center my-10 text-2xl  "> کتاب های پرطرفدار </h1> */}
         {/* <Banner></Banner> */}
-        
-        
-        
+        <header className="  px-4  bg-blue-50  mb-10">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="flex flex-col lg:flex-row items-center justify-between gap-12"
+          >
+            <motion.div
+              variants={itemVariants}
+              className="lg:w-55/100 text-right"
+            >
+              <motion.h2
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6 }}
+                className="text-5xl font-bold text-gray-800 mb-20 [direction:rtl] "
+              >
+                کتابخانه‌ای برای همه
+              </motion.h2>
+              <p className="text-xl text-gray-600 mb-8 [direction:rtl] pl-3 ">
+                با BatBooks، دسترسی به هزاران کتاب در یک مکان. مطالعه،
+                اشتراک‌گذاری و کشف دنیای جدید کتاب‌ها.
+              </p>
+              <Link to="/auth/login">
+                <button className="h-14 px-8 bg-gradient-to-r from-blue-600 to-indigo-600 text-lg text-white rounded-md">
+                  شروع کنید
+                </button>
+              </Link>
+            </motion.div>
 
-        <h1 className="text-center mb-8 text-4xl  "> تازه ترین ها </h1>
+            <motion.div
+              initial={{ opacity: 0, rotate: -5 }}
+              animate={{ opacity: 1, rotate: 0 }}
+              transition={{ duration: 0.8, type: "spring" }}
+              className="lg:w-45/100 h-240"
+            >
+              <motion.img
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 300 }}
+                src="\src\assets\images\mid-right.png"
+                alt="Books illustration"
+                className="w-full h-auto scale-90"
+              />
+            </motion.div>
+          </motion.div>
+        </header>
+
         <Newest_books></Newest_books>
         <Suggestions></Suggestions>
         <h1 className="text-center my-10 text-2xl  ">
