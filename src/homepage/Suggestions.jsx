@@ -40,7 +40,7 @@ export default function Suggestions() {
     <>
       <div dir="rtl">
         <div className=" w-full h-[90vh] m-auto mb-45  bg-white/80 py-[30px] pb-[80px] opac">
-          <h1 className=" mb-8 text-4xl font-bold text-right pr-25">
+          <h1 className=" mb-8 text-4xl font-bold text-right pr-20">
             {" "}
             پیشنهادی{" "}
           </h1>

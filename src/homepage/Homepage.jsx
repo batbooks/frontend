@@ -79,7 +79,7 @@ export default function Homepage() {
               initial={{ opacity: 0, rotate: -5 }}
               animate={{ opacity: 1, rotate: 0 }}
               transition={{ duration: 0.8, type: "spring" }}
-              className="lg:w-45/100 h-240"
+              className="lg:w-45/100 h-200"
             >
               <motion.img
                 whileHover={{ scale: 1.05 }}

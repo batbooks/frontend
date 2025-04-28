@@ -30,7 +30,7 @@ const books = [
 export default function Newest_books() {
   return (
     <div className=" h-[75vh]">
-      <h1 className="text-right mb-18 text-4xl mr-30 font-bold"> تازه ترین ها </h1>
+      <h1 className="text-right mb-8 text-4xl mr-20 font-bold"> تازه ترین ها </h1>
       <div className="      flex flex-row gap-24 items-center justify-center ">
         <div className="w-[200px] h-[320px]">
           <Book_card
