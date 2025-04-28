@@ -14,6 +14,9 @@ import Loading from "../common/Loading/Loading";
 import Swal from "sweetalert2";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import ExploreByGenre from "./ExploreByGenre";
+import ReviewSection from "./ReviewSection";
+
 export default function Homepage() {
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   const containerVariants = {
@@ -45,7 +48,8 @@ export default function Homepage() {
 
         {/* <h1 className="text-center my-10 text-2xl  "> کتاب های پرطرفدار </h1> */}
         {/* <Banner></Banner> */}
-        <header className="  px-4  bg-blue-50  mb-10">
+        
+        <header className="  px-4    mb-10">
           <motion.div
             variants={containerVariants}
             initial="hidden"
@@ -68,8 +72,8 @@ export default function Homepage() {
                 با BatBooks، دسترسی به هزاران کتاب در یک مکان. مطالعه،
                 اشتراک‌گذاری و کشف دنیای جدید کتاب‌ها.
               </p>
-              <Link to="/auth/login">
-                <button className="h-14 px-8 bg-gradient-to-r from-blue-600 to-indigo-600 text-lg text-white rounded-md">
+              <Link to="/searchresults">
+                <button className="h-14 px-8 bg-gradient-to-r from-blue-600 to-indigo-600 text-lg text-white rounded-md hover:cursor-pointer hover:scale-110 transition-all duration-200">
                   شروع کنید
                 </button>
               </Link>
@@ -91,7 +95,10 @@ export default function Homepage() {
             </motion.div>
           </motion.div>
         </header>
-
+        
+        <div className="bg-white">
+        <ExploreByGenre></ExploreByGenre>
+        </div>
         <Newest_books></Newest_books>
         <Suggestions></Suggestions>
         <h1 className="text-center my-10 text-2xl  ">
@@ -103,6 +110,9 @@ export default function Homepage() {
         <Most_active_authors></Most_active_authors>
 
         {/* <div className="sticky-content-r"></div> */}
+      </div>
+      <div>
+      {/* <ReviewSection></ReviewSection> */}
       </div>
       <Footer> </Footer>
     </div>

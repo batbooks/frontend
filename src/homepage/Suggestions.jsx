@@ -61,7 +61,7 @@ export default function Suggestions() {
                   return newHovered;
                 })
               }
-              className="w-[200px] h-[400px] shadow-2xl rounded-2xl bg-white cursor-pointer hover:scale-105 transition-all duration-150"
+              className="w-[200px] h-[400px] shadow-2xl rounded-2xl bg-black/80 text-white cursor-pointer hover:scale-105 transition-all duration-150"
             >
               <div className="relative">
                 {isHovered[0] ? (

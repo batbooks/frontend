@@ -8,6 +8,7 @@ const books = [
     description:
       "Deep beneath the earth lies an ancient chamber known as the Hypogeum. Follow the journey of an unlikely hero as they uncover its mysteries and face the darkness that lurks within.",
     chapters: 21,
+    genres:["fantasy","crime","comedy"]
   },
   {
     title: "Curse of the Exchanged",
@@ -24,13 +25,14 @@ const books = [
     description:
       "When an ancient flame that never dies falls into the wrong hands, the world teeters on the brink of chaos. Only one person holds the key to extinguishing the cursed fire.",
     chapters: 21,
+    genres:["fantasy","crime","comedy"]
   },
 ];
 
 export default function Newest_books() {
   return (
     <div className=" h-[75vh]">
-      <h1 className="text-right mb-8 text-4xl mr-20 font-bold"> تازه ترین ها </h1>
+      <h1 className="text-right mb-8 text-4xl mr-20 font-bold pt-[30px]"> تازه ترین ها </h1>
       <div className="      flex flex-row gap-24 items-center justify-center ">
         <div className="w-[200px] h-[320px]">
           <Book_card

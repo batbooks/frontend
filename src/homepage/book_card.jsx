@@ -6,6 +6,7 @@ export default function Book_card({
   coverImage,
   chapters,
   description
+  
 }) {
   const [isFlipped, setIsFlipped] = useState(false);
 
