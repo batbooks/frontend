@@ -30,25 +30,27 @@ export default function Another_User_Profile() {
   useEffect(() => {
     const fetchUser = async () => {
       setLoading(true);
+      console.log("asda");
       try {
         const response = await fetch(
-          `https://batbooks.liara.run/user/info/${userId}/`
+          `http://127.0.0.1:8000/user/info/${userId}/`
         );
         if (!response.ok) throw new Error("Failed to fetch book");
         const data = await response.json();
         setUser(data);
+        console.log(data);
       } catch (err) {
         setError(err.message);
       } finally {
         setLoading(false);
       }
     };
-    const userBooks = async (userid) => {
+    const userBooks = async () => {
       setLoading3(true);
 
       try {
         const response = await fetch(
-          `https://batbooks.liara.run/book/user/${userid}/`,
+          `http://127.0.0.1:8000/book/user/${userId}/`,
           {
             method: "GET",
           }
@@ -58,6 +60,7 @@ export default function Another_User_Profile() {
           const data = await response.json();
           setUserWritten(data.results);
           setLastBook(data.results[0]);
+
           setNumberOfWrittenBooks(data.count);
         } else {
         }
@@ -69,13 +72,14 @@ export default function Another_User_Profile() {
     };
 
     fetchUser();
+    userBooks();
   }, [userId]);
   useEffect(() => {
     const fetchFollowing = async () => {
       setLoading1(true);
       try {
         const response = await fetch(
-          `https://batbooks.liara.run/user/is/follow/${userId}/`,
+          `http://127.0.0.1:8000/user/is/follow/${userId}/`,
           {
             method: "GET",
 
@@ -100,7 +104,7 @@ export default function Another_User_Profile() {
       setLoading2(true);
       try {
         const response = await fetch(
-          `https://batbooks.liara.run/user/is/blocked/${userId}/`,
+          `http://127.0.0.1:8000/user/is/Not_Interested/${userId}/`,
           {
             method: "GET",
 
@@ -111,7 +115,8 @@ export default function Another_User_Profile() {
           }
         );
         const data = await response.json();
-        setBlocked(data.is_blocked);
+
+        setBlocked(data.is_not_interested);
       } catch (err) {
         console.error(err.message);
       } finally {
@@ -128,7 +133,9 @@ export default function Another_User_Profile() {
     });
   };
   function getPersianDate(dateString) {
-    const date = new Date(dateString);
+    if (!dateString) return ""; // or return a fallback value
+    const [year, month, day] = dateString.split("T")[0].split("-");
+    const date = new Date(Date.UTC(year, month - 1, day));
     return new Intl.DateTimeFormat("fa-IR", {
       year: "numeric",
       month: "2-digit",
@@ -139,7 +146,7 @@ export default function Another_User_Profile() {
   const handleFollow = async () => {
     try {
       const response = await fetch(
-        `https://batbooks.liara.run/user/toggle/follow/${userId}/`,
+        `http://127.0.0.1:8000/user/toggle/follow/${userId}/`,
         {
           method: "GET",
 
@@ -156,7 +163,7 @@ export default function Another_User_Profile() {
   const handleBlockd = async () => {
     try {
       const response = await fetch(
-        `https://batbooks.liara.run/user/toggle/block/${userId}/`,
+        `http://127.0.0.1:8000/user/toggle/Not_Interested/${userId}/`,
         {
           method: "GET",
 
@@ -252,20 +259,22 @@ export default function Another_User_Profile() {
             </h2>
             <div className="bg-white rounded-[10px] p-[10px] mt-[10px] shadow-lg shadow-[#000000]/25">
               <p className="text-[16px] text-[#000000] font-[300]">
-                {user.gender} مرد
+                {user.gender}
               </p>
               <p className="text-[16px] font-[300] mt-[12px]">
-                ملحق شده در {getPersianDate("2025-04-25T14:21:14.505699+03:30")}{" "}
-                {user.joined_date}
+                {/* {user.joined_date} */}
+
+                {getPersianDate(user.joined_date)}
               </p>
             </div>
           </div>
 
-          <div className="w-[100%] m-[32px] ml-0 ">
-            <h3 className="text-[24px] font-[300] mt-[8px] mb-[15px]">
-              {user.name}
+          <div className="w-[100%] m-[32px] mt-0 ml-0 ">
+            <h3 className="text-[24px] font-[300]  mb-[15px]">
+              {user.user}
             </h3>
-
+            
+            {console.log(user)}
             <div className="flex gap-[20px] mb-[19px] ">
               <button
                 onClick={() => handleScrollDown(0.9)}
@@ -301,14 +310,18 @@ export default function Another_User_Profile() {
             </div>
           </div>
 
-          {WrittenBooks[0] ? (
+          {UserWritten[0] ? (
             <div className="min-w-[242px] h-[368px] m-[32px] ml-0 ">
               <BookCard
-                title="تست"
-                author="تست"
-                coverImage={"/src/assets/images/book_sample1.png"}
-                description="این متن صرفا جهت تست است..."
-                chapters={85}
+                author={lastBook.Author}
+                title={lastBook.name}
+                coverImage={
+                  lastBook.image != null
+                    ? `http://127.0.0.1:8000${lastBook.image}`
+                    : "/23.png"
+                }
+                chapters={80}
+                description={lastBook.description}
               />
             </div>
           ) : (
@@ -373,19 +386,15 @@ export default function Another_User_Profile() {
             )}
           </div>
         </div> */}
-        <div className="w-full flex flex-row justify-between">
-          <h6 className="text-[24px] font-[400] text-[#265073] ml-auto mb-[25px]">
-            کتاب های تالیف شده
-          </h6>
-          <div className="  ml-7 ">
-            <button onClick={()=>{console.log("asd  ")}} className=" relative overflow-hidden hover:ease-in-out hover:text-black hover:before:w-[900px] hover:before:h-[900px] before:absolute before:w-0 before:h-0 before:bg-[#4D8AFF] before:rounded-[50%] before:right-0 before:bottom-0 before:translate-[50%] before:transition-all before:duration-[0.2s] bg-[#2663CD] shadow-lg shadow-[#000]/25 text-white mx-auto mb-5 flex justify-center items-center  w-[143px] h-[38px] rounded-[46px] cursor-pointer focus:shadow-none focus:bg-[#2663CD]/90 focus:outline-none  active:bg-[#2663CD]/30 active:duration-300 active:outline-none active:ring-0 active:ring-offset-0 disabled:cursor-auto disabled:shadow-none disabled:bg-[#2663CD]/60 disabled:ring-0 disabled:ring-offset-0" > مشاهده بیشتر </button>
-          </div>
-        </div>
+        <h6 className="text-[24px] font-[400] text-[#265073] ml-auto mb-[25px]">
+          کتاب های تالیف شده
+        </h6>
+
         <div
           ref={containerRef2}
-          className="overflow-x-scroll scrollbar-opacity-0 w-[100%] ml-auto"
+          className="overflow-x-scroll scrollbar-opacity-0 w-[100%] ml-auto py-5"
         >
-          {WrittenBooks[0] ? (
+          {UserWritten[0] ? (
             <button
               onClick={() => handleScroll2("left")}
               className="absolute rounded-full bg-[#000000] z-2 mt-[107px] cursor-pointer left-0 ml-[80px]"
@@ -393,7 +402,7 @@ export default function Another_User_Profile() {
               <img src="/src/assets/images/slider.svg" alt="slider"></img>
             </button>
           ) : null}
-          {WrittenBooks[0] ? (
+          {UserWritten[0] ? (
             <button
               onClick={() => handleScroll2("right")}
               className="absolute rounded-full bg-[#000000] z-2 mt-[107px] cursor-pointer"
@@ -406,19 +415,12 @@ export default function Another_User_Profile() {
             </button>
           ) : null}
           <div className="flex z-1 gap-[25px]">
-            {WrittenBooks[0] ? (
-              WrittenBooks.map((i) =>
-                i !== WrittenBooks.length ? (
-                  <Book
-                    key={i}
-                    coverImage={`/src/assets/images/book_sample${i}.png`}
-                  />
+            {UserWritten[0] ? (
+              UserWritten.map((book, index) =>
+                index !== UserWritten.length - 1 ? (
+                  <Book book={book} />
                 ) : (
-                  <Book
-                    key={i}
-                    coverImage={`/src/assets/images/book_sample${i}.png`}
-                    isLast={true}
-                  />
+                  <Book book={book} isLast={true} />
                 )
               )
             ) : (
@@ -434,16 +436,7 @@ export default function Another_User_Profile() {
   );
 }
 
-export function Book({
-  coverImage,
-  title = "تست",
-  author = "تست",
-  description = "این متن صرفا جهت تست میباشد...",
-  chapters = 85,
-  isLast = false,
-  minw = 180,
-  h = 254,
-}) {
+export function Book({ book, isLast = false, minw = 180, h = 254 }) {
   return (
     <div
       style={{
@@ -453,11 +446,13 @@ export function Book({
       }}
     >
       <BookCard
-        title={title}
-        author={author}
-        coverImage={coverImage}
-        description={description}
-        chapters={chapters}
+        title={book.name}
+        author={book.Author}
+        coverImage={
+          book.image != null ? `http://127.0.0.1:8000/${book.image}` : "/20.jpg"
+        }
+        description={book.description}
+        chapters={80}
       />
     </div>
   );

@@ -24,7 +24,7 @@ export default function Profile() {
   const handleFollow = async (user) => {
     try {
       const response = await fetch(
-        `https://batbooks.liara.run/user/toggle/follow/${user.following_user_id}/`,
+        `http://127.0.0.1:8000/user/toggle/follow/${user.following_user_id}/`,
         {
           method: "GET",
 
@@ -46,7 +46,7 @@ export default function Profile() {
     const auth = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`https://batbooks.liara.run/auth/who/`, {
+        const response = await fetch(`http://127.0.0.1:8000/auth/who/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -72,7 +72,7 @@ export default function Profile() {
 
       try {
         const response = await fetch(
-          `https://batbooks.liara.run/book/user/${userid}/`,
+          `http://127.0.0.1:8000/book/user/${userid}/`,
           {
             method: "GET",
           }
@@ -98,7 +98,7 @@ export default function Profile() {
       setLoading1(true);
       try {
         const response = await fetch(
-          `https://batbooks.liara.run/user/following/`,
+          `http://127.0.0.1:8000/user/following/`,
           {
             method: "GET",
             headers: {
@@ -196,7 +196,7 @@ export default function Profile() {
             ) : (
               <img
                 className="w-[236px] h-[267px] shadow-lg shadow-[#000000]/25 rounded-[30px]"
-                src={`https://batbooks.liara.run${userInfo.image}`}
+                src={`http://127.0.0.1:8000${userInfo.image}`}
                 alt="userimage"
               />
             )}
@@ -209,7 +209,7 @@ export default function Profile() {
             </p>
             <p className="text-[16px] font-[300] mt-[12px]">تاریخ ملحق شدن</p>
             <p className="text-[16px] font-[300] mt-[12px]">
-              {getTimeAgo(user.joined_date)}
+              {getPersianDate(user.joined_date)}
             </p>
           </div>
 

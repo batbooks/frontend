@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -16,7 +17,7 @@ function Login() {
   let navigate = useNavigate();
   const fetchuserinfo = async (token) => {
     try {
-      const response = await fetch(`https://batbooks.liara.run/auth/who/`, {
+      const response = await fetch(`http://127.0.0.1:8000/auth/who/`, {
         method: "GET",
 
         headers: {
@@ -38,7 +39,7 @@ function Login() {
 
     try {
       const response = await axios.post(
-        "https://batbooks.liara.run/auth/token/",
+        "http://127.0.0.1:8000/auth/token/",
         {
           email,
           password,
@@ -72,7 +73,7 @@ function Login() {
   return (
     <div className="w-[100vw] h-[100vh] bg-[#D9F0FF]">
       <div className="flex gap-1 items-center ">
-        <h2 className="text-[24px] mt-1.5 ml-2 font-bold text-[rgb(0,45,84)]">
+        <h2 className="text-[24px] mt-1.5 ml-2 font-bold text-[#002D54]">
           Bat<span className="text-[#2663CD]">Books</span>
         </h2>
       </div>

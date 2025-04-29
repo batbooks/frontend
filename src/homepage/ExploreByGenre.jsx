@@ -5,14 +5,14 @@ import { motion } from "framer-motion";
 import { BookOpen, Heart, Rocket, Skull, Flashlight, Globe, Shield, Flame } from "lucide-react";
 
 const genres = [
-  { name: "Fantasy", novels: 2453, color: "bg-purple-400", icon: BookOpen },
-  { name: "Romance", novels: 3211, color: "bg-pink-400", icon: Heart },
-  { name: "Sci-Fi", novels: 1876, color: "bg-blue-400", icon: Rocket },
-  { name: "Horror", novels: 945, color: "bg-gray-700", icon: Skull },
-  { name: "Action", novels: 1547, color: "bg-red-400", icon: Flashlight },
-  { name: "Adventure", novels: 1289, color: "bg-green-400", icon: Globe },
-  { name: "Mystery", novels: 1023, color: "bg-yellow-400", icon: Shield },
-  { name: "Trending", novels: 856, color: "bg-orange-400", icon: Flame },
+  { name: "Fantasy", novels: 2453, color: "bg-orange-300", icon: BookOpen },
+  { name: "Romance", novels: 3211, color: "bg-orange-300", icon: Heart },
+  { name: "Sci-Fi", novels: 1876, color: "bg-orange-300", icon: Rocket },
+  { name: "Horror", novels: 945, color: "bg-orange-300", icon: Skull },
+  { name: "Action", novels: 1547, color: "bg-orange-300", icon: Flashlight },
+  { name: "Adventure", novels: 1289, color: "bg-orange-300", icon: Globe },
+  { name: "Mystery", novels: 1023, color: "bg-orange-300", icon: Shield },
+  { name: "Trending", novels: 856, color: "bg-orange-300", icon: Flame },
 ];
 
 const GenreCard = ({ name, novels, color, Icon }) => (

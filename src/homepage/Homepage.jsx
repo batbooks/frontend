@@ -88,7 +88,7 @@ export default function Homepage() {
               <motion.img
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 300 }}
-                src="\src\assets\images\mid-right.png"
+                src="\src\assets\images\mid-right11.png"
                 alt="Books illustration"
                 className="w-full h-auto scale-90"
               />
@@ -112,7 +112,7 @@ export default function Homepage() {
         {/* <div className="sticky-content-r"></div> */}
       </div>
       <div>
-      {/* <ReviewSection></ReviewSection> */}
+      <ReviewSection></ReviewSection>
       </div>
       <Footer> </Footer>
     </div>
