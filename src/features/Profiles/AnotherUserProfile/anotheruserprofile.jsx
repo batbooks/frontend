@@ -311,7 +311,7 @@ export default function Another_User_Profile() {
           </div>
 
           {UserWritten[0] ? (
-            <div className="min-w-[242px] h-[368px] m-[32px] ml-0 ">
+            <div className="min-w-[242px] h-[375px] m-[32px]  ml-0 ">
               <BookCard
                 author={lastBook.Author}
                 title={lastBook.name}
@@ -394,7 +394,7 @@ export default function Another_User_Profile() {
           ref={containerRef2}
           className="overflow-x-scroll scrollbar-opacity-0 w-[100%] ml-auto py-5"
         >
-          {UserWritten[0] ? (
+          {UserWritten[0] && UserWritten.length>7 ? (
             <button
               onClick={() => handleScroll2("left")}
               className="absolute rounded-full bg-[#000000] z-2 mt-[107px] cursor-pointer left-0 ml-[80px]"
@@ -402,7 +402,7 @@ export default function Another_User_Profile() {
               <img src="/src/assets/images/slider.svg" alt="slider"></img>
             </button>
           ) : null}
-          {UserWritten[0] ? (
+          {UserWritten[0] && UserWritten.length>7 ? (
             <button
               onClick={() => handleScroll2("right")}
               className="absolute rounded-full bg-[#000000] z-2 mt-[107px] cursor-pointer"
