@@ -39,7 +39,7 @@ const Comments = ({ chapterId }) => {
 
       try {
         const response = await fetch(
-          `https://batbooks.liara.run/comments/chapter/${chapterId}/`
+          `http://45.158.169.198/comments/chapter/${chapterId}/`
         );
 
         if (!response.ok) throw new Error("Failed to fetch comments");
@@ -69,7 +69,7 @@ const Comments = ({ chapterId }) => {
   //   const handleLikedComments = async () => {
   //     try {
   //       const response = await fetch(
-  //         `https://batbooks.liara.run/comments/chapter/${chapterId}/`
+  //         `http://45.158.169.198/comments/chapter/${chapterId}/`
   //       );
 
   //       if (!response.ok) throw new Error("Failed to fetch comments");
@@ -91,7 +91,7 @@ const Comments = ({ chapterId }) => {
     const handleSubmitReply = async (id) => {
       try {
         const response = await fetch(
-          `https://batbooks.liara.run/comments/reply_to/${id}/`,
+          `http://45.158.169.198/comments/reply_to/${id}/`,
           {
             method: "POST",
             headers: {
@@ -233,7 +233,7 @@ const Comments = ({ chapterId }) => {
       }
       try {
         const response = await fetch(
-          `https://batbooks.liara.run/comments/like/${commentId}/`,
+          `http://45.158.169.198/comments/like/${commentId}/`,
           {
             method: "GET",
 
@@ -280,7 +280,7 @@ const Comments = ({ chapterId }) => {
       }
       try {
         const response = await fetch(
-          `https://batbooks.liara.run/comments/like/${replyId}/`,
+          `http://45.158.169.198/comments/like/${replyId}/`,
           {
             method: "GET",
 
@@ -328,7 +328,7 @@ const Comments = ({ chapterId }) => {
       }
       try {
         const response = await fetch(
-          `https://batbooks.liara.run/comments/dislike/${replyId}/`,
+          `http://45.158.169.198/comments/dislike/${replyId}/`,
           {
             method: "GET",
 
@@ -385,7 +385,7 @@ const Comments = ({ chapterId }) => {
       }
       try {
         const response = await fetch(
-          `https://batbooks.liara.run/comments/dislike/${commentId}/`,
+          `http://45.158.169.198/comments/dislike/${commentId}/`,
           {
             method: "GET",
 
@@ -437,7 +437,7 @@ const Comments = ({ chapterId }) => {
   const fetchReplies = async (commentId) => {
     setReplyLoading((prev) => [...prev, (prev[commentId] = true)]);
 
-    let address = `https://batbooks.liara.run/comments/comment/${commentId}/`;
+    let address = `http://45.158.169.198/comments/comment/${commentId}/`;
     if (nextreplyLink.hasOwnProperty(commentId)) {
       address = nextreplyLink[commentId];
     }
@@ -617,7 +617,7 @@ const Comments = ({ chapterId }) => {
                     ) : (
                       <img
                         className="rounded-full"
-                        src={`https://batbooks.liara.run${comment.image}`}
+                        src={`http://45.158.169.198${comment.image}`}
                         alt="author avatar"
                       />
                     )}
@@ -716,7 +716,7 @@ const Comments = ({ chapterId }) => {
                         {reply.image != null ? (
                           <img
                             className="w-10  rounded-full "
-                            src={`https://batbooks.liara.run${reply.image}`}
+                            src={`http://45.158.169.198${reply.image}`}
                             alt="asd"
                           />
                         ) : (

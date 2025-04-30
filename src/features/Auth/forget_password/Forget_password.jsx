@@ -28,7 +28,7 @@ function Forget_password() {
     try {
       // Replace this with your actual API endpoint
       const response = await fetch(
-        "https://batbooks.liara.run/auth/reset-password/send-otp/",
+        "http://45.158.169.198/auth/reset-password/send-otp/",
         {
           method: "POST",
           headers: {

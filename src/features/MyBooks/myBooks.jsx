@@ -20,7 +20,7 @@ export default function MyBooks() {
       setLoading(true);
       const token = localStorage.getItem("access_token");
       try {
-        const response = await fetch(`https://batbooks.liara.run/book/my/`, {
+        const response = await fetch(`http://45.158.169.198/book/my/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -46,7 +46,7 @@ export default function MyBooks() {
       const token = localStorage.getItem("access_token");
       try {
         const response = await fetch(
-          `https://batbooks.liara.run/book-actions/get/favorite/`,
+          `http://45.158.169.198/book-actions/get/favorite/`,
           {
             method: "GET",
             headers: {
@@ -147,7 +147,7 @@ export default function MyBooks() {
                           description={book.description}
                           coverImage={
                             book.image
-                              ? `https://batbooks.liara.run/${book.image}`
+                              ? `http://45.158.169.198/${book.image}`
                               : `/src/assets/images/book_sample1.png`
                           }
                         />

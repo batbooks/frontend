@@ -3,7 +3,7 @@ import Footer from "/src/common/Footer/footer";
 import Navbar from "/src/common/Navbar/navbar";
 import BookCard from "../../../common/BookCard/bookCard";
 import "./anotheruserprofile.css";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useSelector } from "react-redux";
 import Loading from "../../../common/Loading/Loading";
 
@@ -33,7 +33,7 @@ export default function Another_User_Profile() {
       console.log("asda");
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/user/info/${userId}/`
+          `http://45.158.169.198/user/info/${userId}/`
         );
         if (!response.ok) throw new Error("Failed to fetch book");
         const data = await response.json();
@@ -50,7 +50,7 @@ export default function Another_User_Profile() {
 
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/book/user/${userId}/`,
+          `http://45.158.169.198/book/user/${userId}/`,
           {
             method: "GET",
           }
@@ -79,7 +79,7 @@ export default function Another_User_Profile() {
       setLoading1(true);
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/user/is/follow/${userId}/`,
+          `http://45.158.169.198/user/is/follow/${userId}/`,
           {
             method: "GET",
 
@@ -104,7 +104,7 @@ export default function Another_User_Profile() {
       setLoading2(true);
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/user/is/Not_Interested/${userId}/`,
+          `http://45.158.169.198/user/is/Not_Interested/${userId}/`,
           {
             method: "GET",
 
@@ -146,7 +146,7 @@ export default function Another_User_Profile() {
   const handleFollow = async () => {
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/user/toggle/follow/${userId}/`,
+        `http://45.158.169.198/user/toggle/follow/${userId}/`,
         {
           method: "GET",
 
@@ -163,7 +163,7 @@ export default function Another_User_Profile() {
   const handleBlockd = async () => {
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/user/toggle/Not_Interested/${userId}/`,
+        `http://45.158.169.198/user/toggle/Not_Interested/${userId}/`,
         {
           method: "GET",
 
@@ -200,13 +200,14 @@ export default function Another_User_Profile() {
       });
     }
   };
+  const navigate = useNavigate();
   if (loading || loading1 || loading2)
     return (
       <div className="h-[100vh] grid place-items-center">
         <Loading />
       </div>
     );
-
+    
   return (
     <>
       <Navbar />
@@ -270,10 +271,8 @@ export default function Another_User_Profile() {
           </div>
 
           <div className="w-[100%] m-[32px] mt-0 ml-0 ">
-            <h3 className="text-[24px] font-[300]  mb-[15px]">
-              {user.user}
-            </h3>
-            
+            <h3 className="text-[24px] font-[300]  mb-[15px]">{user.user}</h3>
+
             {console.log(user)}
             <div className="flex gap-[20px] mb-[19px] ">
               <button
@@ -317,7 +316,7 @@ export default function Another_User_Profile() {
                 title={lastBook.name}
                 coverImage={
                   lastBook.image != null
-                    ? `http://127.0.0.1:8000${lastBook.image}`
+                    ? `http://45.158.169.198${lastBook.image}`
                     : "/23.png"
                 }
                 chapters={80}
@@ -394,7 +393,7 @@ export default function Another_User_Profile() {
           ref={containerRef2}
           className="overflow-x-scroll scrollbar-opacity-0 w-[100%] ml-auto py-5"
         >
-          {UserWritten[0] && UserWritten.length>7 ? (
+          {UserWritten[0] && UserWritten.length > 7 ? (
             <button
               onClick={() => handleScroll2("left")}
               className="absolute rounded-full bg-[#000000] z-2 mt-[107px] cursor-pointer left-0 ml-[80px]"
@@ -402,7 +401,7 @@ export default function Another_User_Profile() {
               <img src="/src/assets/images/slider.svg" alt="slider"></img>
             </button>
           ) : null}
-          {UserWritten[0] && UserWritten.length>7 ? (
+          {UserWritten[0] && UserWritten.length > 7 ? (
             <button
               onClick={() => handleScroll2("right")}
               className="absolute rounded-full bg-[#000000] z-2 mt-[107px] cursor-pointer"
@@ -413,12 +412,16 @@ export default function Another_User_Profile() {
                 className="rotate-180"
               ></img>
             </button>
+            
           ) : null}
           <div className="flex z-1 gap-[25px]">
             {UserWritten[0] ? (
               UserWritten.map((book, index) =>
                 index !== UserWritten.length - 1 ? (
-                  <Book book={book} />
+                  <Book
+                    book={book}
+                   
+                  />
                 ) : (
                   <Book book={book} isLast={true} />
                 )
@@ -446,10 +449,11 @@ export function Book({ book, isLast = false, minw = 180, h = 254 }) {
       }}
     >
       <BookCard
+       id={book.id}
         title={book.name}
         author={book.Author}
         coverImage={
-          book.image != null ? `http://127.0.0.1:8000/${book.image}` : "/20.jpg"
+          book.image != null ? `http://45.158.169.198/${book.image}` : "/20.jpg"
         }
         description={book.description}
         chapters={80}

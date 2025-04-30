@@ -16,7 +16,7 @@ const CreateChapter = () => {
     e.prevent.default;
     try {
       const response = await fetch(
-        `https://batbooks.liara.run/book/chapter/create/`,
+        `http://45.158.169.198/book/chapter/create/`,
         {
           method: "POST",
           body: JSON.stringify({

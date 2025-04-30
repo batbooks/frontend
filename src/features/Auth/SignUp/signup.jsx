@@ -18,7 +18,7 @@ function Signup() {
     setLoading(true);
     try {
       const response = await fetch(
-        "https://batbooks.liara.run/auth/register/",
+        "http://45.158.169.198/auth/register/",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

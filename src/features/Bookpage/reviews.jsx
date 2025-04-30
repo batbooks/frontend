@@ -10,7 +10,7 @@ const Reviews = ({ bookId }) => {
     const fetchreviews = async () => {
       try {
         const response = await fetch(
-          `https://batbooks.liara.run/comments/book/${bookId}/reviews/`
+          `http://45.158.169.198/comments/book/${bookId}/reviews/`
         );
 
         if (!response.ok) throw new Error("Failed to fetch reviews");
@@ -39,7 +39,7 @@ const Reviews = ({ bookId }) => {
 
   //   try {
   //     const response = await fetch(
-  //       `https://batbooks.liara.run/reviews/reply_to/${reviewId}/`
+  //       `http://45.158.169.198/reviews/reply_to/${reviewId}/`
   //     );
   //     if (!response.ok) throw new Error("Failed to fetch replies");
 

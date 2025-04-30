@@ -14,7 +14,7 @@ const EditChapter = () => {
     const fetchBook = async () => {
       try {
         
-        const res = await fetch(`https://batbooks.liara.run/book/${bookId}/`);
+        const res = await fetch(`http://45.158.169.198/book/${bookId}/`);
         const data = await res.json();
         setBookData(data);
       } catch (err) {

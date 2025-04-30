@@ -20,7 +20,7 @@ export default function VoteAndReview() {
     try {
       // Replace this with your actual API endpoint
       const response = await fetch(
-        "https://batbooks.liara.run/comments/create/",
+        "http://45.158.169.198/comments/create/",
         {
           method: "POST",
           headers: {
@@ -71,7 +71,7 @@ export default function VoteAndReview() {
           />
           {isAuthenticated && user.user_info.image != null ? (
             <img
-              src={`https://batbooks.liara.run${user.user_info.image}`}
+              src={`http://45.158.169.198${user.user_info.image}`}
               className="w-[63px] h-[63px] rounded-full mb-[15px]"
             />
           ) : (

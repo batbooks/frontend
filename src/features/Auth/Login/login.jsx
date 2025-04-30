@@ -17,7 +17,7 @@ function Login() {
   let navigate = useNavigate();
   const fetchuserinfo = async (token) => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/auth/who/`, {
+      const response = await fetch(`http://45.158.169.198/auth/who/`, {
         method: "GET",
 
         headers: {
@@ -39,7 +39,7 @@ function Login() {
 
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/auth/token/",
+        "http://45.158.169.198/auth/token/",
         {
           email,
           password,

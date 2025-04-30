@@ -7,6 +7,7 @@ import { format } from "date-fns";
 import { useLocation, useParams } from "react-router";
 import Comments from "../../common/comments/Comments";
 import Loading from "../../common/Loading/Loading";
+import ReactMarkdown from 'react-markdown'
 const ReadingPage = () => {
   const { chapterId } = useParams();
   const [id, setId] = useState();
@@ -28,7 +29,7 @@ const ReadingPage = () => {
 
       try {
         const response = await fetch(
-          `https://batbooks.liara.run/book/chapter/${chapterId}/`,
+          `http://45.158.169.198/book/chapter/${chapterId}/`,
           {
             method: "GET",
             headers: {
@@ -85,12 +86,12 @@ const ReadingPage = () => {
       <div className="main-div m-auto font-[Vazir] shadow-2xl">
         <div
           dir="rtl"
-          className=" flex items-center gap-[27px]  pr-[71px] py-[19px]"
+          className=" flex items-center gap-[27px]  pr-[71px] pb-[19px] pt-[14px] "
         >
           {bookCover != null ? (
             <img
               className="w-[179px] h-[247px] rounded-[15px]"
-              src={`https://batbooks.liara.run${bookCover}`}
+              src={`http://45.158.169.198${bookCover}`}
               alt="chapter"
             />
           ) : (
@@ -102,13 +103,13 @@ const ReadingPage = () => {
           )}
           <article className="article1">
             <div className="flex">
-              <h2 className="text-[36px] font-[400]">نام کتاب :{bookName} </h2>
-              <h2 className="text-[27px] font-[400] mr-[400px]">
+              <h2 className="text-[20px] font-[400] mb-5">نام کتاب :{bookName} </h2>
+              <h2 className="text-[20px] font-[400] mr-[400px]">
                 تاریخ انتشار :{published}{" "}
               </h2>
             </div>
-            <p className="text-[25px] font-[400] mb-[10px]">{author}</p>
-            <h1 className="text-[45px] font-[400] mb-[10px]">فصل : {season}</h1>
+            <p className="text-[20px] font-[400] mb-[20px]">{author}</p>
+            <h1 className="text-[25px] font-[400] mb-[10px]">فصل : {season}</h1>
             <Rating
               style={{ direction: "ltr" }}
               size="small"
@@ -118,44 +119,47 @@ const ReadingPage = () => {
             />
           </article>
         </div>
-        <div className="main-div2 px-[71px]">
-          <div className="flex justify-between py-[41px]">
+        <div className="main-div2 px-[71px] ">
+          <div className="flex justify-between py-[41px] ">
             <button
               style={{ borderRadius: "10px" }}
-              className="bg-[#2663cd] py-[10px] px-[26px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
+              className="bg-[#2663cd] py-[5px] px-[25px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
             >
-              <span className="text-[#ffffff] font-[300] text-[27px]">
+              <span className="text-[#ffffff] font-[300] text-[15px]">
                 {"<<"} فصل بعد{" "}
               </span>
             </button>
             <button
               style={{ borderRadius: "10px" }}
-              className="bg-[#2663cd] py-[10px] px-[26px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
+              className="bg-[#2663cd] py-[5px] px-[25px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
             >
-              <span className="text-[#ffffff] font-[300] text-[27px]">
+              <span className="text-[#ffffff] font-[300] text-[15px]">
                 فصل قبل {">>"}
               </span>
             </button>
           </div>
-          <div className="full-width-line mb-[41px]"></div>
-          <div dir="rtl" className="mb-[500px] text-[25px] font-[400]">
+          {/* <div className="full-width-line mb-[41px]"></div> */}
+          <div dir="rtl" className="mb-[500px] text-[15px] font-[400] bg-white p-15 leading-15 border border-[#2663cd]">
+            <ReactMarkdown>
+
             {chapterBody}
+            </ReactMarkdown>
           </div>
           <div className="full-width-line"></div>
           <div className="flex justify-between py-[41px]">
-            <button
+          <button
               style={{ borderRadius: "10px" }}
-              className="bg-[#2663cd] py-[10px] px-[26px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
+              className="bg-[#2663cd] py-[5px] px-[25px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
             >
-              <span className="text-[#ffffff] font-[300] text-[27px]">
+              <span className="text-[#ffffff] font-[300] text-[15px]">
                 {"<<"} فصل بعد{" "}
               </span>
             </button>
             <button
               style={{ borderRadius: "10px" }}
-              className="bg-[#2663cd] py-[10px] px-[26px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
+              className="bg-[#2663cd] py-[5px] px-[25px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
             >
-              <span className="text-[#ffffff] font-[300] text-[27px]">
+              <span className="text-[#ffffff] font-[300] text-[15px]">
                 فصل قبل {">>"}
               </span>
             </button>

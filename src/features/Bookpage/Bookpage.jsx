@@ -55,9 +55,9 @@ const BookPage = () => {
         const token = localStorage.getItem("access_token");
 
         const [bookResponse, favoriteResponse] = await Promise.all([
-          fetch(`https://batbooks.liara.run/book/${bookId}/`),
+          fetch(`http://45.158.169.198/book/${bookId}/`),
           fetch(
-            `https://batbooks.liara.run/book-actions/is/favorite/${bookId}/`,
+            `http://45.158.169.198/book-actions/is/favorite/${bookId}/`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -101,7 +101,7 @@ const BookPage = () => {
   const handleFavorite = async () => {
     try {
       const response = await fetch(
-        `https://batbooks.liara.run/book-actions/toggle/favorite/${bookId}/`,
+        `http://45.158.169.198/book-actions/toggle/favorite/${bookId}/`,
         {
           method: "GET",
           headers: {
@@ -149,7 +149,7 @@ const BookPage = () => {
     try {
       // Replace this with your actual API endpoint
       const response = await fetch(
-        `https://batbooks.liara.run/comments/book/${bookId}/reviews/create/`,
+        `http://45.158.169.198/comments/book/${bookId}/reviews/create/`,
         {
           method: "POST",
           headers: {
@@ -207,7 +207,7 @@ const BookPage = () => {
           <img
             src={
               book.image
-                ? `https://batbooks.liara.run/${book.image}`
+                ? `http://45.158.169.198/${book.image}`
                 : `https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-book-cover-design-template-34323b0f0734dccded21e0e3bebf004c_screen.jpg?ts=1637015198`
             }
             alt="Book Cover"
@@ -241,7 +241,7 @@ const BookPage = () => {
 
         {/* Main Content */}
         <div className="w-3/4 mr-auto flex flex-col">
-          <SearchBar />
+          {/* <SearchBar /> */}
 
           {/* Book Details */}
           <div className="bg-[#D9F0FF] p-5 mb-5 relative z-10">

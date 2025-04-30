@@ -21,7 +21,7 @@ function AppContent() {
       if (localStorage.getItem("refresh_token")) {
         try {
           const response = await fetch(
-            `http://127.0.0.1:8000/auth/token/refresh/`,
+            `http://45.158.169.198/auth/token/refresh/`,
             {
               method: "POST",
               headers: {
@@ -55,7 +55,7 @@ function AppContent() {
       setLoading(true);
 
       try {
-        const response = await fetch(`http://127.0.0.1:8000/auth/who/`, {
+        const response = await fetch(`http://45.158.169.198/auth/who/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

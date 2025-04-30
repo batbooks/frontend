@@ -17,7 +17,7 @@ const ModifiedChapter = () => {
         setLoading(true)
       try {
         const response = await fetch(
-          `https://batbooks.liara.run/book/chapter/${chapterId}/`,
+          `http://45.158.169.198/book/chapter/${chapterId}/`,
           {
             method: "GET",
             headers: {
@@ -49,7 +49,7 @@ const ModifiedChapter = () => {
     console.log("sfdf")
     try {
       const response = await fetch(
-        `https://batbooks.liara.run/book/chapter/${chapterId}/`,
+        `http://45.158.169.198/book/chapter/${chapterId}/`,
         {
           method: "PUT",
           body: JSON.stringify({
