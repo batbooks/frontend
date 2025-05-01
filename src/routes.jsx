@@ -18,6 +18,7 @@ import ReadingPage from "./features/ReadingChapter/chapterView.jsx";
 import CreateChapter from "./features/CreateChapter/createChapter.jsx";
 import Comments from "./common/comments/Comment.jsx";
 import EditProfile from "./features/Profiles/EditProfile/editProfile.jsx";
+import ShowAllBooks from "./features/ShowAllBooks/ShowAllBooks.jsx";
 
 function AppRoutes() {
   return (
@@ -87,6 +88,8 @@ function AppRoutes() {
           }
         />
         <Route path="/chapter/:chapterId" element={<ReadingPage />} />
+        <Route path="/showallbooks" element={<ShowAllBooks />} />
+        <Route path="/mybooks" element={<MyBooks />} />
         <Route
           path="/modifiedChapter/:id"
           element={
