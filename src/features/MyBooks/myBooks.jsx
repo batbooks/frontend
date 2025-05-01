@@ -105,7 +105,9 @@ export default function MyBooks() {
           کتاب های من
         </h1>
         <div className="flex gap-[26px] relative">
-          <ReadingGoalCard />
+          <div className="h-[764px] w-[243px]">
+            <ReadingGoalCard />
+          </div>
           <div className="flex flex-col w-[100%] text-right">
             <h3 className="mr-[11px] text-[16px] font-[700] text-[#1A365D] mb-[22px]">
               کتاب های مورد علاقه من
