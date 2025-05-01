@@ -18,37 +18,31 @@ export default function Homepage() {
 
   return (
     <div className="">
-      <Navbar className="" />
+      <Navbar />
       <SearchBar />
-
       <div className="flex flex-row justify-between ">
         <div className="sticky-content-l">
-          <Left></Left>
+          <Left />
         </div>
         <div className="">
           <h1 className="text-center my-10 text-2xl  "> کتاب های پرطرفدار </h1>
-          <Banner></Banner>
-
+          <Banner />
           <h1 className="text-center mb-8 text-4xl  "> تازه ترین ها </h1>
-          <Newest_books></Newest_books>
+          <Newest_books />
           <h1 className="text-center mb-8 text-4xl  "> پیشنهادی </h1>
-          <Suggestions></Suggestions>
+          <Suggestions />
           <h1 className="text-center my-10 text-2xl  ">
-            {" "}
-            محبوب ترین نویسنده ها{" "}
+            محبوب ترین نویسنده ها
           </h1>
           <Popular_authors></Popular_authors>
-          <h1 className="text-center my-10 text-2xl  ">
-            {" "}
-            فعالترین نویسنده ها{" "}
-          </h1>
-          <Most_active_authors></Most_active_authors>
+          <h1 className="text-center my-10 text-2xl  ">فعالترین نویسنده ها</h1>
+          <Most_active_authors />
         </div>
         <div className="sticky-content-r">
-          <Right></Right>
+          <Right />
         </div>
       </div>
-      <Footer> </Footer>
+      <Footer />
     </div>
   );
 }
