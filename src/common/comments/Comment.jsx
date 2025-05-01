@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import VoteAndReview from "./voteAndReview";
 import {
   AiFillLike,
@@ -9,58 +9,127 @@ import {
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { RiReplyFill } from "react-icons/ri";
 import LongParagraphInput from "../LongParagraphInput/longParagraphInput";
+import Loading from "../Loading/Loading";
 
-const comments = [1, 2, 3, 4, 5];
+export default function Comments({ chapterId = 3 }) {
+  const [loading, setLoading] = useState(false);
+  const [showingComments, setShowingComments] = useState([]);
+  const [nextCommentLink, setNextCommentLink] = useState("");
+  const [commentsCount, setCommentsCount] = useState(0);
+  const showingCommentsCount = showingComments.length;
+  const user = localStorage.getItem("user");
 
-export default function Comments() {
+  useEffect(() => {
+    const fetchComments = async () => {
+      setLoading(true);
+      // const token = localStorage.getItem("access_token");
+      try {
+        const response = await fetch(
+          `http://45.158.169.198/comments/chapter/${chapterId}/`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ2NzIwNDA3LCJpYXQiOjE3NDYxMTU2MDcsImp0aSI6ImJhN2U5OTkzMWQ3MzRmYjFiNTg4ZTcxYzZmYzBhNDRmIiwidXNlcl9pZCI6MTF9.J1W-quEsy_r3j8yFfMB2MGJj8TfXwA8bCtlojvCfRRo`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("درخواست موفق نبود");
+        }
+
+        const data = await response.json();
+        setNextCommentLink(data.links.next);
+        setShowingComments(data.results);
+        setCommentsCount(data.count);
+      } catch (error) {
+        console.error("خطا در ارسال به سرور:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchComments();
+  }, []);
+
+  const moreComments = async () => {
+    try {
+      setLoading(true);
+      // const token = localStorage.getItem("access_token");
+      const response = await fetch(nextCommentLink, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ2NzIwNDA3LCJpYXQiOjE3NDYxMTU2MDcsImp0aSI6ImJhN2U5OTkzMWQ3MzRmYjFiNTg4ZTcxYzZmYzBhNDRmIiwidXNlcl9pZCI6MTF9.J1W-quEsy_r3j8yFfMB2MGJj8TfXwA8bCtlojvCfRRo`,
+        },
+      });
+      if (!response.ok) throw new Error("Failed to fetch comments");
+
+      const data = await response.json();
+      setNextCommentLink(data.links.next);
+      setShowingComments([...showingComments, ...data.results]);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <VoteAndReview />;
       <main dir="rtl" className="mt-[20px] mb-[60px] mx-[100px] flex flex-col">
         <h1 className="text-[22px] font-[400] mb-[30px]">نظرات کاربران:</h1>
-        <div className="flex flex-col gap-[36px] ">
-          {comments.map((i) => (
+        <div className="flex flex-col gap-[36px]">
+          {showingComments.map((comment) => (
             <Comment
-              userImage={`/src/assets/images/user-image${i}.png`}
-              userName={"نام کاربری"}
-              dateTime={"روز/ماه/سال"}
+              // commentId={comment.id}
+              userImage={`http://45.158.169.198${comment.image}`}
+              userName={comment.user.name}
+              dateTime={comment.created}
               content={
-                <p className="text-[16px] font-[300] my-auto">
-                  این متن صرفا جهت تست است این متن صرفا جهت تست است این متن صرفا
-                  جهت تست است این متن صرفا جهت تست است این متن صرفا جهت تست است
-                  این متن صرفا جهت تست است
-                  <br />
-                  <br />
-                  این متن صرفا جهت تست است این متن صرفا جهت تست است این متن صرفا
-                  جهت تست است این متن صرفا جهت تست است این متن صرفا جهت تست است
-                  این متن صرفا جهت تست است
-                  <br />
-                  <br />
-                  این متن صرفا جهت تست است این متن صرفا جهت تست است این متن صرفا
-                  جهت تست است این متن صرفا جهت تست است این متن صرفا جهت تست است
-                  این متن صرفا جهت تست است
-                </p>
+                <p className="text-[16px] font-[300] my-auto">{comment.body}</p>
               }
-              likeNum={25}
-              dislikeNum={20}
-              key={i}
+              likeNum={comment.like.length}
+              dislikeNum={comment.dislike.length}
+              key={comment.id}
+              likeState={
+                comment.like.include(user.id)
+                  ? 1
+                  : comment.dislike.include(user.id)
+                    ? 0
+                    : -1
+              }
             />
           ))}
         </div>
-        <button className="btn !px-[23px] !py-[7.5px] !rounded-full !mt-[50px] !mx-auto !mb-0 !h-fit !w-fit !flex !gap-[12px] !items-center">
-          <span className="span-btn text-[14px] font-[300]">
-            مشاهده موارد بیشتر
-          </span>
-          <span className="!text-[18px] !font-[400] !mt-[5px] span-btn">
-            {">"}
-          </span>
-        </button>
+        {loading ? <Loading /> : null}
+        {showingCommentsCount !== commentsCount && !loading ? (
+          <button
+            onClick={moreComments}
+            className="btn !px-[23px] !py-[7.5px] !rounded-full !mt-[50px] !mx-auto !mb-0 !h-fit !w-fit !flex !gap-[12px] !items-center"
+          >
+            <span className="span-btn text-[14px] font-[300]">
+              مشاهده موارد بیشتر
+            </span>
+            <span className="!text-[18px] !font-[400] !mt-[5px] span-btn">
+              {">"}
+            </span>
+          </button>
+        ) : null}
+        {commentsCount === 0 && !loading ? (
+          <div className="mx-auto py-6">
+            <span className="text-[16px]">موردی برای نمایش وجود ندارد</span>
+          </div>
+        ) : null}
       </main>
     </>
   );
 }
 
 function Comment({
+  commentId = 11,
+  likeState = -1,
   userImage,
   userName,
   dateTime,
@@ -68,44 +137,106 @@ function Comment({
   likeNum,
   dislikeNum,
 }) {
-  const replies = [1, 2];
   const [isClickedReplies, setIsClickedReplies] = useState(false);
   const [isClickedReply, setIsClickedReply] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [showingReplies, setShowingReplies] = useState([]);
+  const [nextReplyLink, setNextReplyLink] = useState("");
+  const [repliesCount, setRepliesCount] = useState(0);
+  const showingRepliesCount = showingReplies.length;
+  const user = localStorage.getItem("user");
+
+  const fetchReplies = async () => {
+    try {
+      setLoading(true);
+      // const token = localStorage.getItem("access_token");
+      const response = await fetch(
+        `http://45.158.169.198/comments/comment/${commentId}/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ2NzIwNDA3LCJpYXQiOjE3NDYxMTU2MDcsImp0aSI6ImJhN2U5OTkzMWQ3MzRmYjFiNTg4ZTcxYzZmYzBhNDRmIiwidXNlcl9pZCI6MTF9.J1W-quEsy_r3j8yFfMB2MGJj8TfXwA8bCtlojvCfRRo`,
+          },
+        }
+      );
+      if (!response.ok) throw new Error("Failed to fetch comments");
+
+      const data = await response.json();
+      setNextReplyLink(data.links.next);
+      setShowingReplies(data.results);
+      setRepliesCount(data.count);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const moreReplies = async () => {
+    try {
+      setLoading(true);
+      // const token = localStorage.getItem("access_token");
+      const response = await fetch(nextReplyLink, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ2NzIwNDA3LCJpYXQiOjE3NDYxMTU2MDcsImp0aSI6ImJhN2U5OTkzMWQ3MzRmYjFiNTg4ZTcxYzZmYzBhNDRmIiwidXNlcl9pZCI6MTF9.J1W-quEsy_r3j8yFfMB2MGJj8TfXwA8bCtlojvCfRRo`,
+        },
+      });
+      if (!response.ok) throw new Error("Failed to fetch comments");
+
+      const data = await response.json();
+      setNextReplyLink(data.links.next);
+      setShowingReplies([...showingReplies, ...data.results]);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="flex flex-col">
       <div
         className={`flex flex-col gap-[22px] px-[25px] py-[30px] bg-[#A4C0ED] border-[2px] border-[#000000]/21 rounded-[25px] ${isClickedReplies || isClickedReply ? "rounded-bl-[0px]" : ""}`}
       >
-        <div className="gap-[100px] flex">
+        <div className="gap-[25px] flex">
           <div className="flex flex-col items-center gap-[16px] relative">
-            <span className="absolute left-[-45px] text-[16px] font-[400] mt-[13px]">
-              {userName}
-            </span>
             <img
               className="w-[83px] h-[83px] rounded-full"
               src={userImage}
               alt="commentimage"
             />
+            <span className="text-[16px] font-[400]">{userName}</span>
             <button className="btn !w-fit !h-fit !mb-0 !mr-0 !ml-0 py-[5px] px-[38px] text-nowrap">
               <span className="span-btn !text-[14px] !font-[400]">
                 دنبال کردن
               </span>
             </button>
           </div>
-          <div className="flex flex-col gap-[22px]">
-            <h2 className="text-[15px] text-[#000000]/70 font-[300]">
-              {dateTime}
-            </h2>
-            {content}
+          <div className="flex flex-col gap-[22px] w-[100%]">
+            <div className="p-6 min-h-[170px] rounded-[15px] border-black/20 border-[2px] shadow-sm shadow-black/21 bg-[#E0F2F1]">
+              <h2 className="text-[15px] text-[#000000]/70 font-[300] mb-[15px]">
+                {dateTime}
+              </h2>
+              {content}
+            </div>
           </div>
         </div>
-        <div className="flex justify-around">
+        <div className="flex justify-between px-42">
           <div className="flex flex-col gap-[25px]">
-            <LikeAndDislike dislikeNum={dislikeNum} likeNum={likeNum} />
+            <LikeAndDislike
+              dislikeNum={dislikeNum}
+              likeNum={likeNum}
+              likeState={likeState}
+            />
             {!isClickedReplies ? (
               <button
-                onClick={() => setIsClickedReplies(true)}
+                onClick={() => {
+                  setIsClickedReplies(true);
+                  fetchReplies();
+                }}
                 className="relative flex gap-[5px] items-center cursor-pointer group"
               >
                 <span className="text-[16px] text-[#2563EB] font-[600]">
@@ -157,75 +288,76 @@ function Comment({
         </div>
       </div>
       {isClickedReplies ? (
-        <div className="relative flex flex-col mr-[200px] mt-[-2px] border-[2px] border-t-0 border-[#000000]/42 rounded-b-[25px] bg-[#A4C0ED]">
+        <div className="relative flex flex-col mr-[200px] mt-[-2px] border-[2px] border-t-0 border-[#000000]/21 rounded-b-[25px] bg-[#A4C0ED]">
           <div className="bg-[#A4C0ED] h-[25px] w-[25px] absolute right-[-25px]">
             <div className="bg-[#D9F0FF] rounded-tl-[25px] w-[25px] h-[25px] border-[2px] border-b-0 border-r-0 border-[#000000]/42"></div>
           </div>
           {isClickedReply ? <ReplyBox isLast={false} /> : null}
-          {replies.map((i) =>
-            i !== 2 ? (
+          {showingReplies.map((reply, i) =>
+            i !== showingRepliesCount - 1 ? (
               <Reply
                 key={i}
-                userImage={`/src/assets/images/user-image${i}.png`}
-                userName={"نام کاربری"}
-                dateTime={"روز/ماه/سال"}
+                userImage={`http://45.158.169.198${reply.image}`}
+                userName={reply.user.name}
+                dateTime={reply.created}
                 content={
-                  <p className="text-[16px] font-[300] my-auto">
-                    این متن صرفا جهت تست است این متن صرفا جهت تست است این متن
-                    صرفا جهت تست است این متن صرفا جهت تست است این متن صرفا جهت
-                    تست است این متن صرفا جهت تست است
-                    <br />
-                    <br />
-                    این متن صرفا جهت تست است این متن صرفا جهت تست است این متن
-                    صرفا جهت تست است این متن صرفا جهت تست است این متن صرفا جهت
-                    تست است این متن صرفا جهت تست است
-                    <br />
-                    <br />
-                    این متن صرفا جهت تست است این متن صرفا جهت تست است این متن
-                    صرفا جهت تست است این متن صرفا جهت تست است این متن صرفا جهت
-                    تست است این متن صرفا جهت تست است
-                  </p>
+                  <p className="text-[16px] font-[300] my-auto">{reply.body}</p>
                 }
-                likeNum={25}
-                dislikeNum={20}
+                likeNum={reply.like.length}
+                dislikeNum={reply.dislike.length}
+                likeState={
+                  reply.like.include(user.id)
+                    ? 1
+                    : reply.dislike.include(user.id)
+                      ? 0
+                      : -1
+                }
               />
             ) : (
               <Reply
                 key={i}
                 isLast={true}
-                userImage={`/src/assets/images/user-image${i}.png`}
-                userName={"نام کاربری"}
-                dateTime={"روز/ماه/سال"}
+                userImage={`http://45.158.169.198${reply.image}`}
+                userName={reply.user.name}
+                dateTime={reply.created}
                 content={
-                  <p className="text-[16px] font-[300] my-auto">
-                    این متن صرفا جهت تست است این متن صرفا جهت تست است این متن
-                    صرفا جهت تست است این متن صرفا جهت تست است این متن صرفا جهت
-                    تست است این متن صرفا جهت تست است
-                    <br />
-                    <br />
-                    این متن صرفا جهت تست است این متن صرفا جهت تست است این متن
-                    صرفا جهت تست است این متن صرفا جهت تست است این متن صرفا جهت
-                    تست است این متن صرفا جهت تست است
-                    <br />
-                    <br />
-                    این متن صرفا جهت تست است این متن صرفا جهت تست است این متن
-                    صرفا جهت تست است این متن صرفا جهت تست است این متن صرفا جهت
-                    تست است این متن صرفا جهت تست است
-                  </p>
+                  <p className="text-[16px] font-[300] my-auto">{reply.body}</p>
                 }
-                likeNum={25}
-                dislikeNum={20}
+                likeNum={reply.like.length}
+                dislikeNum={reply.dislike.length}
+                likeState={
+                  reply.like.include(user.id)
+                    ? 1
+                    : reply.dislike.include(user.id)
+                      ? 0
+                      : -1
+                }
               />
             )
           )}
-          <button className="btn !px-[23px] !py-[7.5px] !rounded-full !mb-[25px] !mx-auto !h-fit !w-fit !flex !gap-[12px] !items-center">
-            <span className="span-btn text-[14px] font-[300]">
-              مشاهده موارد بیشتر
-            </span>
-            <span className="!text-[18px] !font-[400] !mt-[5px] span-btn">
-              {">"}
-            </span>
-          </button>
+          {loading ? (
+            <div className="mx-auto">
+              <Loading />
+            </div>
+          ) : null}
+          {repliesCount !== showingRepliesCount && !loading ? (
+            <button
+              onClick={moreReplies}
+              className="btn !px-[23px] !py-[7.5px] !rounded-full !mb-[25px] !mx-auto !h-fit !w-fit !flex !gap-[12px] !items-center"
+            >
+              <span className="span-btn text-[14px] font-[300]">
+                مشاهده موارد بیشتر
+              </span>
+              <span className="!text-[18px] !font-[400] !mt-[5px] span-btn">
+                {">"}
+              </span>
+            </button>
+          ) : null}
+          {repliesCount === 0 && !loading ? (
+            <div className="mx-auto py-6">
+              <span className="text-[16px]">موردی برای نمایش وجود ندارد</span>
+            </div>
+          ) : null}
         </div>
       ) : isClickedReply ? (
         <div className="relative flex flex-col mr-[200px] mt-[-2px] border-[2px] border-t-0 border-[#000000]/42 rounded-b-[25px]">
@@ -240,6 +372,7 @@ function Comment({
 }
 
 function Reply({
+  likeState = -1,
   isLast = false,
   userImage,
   userName,
@@ -266,15 +399,19 @@ function Reply({
             </span>
           </button>
         </div>
-        <div className="flex flex-col gap-[22px]">
-          <h2 className="text-[15px] text-[#000000]/70 font-[300]">
+        <div className="p-6 w-[100%] min-h-[170px] rounded-[15px] border-black/20 border-[2px] shadow-sm shadow-black/21 bg-[#E0F2F1]">
+          <h2 className="text-[15px] text-[#000000]/70 font-[300] mb-[15px]">
             {dateTime}
           </h2>
           {content}
         </div>
       </div>
       <div className="mr-[190px]">
-        <LikeAndDislike dislikeNum={dislikeNum} likeNum={likeNum} />
+        <LikeAndDislike
+          dislikeNum={dislikeNum}
+          likeNum={likeNum}
+          likeState={likeState}
+        />
       </div>
     </div>
   );
@@ -308,7 +445,7 @@ function ReplyBox({ isLast }) {
   );
 }
 
-function LikeAndDislike({ likeNum, dislikeNum }) {
+function LikeAndDislike({ likeNum, dislikeNum, likeState }) {
   const [isLikeClicked, setIsLikeClicked] = useState(false);
   const [isLikedVisible, setIsLikedVisible] = useState(false);
   const [isLikeSwapped, setIsLikeSwapped] = useState(false);
@@ -317,6 +454,9 @@ function LikeAndDislike({ likeNum, dislikeNum }) {
   const [isDislikeSwapped, setIsDislikeSwapped] = useState(false);
   const [numLike, setNumLike] = useState(likeNum);
   const [numDislike, setNumDislike] = useState(dislikeNum);
+
+  if (likeState === 1) setIsLikedVisible(true);
+  else if (likeState === 0) setIsDislikedVisible(true);
 
   return (
     <div className="flex gap-[25px]">
@@ -386,13 +526,13 @@ function LikeAndDislike({ likeNum, dislikeNum }) {
           {isDislikedVisible ? (
             <AiFillDislike
               color="red"
-              size={20}
+              size={25}
               className="pointer-events-none"
             />
           ) : (
             <AiOutlineDislike
               color="red"
-              size={20}
+              size={25}
               className="pointer-events-none"
             />
           )}
@@ -463,13 +603,13 @@ function LikeAndDislike({ likeNum, dislikeNum }) {
           {isLikedVisible ? (
             <AiFillLike
               color="blue"
-              size={20}
+              size={25}
               className="pointer-events-none"
             />
           ) : (
             <AiOutlineLike
               color="blue"
-              size={20}
+              size={25}
               className="pointer-events-none"
             />
           )}

@@ -66,11 +66,6 @@ export default function VoteAndReview() {
         className={`flex justify-between items-center ${isClicked ? "mb-[41px]" : ""}`}
       >
         <div className="flex flex-col items-center">
-          <img
-            src="/src/assets/images/rating-and-reviews.png"
-            alt="ratingandreviews"
-            className="w-[228px] h-[53px] mb-[19px]"
-          />
           {isAuthenticated && user.user_info.image != null ? (
             <img
               src={`https://batbooks.liara.run${user.user_info.image}`}
@@ -96,11 +91,6 @@ export default function VoteAndReview() {
           </div>
         </div>
         <div className="flex flex-col items-center gap-[20px] text-center">
-          <img
-            src="/src/assets/images/community-reviews.png"
-            alt="community"
-            className="w-[252.12px] h-[53px]"
-          />
           <span className="text-[16px] font-[400] text-[#000000]/70">
             تاکنون 756 نفر دیدگاه خود را درباره این فصل به اشتراک گذاشته اند.
             <br />

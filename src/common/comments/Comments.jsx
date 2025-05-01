@@ -657,80 +657,85 @@ const Comments = ({ chapterId }) => {
               </div>
             ) : (
               <div className="ml-20 mr-60 ">
-                {( replies[comment.id] || []).slice().reverse().map((reply) => (
-                  <div
-                    key={reply.id}
-                    className=" right-4  p-4 pl-70  rounded-lg mb-3 bg-[#D9F0FF] text-right w-300"
-                  >
-                    <div className="flex flex-row justify-end max-w-200   gap-5 min-h-30 ">
-                      <div>
-                        <p className="text-sm text-gray-500 p-2 max-w-200 ">
-                          {getTimeAgo(reply.created)}
-                        </p>
-                        <div className="flex  relative justify-end mb-7">
-                          <div className="flex flex-col gap-3 absolute right-190">
-                            <div className="flex text-center gap-4 justify-center">
-                              <div className="w-8 ">{reply.like.length}</div>
-                              <LikeButtonReply
-                                commentId={comment.id}
-                                replyId={reply.id}
-                              />
-                            </div>
-                            <div className="flex text-center gap-4 justify-center">
-                              <div className="w-8 ">{reply.dislike.length}</div>
-                              <DisLikeButtonReply
-                                commentId={comment.id}
-                                replyId={reply.id}
-                              />
-                            </div>
-                          </div>
-                          <p className=" text-blue-600 hover:bg-blue-600 hover:text-white inline cursor-pointer duration-150 p-0.5 rounded-sm ml-1.5">
-                            {reply.tag}
+                {(replies[comment.id] || [])
+                  .slice()
+                  .reverse()
+                  .map((reply) => (
+                    <div
+                      key={reply.id}
+                      className=" right-4  p-4 pl-70  rounded-lg mb-3 bg-[#D9F0FF] text-right w-300"
+                    >
+                      <div className="flex flex-row justify-end max-w-200   gap-5 min-h-30 ">
+                        <div>
+                          <p className="text-sm text-gray-500 p-2 max-w-200 ">
+                            {getTimeAgo(reply.created)}
                           </p>
+                          <div className="flex  relative justify-end mb-7">
+                            <div className="flex flex-col gap-3 absolute right-190">
+                              <div className="flex text-center gap-4 justify-center">
+                                <div className="w-8 ">{reply.like.length}</div>
+                                <LikeButtonReply
+                                  commentId={comment.id}
+                                  replyId={reply.id}
+                                />
+                              </div>
+                              <div className="flex text-center gap-4 justify-center">
+                                <div className="w-8 ">
+                                  {reply.dislike.length}
+                                </div>
+                                <DisLikeButtonReply
+                                  commentId={comment.id}
+                                  replyId={reply.id}
+                                />
+                              </div>
+                            </div>
+                            <p className=" text-blue-600 hover:bg-blue-600 hover:text-white inline cursor-pointer duration-150 p-0.5 rounded-sm ml-1.5">
+                              {reply.tag}
+                            </p>
+                          </div>
+                          <p className="text-gray-800  w-170"> {reply.body} </p>
+                          <p
+                            onClick={() => {
+                              setIsClicked((prev) => ({
+                                ...prev,
+                                [reply.id]: !prev[reply.id],
+                              }));
+                            }}
+                            className="text-blue-700 hover:underline cursor-pointer inline-block mr-160 w-20"
+                          >
+                            جواب دادن
+                          </p>
+                          {isClicked[reply.id] ? (
+                            <CreateReply
+                              Id={reply.id}
+                              setIsClicked={setIsClicked}
+                            />
+                          ) : (
+                            <div></div>
+                          )}
                         </div>
-                        <p className="text-gray-800  w-170"> {reply.body} </p>
-                        <p
-                          onClick={() => {
-                            setIsClicked((prev) => ({
-                              ...prev,
-                              [reply.id]: !prev[reply.id],
-                            }));
-                          }}
-                          className="text-blue-700 hover:underline cursor-pointer inline-block mr-160 w-20"
-                        >
-                          جواب دادن
-                        </p>
-                        {isClicked[reply.id] ? (
-                          <CreateReply
-                            Id={reply.id}
-                            setIsClicked={setIsClicked}
-                          />
-                        ) : (
-                          <div></div>
-                        )}
+                        <div className="grid place-items-center h-20 min-w-12 w-20">
+                          <section className=" text-center text-blue-600 hover:bg-blue-600 hover:text-white inline cursor-pointer duration-150 p-0.5 rounded-sm ml-1.5">
+                            {reply.user.name}
+                          </section>
+                          {reply.image != null ? (
+                            <img
+                              className="w-10  rounded-full "
+                              src={`https://batbooks.liara.run${reply.image}`}
+                              alt="asd"
+                            />
+                          ) : (
+                            <img
+                              className="w-10  rounded-full "
+                              src="/src/assets/images/user-image1.png"
+                              alt="user-png"
+                            />
+                          )}
+                        </div>
                       </div>
-                      <div className="grid place-items-center h-20 min-w-12 w-20">
-                        <section className=" text-center text-blue-600 hover:bg-blue-600 hover:text-white inline cursor-pointer duration-150 p-0.5 rounded-sm ml-1.5">
-                          {reply.user.name}
-                        </section>
-                        {reply.image != null ? (
-                          <img
-                            className="w-10  rounded-full "
-                            src={`https://batbooks.liara.run${reply.image}`}
-                            alt="asd"
-                          />
-                        ) : (
-                          <img
-                            className="w-10  rounded-full "
-                            src="/src/assets/images/user-image1.png"
-                            alt="user-png"
-                          />
-                        )}
-                      </div>
+                      <div className="w-[60vw] mt-8 mr-80 border-t-2 border-gray-500 mx-auto "></div>
                     </div>
-                    <div className="w-[60vw] mt-8 mr-80 border-t-2 border-gray-500 mx-auto "></div>
-                  </div>
-                ))}
+                  ))}
 
                 <div className="text-right  mt-2">
                   <button

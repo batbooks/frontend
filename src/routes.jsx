@@ -27,7 +27,14 @@ function AppRoutes() {
         <Route path="/auth/signup" element={<Signup />}></Route>
         <Route path="/auth/otp" element={<Otp />}></Route>
         <Route path="/auth/login" element={<Login />}></Route>
-        <Route path="/comment" element={<Comments />}></Route>
+        <Route
+          path="/comment"
+          element={
+            <Middleware>
+              <Comments />
+            </Middleware>
+          }
+        ></Route>
         <Route
           path="/userprofile"
           element={
