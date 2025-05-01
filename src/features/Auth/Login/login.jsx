@@ -72,7 +72,7 @@ function Login() {
   return (
     <div className="w-[100vw] h-[100vh] bg-[#D9F0FF]">
       <div className="flex gap-1 items-center ">
-        <h2 className="text-[24px] mt-1.5 ml-2 font-bold text-[#002D54]">
+        <h2 className="text-[24px] mt-1.5 ml-2 font-bold ">
           Bat<span className="text-[#2663CD]">Books</span>
         </h2>
       </div>
