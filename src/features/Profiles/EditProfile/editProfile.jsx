@@ -23,16 +23,13 @@ export default function EditProfile({ setEditClicked }) {
       if (selectedFile) formData.append("image", selectedFile);
       if (userName) formData2.append("username", userName);
       if (formData) {
-        const response = await fetch(
-          `https://batbooks.liara.run/user/info/change/update/`,
-          {
-            method: "PUT",
-            body: formData,
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await fetch(`/api/user/info/change/update/`, {
+          method: "PUT",
+          body: formData,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         if (!response.ok) {
           throw new Error("درخواست موفق نبود");
@@ -40,16 +37,13 @@ export default function EditProfile({ setEditClicked }) {
       }
 
       if (formData2) {
-        const response = await fetch(
-          `https://batbooks.liara.run/user/info/change/username/`,
-          {
-            method: "PUT",
-            body: formData2,
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await fetch(`/api/user/info/change/username/`, {
+          method: "PUT",
+          body: formData2,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         if (!response.ok) {
           throw new Error("درخواست موفق نبود");

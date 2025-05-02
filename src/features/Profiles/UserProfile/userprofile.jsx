@@ -20,11 +20,11 @@ export default function Profile() {
   const [loading2, setLoading2] = useState(true);
   const [userInfo, setUserInfo] = useState([]);
   const [following, setFollowing] = useState([]);
-  const [writtenBooks,setWrittenBooks]=useState(0)
+  const [writtenBooks, setWrittenBooks] = useState(0);
   const handleFollow = async (user) => {
     try {
       const response = await fetch(
-        `https://batbooks.liara.run/user/toggle/follow/${user.following_user_id}/`,
+        `/api/user/toggle/follow/${user.following_user_id}/`,
         {
           method: "GET",
 
@@ -46,7 +46,7 @@ export default function Profile() {
     const auth = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`https://batbooks.liara.run/auth/who/`, {
+        const response = await fetch(`/api/auth/who/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -71,16 +71,13 @@ export default function Profile() {
       setLoading2(true);
 
       try {
-        const response = await fetch(
-          `https://batbooks.liara.run/book/user/${userid}/`,
-          {
-            method: "GET",
-          }
-        );
+        const response = await fetch(`/api/book/user/${userid}/`, {
+          method: "GET",
+        });
 
         if (response.ok) {
           const data = await response.json();
-          setWrittenBooks(data.count)
+          setWrittenBooks(data.count);
           setLastBook(data.results[0]);
         } else {
         }
@@ -97,16 +94,13 @@ export default function Profile() {
     const fetchFollowings = async () => {
       setLoading1(true);
       try {
-        const response = await fetch(
-          `https://batbooks.liara.run/user/following/`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await fetch(`/api/user/following/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
         if (response.ok) {
           const data = await response.json();
           setFollowings(data.results);
@@ -201,7 +195,7 @@ export default function Profile() {
             ) : (
               <img
                 className="w-[236px] h-[267px] shadow-lg shadow-[#000000]/25 rounded-[30px]"
-                src={`https://batbooks.liara.run${userInfo.image}`}
+                src={`/api${userInfo.image}`}
                 alt="userimage"
               />
             )}
@@ -289,7 +283,12 @@ export default function Profile() {
           </div>
 
           {lastBook ? (
-            <div onClick={()=>{navigate(`/book/${lastBook.id}`)}}  className="min-w-[242px] h-[368px] mt-[32px]">
+            <div
+              onClick={() => {
+                navigate(`/book/${lastBook.id}`);
+              }}
+              className="min-w-[242px] h-[368px] mt-[32px]"
+            >
               {console.log(lastBook.id)}
               <BookCard
                 title={lastBook.name}
@@ -382,7 +381,7 @@ export default function Profile() {
       <li
         onClick={() => {
           if (!isHoveredInnerButton) {
-            navigate(`/anotheruserprofile/${user.following_user_id}`)
+            navigate(`/anotheruserprofile/${user.following_user_id}`);
           }
         }}
         className={`flex items-center h-[152px] pr-[33px] pl-[21px] justify-between relative overflow-hidden p-[21px] bg-[#ffffff] outline-[2px] outline-[#000000]/21 rounded-[5px] cursor-pointer ${!isHoveredInnerButton ? "hover:ease-in-out hover:before:w-full hover:before:h-full hover:shadow-[#000000]/50 hover:shadow-lg hover:text-white" : ""} before:absolute before:w-0 before:h-0 before:bg-[#2663CD]/60 before:shadow-none before:inset-0 before:transition-all before:duration-[0.2s] transition-all active:before:bg-[#2663CD]/40 active:outline-none active:shadow-none active:ring-0 active:ring-offset-0`}
@@ -398,7 +397,10 @@ export default function Profile() {
           </button>
         ) : (
           <button
-            onClick={() => {handleFollow(user);location.reload()}}
+            onClick={() => {
+              handleFollow(user);
+              location.reload();
+            }}
             onMouseEnter={() => setIsHoveredInnerButton(true)}
             onMouseLeave={() => setIsHoveredInnerButton(false)}
             className="btn py-[7px] px-[21px] !rounded-[10px] !w-fit !h-fit !ml-0 !mr-0 !mb-0"
