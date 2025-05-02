@@ -17,14 +17,11 @@ function Signup() {
     setError("");
     setLoading(true);
     try {
-      const response = await fetch(
-        "https://batbooks.liara.run/auth/register/",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password, c_password: repeatPassword }),
-        }
-      );
+      const response = await fetch("/api/auth/register/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password, c_password: repeatPassword }),
+      });
       const data = await response.json();
       if (response.ok) {
         navigate("/auth/otp", { state: { email: { email } } });
