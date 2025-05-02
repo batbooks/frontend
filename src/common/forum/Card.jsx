@@ -8,7 +8,7 @@ export default function Card() {
       /> */}
       <div className="flex flex-col gap-2 items-end  ">
         <div>
-          <h1 className="text-right mt-2.5 font-medium text-[24px] mr-3.5">
+          <h1 className="text-right mt-2.5 font-medium text-[24px] mr-3.5 text-blue-900">
             {" "}
             (رسمی یا غیر رسمی)نام تالار
           </h1>

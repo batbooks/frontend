@@ -24,7 +24,7 @@ export default function Profile() {
   const handleFollow = async (user) => {
     try {
       const response = await fetch(
-        `https://batbooks.liara.run/user/toggle/follow/${user.following_user_id}/`,
+        `http://45.158.169.198/user/toggle/follow/${user.following_user_id}/`,
         {
           method: "GET",
 
