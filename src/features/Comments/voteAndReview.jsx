@@ -1,58 +1,52 @@
-import LongParagraphInput from "../LongParagraphInput/longParagraphInput";
+import LongParagraphInput from "../../common/LongParagraphInput/longParagraphInput";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
 
-export default function VoteAndReview({ chapter = 4, commentsCount }) {
-  //chapterId
+export default function VoteAndReview({ chapter, commentsCount }) {
+  const { user } = useSelector((state) => state.auth);
   const [isClicked, setIsClicked] = useState(false);
   const [body, setbody] = useState("");
   const [error, setError] = useState("");
-  const [message, setMessage] = useState("");
-  // const token = localStorage.getItem("access_token");
   const handleSubmitComment = async (e) => {
     e.preventDefault();
-
-    setError("");
-    setMessage("");
-
     try {
-      // Replace this with your actual API endpoint
-      const response = await fetch("http://45.158.169.198/comments/create/", {
+      const token = localStorage.getItem("access_token");
+      const response = await fetch("/api/comments/create/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ2NzIwNDA3LCJpYXQiOjE3NDYxMTU2MDcsImp0aSI6ImJhN2U5OTkzMWQ3MzRmYjFiNTg4ZTcxYzZmYzBhNDRmIiwidXNlcl9pZCI6MTF9.J1W-quEsy_r3j8yFfMB2MGJj8TfXwA8bCtlojvCfRRo`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ chapter, body }),
       });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setMessage("comment sent for review");
-        // Redirect to verification page or next step after a short delay
-
-        // Adjust the route as needed
-        setTimeout(() => {
-          Swal.fire({
-            title: "نظر شما با موفقیت ثبت شد",
-            icon: "success",
-            confirmButtonText: "باشه",
-          }).then((result) => {
-            if (result.isConfirmed) {
-              window.location.reload();
-            }
-          });
-        }, 100);
-      } else {
-        throw new Error(data.message || "failed to submit comment");
+      if (!response.ok) {
+        throw new Error("!!!مشکلی پیش اومد");
       }
+      setTimeout(() => {
+        Swal.fire({
+          title: "نظر شما با موفقیت ثبت شد",
+          icon: "success",
+          confirmButtonText: "باشه",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.reload();
+          }
+        });
+      }, 100);
     } catch (err) {
-      setError(err.message || "try again");
+      setTimeout(() => {
+        Swal.fire({
+          title: `${err.message}`,
+          icon: "error",
+          showCloseButton: true,
+          showCancelButton: false,
+          showConfirmButton: false,
+        });
+      }, 100);
     }
   };
-  const { user, isAuthenticated } = useSelector((state) => state.auth);
+
   return (
     <div
       dir="rtl"
@@ -62,18 +56,10 @@ export default function VoteAndReview({ chapter = 4, commentsCount }) {
         className={`flex justify-between items-center ${isClicked ? "mb-[41px]" : ""}`}
       >
         <div className="flex flex-col items-center">
-          {isAuthenticated && user.user_info.image != null ? (
-            <img
-              src={`/api${user.user_info.image}`}
-              className="w-[63px] h-[63px] rounded-full mb-[15px]"
-            />
-          ) : (
-            <img
-              src="/images/user_none.png"
-              className="w-[63px] h-[63px] rounded-full mb-[15px]"
-            />
-          )}
-
+          <img
+            src={`/api${user.user_info.image}`}
+            className="min-w-[63px] max-w-[63px] max-h-[63px] min-h-[63px] rounded-full mb-[15px]"
+          />
           <h1 className="text-[24px] font-[700] mb-[8px]">نظر شما چیست؟</h1>
           <div className="flex gap-[72.5px] items-center">
             <button
@@ -115,14 +101,18 @@ export default function VoteAndReview({ chapter = 4, commentsCount }) {
             <LongParagraphInput
               placeholder={"دیدگاهتان را درباره فصل اینجا بنویسید..."}
               setInputValue={setbody}
-              heightLine="4.23px"
+              hideError={setError}
+              heightLine="4.3px"
             />
+            {error ? <p className="text-red-500">{error}</p> : null}
           </div>
           <button
             onClick={(e) => {
               if (body) {
                 setIsClicked(false);
                 handleSubmitComment(e);
+              } else {
+                setError("این فیلد خالی است.لطفا چیزی بنویسید...");
               }
             }}
             className="btn !py-[12px] !px-[81px] !w-fit !h-fit !mb-0 !ml-0 !mr-0 !rounded-[15px]"

@@ -47,8 +47,8 @@ const authors = [
 export default function Popular_authors() {
   return (
     <div className="grid grid-cols-2 gap-3   m-auto">
-      {authors.map((author) => (
-        <UserCard user={author} />
+      {authors.map((author, i) => (
+        <UserCard key={i} user={author} />
       ))}
     </div>
   );
