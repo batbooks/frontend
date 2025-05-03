@@ -265,7 +265,7 @@ export default function Another_User_Profile() {
             </div>
           </div>
 
-          <div className="w-full m-[32px] mt-0 ml-0 ">
+          <div className="w-full  m-[32px] mt-0 ml-0 ">
             <h3 className="text-[24px] font-[300]  mb-[15px]">{user.user}</h3>
 
             {console.log(user)}
@@ -296,7 +296,7 @@ export default function Another_User_Profile() {
 
             <div className=" mb-[50px] ">
               <h5 className="text-[16px] font-[300] mb-1">مشخصات:</h5>
-              <div className="w-175 h-61 bg-white px-[25.7px] py-[16.6px] rounded-[10px] shadow-lg shadow-[#000000]/25 ma">
+              <div className="min-w-175 h-61 bg-white px-[25.7px] py-[16.6px] rounded-[10px] shadow-lg shadow-[#000000]/25 ma">
                 <p className="text-[#000000]/70 text-[14px] font-[300]   ">
                   {user.bio}
                 </p>
