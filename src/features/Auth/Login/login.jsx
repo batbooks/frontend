@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -16,7 +17,11 @@ function Login() {
   let navigate = useNavigate();
   const fetchuserinfo = async (token) => {
     try {
+<<<<<<< HEAD
       const response = await fetch(`http://45.158.169.198/auth/who/`, {
+=======
+      const response = await fetch(`/api/auth/who/`, {
+>>>>>>> e320a4d6695dff06fa91230f32581db38d5694c1
         method: "GET",
 
         headers: {
@@ -37,7 +42,11 @@ function Login() {
     setLoading(true);
 
     try {
+<<<<<<< HEAD
       const response = await axios.post("http://45.158.169.198/auth/token/", {
+=======
+      const response = await axios.post("/api/auth/token/", {
+>>>>>>> e320a4d6695dff06fa91230f32581db38d5694c1
         email,
         password,
       });

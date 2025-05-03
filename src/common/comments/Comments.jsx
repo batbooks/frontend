@@ -38,9 +38,7 @@ const Comments = ({ chapterId }) => {
       setLoading((prev) => [...prev, (prev[0] = true)]);
 
       try {
-        const response = await fetch(
-          `https://batbooks.liara.run/comments/chapter/${chapterId}/`
-        );
+        const response = await fetch(`/api/comments/chapter/${chapterId}/`);
 
         if (!response.ok) throw new Error("Failed to fetch comments");
 
@@ -69,7 +67,7 @@ const Comments = ({ chapterId }) => {
   //   const handleLikedComments = async () => {
   //     try {
   //       const response = await fetch(
-  //         `https://batbooks.liara.run/comments/chapter/${chapterId}/`
+  //         `/api/comments/chapter/${chapterId}/`
   //       );
 
   //       if (!response.ok) throw new Error("Failed to fetch comments");
@@ -90,17 +88,14 @@ const Comments = ({ chapterId }) => {
     const [body, setBody] = useState("");
     const handleSubmitReply = async (id) => {
       try {
-        const response = await fetch(
-          `https://batbooks.liara.run/comments/reply_to/${id}/`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({ body }),
-          }
-        );
+        const response = await fetch(`/api/comments/reply_to/${id}/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ body }),
+        });
 
         const data = await response.json();
 
@@ -232,17 +227,14 @@ const Comments = ({ chapterId }) => {
         }));
       }
       try {
-        const response = await fetch(
-          `https://batbooks.liara.run/comments/like/${commentId}/`,
-          {
-            method: "GET",
+        const response = await fetch(`/api/comments/like/${commentId}/`, {
+          method: "GET",
 
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
         if (response.ok) {
         }
       } catch (err) {
@@ -279,17 +271,14 @@ const Comments = ({ chapterId }) => {
         }));
       }
       try {
-        const response = await fetch(
-          `https://batbooks.liara.run/comments/like/${replyId}/`,
-          {
-            method: "GET",
+        const response = await fetch(`/api/comments/like/${replyId}/`, {
+          method: "GET",
 
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
         if (response.ok) {
         }
       } catch (err) {
@@ -327,17 +316,14 @@ const Comments = ({ chapterId }) => {
         }));
       }
       try {
-        const response = await fetch(
-          `https://batbooks.liara.run/comments/dislike/${replyId}/`,
-          {
-            method: "GET",
+        const response = await fetch(`/api/comments/dislike/${replyId}/`, {
+          method: "GET",
 
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
         if (response.ok) {
         }
       } catch (err) {
@@ -384,17 +370,14 @@ const Comments = ({ chapterId }) => {
         }));
       }
       try {
-        const response = await fetch(
-          `https://batbooks.liara.run/comments/dislike/${commentId}/`,
-          {
-            method: "GET",
+        const response = await fetch(`/api/comments/dislike/${commentId}/`, {
+          method: "GET",
 
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
       } catch (err) {
         console.error(err.message);
       }
@@ -437,7 +420,7 @@ const Comments = ({ chapterId }) => {
   const fetchReplies = async (commentId) => {
     setReplyLoading((prev) => [...prev, (prev[commentId] = true)]);
 
-    let address = `https://batbooks.liara.run/comments/comment/${commentId}/`;
+    let address = `/api/comments/comment/${commentId}/`;
     if (nextreplyLink.hasOwnProperty(commentId)) {
       address = nextreplyLink[commentId];
     }
@@ -617,7 +600,7 @@ const Comments = ({ chapterId }) => {
                     ) : (
                       <img
                         className="rounded-full"
-                        src={`https://batbooks.liara.run${comment.image}`}
+                        src={`/api${comment.image}`}
                         alt="author avatar"
                       />
                     )}
@@ -721,7 +704,7 @@ const Comments = ({ chapterId }) => {
                           {reply.image != null ? (
                             <img
                               className="w-10  rounded-full "
-                              src={`https://batbooks.liara.run${reply.image}`}
+                              src={`/api${reply.image}`}
                               alt="asd"
                             />
                           ) : (
@@ -732,6 +715,44 @@ const Comments = ({ chapterId }) => {
                             />
                           )}
                         </div>
+                        <p className="text-gray-800  w-170"> {reply.body} </p>
+                        <p
+                          onClick={() => {
+                            setIsClicked((prev) => ({
+                              ...prev,
+                              [reply.id]: !prev[reply.id],
+                            }));
+                          }}
+                          className="text-blue-700 hover:underline cursor-pointer inline-block mr-160 w-20"
+                        >
+                          جواب دادن
+                        </p>
+                        {isClicked[reply.id] ? (
+                          <CreateReply
+                            Id={reply.id}
+                            setIsClicked={setIsClicked}
+                          />
+                        ) : (
+                          <div></div>
+                        )}
+                      </div>
+                      <div className="grid place-items-center h-20 min-w-12 w-20">
+                        <section className=" text-center text-blue-600 hover:bg-blue-600 hover:text-white inline cursor-pointer duration-150 p-0.5 rounded-sm ml-1.5">
+                          {reply.user.name}
+                        </section>
+                        {reply.image != null ? (
+                          <img
+                            className="w-10  rounded-full "
+                            src={`http://45.158.169.198${reply.image}`}
+                            alt="asd"
+                          />
+                        ) : (
+                          <img
+                            className="w-10  rounded-full "
+                            src="/src/assets/images/user-image1.png"
+                            alt="user-png"
+                          />
+                        )}
                       </div>
                       <div className="w-[60vw] mt-8 mr-80 border-t-2 border-gray-500 mx-auto "></div>
                     </div>

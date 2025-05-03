@@ -64,7 +64,7 @@ export default function VoteAndReview({ chapter = 4, commentsCount }) {
         <div className="flex flex-col items-center">
           {isAuthenticated && user.user_info.image != null ? (
             <img
-              src={`https://batbooks.liara.run${user.user_info.image}`}
+              src={`/api${user.user_info.image}`}
               className="w-[63px] h-[63px] rounded-full mb-[15px]"
             />
           ) : (
