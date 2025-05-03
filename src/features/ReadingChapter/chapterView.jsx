@@ -101,10 +101,10 @@ const ReadingPage = () => {
               alt="chapter"
             />
           )}
-          <article className="article1">
-            <div className="flex">
+          <article className="w-full article1">
+            <div className=" flex justify-between">
               <h2 className="text-[20px] font-[400] mb-5">نام کتاب :{bookName} </h2>
-              <h2 className="text-[20px] font-[400] mr-[400px]">
+              <h2 className=" hidden md:text-[20px] md:font-[400] md:block md:ml-[30px] ">
                 تاریخ انتشار :{published}{" "}
               </h2>
             </div>
@@ -112,7 +112,7 @@ const ReadingPage = () => {
             <h1 className="text-[25px] font-[400] mb-[10px]">فصل : {season}</h1>
             <Rating
               style={{ direction: "ltr" }}
-              size="small"
+              size="medium"
               defaultValue={rating}
               precision={0.1}
               readOnly
