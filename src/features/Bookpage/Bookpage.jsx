@@ -245,17 +245,12 @@ const BookPage = () => {
 
             <div className="flex items-center my-2 justify-end">
               <span className="ml-2 text-gray-700 mb-1 font-bold opacity-70">
-                نظر
+                نقد
               </span>
               <span className="ml-2 mr-2 text-gray-700 mb-1 font-bold opacity-70">
-                {book.reviewsCount || 0}
+                {book.ratingCount || 0}
               </span>
-              <span className="ml-2 text-gray-700 mb-1 font-bold opacity-70">
-                رای
-              </span>
-              <span className="ml-2 mr-50 text-gray-700 mb-1 font-bold opacity-70">
-                {book.ratingsCount || 0}
-              </span>
+
               <span className="ml-2 mr-7 text-gray-700 text-2xl mb-1">
                 {book.rating}
               </span>

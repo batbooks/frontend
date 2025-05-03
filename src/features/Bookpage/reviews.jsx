@@ -10,8 +10,9 @@ import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
 import { Rating } from "@mui/material";
+import Swal from "sweetalert2";
 
-export default function Reviews() {
+function Reviews() {
   const { bookId } = useParams();
   const [allComments, setAllComments] = useState([]);
   const [nextUrl, setNextUrl] = useState("");
@@ -31,24 +32,53 @@ export default function Reviews() {
     const token = localStorage.getItem("access_token");
 
     try {
-      const res = await fetch(url, {
+      const response = await fetch(url, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       });
-      if (!res.ok) throw new Error("Failed to fetch comments");
-      const data = await res.json();
-      setAllComments(data.results);
+      if (!response.ok) throw new Error("Failed to fetch comments");
+      const data = await response.json();
+      setAllComments(data.results.reviews);
       setNextUrl(data.links.next);
       setPrevUrl(data.links.previous);
-      mapLikes(data.results);
+      mapLikes(data.results.reviews);
       console.log(data);
     } catch (err) {
       console.error(err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDeleteReview = async () => {
+    try {
+      const response = await fetch(
+        `/api/comments/book/${bookId}/reviews/my-review/`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setTimeout(() => {
+        Swal.fire({
+          title: "نقد شما با موفقیت حذف شد.",
+          icon: "success",
+          confirmButtonText: "باشه",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.reload();
+          }
+        });
+      }, 100);
     }
   };
 
@@ -64,8 +94,24 @@ export default function Reviews() {
   };
 
   const handleLike = async (commentId) => {
-    const current = liked[commentId] === 1 ? 0 : 1;
-    setLiked({ ...liked, [commentId]: current });
+    const isLiked = liked[commentId] === 1;
+    const updatedLiked = { ...liked, [commentId]: isLiked ? 0 : 1 };
+    setLiked(updatedLiked);
+
+    setAllComments((prev) =>
+      prev.map((comment) => {
+        if (comment.id !== commentId) return comment;
+
+        const like = isLiked
+          ? comment.like.filter((id) => id !== user.id)
+          : [...comment.like, user.id];
+
+        const dislike = comment.dislike.filter((id) => id !== user.id);
+
+        return { ...comment, like, dislike };
+      })
+    );
+
     await fetch(`/api/comments/review/like/${commentId}/`, {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
@@ -73,8 +119,24 @@ export default function Reviews() {
   };
 
   const handleDislike = async (commentId) => {
-    const current = liked[commentId] === -1 ? 0 : -1;
-    setLiked({ ...liked, [commentId]: current });
+    const isDisliked = liked[commentId] === -1;
+    const updatedLiked = { ...liked, [commentId]: isDisliked ? 0 : -1 };
+    setLiked(updatedLiked);
+
+    setAllComments((prev) =>
+      prev.map((comment) => {
+        if (comment.id !== commentId) return comment;
+
+        const dislike = isDisliked
+          ? comment.dislike.filter((id) => id !== user.id)
+          : [...comment.dislike, user.id];
+
+        const like = comment.like.filter((id) => id !== user.id);
+
+        return { ...comment, like, dislike };
+      })
+    );
+
     await fetch(`/api/comments/review/dislike/${commentId}/`, {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
@@ -82,10 +144,17 @@ export default function Reviews() {
   };
 
   const getTimeAgo = (dateString) => {
+    const now = new Date();
     const then = new Date(dateString);
-    const diffH = Math.floor((new Date() - then) / (1000 * 60 * 60));
-    if (diffH < 24) return `ساعت پیش ${diffH}`;
-    return `${Math.floor(diffH / 24)} روز پیش `;
+    const diffMs = now - then;
+
+    const diffMins = Math.floor(diffMs / (1000 * 60));
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+    if (diffMins < 60) return `${diffMins} دقیقه پیش`;
+    if (diffHours < 24) return `${diffHours} ساعت پیش`;
+    return `${diffDays} روز پیش`;
   };
 
   return (
@@ -140,12 +209,15 @@ export default function Reviews() {
                       {comment.user.name}
                     </span>
                     {user.id !== comment.user.id ? (
-                      <button className="btn !w-fit !py-[5px] !px-[38px] !text-[14px] !font-[400]">
+                      <button className="btn !py-[5px] !px-[38px] !text-[14px] !font-[400]">
                         <span className="span-btn">دنبال کردن</span>
                       </button>
                     ) : (
                       <div>
-                        <button className="btn !py-[5px] !px-[38px] !text-[14px] before:!bg-[#FF3B30] !bg-[#CC2F26] !shadow-lg">
+                        <button
+                          className="btn !py-[5px] !px-[38px] !text-[14px] before:!bg-[#FF3B30] !bg-[#CC2F26] !shadow-lg"
+                          onClick={() => handleDeleteReview()}
+                        >
                           <span className="span-btn">حذف نقد</span>
                         </button>
                         <button className="btn  !py-[5px] !px-[38px] !text-[14px] !font-[400]">
@@ -154,17 +226,26 @@ export default function Reviews() {
                       </div>
                     )}
                   </div>
-                  <div className="w-full max-w-[900px] min-h-[180px] p-6 rounded-[15px] border-black/20 border-[2px] shadow-sm shadow-black/21 bg-[#E0F2F1]">
+                  <div className="w-full max-w-[1100px] min-h-[180px] p-6 rounded-[15px] border-black/20 border-[2px] shadow-sm shadow-black/21 bg-[#E0F2F1]">
                     <div className="flex flex-col gap-[10px]">
-                      <div className="flex flex-row gap-[550px]">
+                      <div className="flex flex-row gap-[600px]">
                         <h2 className="text-[15px] text-[#000000]/70 font-[300] ">
                           {getTimeAgo(comment.created)}
                         </h2>
-                        <h2>آخرین چپتر خوانده شده: {comment.chapter} </h2>
+                        <h2>
+                          آخرین چپتر خوانده شده:
+                          <span
+                            className="font-bold text-blue-700 cursor-pointer"
+                            onClick={() =>
+                              navigate(`/chapter/${comment.chapter}`)
+                            }
+                          >
+                            {" "}
+                            {comment.chapter_name}
+                          </span>
+                        </h2>
                       </div>
-                      <h1 className="font-bold text-xl mb-[15px]">
-                        {comment.title}
-                      </h1>
+                      <h1 className="font-bold text-xl">{comment.title}</h1>
                       <p className="text-[16px] font-[300] my-auto">
                         {comment.body}
                       </p>
@@ -174,7 +255,10 @@ export default function Reviews() {
                 </div>
                 <div className="flex justify-between px-42">
                   <div className="flex gap-[25px]">
-                    <div className="flex items-center gap-[5px] cursor-pointer">
+                    <div className="flex items-center gap-[2px] cursor-pointer">
+                      <span className="inline-block min-w-[15px] text-center">
+                        {comment.dislike.length}
+                      </span>
                       {liked[comment.id] === -1 ? (
                         <AiFillDislike
                           color="red"
@@ -188,9 +272,11 @@ export default function Reviews() {
                           onClick={() => handleDislike(comment.id)}
                         />
                       )}
-                      <span>{comment.dislike.length}</span>
                     </div>
-                    <div className="flex items-center gap-[5px] cursor-pointer">
+                    <div className="flex items-center gap-[2px] cursor-pointer">
+                      <span className="inline-block min-w-[15px] text-center">
+                        {comment.like.length}
+                      </span>
                       {liked[comment.id] === 1 ? (
                         <AiFillLike
                           color="blue"
@@ -204,24 +290,23 @@ export default function Reviews() {
                           onClick={() => handleLike(comment.id)}
                         />
                       )}
-                      <span>{comment.like.length}</span>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           ))}
-          <div className="flex justify-center mt-[50px] gap-[12px]">
+          <div className="flex justify-between mt-[50px] gap-[12px]">
             <button
               onClick={() => nextUrl && fetchPage(nextUrl)}
-              className="btn !px-[23px] !py-[7.5px] !rounded-full bg-[#2663CD] text-white flex items-center gap-[8px]"
+              className="btn !mx-0 !px-[23px] !py-[7.5px] !rounded-full bg-[#2663CD] text-white flex items-center gap-[8px]"
             >
               <span className="span-btn !text-[14px] !font-[300]">بعدی</span>
               <FaArrowRight className="span-btn" />
             </button>
             <button
               onClick={() => prevUrl && fetchPage(prevUrl)}
-              className="btn !px-[23px] !py-[7.5px] !rounded-full bg-[#2663CD] text-white flex items-center gap-[8px]"
+              className="btn !mx-0 !px-[23px] !py-[7.5px] !rounded-full bg-[#2663CD] text-white flex items-center gap-[8px]"
             >
               <FaArrowLeft className="span-btn" />
               <span className="span-btn !text-[14px] !font-[300]">قبلی</span>
@@ -236,3 +321,4 @@ export default function Reviews() {
     </main>
   );
 }
+export default Reviews;
