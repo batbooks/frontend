@@ -1,16 +1,15 @@
-import { Rating } from "@mui/material";
 import LongParagraphInput from "../LongParagraphInput/longParagraphInput";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
 
-export default function VoteAndReview() {
+export default function VoteAndReview({ chapter = 4, commentsCount }) {
+  //chapterId
   const [isClicked, setIsClicked] = useState(false);
   const [body, setbody] = useState("");
-  const [chapter, setchapter] = useState(1);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
-  const token = localStorage.getItem("access_token");
+  // const token = localStorage.getItem("access_token");
   const handleSubmitComment = async (e) => {
     e.preventDefault();
 
@@ -19,17 +18,14 @@ export default function VoteAndReview() {
 
     try {
       // Replace this with your actual API endpoint
-      const response = await fetch(
-        "https://batbooks.liara.run/comments/create/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ chapter, body }),
-        }
-      );
+      const response = await fetch("http://45.158.169.198/comments/create/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ2NzIwNDA3LCJpYXQiOjE3NDYxMTU2MDcsImp0aSI6ImJhN2U5OTkzMWQ3MzRmYjFiNTg4ZTcxYzZmYzBhNDRmIiwidXNlcl9pZCI6MTF9.J1W-quEsy_r3j8yFfMB2MGJj8TfXwA8bCtlojvCfRRo`,
+        },
+        body: JSON.stringify({ chapter, body }),
+      });
 
       const data = await response.json();
 
@@ -91,11 +87,25 @@ export default function VoteAndReview() {
           </div>
         </div>
         <div className="flex flex-col items-center gap-[20px] text-center">
-          <span className="text-[16px] font-[400] text-[#000000]/70">
-            تاکنون 756 نفر دیدگاه خود را درباره این فصل به اشتراک گذاشته اند.
-            <br />
-            شما نیز کامنتی بگذارید...
-          </span>
+          {commentsCount > 1 ? (
+            <span className="text-[16px] font-[400] text-[#000000]/70">
+              {`تاکنون ${commentsCount} نفر دیدگاه خود را درباره این فصل به اشتراک گذاشته اند.`}
+              <br />
+              {`شما نیز کامنتی بگذارید...`}
+            </span>
+          ) : commentsCount === 1 ? (
+            <span className="text-[16px] font-[400] text-[#000000]/70">
+              {`تاکنون ${commentsCount} نفر دیدگاه خود را درباره این فصل به اشتراک گذاشته است.`}
+              <br />
+              {`شما نیز کامنتی بگذارید...`}
+            </span>
+          ) : (
+            <span className="text-[16px] font-[400] text-[#000000]/70">
+              {"تاکنون کسی دیدگاهی درباره این فصل نداده است"}
+              <br />
+              {"شما اولین نفر باشید که کامنت میگذارید..."}
+            </span>
+          )}
         </div>
       </div>
       <div className={`flex flex-col ${isClicked ? "visible" : "hidden"}`}>
@@ -112,7 +122,6 @@ export default function VoteAndReview() {
             onClick={(e) => {
               if (body) {
                 setIsClicked(false);
-
                 handleSubmitComment(e);
               }
             }}

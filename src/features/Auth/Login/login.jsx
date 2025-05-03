@@ -16,7 +16,7 @@ function Login() {
   let navigate = useNavigate();
   const fetchuserinfo = async (token) => {
     try {
-      const response = await fetch(`https://batbooks.liara.run/auth/who/`, {
+      const response = await fetch(`http://45.158.169.198/auth/who/`, {
         method: "GET",
 
         headers: {
@@ -37,13 +37,10 @@ function Login() {
     setLoading(true);
 
     try {
-      const response = await axios.post(
-        "https://batbooks.liara.run/auth/token/",
-        {
-          email,
-          password,
-        }
-      );
+      const response = await axios.post("http://45.158.169.198/auth/token/", {
+        email,
+        password,
+      });
       // Cookies.set('access_token', 'value', { expires: 7,secure:true , path:'/'  } );
       // Cookies.set('refresh_token', 'value', { expires: 7,secure:true , path:'/'  } );
       localStorage.setItem("access_token", response.data.access);

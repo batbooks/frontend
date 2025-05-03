@@ -10,14 +10,17 @@ import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { RiReplyFill } from "react-icons/ri";
 import LongParagraphInput from "../LongParagraphInput/longParagraphInput";
 import Loading from "../Loading/Loading";
+import Swal from "sweetalert2";
 
-export default function Comments({ chapterId = 3 }) {
+export default function Comments({ chapterId = 4 }) {
+  //chapterId
   const [loading, setLoading] = useState(false);
   const [showingComments, setShowingComments] = useState([]);
   const [nextCommentLink, setNextCommentLink] = useState("");
+  const [prevCommentLink, setPrevCommentLink] = useState("");
   const [commentsCount, setCommentsCount] = useState(0);
   const showingCommentsCount = showingComments.length;
-  const user = localStorage.getItem("user");
+  // const user = localStorage.getItem("user");
 
   useEffect(() => {
     const fetchComments = async () => {
@@ -41,6 +44,7 @@ export default function Comments({ chapterId = 3 }) {
 
         const data = await response.json();
         setNextCommentLink(data.links.next);
+        setPrevCommentLink(data.links.previous);
         setShowingComments(data.results);
         setCommentsCount(data.count);
       } catch (error) {
@@ -52,9 +56,10 @@ export default function Comments({ chapterId = 3 }) {
     fetchComments();
   }, []);
 
-  const moreComments = async () => {
+  const nextComments = async () => {
     try {
       setLoading(true);
+      setShowingComments([]);
       // const token = localStorage.getItem("access_token");
       const response = await fetch(nextCommentLink, {
         method: "GET",
@@ -66,8 +71,34 @@ export default function Comments({ chapterId = 3 }) {
       if (!response.ok) throw new Error("Failed to fetch comments");
 
       const data = await response.json();
+      setShowingComments(data.results);
       setNextCommentLink(data.links.next);
-      setShowingComments([...showingComments, ...data.results]);
+      setPrevCommentLink(data.links.previous);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const prevComments = async () => {
+    try {
+      setShowingComments([]);
+      setLoading(true);
+      // const token = localStorage.getItem("access_token");
+      const response = await fetch(prevCommentLink, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ2NzIwNDA3LCJpYXQiOjE3NDYxMTU2MDcsImp0aSI6ImJhN2U5OTkzMWQ3MzRmYjFiNTg4ZTcxYzZmYzBhNDRmIiwidXNlcl9pZCI6MTF9.J1W-quEsy_r3j8yFfMB2MGJj8TfXwA8bCtlojvCfRRo`,
+        },
+      });
+      if (!response.ok) throw new Error("Failed to fetch comments");
+
+      const data = await response.json();
+      setShowingComments(data.results);
+      setNextCommentLink(data.links.next);
+      setPrevCommentLink(data.links.previous);
     } catch (err) {
       console.error(err);
     } finally {
@@ -77,13 +108,16 @@ export default function Comments({ chapterId = 3 }) {
 
   return (
     <>
-      <VoteAndReview />;
+      <VoteAndReview
+        // chapter={chapterId}
+        commentsCount={commentsCount}
+      />
       <main dir="rtl" className="mt-[20px] mb-[60px] mx-[100px] flex flex-col">
         <h1 className="text-[22px] font-[400] mb-[30px]">نظرات کاربران:</h1>
         <div className="flex flex-col gap-[36px]">
           {showingComments.map((comment) => (
             <Comment
-              // commentId={comment.id}
+              commentId={comment.id}
               userImage={`http://45.158.169.198${comment.image}`}
               userName={comment.user.name}
               dateTime={comment.created}
@@ -94,9 +128,11 @@ export default function Comments({ chapterId = 3 }) {
               dislikeNum={comment.dislike.length}
               key={comment.id}
               likeState={
-                comment.like.include(user.id)
+                // comment.like.includes(user.id)
+                comment.like.includes(11)
                   ? 1
-                  : comment.dislike.include(user.id)
+                  : // : comment.dislike.includes(user.id)
+                    comment.dislike.includes(11)
                     ? 0
                     : -1
               }
@@ -105,17 +141,22 @@ export default function Comments({ chapterId = 3 }) {
         </div>
         {loading ? <Loading /> : null}
         {showingCommentsCount !== commentsCount && !loading ? (
-          <button
-            onClick={moreComments}
-            className="btn !px-[23px] !py-[7.5px] !rounded-full !mt-[50px] !mx-auto !mb-0 !h-fit !w-fit !flex !gap-[12px] !items-center"
-          >
-            <span className="span-btn text-[14px] font-[300]">
-              مشاهده موارد بیشتر
-            </span>
-            <span className="!text-[18px] !font-[400] !mt-[5px] span-btn">
-              {">"}
-            </span>
-          </button>
+          <div className="flex justify-between">
+            <button
+              onClick={nextComments}
+              className="btn !px-[23px] !py-[7px] !rounded-full !mt-[50px] !mx-0 !mb-0 !h-fit !w-fit !flex !gap-[12px] !items-center"
+            >
+              <FaArrowRight size={16} color="#FFF" />
+              <span className="span-btn text-[16px] font-[300]">صفحه بعد</span>
+            </button>
+            <button
+              onClick={prevComments}
+              className="btn !px-[23px] !py-[7px] !rounded-full !mt-[50px] !mx-0 !mb-0 !h-fit !w-fit !flex !gap-[12px] !items-center"
+            >
+              <span className="span-btn text-[16px] font-[300]">صفحه قبل</span>
+              <FaArrowLeft size={16} color="#FFF" />
+            </button>
+          </div>
         ) : null}
         {commentsCount === 0 && !loading ? (
           <div className="mx-auto py-6">
@@ -128,7 +169,7 @@ export default function Comments({ chapterId = 3 }) {
 }
 
 function Comment({
-  commentId = 11,
+  commentId,
   likeState = -1,
   userImage,
   userName,
@@ -144,7 +185,7 @@ function Comment({
   const [nextReplyLink, setNextReplyLink] = useState("");
   const [repliesCount, setRepliesCount] = useState(0);
   const showingRepliesCount = showingReplies.length;
-  const user = localStorage.getItem("user");
+  // const user = localStorage.getItem("user");
 
   const fetchReplies = async () => {
     try {
@@ -230,6 +271,7 @@ function Comment({
               dislikeNum={dislikeNum}
               likeNum={likeNum}
               likeState={likeState}
+              commentorreplyId={commentId}
             />
             {!isClickedReplies ? (
               <button
@@ -237,7 +279,7 @@ function Comment({
                   setIsClickedReplies(true);
                   fetchReplies();
                 }}
-                className="relative flex gap-[5px] items-center cursor-pointer group"
+                className="relative flex gap-[5px] items-center cursor-pointer group focus:outline-none"
               >
                 <span className="text-[16px] text-[#2563EB] font-[600]">
                   نمایش پاسخ ها
@@ -248,7 +290,7 @@ function Comment({
             ) : (
               <button
                 onClick={() => setIsClickedReplies(false)}
-                className="relative flex gap-[5px] items-center cursor-pointer group"
+                className="relative flex gap-[5px] items-center cursor-pointer group focus:outline-none"
               >
                 <span className="text-[16px] text-[#2563EB] font-[600]">
                   عدم نمایش پاسخ ها
@@ -261,7 +303,7 @@ function Comment({
           {!isClickedReply ? (
             <button
               onClick={() => setIsClickedReply(true)}
-              className="relative h-fit flex gap-[2px] items-center cursor-pointer group"
+              className="relative h-fit flex gap-[2px] items-center cursor-pointer group focus:outline-none"
             >
               <RiReplyFill
                 size={25}
@@ -276,7 +318,7 @@ function Comment({
           ) : (
             <button
               onClick={() => setIsClickedReply(false)}
-              className="relative h-fit flex gap-[2px] items-center cursor-pointer group"
+              className="relative h-fit flex gap-[2px] items-center cursor-pointer group focus:outline-none"
             >
               <RiReplyFill size={25} color="#2563EB" className="mb-[5px]" />
               <span className="text-[16px] text-[#2563EB] font-[600]">
@@ -292,11 +334,18 @@ function Comment({
           <div className="bg-[#A4C0ED] h-[25px] w-[25px] absolute right-[-25px]">
             <div className="bg-[#D9F0FF] rounded-tl-[25px] w-[25px] h-[25px] border-[2px] border-b-0 border-r-0 border-[#000000]/42"></div>
           </div>
-          {isClickedReply ? <ReplyBox isLast={false} /> : null}
+          {isClickedReply ? (
+            <ReplyBox
+              setHidden={setIsClickedReply}
+              commentId={commentId}
+              isLast={false}
+            />
+          ) : null}
           {showingReplies.map((reply, i) =>
             i !== showingRepliesCount - 1 ? (
               <Reply
                 key={i}
+                replyId={reply.id}
                 userImage={`http://45.158.169.198${reply.image}`}
                 userName={reply.user.name}
                 dateTime={reply.created}
@@ -306,9 +355,11 @@ function Comment({
                 likeNum={reply.like.length}
                 dislikeNum={reply.dislike.length}
                 likeState={
-                  reply.like.include(user.id)
+                  // reply.like.includes(user.id)
+                  reply.like.includes(11)
                     ? 1
-                    : reply.dislike.include(user.id)
+                    : // : reply.dislike.includes(user.id)
+                      reply.dislike.includes(11)
                       ? 0
                       : -1
                 }
@@ -316,6 +367,7 @@ function Comment({
             ) : (
               <Reply
                 key={i}
+                replyId={reply.id}
                 isLast={true}
                 userImage={`http://45.158.169.198${reply.image}`}
                 userName={reply.user.name}
@@ -326,9 +378,11 @@ function Comment({
                 likeNum={reply.like.length}
                 dislikeNum={reply.dislike.length}
                 likeState={
-                  reply.like.include(user.id)
+                  // reply.like.includes(user.id)
+                  reply.like.includes(11)
                     ? 1
-                    : reply.dislike.include(user.id)
+                    : // : reply.dislike.includes(user.id)
+                      reply.dislike.includes(11)
                       ? 0
                       : -1
                 }
@@ -364,7 +418,11 @@ function Comment({
           <div className="bg-[#A4C0ED] h-[25px] w-[25px] absolute right-[-25px]">
             <div className="bg-[#D9F0FF] rounded-tl-[25px] w-[25px] h-[25px] border-[2px] border-b-0 border-r-0 border-[#000000]/42"></div>
           </div>
-          <ReplyBox isLast={true} />
+          <ReplyBox
+            setHidden={setIsClickedReply}
+            commentId={commentId}
+            isLast={true}
+          />
         </div>
       ) : null}
     </div>
@@ -372,6 +430,7 @@ function Comment({
 }
 
 function Reply({
+  replyId,
   likeState = -1,
   isLast = false,
   userImage,
@@ -411,13 +470,56 @@ function Reply({
           dislikeNum={dislikeNum}
           likeNum={likeNum}
           likeState={likeState}
+          commentorreplyId={replyId}
         />
       </div>
     </div>
   );
 }
 
-function ReplyBox({ isLast }) {
+function ReplyBox({ isLast, commentId, setHidden }) {
+  const [body, setBody] = useState("");
+
+  const handleSubmitReply = async (e) => {
+    e.preventDefault();
+
+    try {
+      // const token = localStorage.getItem("access_token");
+      // Replace this with your actual API endpoint
+      const response = await fetch(
+        `http://45.158.169.198/comments/reply_to/${commentId}/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ2NzIwNDA3LCJpYXQiOjE3NDYxMTU2MDcsImp0aSI6ImJhN2U5OTkzMWQ3MzRmYjFiNTg4ZTcxYzZmYzBhNDRmIiwidXNlcl9pZCI6MTF9.J1W-quEsy_r3j8yFfMB2MGJj8TfXwA8bCtlojvCfRRo`,
+          },
+          body: JSON.stringify({ body }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setTimeout(() => {
+          Swal.fire({
+            title: "پاسخ شما با موفقیت ثبت شد",
+            icon: "success",
+            confirmButtonText: "باشه",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
+            }
+          });
+        }, 100);
+      } else {
+        throw new Error(data.message || "failed to submit comment");
+      }
+    } catch (err) {
+      console.error("خطا در ارسال به سرور:", err);
+    }
+  };
+
   return (
     <div
       className={`flex px-[20px] py-[25px] bg-[#A4C0ED] gap-[25px] ${isLast ? "rounded-b-[23px]" : ""}`}
@@ -434,9 +536,18 @@ function ReplyBox({ isLast }) {
         <LongParagraphInput
           placeholder={"دیدگاهتان را درباره فصل اینجا بنویسید..."}
           heightLine="5.2px"
+          setInputValue={setBody}
         />
       </div>
-      <button className="!py-[12px] !px-[60px] btn !rounded-[15px] !w-fit !h-fit !mb-0 !ml-0 !mr-0 !mt-auto">
+      <button
+        onClick={(e) => {
+          if (body) {
+            handleSubmitReply(e);
+            setHidden(false);
+          }
+        }}
+        className="!py-[12px] !px-[60px] btn !rounded-[15px] !w-fit !h-fit !mb-0 !ml-0 !mr-0 !mt-auto"
+      >
         <span className="span-btn !text-[16px] !font-[300] !text-nowrap">
           ثبت پاسخ
         </span>
@@ -445,7 +556,8 @@ function ReplyBox({ isLast }) {
   );
 }
 
-function LikeAndDislike({ likeNum, dislikeNum, likeState }) {
+function LikeAndDislike({ likeNum, dislikeNum, likeState, commentorreplyId }) {
+  const [loading, setLoading] = useState(false);
   const [isLikeClicked, setIsLikeClicked] = useState(false);
   const [isLikedVisible, setIsLikedVisible] = useState(false);
   const [isLikeSwapped, setIsLikeSwapped] = useState(false);
@@ -455,8 +567,59 @@ function LikeAndDislike({ likeNum, dislikeNum, likeState }) {
   const [numLike, setNumLike] = useState(likeNum);
   const [numDislike, setNumDislike] = useState(dislikeNum);
 
-  if (likeState === 1) setIsLikedVisible(true);
-  else if (likeState === 0) setIsDislikedVisible(true);
+  useEffect(() => {
+    if (likeState === 1) {
+      setIsLikedVisible(true);
+      setIsLikeClicked(true);
+    } else if (likeState === 0) {
+      setIsDislikedVisible(true);
+      setIsDislikeClicked(true);
+    }
+  }, []);
+
+  const toggleLike = async () => {
+    try {
+      setLoading(true);
+      // const token = localStorage.getItem("access_token");
+      const response = await fetch(
+        `http://45.158.169.198/comments/like/${commentorreplyId}/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ2NzIwNDA3LCJpYXQiOjE3NDYxMTU2MDcsImp0aSI6ImJhN2U5OTkzMWQ3MzRmYjFiNTg4ZTcxYzZmYzBhNDRmIiwidXNlcl9pZCI6MTF9.J1W-quEsy_r3j8yFfMB2MGJj8TfXwA8bCtlojvCfRRo`,
+          },
+        }
+      );
+      if (!response.ok) throw new Error("Failed to fetch comments");
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const toggleDislike = async () => {
+    try {
+      setLoading(true);
+      // const token = localStorage.getItem("access_token");
+      const response = await fetch(
+        `http://45.158.169.198/comments/dislike/${commentorreplyId}/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ2NzIwNDA3LCJpYXQiOjE3NDYxMTU2MDcsImp0aSI6ImJhN2U5OTkzMWQ3MzRmYjFiNTg4ZTcxYzZmYzBhNDRmIiwidXNlcl9pZCI6MTF9.J1W-quEsy_r3j8yFfMB2MGJj8TfXwA8bCtlojvCfRRo`,
+          },
+        }
+      );
+      if (!response.ok) throw new Error("Failed to fetch comments");
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="flex gap-[25px]">
@@ -470,18 +633,21 @@ function LikeAndDislike({ likeNum, dislikeNum, likeState }) {
               setIsDislikeClicked(false);
               setNumDislike(numDislike - 1);
               setIsDislikedVisible(true);
+              toggleDislike();
             } else {
               if (isLikeClicked) {
                 setIsLikeClicked(false);
                 setNumLike(numLike - 1);
-                setIsLikeClicked(false);
+                setIsLikedVisible(false);
                 setIsDislikeClicked(true);
                 setNumDislike(numDislike + 1);
                 setIsDislikedVisible(false);
+                toggleDislike();
               } else {
                 setIsDislikeClicked(true);
                 setNumDislike(numDislike + 1);
                 setIsDislikedVisible(false);
+                toggleDislike();
               }
             }
           }}
@@ -521,7 +687,7 @@ function LikeAndDislike({ likeNum, dislikeNum, likeState }) {
               }
             }
           }}
-          className="h-fit w-fit cursor-pointer"
+          className={`h-fit w-fit ${loading ? "cursor-progress" : "cursor-pointer"}`}
         >
           {isDislikedVisible ? (
             <AiFillDislike
@@ -547,6 +713,7 @@ function LikeAndDislike({ likeNum, dislikeNum, likeState }) {
               setIsLikeClicked(false);
               setNumLike(numLike - 1);
               setIsLikedVisible(true);
+              toggleLike();
             } else {
               if (isDislikeClicked) {
                 setIsDislikeClicked(false);
@@ -555,10 +722,12 @@ function LikeAndDislike({ likeNum, dislikeNum, likeState }) {
                 setIsLikeClicked(true);
                 setNumLike(numLike + 1);
                 setIsLikedVisible(false);
+                toggleLike();
               } else {
                 setIsLikeClicked(true);
                 setNumLike(numLike + 1);
                 setIsLikedVisible(false);
+                toggleLike();
               }
             }
           }}
@@ -598,7 +767,7 @@ function LikeAndDislike({ likeNum, dislikeNum, likeState }) {
               }
             }
           }}
-          className="h-fit w-fit cursor-pointer"
+          className={`h-fit w-fit ${loading ? "cursor-progress" : "cursor-pointer"}`}
         >
           {isLikedVisible ? (
             <AiFillLike

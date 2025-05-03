@@ -140,7 +140,7 @@ function Footer() {
           </div>
         </div>
         <div className="flex flex-col gap-[20px] items-center grow-603">
-          <img src="././public/batbooksLogo.png" className="w-[150px]" />
+          <img src="/batbooksLogo.png" className="w-[150px]" />
           <h1 className="text-[32px] text-center font-bold text-[#002D54]">
             Bat<span className="text-[#2663CD]">Books</span>
           </h1>
