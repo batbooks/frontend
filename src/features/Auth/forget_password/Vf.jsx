@@ -73,10 +73,10 @@ export default function Vf() {
     navigate("/Forget_password");
   };
   return (
-    <div className="w-full h-full flex flex-col relative">
-      <div className="flex flex-col relative items-center justify-center h-120 mt-15">
+    <div className="w-full h-[70vh] flex flex-col relative md:h-[93vh] md:max-h-[950px]  lg:h-full  ">
+      <div className="flex flex-col relative items-center justify-center h-full mt-15   lg:h-120 ">
         {/* <img src="middle-left.png" alt="mid-right" className="w-[5.2vw] absolute top-3 left-0 "/> */}
-        <div className="flex flex-col relative w-[40vw] h-110 p-8 pr-[2vw] pl-[2vw] pt-20 bg-[#A4C0ED] rounded-lg shadow-md">
+        <div className="flex flex-col relative w-[80vw]  h-full mt-50 p-8 pr-[2vw] pl-[2vw] pt-20 bg-[#A4C0ED] rounded-lg shadow-md md:pt-50   lg:flex lg:flex-col lg:mt-0 lg:relative lg:w-[40vw] lg:h-110 lg:p-8 lg:pr-[2vw] lg:pl-[2vw] lg:pt-20 lg:bg-[#A4C0ED] lg:rounded-lg lg:shadow-md">
           <h2 className="text-xl font-bold text-center text-gray-700 mb-6">
             بازیابی رمز عبور
           </h2>
@@ -90,12 +90,12 @@ export default function Vf() {
 
           <form onSubmit={handleSubmit} className="space-y-[1vw]">
             {/* Verification Code Input */}
-            <div className="ml-[4.5vw]">
-              <div className="relative flex  items-center w-[26vw] bg-white border border-gray-300 rounded-full  ">
+            <div className="place-items-center lg:ml-[4.5vw]">
+              <div className="relative flex  items-center w-[52vw] bg-white border border-gray-300 rounded-full mb-2 md:mb-4 md:h-12 lg:w-[26vw] lg:mb-0  ">
                 <img
                   src="/src/assets/images/mid-left.png"
                   alt="mid-right"
-                  className="w-45 absolute top-26 -left-[6.2vw] "
+                  className=" hidden absolute md:block md:top-32  md:-left-[15vw] md:w-70  lg:block lg:w-45 lg:absolute lg:top-26 lg:-left-[9.2vw] "
                 />
 
                 <input
@@ -103,12 +103,12 @@ export default function Vf() {
                   value={code}
                   onChange={(e) => setVerificationCode(e.target.value)}
                   placeholder="کد بازیابی"
-                  className="w-[26vw] h-10 px-[3.1vw] text-right bg-transparent focus:outline-none rounded-full placeholder:opacity-40 placeholder:text-right focus:ring-2 focus:ring-blue-700 hover:ring-2 hover:ring-blue-700"
+                  className="w-full h-10 px-[6vw] text-right bg-transparent focus:outline-none rounded-full placeholder:opacity-40 placeholder:text-right focus:ring-2 focus:ring-blue-700 hover:ring-2 hover:ring-blue-700 lg:px-[3.1vw] "
                 />
                 <img
                   src="/src/assets/images/lock.png"
                   alt="lock"
-                  className="absolute left-[23.3vw] text-gray-500"
+                  className="absolute left-[47vw] text-gray-500 lg:left-[23.3vw] "
                 />
               </div>
               {errors.code && (
@@ -117,19 +117,19 @@ export default function Vf() {
             </div>
 
             {/* New Password Input */}
-            <div className="ml-[4.5vw]">
-              <div className="relative flex items-center w-[26vw] bg-white border border-gray-300 rounded-full ">
+            <div className="place-items-center mb-2 md:mb-4 lg:ml-[4.5vw]">
+              <div className="relative flex  items-center w-[52vw] bg-white border border-gray-300 rounded-full lg:w-[26vw] ">
                 <input
                   type="password"
                   value={new_password}
                   onChange={(e) => setNewPassword(e.target.value)}
                   placeholder="رمز جدید"
-                  className="w-[26vw] h-10 px-12 text-right bg-transparent focus:outline-none rounded-full placeholder:opacity-40 placeholder:text-right focus:ring-2 focus:ring-blue-700 hover:ring-2 hover:ring-blue-700"
+                  className="w-full h-10 px-[6vw] text-right bg-transparent focus:outline-none rounded-full placeholder:opacity-40 placeholder:text-right focus:ring-2 focus:ring-blue-700 hover:ring-2 hover:ring-blue-700 lg:px-[3.1vw]"
                 />
                 <img
                   src="/src/assets/images/lock.png"
                   alt="lock"
-                  className="absolute left-[23.3vw] text-gray-500"
+                  className="absolute left-[47vw] text-gray-500 lg:left-[23.3vw]"
                 />
               </div>
               {errors.new_password && (
@@ -140,19 +140,19 @@ export default function Vf() {
             </div>
 
             {/* Confirm Password Input */}
-            <div className="ml-[4.5vw]">
-              <div className="relative flex items-center w-[26vw] bg-white border border-gray-300 rounded-full  ">
+            <div className="place-items-center mb-3 md:mb-4 lg:ml-[4.5vw]">
+              <div className="relative flex  items-center w-[52vw] bg-white border border-gray-300 rounded-full lg:w-[26vw] ">
                 <input
                   type="password"
                   value={new_password_conf}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="رمز عبور خود را تکرار کنید"
-                  className="w-[26vw] h-10 px-[3.1vw] text-right bg-transparent focus:outline-none rounded-full placeholder:opacity-40 placeholder:text-right focus:ring-2 focus:ring-blue-700 hover:ring-2 hover:ring-blue-700"
+                  className="w-full h-10 px-[6vw] text-right bg-transparent focus:outline-none rounded-full placeholder:opacity-40 placeholder:text-right focus:ring-2 focus:ring-blue-700 hover:ring-2 hover:ring-blue-700 lg:px-[3.1vw]"
                 />
                 <img
                   src="/src/assets/images/lock.png"
                   alt="lock"
-                  className="absolute left-[23.37vw] text-gray-500"
+                  className="absolute left-[47vw] text-gray-500 lg:left-[23.3vw]"
                 />
               </div>
               {errors.new_password_conf && (
@@ -173,12 +173,12 @@ export default function Vf() {
         <img
           src="/src/assets/images/mid-right.png"
           alt="mid-right"
-          className="w-[13vw]   absolute -top-18 left-[62.3vw] min-w-32"
+          className="w-[13vw]   absolute top-30 left-[65.3vw] min-w-32 md:left-[67vw] md:w-[30vw] md:top-20  lg:left-[62.3vw] lg:-top-18 lg:w-[13vw]"
         />
       </div>
       <h1
         onClick={gotoloinpage}
-        className="text-[1vw] text-[#2663CD] absolute top-123 left-[45vw] underline"
+        className="text-[1vw] text-[#2663CD] absolute top-150 left-[45vw] underline md:top-200 lg:top-123 lg:left-[45vw] "
       >
         {" "}
         بازگشت به صفحه ورود{" "}
@@ -187,16 +187,18 @@ export default function Vf() {
       <img
         src="/src/assets/images/bottom-left.png"
         alt="bottom-left"
-        className="w-[17vw] absolute top-123 left-0 min-w-50"
+        className=" w-[17vw] absolute top-[83vh] left-0 min-w-50 md:top-290 lg:w-[17vw] lg:absolute lg:top-123 lg:left-0 lg:min-w-50 "
       />
       <img
         src="/src/assets/images/bottom-right.png"
         alt="bottom-left"
-        className="w-[35vw]  absolute top-52 right-0 min-w-100"
+        className="w-[35vw]  absolute top-52 right-0 min-w-100 hidden lg:block   "
       />
 
-      <p className="text-[1.5vw] font-bold absolute top-8 left-[2vw] ">
-        BatBooks
+      <p className="text-[1.5vw] font-bold absolute top-4 left-[1vw] ">
+      <h2 className="text-[24px] mt-1.5 ml-2 font-bold text-[rgb(0,45,84)]">
+          Bat<span className="text-[#2663CD]">Books</span>
+        </h2>
       </p>
     </div>
   );

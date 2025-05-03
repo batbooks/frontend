@@ -40,10 +40,10 @@ export default function Reviews() {
       });
       if (!res.ok) throw new Error("Failed to fetch comments");
       const data = await res.json();
-      setAllComments(data.results);
+      setAllComments(data.results.reviews);
       setNextUrl(data.links.next);
       setPrevUrl(data.links.previous);
-      mapLikes(data.results);
+      mapLikes(data.results.reviews);
       console.log(data);
     } catch (err) {
       console.error(err);

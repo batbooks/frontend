@@ -15,6 +15,7 @@ function Navbar() {
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   const handleLogout = () => {
     localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
     navigate("/auth/login");
     // useDispatch(logout());
   };
