@@ -130,10 +130,11 @@ const ReadingPage = () => {
             </button>
           </div>
           {/* <div className="full-width-line mb-[41px]"></div> */}
-          <div dir="rtl" className="mb-[500px] text-[15px] font-[400] bg-white p-15 leading-15 border border-[#2663cd]">
+          <div dir="rtl" className="mb-[500px] text-[18px] font-[400] bg-white px-15 py-[7px] leading-15 border border-[#2663cd]">
             <ReactMarkdown>
 
-            {chapterBody}
+            {chapterBody} 
+            
             </ReactMarkdown>
           </div>
           <div className="full-width-line"></div>

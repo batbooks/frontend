@@ -253,7 +253,7 @@ export default function Another_User_Profile() {
             <h2 className="text-[20px] text-[#000000] font-[400] mt-[15px]  mb-[12px]">
               جزئیات
             </h2>
-            <div className="bg-white rounded-[10px] p-[10px] mt-[10px] shadow-lg shadow-[#000000]/25">
+            <div className="bg-white min-h-[45px] rounded-[10px] p-[10px] mt-[10px] shadow-lg shadow-[#000000]/25">
               <p className="text-[16px] text-[#000000] font-[300]">
                 {user.gender}
               </p>
@@ -324,7 +324,7 @@ export default function Another_User_Profile() {
                 
                 src="/27.png"
                 alt="favoritebook"
-                className="min-w-[242px]  rounded-[20px] h-[345px]    mr-0 ml-auto   shadow-lg  "
+                className="min-w-[242px]  rounded-[20px] h-[344px]    mr-0 ml-auto   shadow-lg  "
               />
             </div>
           )}
