@@ -20,7 +20,7 @@ export default function MyBooks() {
       setLoading(true);
       const token = localStorage.getItem("access_token");
       try {
-        const response = await fetch(`http://45.158.169.198/book/my/`, {
+        const response = await fetch(`/api/book/my/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -45,16 +45,13 @@ export default function MyBooks() {
       setLoading2(true);
       const token = localStorage.getItem("access_token");
       try {
-        const response = await fetch(
-          `http://45.158.169.198/book-actions/get/favorite/`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await fetch(`/api/book-actions/get/favorite/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         if (!response.ok) {
           throw new Error("درخواست موفق نبود");
@@ -105,7 +102,9 @@ export default function MyBooks() {
           کتاب های من
         </h1>
         <div className="flex gap-[26px] relative">
-          <ReadingGoalCard />
+          <div className="h-[764px] w-[243px]">
+            <ReadingGoalCard />
+          </div>
           <div className="flex flex-col w-[100%] text-right">
             <h3 className="mr-[11px] text-[16px] font-[700] text-[#1A365D] mb-[22px]">
               کتاب های مورد علاقه من
@@ -147,7 +146,7 @@ export default function MyBooks() {
                           description={book.description}
                           coverImage={
                             book.image
-                              ? `http://45.158.169.198/${book.image}`
+                              ? `/api/${book.image}`
                               : `/src/assets/images/book_sample1.png`
                           }
                         />

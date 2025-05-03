@@ -8,23 +8,20 @@ import Loading from "../../common/Loading/Loading";
 const ModifiedChapter = () => {
   const [chapterName, setChapterName] = useState("");
   const [chapterContent, setChapterContent] = useState("");
-  const[loading,setLoading]=useState(true);
+  const [loading, setLoading] = useState(true);
   const { id: chapterId } = useParams();
   const token = localStorage.getItem("access_token");
 
   useEffect(() => {
     const fetchChapter = async () => {
-        setLoading(true)
+      setLoading(true);
       try {
-        const response = await fetch(
-          `http://45.158.169.198/book/chapter/${chapterId}/`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await fetch(`/api/book/chapter/${chapterId}/`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         if (!response.ok) {
           throw new Error("Failed to fetch chapter");
@@ -35,7 +32,9 @@ const ModifiedChapter = () => {
         setChapterContent(data.body);
       } catch (error) {
         console.error("Error fetching chapter:", error);
-      }finally{setLoading(false)}
+      } finally {
+        setLoading(false);
+      }
     };
 
     if (chapterId) {
@@ -45,23 +44,20 @@ const ModifiedChapter = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true)
-    console.log("sfdf")
+    setLoading(true);
+    console.log("sfdf");
     try {
-      const response = await fetch(
-        `http://45.158.169.198/book/chapter/${chapterId}/`,
-        {
-          method: "PUT",
-          body: JSON.stringify({
-            title: chapterName,
-            body: chapterContent,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await fetch(`/api/book/chapter/${chapterId}/`, {
+        method: "PUT",
+        body: JSON.stringify({
+          title: chapterName,
+          body: chapterContent,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (!response.ok) throw new Error("Failed to update chapter");
 
@@ -69,8 +65,9 @@ const ModifiedChapter = () => {
       console.log("Chapter updated:", data);
     } catch (err) {
       console.error("Error updating chapter:", err.message);
+    } finally {
+      setLoading(false);
     }
-    finally{setLoading(false)}
   };
   return !loading ? (
     <>
@@ -136,7 +133,6 @@ const ModifiedChapter = () => {
       <Loading />
     </div>
   );
-}
-
+};
 
 export default ModifiedChapter;

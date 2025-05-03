@@ -42,7 +42,7 @@ function CreateBook() {
         formData.append("tags", Number(tag.id));
       });
 
-      await fetch(`http://45.158.169.198/book/create/`, {
+      await fetch(`/api/book/create/`, {
         method: "POST",
         body: formData,
         headers: {

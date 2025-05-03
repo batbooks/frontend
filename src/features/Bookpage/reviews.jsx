@@ -1,133 +1,238 @@
 import React, { useEffect, useState } from "react";
-import { AiFillLike, AiFillDislike } from "react-icons/ai";
-const Reviews = ({ bookId }) => {
-  const [allreviews, setAllreviews] = useState([]);
-  //   const [replies, setReplies] = useState({});
-  //   const [replyOffsets, setReplyOffsets] = useState({});
-  const [userfollowed, setUserFollowed] = useState(true);
-  const [liked, setLiked] = useState(false);
+import Loading from "../../common/Loading/Loading";
+import {
+  AiFillLike,
+  AiFillDislike,
+  AiOutlineLike,
+  AiOutlineDislike,
+} from "react-icons/ai";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router";
+import { Rating } from "@mui/material";
+
+export default function Reviews() {
+  const { bookId } = useParams();
+  const [allComments, setAllComments] = useState([]);
+  const [nextUrl, setNextUrl] = useState("");
+  const [prevUrl, setPrevUrl] = useState("");
+  const [liked, setLiked] = useState({});
+  const [loading, setLoading] = useState(true);
+  const token = localStorage.getItem("access_token");
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+
   useEffect(() => {
-    const fetchreviews = async () => {
-      try {
-        const response = await fetch(
-          `http://45.158.169.198/comments/book/${bookId}/reviews/`
-        );
+    fetchPage(`/api/comments/book/${bookId}/reviews/`);
+  }, [bookId]);
 
-        if (!response.ok) throw new Error("Failed to fetch reviews");
+  const fetchPage = async (url) => {
+    setLoading(true);
+    const token = localStorage.getItem("access_token");
 
-        const data = await response.json();
-        setAllreviews(data.results);
-      } catch (err) {
-        console.error(err);
-      }
-    };
+    try {
+      const res = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!res.ok) throw new Error("Failed to fetch comments");
+      const data = await res.json();
+      setAllComments(data.results.reviews);
+      setNextUrl(data.links.next);
+      setPrevUrl(data.links.previous);
+      mapLikes(data.results.reviews);
+      console.log(data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchreviews();
-  }, []);
-  function LikeButton() {
-    const handleClick = () => {
-      setLiked(!liked);
-      // send to api
-    };
-    if (liked)
-      return <AiFillLike color="blue" size="25" onClick={handleClick} />;
-    return <AiFillDislike color="red" size="25" onClick={handleClick} />;
-  }
+  const mapLikes = (comments) => {
+    if (!isAuthenticated) return;
+    const map = {};
+    comments.forEach((c) => {
+      if (c.like.includes(user.id)) map[c.id] = 1;
+      else if (c.dislike.includes(user.id)) map[c.id] = -1;
+      else map[c.id] = 0;
+    });
+    setLiked(map);
+  };
 
-  // const fetchReplies = async (reviewId) => {
-  //   const offset = replyOffsets[reviewId] || 0;
+  const handleLike = async (commentId) => {
+    const current = liked[commentId] === 1 ? 0 : 1;
+    setLiked({ ...liked, [commentId]: current });
+    await fetch(`/api/comments/review/like/${commentId}/`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  };
 
-  //   try {
-  //     const response = await fetch(
-  //       `http://45.158.169.198/reviews/reply_to/${reviewId}/`
-  //     );
-  //     if (!response.ok) throw new Error("Failed to fetch replies");
+  const handleDislike = async (commentId) => {
+    const current = liked[commentId] === -1 ? 0 : -1;
+    setLiked({ ...liked, [commentId]: current });
+    await fetch(`/api/comments/review/dislike/${commentId}/`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  };
 
-  //     const data = await response.json();
-
-  //     setReplies((prev) => ({
-  //       ...prev,
-  //       [reviewId]: [...(prev[reviewId] || []), ...data],
-  //     }));
-
-  //     // setReplyOffsets((prev) => ({
-  //     //   ...prev,
-  //     //   [reviewId]: offset + 10,
-  //     // }));
-  //   } catch (err) {
-  //     console.error(err);
-
-  //   }
-  // };
+  const getTimeAgo = (dateString) => {
+    const then = new Date(dateString);
+    const diffH = Math.floor((new Date() - then) / (1000 * 60 * 60));
+    if (diffH < 24) return `ساعت پیش ${diffH}`;
+    return `${Math.floor(diffH / 24)} روز پیش `;
+  };
 
   return (
-    <div className="bg-[#D9F0FF] m-auto mt-6 p-4">
-      <h2 className="text-2xl font-bold text-right mr-17">نظرات کاربران</h2>
-      {allreviews.length > 0 ? (
-        allreviews.map((review) => (
-          <div key={review.id} className="mt-10">
-            <div className="flex flex-row gap-10 rounded-lg p-10">
-              <div className="w-200 break-words mr-5">
-                <div className="text-[16px] text-right text-gray-600 mb-6">
-                  {review.created}
-                </div>
-                <div className="text-[16px] text-right text-gray-800">
-                  {review.body}
-                </div>
-                <div className="flex flex-row mt-10 ml-190">
-                  <LikeButton />
-                  {liked ? <div>57</div> : <div>56</div>}
-                </div>
-              </div>
-              <div className="w-1/4">
-                <section className="flex flex-row">
-                  <p className="w-1/2 text-[16px] font-medium text-right mr-3">
-                    {review.user}
-                  </p>
-                  <div className="w-25">
-                    <img src={review.image} alt="author avatar" />
+    <main
+      dir="rtl"
+      className=" mb-[60px] mx-[100px] flex flex-col bg-[#D9F0FF] p-4"
+    >
+      <h2 className="text-[22px] font-bold mb-[30px] text-right">
+        نقد های کاربران:
+      </h2>
+      {loading ? (
+        <div className="mt-[50px] grid place-items-center">
+          <Loading />
+        </div>
+      ) : allComments.length > 0 ? (
+        <div className="flex flex-col gap-[36px]">
+          {allComments.map((comment) => (
+            <div key={comment.id} className="flex flex-col">
+              <div className=" flex flex-col gap-[22px] px-[25px] py-[30px] shadow-md bg-[#A4C0ED] border-[2px] border-[#000000]/21 rounded-[25px]">
+                <div className="flex gap-[25px]">
+                  <div className="flex flex-col items-center gap-[16px]">
+                    <div className="w-[83px] h-[83px] rounded-full overflow-hidden">
+                      <img
+                        src={
+                          comment.image
+                            ? `/api${comment.image}`
+                            : "/images/user_none.png"
+                        }
+                        alt="user"
+                        className="w-full h-full object-cover"
+                        onClick={
+                          user.id != comment.user.id
+                            ? () => {
+                                navigate(
+                                  `/anotheruserprofile/${comment.user.id}`
+                                );
+                              }
+                            : () => {
+                                navigate(`/userprofile`);
+                              }
+                        }
+                      />
+                    </div>
+                    <Rating
+                      dir="ltr"
+                      name={`${comment.id}`}
+                      defaultValue={comment.rating}
+                      precision={0.1}
+                      readOnly
+                    />
+                    <span className="text-[16px] font-[700]">
+                      {comment.user.name}
+                    </span>
+                    {user.id !== comment.user.id ? (
+                      <button className="btn !w-fit !py-[5px] !px-[38px] !text-[14px] !font-[400]">
+                        <span className="span-btn">دنبال کردن</span>
+                      </button>
+                    ) : (
+                      <div>
+                        <button className="btn !py-[5px] !px-[38px] !text-[14px] before:!bg-[#FF3B30] !bg-[#CC2F26] !shadow-lg">
+                          <span className="span-btn">حذف نقد</span>
+                        </button>
+                        <button className="btn  !py-[5px] !px-[38px] !text-[14px] !font-[400]">
+                          <span className="span-btn">ویرایش نقد</span>
+                        </button>
+                      </div>
+                    )}
                   </div>
-                </section>
-                <div className="w-50 flex flex-row justify-center ml-10 mt-4 mb-3">
-                  {userfollowed ? (
-                    <button className="text-[16px] text-white bg-[#2663CD] p-2 rounded-full">
-                      دنبال کردن
-                    </button>
-                  ) : (
-                    <button className="text-[16px] text-white bg-[#2663CD] p-2">
-                      دنبال نکردن
-                    </button>
-                  )}
+                  <div className="w-full max-w-[900px] min-h-[180px] p-6 rounded-[15px] border-black/20 border-[2px] shadow-sm shadow-black/21 bg-[#E0F2F1]">
+                    <div className="flex flex-col gap-[10px]">
+                      <div className="flex flex-row gap-[550px]">
+                        <h2 className="text-[15px] text-[#000000]/70 font-[300] ">
+                          {getTimeAgo(comment.created)}
+                        </h2>
+                        <h2>آخرین چپتر خوانده شده: {comment.chapter} </h2>
+                      </div>
+                      <h1 className="font-bold text-xl mb-[15px]">
+                        {comment.title}
+                      </h1>
+                      <p className="text-[16px] font-[300] my-auto">
+                        {comment.body}
+                      </p>
+                    </div>
+                    <div></div>
+                  </div>
+                </div>
+                <div className="flex justify-between px-42">
+                  <div className="flex gap-[25px]">
+                    <div className="flex items-center gap-[5px] cursor-pointer">
+                      {liked[comment.id] === -1 ? (
+                        <AiFillDislike
+                          color="red"
+                          size={25}
+                          onClick={() => handleDislike(comment.id)}
+                        />
+                      ) : (
+                        <AiOutlineDislike
+                          color="red"
+                          size={25}
+                          onClick={() => handleDislike(comment.id)}
+                        />
+                      )}
+                      <span>{comment.dislike.length}</span>
+                    </div>
+                    <div className="flex items-center gap-[5px] cursor-pointer">
+                      {liked[comment.id] === 1 ? (
+                        <AiFillLike
+                          color="blue"
+                          size={25}
+                          onClick={() => handleLike(comment.id)}
+                        />
+                      ) : (
+                        <AiOutlineLike
+                          color="blue"
+                          size={25}
+                          onClick={() => handleLike(comment.id)}
+                        />
+                      )}
+                      <span>{comment.like.length}</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-
-            {/* Replies Section
-            <div className="ml-20 mr-10">
-              {(replies[review.id] || []).map((reply) => (
-                <div key={reply.id} className="border right-4 border-gray-300 p-4 rounded-lg mb-3 bg-white text-right">
-                  <p className="text-sm text-gray-500">{reply.date}</p>
-                  <p className="text-gray-800">{reply.text}</p>
-                </div>
-              ))}
-              <div className="text-right">
-                <button
-                  className="text-blue-700 hover:underline"
-                  onClick={() => fetchReplies(review.id)}
-                >
-                  نمایش پاسخ‌های بیشتر
-                </button>
-              </div>
-            </div> */}
-
-            <div className="w-1/2 border-t-2 border-gray-500 mx-auto mt-6"></div>
+          ))}
+          <div className="flex justify-center mt-[50px] gap-[12px]">
+            <button
+              onClick={() => nextUrl && fetchPage(nextUrl)}
+              className="btn !px-[23px] !py-[7.5px] !rounded-full bg-[#2663CD] text-white flex items-center gap-[8px]"
+            >
+              <span className="span-btn !text-[14px] !font-[300]">بعدی</span>
+              <FaArrowRight className="span-btn" />
+            </button>
+            <button
+              onClick={() => prevUrl && fetchPage(prevUrl)}
+              className="btn !px-[23px] !py-[7.5px] !rounded-full bg-[#2663CD] text-white flex items-center gap-[8px]"
+            >
+              <FaArrowLeft className="span-btn" />
+              <span className="span-btn !text-[14px] !font-[300]">قبلی</span>
+            </button>
           </div>
-        ))
+        </div>
       ) : (
-        <p className="text-center text-gray-600">نظری ثبت نشده است.</p>
+        <p className="text-center text-gray-600 mt-[50px]">
+          نظری ثبت نشده است.
+        </p>
       )}
-    </div>
+    </main>
   );
-};
-
-export default Reviews;
+}

@@ -1,5 +1,4 @@
 @import "tailwindcss";
-
 .backface-hidden {
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
@@ -55,6 +54,12 @@ textarea {
 .scrollbar-opacity-0::-webkit-scrollbar {
   visibility: collapse;
   width: 19px;
+}
+
+.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
 }
 
 /* :root {

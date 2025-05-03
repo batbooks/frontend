@@ -32,9 +32,7 @@ export default function Another_User_Profile() {
       setLoading(true);
       console.log("asda");
       try {
-        const response = await fetch(
-          `http://45.158.169.198/user/info/${userId}/`
-        );
+        const response = await fetch(`/api/user/info/${userId}/`);
         if (!response.ok) throw new Error("Failed to fetch book");
         const data = await response.json();
         setUser(data);
@@ -50,7 +48,7 @@ export default function Another_User_Profile() {
 
       try {
         const response = await fetch(
-          `http://45.158.169.198/book/user/${userId}/`,
+          `/api/book/user/${userId}/`,
           {
             method: "GET",
           }
@@ -78,17 +76,14 @@ export default function Another_User_Profile() {
     const fetchFollowing = async () => {
       setLoading1(true);
       try {
-        const response = await fetch(
-          `http://45.158.169.198/user/is/follow/${userId}/`,
-          {
-            method: "GET",
+        const response = await fetch(`/api/user/is/follow/${userId}/`, {
+          method: "GET",
 
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const data = await response.json();
         setFollowing(data.is_follow);
       } catch (err) {
@@ -104,7 +99,7 @@ export default function Another_User_Profile() {
       setLoading2(true);
       try {
         const response = await fetch(
-          `http://45.158.169.198/user/is/Not_Interested/${userId}/`,
+          `/api/user/is/Not_Interested/${userId}/`,
           {
             method: "GET",
 
@@ -146,7 +141,7 @@ export default function Another_User_Profile() {
   const handleFollow = async () => {
     try {
       const response = await fetch(
-        `http://45.158.169.198/user/toggle/follow/${userId}/`,
+        `/api/user/toggle/follow/${userId}/`,
         {
           method: "GET",
 
@@ -163,7 +158,7 @@ export default function Another_User_Profile() {
   const handleBlockd = async () => {
     try {
       const response = await fetch(
-        `http://45.158.169.198/user/toggle/Not_Interested/${userId}/`,
+        `/api/user/toggle/Not_Interested/${userId}/`,
         {
           method: "GET",
 
@@ -270,7 +265,7 @@ export default function Another_User_Profile() {
             </div>
           </div>
 
-          <div className="w-[100%] m-[32px] mt-0 ml-0 ">
+          <div className="w-full m-[32px] mt-0 ml-0 ">
             <h3 className="text-[24px] font-[300]  mb-[15px]">{user.user}</h3>
 
             {console.log(user)}
@@ -301,7 +296,7 @@ export default function Another_User_Profile() {
 
             <div className=" mb-[50px] ">
               <h5 className="text-[16px] font-[300] mb-1">مشخصات:</h5>
-              <div className="min-w-175 h-61 bg-white px-[25.7px] py-[16.6px] rounded-[10px] shadow-lg shadow-[#000000]/25">
+              <div className="w-175 h-61 bg-white px-[25.7px] py-[16.6px] rounded-[10px] shadow-lg shadow-[#000000]/25 ma">
                 <p className="text-[#000000]/70 text-[14px] font-[300]   ">
                   {user.bio}
                 </p>
@@ -316,7 +311,7 @@ export default function Another_User_Profile() {
                 title={lastBook.name}
                 coverImage={
                   lastBook.image != null
-                    ? `http://45.158.169.198${lastBook.image}`
+                    ? `/api${lastBook.image}`
                     : "/23.png"
                 }
                 chapters={80}
@@ -324,10 +319,12 @@ export default function Another_User_Profile() {
               />
             </div>
           ) : (
-            <div className="bg-[#ffffff] rounded-[20px] px-[17px] pt-[41px] pb-[28px] mt-[32px] mr-auto shadow-lg shadow-[#000000]/25 min-w-[242px]">
+            <div className="mb-[32px] p-[32px] pr-0 ">
               <img
-                src="/src/assets/images/another_favorite_book.png"
+                
+                src="/27.png"
                 alt="favoritebook"
+                className="min-w-[242px]  rounded-[20px] h-[345px]    mr-0 ml-auto   shadow-lg  "
               />
             </div>
           )}
@@ -453,7 +450,7 @@ export function Book({ book, isLast = false, minw = 180, h = 254 }) {
         title={book.name}
         author={book.Author}
         coverImage={
-          book.image != null ? `http://45.158.169.198/${book.image}` : "/20.jpg"
+          book.image != null ? `/api/${book.image}` : "/20.jpg"
         }
         description={book.description}
         chapters={80}

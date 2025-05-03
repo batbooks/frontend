@@ -13,8 +13,7 @@ const EditChapter = () => {
   useEffect(() => {
     const fetchBook = async () => {
       try {
-        
-        const res = await fetch(`http://45.158.169.198/book/${bookId}/`);
+        const res = await fetch(`/api/book/${bookId}/`);
         const data = await res.json();
         setBookData(data);
       } catch (err) {
@@ -26,7 +25,7 @@ const EditChapter = () => {
 
     fetchBook();
   }, [bookId]);
-    
+
   if (loading) return <p className="text-center mt-20">در حال بارگذاری...</p>;
   if (!bookData)
     return <p className="text-center mt-20">خطا در دریافت اطلاعات کتاب.</p>;

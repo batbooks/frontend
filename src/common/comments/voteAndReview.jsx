@@ -19,17 +19,14 @@ export default function VoteAndReview() {
 
     try {
       // Replace this with your actual API endpoint
-      const response = await fetch(
-        "http://45.158.169.198/comments/create/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ chapter, body }),
-        }
-      );
+      const response = await fetch("/api/comments/create/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ chapter, body }),
+      });
 
       const data = await response.json();
 
@@ -71,7 +68,7 @@ export default function VoteAndReview() {
           />
           {isAuthenticated && user.user_info.image != null ? (
             <img
-              src={`http://45.158.169.198${user.user_info.image}`}
+              src={`/api${user.user_info.image}`}
               className="w-[63px] h-[63px] rounded-full mb-[15px]"
             />
           ) : (

@@ -4,8 +4,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Editor } from "primereact/editor";
 import Footer from "../../common/Footer/Footer.jsx";
 import Navbar from "../../common/Navbar/navbar.jsx";
-import SearchBar from "../../Searchbar";
 import Reviews from "./reviews";
+import SearchBar from "../../Searchbar";
 import Loading from "../../common/Loading/Loading.jsx";
 import Swal from "sweetalert2";
 
@@ -55,21 +55,17 @@ const BookPage = () => {
         const token = localStorage.getItem("access_token");
 
         const [bookResponse, favoriteResponse] = await Promise.all([
-          fetch(`http://45.158.169.198/book/${bookId}/`),
-          fetch(
-            `http://45.158.169.198/book-actions/is/favorite/${bookId}/`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          ),
+          fetch(`/api/book/${bookId}/`),
+          fetch(`/api/book-actions/is/favorite/${bookId}/`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }),
         ]);
 
         if (bookResponse.status == 404) {
           setChapterFound(false);
         }
-        console.log(bookResponse.status);
         if (!bookResponse.ok || !favoriteResponse.ok) {
           throw new Error("Failed to fetch data");
         }
@@ -101,7 +97,7 @@ const BookPage = () => {
   const handleFavorite = async () => {
     try {
       const response = await fetch(
-        `http://45.158.169.198/book-actions/toggle/favorite/${bookId}/`,
+        `/api/book-actions/toggle/favorite/${bookId}/`,
         {
           method: "GET",
           headers: {
@@ -149,7 +145,7 @@ const BookPage = () => {
     try {
       // Replace this with your actual API endpoint
       const response = await fetch(
-        `http://45.158.169.198/comments/book/${bookId}/reviews/create/`,
+        `/api/comments/book/${bookId}/reviews/create/`,
         {
           method: "POST",
           headers: {
@@ -207,13 +203,12 @@ const BookPage = () => {
           <img
             src={
               book.image
-                ? `http://45.158.169.198/${book.image}`
+                ? `/api/${book.image}`
                 : `https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-book-cover-design-template-34323b0f0734dccded21e0e3bebf004c_screen.jpg?ts=1637015198`
             }
             alt="Book Cover"
             className="rounded-lg shadow-lg w-full h-[500px]"
           />
-          {console.log(book)}
           <div className="grid grid-cols-1 mt-4">
             <button
               onClick={() => handleFavorite()}
@@ -484,7 +479,7 @@ const BookPage = () => {
       <div className="w-350 p-10 pl-28">
         {/* <Reviews bookId={bookId} /> */}
       </div>
-
+      <Reviews />
       <Footer />
     </div>
   );

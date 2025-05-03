@@ -15,21 +15,18 @@ const CreateChapter = () => {
   const handlesubmit = async (e) => {
     e.prevent.default;
     try {
-      const response = await fetch(
-        `http://45.158.169.198/book/chapter/create/`,
-        {
-          method: "POST",
-          body: JSON.stringify({
-            book: id,
-            title: chapterName,
-            body: chapterContent,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await fetch(`/api/book/chapter/create/`, {
+        method: "POST",
+        body: JSON.stringify({
+          book: id,
+          title: chapterName,
+          body: chapterContent,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       const data = await response.json();
     } catch (err) {
