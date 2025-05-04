@@ -3,16 +3,16 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { BookOpen, Heart, Rocket, Skull, Flashlight, Globe, Shield, Flame } from "lucide-react";
-
+const colorr="bg-blue-300"
 const genres = [
-  { name: "Fantasy", novels: 2453, color: "bg-orange-300", icon: BookOpen },
-  { name: "Romance", novels: 3211, color: "bg-orange-300", icon: Heart },
-  { name: "Sci-Fi", novels: 1876, color: "bg-orange-300", icon: Rocket },
-  { name: "Horror", novels: 945, color: "bg-orange-300", icon: Skull },
-  { name: "Action", novels: 1547, color: "bg-orange-300", icon: Flashlight },
-  { name: "Adventure", novels: 1289, color: "bg-orange-300", icon: Globe },
-  { name: "Mystery", novels: 1023, color: "bg-orange-300", icon: Shield },
-  { name: "Trending", novels: 856, color: "bg-orange-300", icon: Flame },
+  { name: "Fantasy", novels: 2453, color: colorr, icon: BookOpen },
+  { name: "Romance", novels: 3211, color: colorr, icon: Heart },
+  { name: "Sci-Fi", novels: 1876, color: colorr, icon: Rocket },
+  { name: "Horror", novels: 945, color: colorr, icon: Skull },
+  { name: "Action", novels: 1547, color: colorr, icon: Flashlight },
+  { name: "Adventure", novels: 1289, color: colorr, icon: Globe },
+  { name: "Mystery", novels: 1023, color: colorr, icon: Shield },
+  { name: "Trending", novels: 856, color: colorr, icon: Flame },
 ];
 
 const GenreCard = ({ name, novels, color, Icon }) => (
@@ -22,23 +22,24 @@ const GenreCard = ({ name, novels, color, Icon }) => (
     initial={{ opacity: 0, y: 20 }} 
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.4 }}
-    className={`${color} group rounded-2xl p-6 flex flex-col items-center shadow-lg relative overflow-hidden cursor-pointer`}
+    className={`${color} group rounded-2xl p-6 flex flex-col items-center shadow-lg  relative overflow-hidden cursor-pointer hover:shadow-[#000000]/20`}
   >
-    <Icon className="text-white w-10 h-10 mb-4" />
-    <h2 className="text-white text-xl font-bold">{name}</h2>
-    <p className="text-white text-sm">{novels} Novels</p>
+    
+    <Icon className="text-black/70 w-10 h-10 mb-4 " />
+    <h2 className="text-black/70 text-xl font-bold">{name}</h2>
+    <p className="text-black/70 text-sm">{novels} Novels</p>
 
     {/* Bar container */}
     <div className="w-full bg-white bg-opacity-20 h-1 mt-6 rounded-full  relative group-hover:after:left-0">
       {/* Bar fill */}
-      <div className="absolute top-0 left-0 h-full bg-white rounded-full transition-all duration-500 ease-in-out w-0  after:bg-amber-300  after:content-[''] after:text-red-400 after:w-full after:h-1 after:top-0 after:left-[100%] after:z-10  after:absolute"></div>
+      <div className="absolute top-0 left-0 h-full bg-white rounded-full transition-all duration-500 ease-in-out w-0  after:bg-amber-600  after:content-[''] after:text-red-600 after:w-full after:h-1 after:top-0 after:left-[100%] after:z-10  after:absolute"></div>
     </div>
   </motion.div>
 );
 
 const ExploreByGenre = () => {
   return (
-    <section className="py-20 px-6 max-w-7xl mx-auto text-center relative overflow-hidden">
+    <section className="py-20 px-6 max-w-[1440px] m-auto text-center relative overflow-hidden">
       {/* Background pattern */}
       <div className="absolute inset-0 bg-[url('/pattern.svg')] opacity-5 bg-repeat pointer-events-none"></div>
 
