@@ -7,12 +7,16 @@ import BookPage from "./features/Bookpage/Bookpage.jsx";
 import Forget_password from "./features/Auth/forget_password/Forget_password.jsx";
 import Vf from "./features/Auth/forget_password/Vf.jsx";
 import CreateBook from "./features/CreateBook/createBook.jsx";
-import ReadingPage from "./features/ReadingChapter/chapterView.jsx";
 import Profile from "./features/Profiles/UserProfile/userprofile.jsx";
-import CreateChapter from "./features/CreateChapter/createChapter.jsx";
 import Homepage from "./homepage/Homepage.jsx";
 import MyBooks from "./features/MyBooks/myBooks.jsx";
 import Middleware from "./middleware.jsx";
+import SearchResults from "./features/SearchResults/searchResults.jsx";
+import EditChapter from "./features/EditChapter/editChapter.jsx";
+import ModifiedChapter from "./features/CreateChapter/modifiedChapter.jsx";
+import ReadingPage from "./features/ReadingChapter/chapterView.jsx";
+import CreateChapter from "./features/CreateChapter/createChapter.jsx";
+import ShowAllBooks from "./features/ShowAllBooks/ShowAllBooks.jsx";
 
 function AppRoutes() {
   return (
@@ -26,9 +30,9 @@ function AppRoutes() {
         <Route
           path="/userprofile"
           element={
-            <Middleware>
+            
               <Profile />
-            </Middleware>
+            
           }
         ></Route>
         <Route path="/book/:bookId" element={<BookPage />}></Route>
@@ -47,12 +51,25 @@ function AppRoutes() {
           path="/anotheruserprofile/:userId"
           element={<Another_User_Profile />}
         ></Route>
-       
-        <Route path="/createChapter/:id" element={
-          <Middleware>
-          <CreateChapter />
-          </Middleware>
-          } />
+        <Route path="/searchresults" element={<SearchResults />} />
+        <Route path="/readingchapter" element={<ReadingPage chapterId={1} />} />
+        <Route
+          path="/createAndEditChapter/:chapterId"
+          element={
+            <Middleware>
+              <CreateChapter />
+            </Middleware>
+          }
+        />
+        <Route path="/readingchapter" element={<ReadingPage />} />
+        <Route
+          path="/editChapter/:bookId"
+          element={
+            <Middleware>
+              <EditChapter />
+            </Middleware>
+          }
+        />
         <Route
           path="/createChapter"
           element={
@@ -62,10 +79,25 @@ function AppRoutes() {
           }
         />
         <Route path="/chapter/:chapterId" element={<ReadingPage />} />
+        <Route path="/showallbooks" element={<ShowAllBooks />} />
         <Route path="/mybooks" element={<MyBooks />} />
-        
-        
-        
+        <Route
+          path="/modifiedChapter/:id"
+          element={
+            <Middleware>
+              <ModifiedChapter />
+            </Middleware>
+          }
+        />
+
+        <Route
+          path="/mybooks"
+          element={
+            <Middleware>
+              <MyBooks />
+            </Middleware>
+          }
+        />
       </Routes>
     </Router>
   );

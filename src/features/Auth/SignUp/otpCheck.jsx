@@ -31,7 +31,7 @@ function Otp() {
 
     setLoading(true);
     try {
-      const response = await fetch("https://batbooks.liara.run/auth/otp/", {
+      const response = await fetch("/api/auth/otp/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, code: otpCode }),
@@ -84,12 +84,12 @@ function Otp() {
         <img
           src="/src/assets/images/mid-left.png"
           alt="mid-left"
-          className=" absolute left-[370px] top-[280px]"
+          className=" absolute left-[335px] top-[280px]"
         />
         <img
           src="/src/assets/images/mid-right.png"
           alt="mid-right"
-          className="absolute right-[320px] top-[0px]"
+          className="absolute right-[280px] top-[-15px]"
         />
       </main>
       <img

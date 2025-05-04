@@ -8,34 +8,29 @@ const CreateChapter = () => {
   const [chapterName, setChapterName] = useState("");
   const [chapterContent, setChapterContent] = useState("");
   const location = useLocation();
-  const id= location.state?.id.id;
-  const chapterMode= location.chapterMode?.chapterMode;
+  const id = location.state?.id.id;
+  const chapterMode = location.chapterMode?.chapterMode;
 
-  const token =localStorage.getItem("access_token")
+  const token = localStorage.getItem("access_token");
   const handlesubmit = async (e) => {
-    e.prevent.default
+    e.prevent.default;
     try {
-      const response = await fetch(
-        `https://batbooks.liara.run/book/chapter/create/`,
-        {
-          method: "POST",
-          body: JSON.stringify({
-            book: id,
-            title: chapterName,
-            body: chapterContent,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await fetch(`/api/book/chapter/create/`, {
+        method: "POST",
+        body: JSON.stringify({
+          book: id,
+          title: chapterName,
+          body: chapterContent,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       const data = await response.json();
-      console.log(data);
     } catch (err) {
       console.error(err.message);
-      console.log("asdad");
     }
   };
 
@@ -43,7 +38,7 @@ const CreateChapter = () => {
 
   return (
     <>
-      <Navbar  />
+      <Navbar />
       <div className="m-auto py-[120px] bg-[#D9F0FF]">
         <div
           dir="rtl"

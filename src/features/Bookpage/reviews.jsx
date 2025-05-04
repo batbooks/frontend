@@ -1,132 +1,452 @@
 import React, { useEffect, useState } from "react";
-import { AiFillLike, AiFillDislike } from 'react-icons/ai';
-const Reviews = ({ bookId }) => {
+import Loading from "../../common/Loading/Loading";
+import {
+  AiFillLike,
+  AiFillDislike,
+  AiOutlineLike,
+  AiOutlineDislike,
+} from "react-icons/ai";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router";
+import { Rating } from "@mui/material";
+import Swal from "sweetalert2";
+
+function Reviews({ book }) {
+  const { bookId } = useParams();
   const [allreviews, setAllreviews] = useState([]);
-//   const [replies, setReplies] = useState({});
-//   const [replyOffsets, setReplyOffsets] = useState({});
-  const [userfollowed, setUserFollowed] = useState(true);
-  const [liked, setLiked] = useState(false);
+  const [nextUrl, setNextUrl] = useState("");
+  const [prevUrl, setPrevUrl] = useState("");
+  const [liked, setLiked] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [ratingArray, setRatingArray] = useState([]);
+  const [reviewsCount, setReviewsCount] = useState(0);
+  const [following, setFollowing] = useState(false);
+  const [loading1, setLoading1] = useState(false);
+  const [followingMap, setFollowingMap] = useState({});
+
+  const token = localStorage.getItem("access_token");
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+
   useEffect(() => {
-    const fetchreviews = async () => {
-      try {
-        const response = await fetch(`https://batbooks.liara.run/comments/book/${bookId}/reviews/`);
-        
-        if (!response.ok) throw new Error("Failed to fetch reviews");
+    fetchPage(`/api/comments/book/${bookId}/reviews/`);
+  }, [bookId]);
 
-        const data = await response.json();
-        console.log(data.results)
-        setAllreviews(data.results );
-      } catch (err) {
-        console.error(err);
-        
-        console.log("asdad")
-      }
-    };
-    
-    fetchreviews();
-  }, []);
-  function LikeButton() {
-    
-    const handleClick = () => {
-      setLiked(!liked);
-      // send to api
-    };
-    if(liked)
-      return (<AiFillLike
-        color="blue" 
-        size="25" 
-        onClick={handleClick}/>)
-    return (<AiFillDislike
-      color="red" 
-      size="25" 
-      onClick={handleClick}/>)  
-  }
-  
-  // const fetchReplies = async (reviewId) => {
-  //   const offset = replyOffsets[reviewId] || 0;
+  const fetchPage = async (url) => {
+    setLoading(true);
+    const token = localStorage.getItem("access_token");
 
-  //   try {
-  //     const response = await fetch(
-  //       `https://batbooks.liara.run/reviews/reply_to/${reviewId}/`
-  //     );
-  //     if (!response.ok) throw new Error("Failed to fetch replies");
+    try {
+      const auth = token ? `Bearer ${token}` : "";
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: auth,
+        },
+      });
+      const data = await response.json();
 
-  //     const data = await response.json();
-     
-  //     setReplies((prev) => ({
-  //       ...prev,
-  //       [reviewId]: [...(prev[reviewId] || []), ...data],
-  //     }));
+      setAllreviews(data.results.reviews);
+      setNextUrl(data.links.next);
+      setPrevUrl(data.links.previous);
+      mapLikes(data.results.reviews);
+      setRatingArray(data.results.rating_counts);
+      setReviewsCount(data.count);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  //     // setReplyOffsets((prev) => ({
-  //     //   ...prev,
-  //     //   [reviewId]: offset + 10,
-  //     // }));
-  //   } catch (err) {
-  //     console.error(err);
-      
-  //   }
-  // };
+  const fetchFollowing = async (userId) => {
+    setLoading1(true);
+    try {
+      const response = await fetch(`/api/user/is/follow/${userId}/`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+      setFollowingMap((prevMap) => ({
+        ...prevMap,
+        [userId]: data.is_follow,
+      }));
+    } catch (err) {
+      console.error(err.message);
+    } finally {
+      setLoading1(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!isAuthenticated || allreviews.length === 0) return;
+    allreviews.forEach((review) => {
+      fetchFollowing(review.user.id);
+    });
+  }, [allreviews]);
+
+  const handleDeleteReview = async () => {
+    try {
+      const response = await fetch(
+        `/api/comments/book/${bookId}/reviews/my-review/`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setTimeout(() => {
+        Swal.fire({
+          title: "نقد شما با موفقیت حذف شد.",
+          icon: "success",
+          confirmButtonText: "باشه",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.reload();
+          }
+        });
+      }, 100);
+    }
+  };
+
+  const mapLikes = (reviews) => {
+    if (!isAuthenticated) return;
+    const map = {};
+    reviews.forEach((c) => {
+      if (c.like.includes(user.id)) map[c.id] = 1;
+      else if (c.dislike.includes(user.id)) map[c.id] = -1;
+      else map[c.id] = 0;
+    });
+    setLiked(map);
+  };
+
+  const handleLike = async (reviewId) => {
+    const isLiked = liked[reviewId] === 1;
+    const updatedLiked = { ...liked, [reviewId]: isLiked ? 0 : 1 };
+    setLiked(updatedLiked);
+
+    setAllreviews((prev) =>
+      prev.map((review) => {
+        if (review.id !== reviewId) return review;
+
+        const like = isLiked
+          ? review.like.filter((id) => id !== user.id)
+          : [...review.like, user.id];
+
+        const dislike = review.dislike.filter((id) => id !== user.id);
+
+        return { ...review, like, dislike };
+      })
+    );
+
+    await fetch(`/api/comments/review/like/${reviewId}/`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  };
+
+  const handleDislike = async (reviewId) => {
+    const isDisliked = liked[reviewId] === -1;
+    const updatedLiked = { ...liked, [reviewId]: isDisliked ? 0 : -1 };
+    setLiked(updatedLiked);
+
+    setAllreviews((prev) =>
+      prev.map((review) => {
+        if (review.id !== reviewId) return review;
+
+        const dislike = isDisliked
+          ? review.dislike.filter((id) => id !== user.id)
+          : [...review.dislike, user.id];
+
+        const like = review.like.filter((id) => id !== user.id);
+
+        return { ...review, like, dislike };
+      })
+    );
+
+    await fetch(`/api/comments/review/dislike/${reviewId}/`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  };
+
+  const handleFollow = async (reviewId) => {
+    try {
+      const response = await fetch(`/api/user/toggle/follow/${reviewId}/`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  const getTimeAgo = (dateString) => {
+    const now = new Date();
+    const then = new Date(dateString);
+    const diffMs = now - then;
+
+    const diffMins = Math.floor(diffMs / (1000 * 60));
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+    if (diffMins < 60) return `${diffMins} دقیقه پیش`;
+    if (diffHours < 24) return `${diffHours} ساعت پیش`;
+    return `${diffDays} روز پیش`;
+  };
 
   return (
-    <div className="bg-[#D9F0FF] m-auto mt-6 p-4">
-      <h2 className="text-2xl font-bold text-right mr-17">نظرات کاربران</h2>
-      {allreviews.length > 0 ? (
-        allreviews.map((review) => (
-          <div key={review.id} className="mt-10">
-            <div className="flex flex-row gap-10 rounded-lg p-10">
-              <div className="w-200 break-words mr-5">
-                <div className="text-[16px] text-right text-gray-600 mb-6">{review.created}</div>
-                <div className="text-[16px] text-right text-gray-800">{review.body}</div>
-                <div className="flex flex-row mt-10 ml-190">
-                  <LikeButton/>
-                 {liked ?((<div>57</div>)) :((<div>56</div>))}
-                </div>
-              </div>
-              <div className="w-1/4">
-                <section className="flex flex-row">
-                  <p className="w-1/2 text-[16px] font-medium text-right mr-3">{review.user}</p>
-                  <div className="w-25">
-                    <img src={review.image} alt="author avatar" />
-                  </div>
-                </section>
-                <div className="w-50 flex flex-row justify-center ml-10 mt-4 mb-3">
-                  {userfollowed ? (
-                    <button className="text-[16px] text-white bg-[#2663CD] p-2 rounded-full">دنبال کردن</button>
-                  ) : (
-                    <button className="text-[16px] text-white bg-[#2663CD] p-2">دنبال نکردن</button>
-                  )}
-                </div>
-              </div>
-              
-            </div>
-
-            {/* Replies Section
-            <div className="ml-20 mr-10">
-              {(replies[review.id] || []).map((reply) => (
-                <div key={reply.id} className="border right-4 border-gray-300 p-4 rounded-lg mb-3 bg-white text-right">
-                  <p className="text-sm text-gray-500">{reply.date}</p>
-                  <p className="text-gray-800">{reply.text}</p>
-                </div>
-              ))}
-              <div className="text-right">
-                <button
-                  className="text-blue-700 hover:underline"
-                  onClick={() => fetchReplies(review.id)}
-                >
-                  نمایش پاسخ‌های بیشتر
-                </button>
-              </div>
-            </div> */}
-            
-            <div className="w-1/2 border-t-2 border-gray-500 mx-auto mt-6"></div>
+    <main
+      dir="rtl"
+      className=" mb-[60px] mx-[100px] flex flex-col bg-[#D9F0FF] p-4"
+    >
+      <div
+        dir="ltr"
+        className=" bg-white flex flex-col rounded-[15px] shadow-[0px_0px_5px_#000] md:flex-row md:items-center md:justify-between mb-6 p-[48px]"
+      >
+        <div className="flex flex-col items-center mb-6 md:mb-0 bg-blue-300 p-6 rounded-[10px] shadow-[0_0_5px_#000]">
+          <span className="text-4xl font-bold">
+            {Math.round(book.rating * 10) / 10}
+          </span>
+          <div className="flex text-yellow-400 text-2xl">
+            <Rating
+              name="reviews-rating"
+              defaultValue={Number(book.rating) || 0}
+              precision={0.1}
+              readOnly
+            />
           </div>
-        ))
-      ) : (
-        <p className="text-center text-gray-600">نظری ثبت نشده است.</p>
-      )}
-    </div>
-  );
-};
+          <span dir="rtl" className="text-sm mt-[5px]">
+            {reviewsCount} نقد
+          </span>
+        </div>
 
+        <div className="flex-1 space-y-2 ml-8">
+          {[1, 2, 3, 4, 5].map((star) => {
+            console.log(ratingArray[star]);
+            return (
+              <div key={star} className="flex items-center">
+                <span dir="rtl" className="w-12 text-sm">
+                  {star} ستاره
+                </span>
+                <div className="flex-1 h-3 bg-gray-200 rounded-full mx-2">
+                  <div
+                    className="h-3 bg-blue-500 rounded-full"
+                    style={{
+                      width: `${((ratingArray[star] || 0) / reviewsCount) * 100}%`,
+                    }}
+                  ></div>
+                </div>
+                <span className="text-sm">{ratingArray[star] || 0}</span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      <h2 className="text-[22px] font-bold mb-[30px] text-right">
+        نقد های کاربران:
+      </h2>
+      {loading ? (
+        <div className="mt-[50px] grid place-items-center">
+          <Loading />
+        </div>
+      ) : allreviews.length > 0 ? (
+        <div className="flex flex-col gap-[36px]">
+          {allreviews.map((review) => (
+            <div key={review.id} className="flex flex-col">
+              <div className=" flex flex-col gap-[22px] px-[25px] py-[30px] shadow-md bg-[#A4C0ED] border-[2px] border-[#000000]/21 rounded-[25px]">
+                <div className="flex gap-[25px]">
+                  <div className="flex flex-col items-center gap-[16px]">
+                    <div className="w-[83px] h-[83px] rounded-full overflow-hidden">
+                      <img
+                        src={
+                          review.image
+                            ? `/api${review.image}`
+                            : "/images/user_none.png"
+                        }
+                        alt="user"
+                        className="w-full h-full object-cover cursor-pointer"
+                        onClick={
+                          user === null
+                            ? () => {
+                                navigate(
+                                  `/anotheruserprofile/${review.user.id}`
+                                );
+                              }
+                            : user.id !== review.user.id
+                              ? () => {
+                                  navigate(
+                                    `/anotheruserprofile/${review.user.id}`
+                                  );
+                                }
+                              : () => {
+                                  navigate(`/userprofile`);
+                                }
+                        }
+                      />
+                    </div>
+                    <Rating
+                      dir="ltr"
+                      name={`${review.id}`}
+                      defaultValue={review.rating}
+                      precision={0.1}
+                      readOnly
+                    />
+                    <span className="text-[16px] font-[700]">
+                      {review.user.name}
+                    </span>
+                    {isAuthenticated ? (
+                      user !== null && user.id === review.user.id ? (
+                        <div>
+                          <button
+                            className="btn !py-[5px] !px-[38px] !text-[14px] before:!bg-[#FF3B30] !bg-[#CC2F26] !shadow-lg"
+                            onClick={() => handleDeleteReview()}
+                          >
+                            <span className="span-btn">حذف نقد</span>
+                          </button>
+                          <button className="btn  !py-[5px] !px-[38px] !text-[14px] !font-[400]">
+                            <span className="span-btn">ویرایش نقد</span>
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          className="btn !py-[5px] !px-[38px] !text-[14px] !font-[400]"
+                          onClick={() => {
+                            handleFollow(review.user.id);
+                            setFollowingMap((prevMap) => ({
+                              ...prevMap,
+                              [review.user.id]: !followingMap[review.user.id],
+                            }));
+                          }}
+                        >
+                          {followingMap[review.user.id] ? (
+                            <span className="span-btn">دنبال نکردن</span>
+                          ) : (
+                            <span className="span-btn">دنبال کردن</span>
+                          )}
+                        </button>
+                      )
+                    ) : null}
+                  </div>
+                  <div className=" w-full max-w-[1100px] min-h-[180px] p-6 rounded-[15px] border-black/20 border-[2px] shadow-sm shadow-black/21 bg-[#E0F2F1]">
+                    <div className="flex flex-col gap-[10px]">
+                      <div className="flex flex-row gap-[600px]">
+                        <h2 className="text-[15px] text-[#000000]/70 font-[300] ">
+                          {getTimeAgo(review.created)}
+                        </h2>
+                        <h2>
+                          آخرین چپتر خوانده شده:
+                          <span
+                            className="font-bold text-blue-700 cursor-pointer"
+                            onClick={() =>
+                              navigate(`/chapter/${review.chapter}`)
+                            }
+                          >
+                            {" "}
+                            {review.chapter_name}
+                          </span>
+                        </h2>
+                      </div>
+                      <h1 className="font-bold text-xl">{review.title}</h1>
+                      <p
+                        className="text-[16px] font-[300] my-auto"
+                        dangerouslySetInnerHTML={{ __html: review.body }}
+                      />
+                    </div>
+                    <div></div>
+                  </div>
+                </div>
+                <div className="flex justify-between px-42">
+                  <div className="flex gap-[25px]">
+                    <div className="flex items-center gap-[2px] cursor-pointer">
+                      <span className="inline-block min-w-[15px] text-center">
+                        {review.dislike.length}
+                      </span>
+                      {liked[review.id] === -1 ? (
+                        <AiFillDislike
+                          color="red"
+                          size={25}
+                          onClick={
+                            isAuthenticated
+                              ? () => handleDislike(review.id)
+                              : null
+                          }
+                        />
+                      ) : (
+                        <AiOutlineDislike
+                          color="red"
+                          size={25}
+                          onClick={
+                            isAuthenticated
+                              ? () => handleDislike(review.id)
+                              : null
+                          }
+                        />
+                      )}
+                    </div>
+                    <div className="flex items-center gap-[2px] cursor-pointer">
+                      <span className="inline-block min-w-[15px] text-center">
+                        {review.like.length}
+                      </span>
+                      {liked[review.id] === 1 ? (
+                        <AiFillLike
+                          color="blue"
+                          size={25}
+                          onClick={
+                            isAuthenticated ? () => handleLike(review.id) : null
+                          }
+                        />
+                      ) : (
+                        <AiOutlineLike
+                          color="blue"
+                          size={25}
+                          onClick={
+                            isAuthenticated ? () => handleLike(review.id) : null
+                          }
+                        />
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+          <div className="flex justify-between mt-[50px] gap-[12px]">
+            <button
+              onClick={() => nextUrl && fetchPage(nextUrl)}
+              className="btn !mx-0 !px-[23px] !py-[7.5px] !rounded-full bg-[#2663CD] text-white flex items-center gap-[8px]"
+            >
+              <span className="span-btn !text-[14px] !font-[300]">بعدی</span>
+              <FaArrowRight className="span-btn" />
+            </button>
+            <button
+              onClick={() => prevUrl && fetchPage(prevUrl)}
+              className="btn !mx-0 !px-[23px] !py-[7.5px] !rounded-full bg-[#2663CD] text-white flex items-center gap-[8px]"
+            >
+              <FaArrowLeft className="span-btn" />
+              <span className="span-btn !text-[14px] !font-[300]">قبلی</span>
+            </button>
+          </div>
+        </div>
+      ) : (
+        <p className="text-center text-gray-600 mt-[50px]">
+          نظری ثبت نشده است.
+        </p>
+      )}
+    </main>
+  );
+}
 export default Reviews;

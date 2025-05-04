@@ -1,54 +1,52 @@
-
 .my-div {
- /* margin-left: 20px; */
- padding-top: 10px;
- /* margin-right: 10px; */
- 
- padding: 10px;
- width: 270px;  
- height: 670px; 
- margin-bottom: 100px;
- /* margin-left: 1000px;    */
- /* margin-right: 0px; */
- /* padding: 10px; */
- background-color: #001F54;
- border-radius: 10px;
- color: white;
-    
-  }
-  .sticky-content-r {
-    position: sticky;
-    top: 5px;
-    
-    right: 5px;
-    height: 100%;
-  }
-  .sticky-content-l {
-    position: sticky;
-    top: 5px;
-    
-    left: 5px;
-    height: 100%;
-  }
-  .my-div2 {
-    /* margin-left: 20px; */
-    padding-top: 10px;
-    /* margin-right: 10px; */
-    
-    padding: 10px;
-    width: 270px;  
-    height: 670px; 
-    margin-bottom: 100px;
-    /* margin-left: 1000px;    */
-    /* margin-right: 0px; */
-    /* padding: 10px; */
-    background-color: #001F54;
-    border-radius: 10px;
-    color: white;
+  /* margin-left: 20px; */
+  padding-top: 10px;
+  /* margin-right: 10px; */
 
-  }
+  padding: 10px;
+  width: 270px;
+  height: 670px;
+  margin-bottom: 100px;
+  /* margin-left: 1000px;    */
+  /* margin-right: 0px; */
+  /* padding: 10px; */
+  background-color: rgba(0, 31, 84, 0.9);
 
-  /* .right-box {
+  border-radius: 10px;
+  color: white;
+}
+.sticky-content-r {
+  position: sticky;
+  top: 5px;
+
+  right: 5px;
+  height: 100%;
+}
+.sticky-content-l {
+  position: sticky;
+  top: 5px;
+
+  left: 5px;
+  height: 100%;
+}
+.my-div2 {
+  /* margin-left: 20px; */
+  padding-top: 10px;
+  /* margin-right: 10px; */
+
+  padding: 10px;
+  width: 270px;
+  height: 670px;
+  margin-bottom: 100px;
+  /* margin-left: 1000px;    */
+  /* margin-right: 0px; */
+  /* padding: 10px; */
+  background-color: rgba(0, 31, 84, 0.9);
+  border-radius: 10px;
+  color: white;
+}
+
+/* .right-box {
     float: right;
     width: 25%;
     background-color: blue;
@@ -57,11 +55,11 @@
     padding: 10px;
   }
    */
-  .img-1{
-    background-color: #A4C0ED;
-    
-    margin-top: 20px;
-    margin-bottom: 20px;
-    margin-left: 10px;
-    margin-right: 10px;
-  }
+.img-1 {
+  background-color: #a4c0ed;
+
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+}

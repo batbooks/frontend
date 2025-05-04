@@ -19,17 +19,14 @@ export default function VoteAndReview() {
 
     try {
       // Replace this with your actual API endpoint
-      const response = await fetch(
-        "https://batbooks.liara.run/comments/create/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ chapter, body }),
-        }
-      );
+      const response = await fetch("/api/comments/create/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ chapter, body }),
+      });
 
       const data = await response.json();
 
@@ -38,7 +35,6 @@ export default function VoteAndReview() {
         // Redirect to verification page or next step after a short delay
 
         // Adjust the route as needed
-        console.log("adasd");
         setTimeout(() => {
           Swal.fire({
             title: "نظر شما با موفقیت ثبت شد",
@@ -70,9 +66,9 @@ export default function VoteAndReview() {
             alt="ratingandreviews"
             className="w-[228px] h-[53px] mb-[19px]"
           />
-          {isAuthenticated && user.image != null ? (
+          {isAuthenticated && user.user_info.image != null ? (
             <img
-              src={`https://batbooks.liara.run${user.image}`}
+              src={`/api${user.user_info.image}`}
               className="w-[63px] h-[63px] rounded-full mb-[15px]"
             />
           ) : (

@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { Link } from "react-router";
+import { useLocation } from "react-router-dom";
 import { logout } from "../../redux/infoSlice";
 
 function Navbar() {
@@ -14,15 +14,37 @@ function Navbar() {
   let navigate = useNavigate();
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   const handleLogout = () => {
-    console.log("qqq");
     localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
     navigate("/auth/login");
     // useDispatch(logout());
   };
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === "/") setSelectedItem(1);
+    else if (location.pathname === "/mybooks") setSelectedItem(2);
+    else if (location.pathname === "/search") setSelectedItem(3);
+    else if (location.pathname === "/contact") setSelectedItem(4);
+    else setSelectedItem(0);
+  }, [location.pathname]);
+
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <header
       dir="rtl"
-      className="relative z-100 h-[100px] max-w-screen m-auto flex bg-[#a3d5ff] justify-between py-[1px] pl-[50px] pr-[30px]"
+      className={`${isVisiblePanel || isVisibleUser ? "relative" : ""} sticky top-0 z-50  ${isScrolled ? "h-[70px] shadow-md transition-all duration-300" : ""} h-[100px] max-w-screen m-auto flex bg-[#a3d5ff] justify-between py-[1px] pl-[50px] pr-[30px]`}
     >
       <nav className="flex items-center gap-[60px]">
         <div
@@ -55,10 +77,10 @@ function Navbar() {
               }, 250)
             }
           >
-            {isAuthenticated && user.image != null ? (
+            {isAuthenticated && user.user_info.image != null ? (
               <img
                 className="w-[50px] h-[50px] rounded-full"
-                src={`https://batbooks.liara.run${user.image}`}
+                src={`/api${user.user_info.image}`}
                 alt="User Image 2"
               />
             ) : (
@@ -136,32 +158,33 @@ function Navbar() {
 
         <ul className="flex items-center gap-[66px] mr-[-105px]">
           <li className="flex flex-col items-center">
-            <a
+            <button
               onClick={() => {
                 setSelectedItem(1);
                 navigate("/");
               }}
-              className={`text-[16px] hover:underline hover:text-[#2663CD] active:text-[#2663CD]/50 active:no-underline active:transition-all active:duration-100 focus:outline-none focus:text-[#2663CD] ${selectedItem === 1 ? "text-[#265073]" : ""}`}
-              href="#home"
+              className={`text-[16px] ${selectedItem != 1 ? "cursor-pointer hover:text-[#2663CD]" : "text-[#265073] font-bold"}  active:text-[#2663CD]/50 active:no-underline active:transition-all active:duration-100 focus:outline-none focus:text-[#2663CD]`}
             >
               صفحه اصلی
-            </a>
+            </button>
             {selectedItem === 1 ? (
-              <div className="w-[30px] h-[2.5px] bg-[#CA2B2E] mt-[3px] rounded-full"></div>
+              <div className="w-[40px] h-[2.5px] bg-[#1E40AF] mt-[3px] rounded-full"></div>
             ) : (
               <span></span>
             )}
           </li>
           <li className="flex flex-col items-center">
-            <a
-              onClick={() => {setSelectedItem(2);navigate("/mybooks")}}
-              className={`text-[16px] hover:underline hover:text-[#2663CD] active:text-[#2663CD]/50 active:no-underline active:transition-all active:duration-100 focus:outline-none focus:text-[#2663CD] ${selectedItem === 2 ? "text-[#265073]" : ""}`}
-              href="#mybooks"
+            <button
+              onClick={() => {
+                setSelectedItem(2);
+                navigate("/mybooks");
+              }}
+              className={`text-[16px] ${selectedItem != 2 ? "cursor-pointer hover:text-[#2663CD]" : "text-[#265073] font-bold"}  active:text-[#2663CD]/50 active:no-underline active:transition-all active:duration-100 focus:outline-none focus:text-[#2663CD]`}
             >
               کتاب‌های من
-            </a>
+            </button>
             {selectedItem === 2 ? (
-              <div className="w-[30px] h-[2.5px] bg-[#CA2B2E] mt-[3px] rounded-full"></div>
+              <div className="w-[40px] h-[2.5px] bg-[#1E40AF] mt-[3px] rounded-full"></div>
             ) : (
               <span></span>
             )}
@@ -197,7 +220,7 @@ function Navbar() {
               }
             >
               <img
-                className="w-[24px] h-[24px]"
+                className="w-[24px] h-[24px] scale-80"
                 src="/images/arrow.png"
                 alt="arrow"
               />
@@ -231,29 +254,27 @@ function Navbar() {
             </ul>
           </li>
           <li className="flex flex-col items-center mr-[-29px]">
-            <a
+            <button
               onClick={() => setSelectedItem(3)}
-              className={`text-[16px] hover:underline hover:text-[#2663CD] active:text-[#2663CD]/50 active:no-underline active:transition-all active:duration-100 focus:outline-none focus:text-[#2663CD] ${selectedItem === 3 ? "text-[#265073]" : ""}`}
-              href="#search"
+              className={`text-[16px]  ${selectedItem != 3 ? "cursor-pointer hover:text-[#2663CD]" : "text-[#265073] font-bold"} active:text-[#2663CD]/50 active:no-underline active:transition-all active:duration-100 focus:outline-none focus:text-[#2663CD]`}
             >
               جستجوی کتاب
-            </a>
+            </button>
             {selectedItem === 3 ? (
-              <div className="w-[30px] h-[2.5px] bg-[#CA2B2E] mt-[3px] rounded-full"></div>
+              <div className="w-[40px] h-[2.5px] bg-[#1E40AF] mt-[3px] rounded-full"></div>
             ) : (
               <span></span>
             )}
           </li>
           <li className="flex flex-col items-center">
-            <a
+            <button
               onClick={() => setSelectedItem(4)}
-              className={`text-[16px] hover:underline hover:text-[#2663CD] active:text-[#2663CD]/50 active:no-underline active:transition-all active:duration-100 focus:outline-none focus:text-[#2663CD] ${selectedItem === 4 ? "text-[#265073]" : ""}`}
-              href="#contact"
+              className={`text-[16px] hover:animate-pulse ${selectedItem != 4 ? "cursor-pointer hover:text-[#2663CD]" : "text-[#265073] font-bold"}  active:text-[#2663CD]/50 active:no-underline active:transition-all active:duration-100 focus:outline-none focus:text-[#2663CD]`}
             >
               ارتباط با ما
-            </a>
+            </button>
             {selectedItem === 4 ? (
-              <div className="w-[30px] h-[2.5px] bg-[#CA2B2E] mt-[3px] rounded-full"></div>
+              <div className="w-[40px] h-[2.5px] bg-[#1E40AF] mt-[3px] rounded-full"></div>
             ) : (
               <span></span>
             )}
