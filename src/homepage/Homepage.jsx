@@ -101,10 +101,7 @@ export default function Homepage() {
         </div>
         <Newest_books></Newest_books>
         <Suggestions></Suggestions>
-        <h1 className="text-center my-10 text-2xl  ">
-          {" "}
-          محبوب ترین نویسنده ها{" "}
-        </h1>
+        
         <Popular_authors></Popular_authors>
         <h1 className="text-center my-10 text-2xl  "> فعالترین نویسنده ها </h1>
         <Most_active_authors></Most_active_authors>

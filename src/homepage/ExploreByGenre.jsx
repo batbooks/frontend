@@ -24,6 +24,7 @@ const GenreCard = ({ name, novels, color, Icon }) => (
     transition={{ duration: 0.4 }}
     className={`${color} group rounded-2xl p-6 flex flex-col items-center shadow-lg  relative overflow-hidden cursor-pointer hover:shadow-[#000000]/20`}
   >
+    
     <Icon className="text-black/70 w-10 h-10 mb-4 " />
     <h2 className="text-black/70 text-xl font-bold">{name}</h2>
     <p className="text-black/70 text-sm">{novels} Novels</p>
