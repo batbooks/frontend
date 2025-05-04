@@ -39,36 +39,46 @@ const GenreCard = ({ name, novels, color, Icon }) => (
 
 const ExploreByGenre = () => {
   return (
-    <section className="py-20 px-6 max-w-[1440px] m-auto text-center relative overflow-hidden">
-      {/* Background pattern */}
-      <div className="absolute inset-0 bg-[url('/pattern.svg')] opacity-5 bg-repeat pointer-events-none"></div>
-
-      <motion.h1
-        className="text-4xl font-bold mb-4 relative z-10"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6 }}
-      >
-        Explore by Genre
-      </motion.h1>
-
-      <motion.p
-        className="text-gray-600 mb-12 relative z-10"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-      >
-        Discover stories in your favorite categories, from epic fantasy adventures to heartwarming romance.
-      </motion.p>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 relative z-10">
-        {genres.map(({ name, novels, color, icon: Icon }) => (
-          <GenreCard key={name} name={name} novels={novels} color={color} Icon={Icon} />
-        ))}
-      </div>
-    </section>
-  );
-};
+    <section className="py-24 px-6 max-w-[1440px] m-auto text-center relative overflow-hidden">
+    {/* پس‌زمینه با افکت لطیف */}
+    <div className="absolute inset-0 bg-[url('/pattern.svg')] opacity-10 bg-repeat pointer-events-none blur-sm scale-105"></div>
+  
+    <motion.h1
+      className="text-5xl lg:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 mb-6 relative z-10 drop-shadow-lg"
+      initial={{ opacity: 0, y: -30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, ease: 'easeOut' }}
+    >
+      ژانر مورد علاقه‌ات را کشف کن
+    </motion.h1>
+  
+    <motion.p
+      className="text-lg text-gray-600 max-w-4xl mx-auto mb-14 leading-relaxed relative z-10"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1, ease: 'easeOut', delay: 0.2 }}
+    >
+      .با داستان‌هایی در دسته‌بندی‌های مورد علاقه‌ات آشنا شو؛ از ماجراجویی‌های حماسی فانتزی تا عاشقانه‌های دلنشین
+    </motion.p>
+  
+    <motion.div
+      className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 relative z-10"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1.2, delay: 0.4 }}
+    >
+      {genres.map(({ name, novels, color, icon: Icon }) => (
+        <GenreCard
+          key={name}
+          name={name}
+          novels={novels}
+          color={color}
+          Icon={Icon}
+        />
+      ))}
+    </motion.div>
+  </section>
+)}  
 
 export default ExploreByGenre;
 

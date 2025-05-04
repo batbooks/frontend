@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Newest_books from "./Newest_books";
 import Suggestions from "./Suggestions";
 import Popular_authors from "./Popular_authors";
@@ -37,7 +37,9 @@ export default function Homepage() {
       transition: { duration: 0.6, ease: "easeOut" },
     },
   };
-
+  useEffect(() => {
+    window.scrollBy({ top: 50, behavior: "smooth" }); // scrolls down 100px smoothly
+  }, []);
   return (
     <div className="">
       <Navbar className="" />
@@ -48,7 +50,7 @@ export default function Homepage() {
 
         {/* <h1 className="text-center my-10 text-2xl  "> کتاب های پرطرفدار </h1> */}
         {/* <Banner></Banner> */}
-        
+
         <header className="  px-4    mb-10">
           <motion.div
             variants={containerVariants}
@@ -64,10 +66,24 @@ export default function Homepage() {
                 initial={{ opacity: 0, x: -50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6 }}
-                className="text-5xl font-bold text-gray-800 mb-20 [direction:rtl] "
+                className="text-4xl lg:text-6xl font-extrabold leading-snug text-gray-800 mb-10 tracking-tight [direction:rtl]"
               >
-                کتابخانه‌ای برای همه
+                کتابخانه‌ای برای{" "}
+                <motion.span
+                  initial={{ opacity: 0, x: -120 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{
+                    delay: 0.3,
+                    duration: 0.8,
+                    type: "spring",
+                    stiffness: 120,
+                  }}
+                  className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-600 drop-shadow-md"
+                >
+                  همه
+                </motion.span>
               </motion.h2>
+
               <p className="text-xl text-gray-600 mb-8 [direction:rtl] pl-3 ">
                 با BatBooks، دسترسی به هزاران کتاب در یک مکان. مطالعه،
                 اشتراک‌گذاری و کشف دنیای جدید کتاب‌ها.
@@ -95,22 +111,23 @@ export default function Homepage() {
             </motion.div>
           </motion.div>
         </header>
-        
+
         <div className="bg-white">
-        <ExploreByGenre></ExploreByGenre>
+          <ExploreByGenre></ExploreByGenre>
         </div>
         <Newest_books></Newest_books>
         <Suggestions></Suggestions>
-        
-        <Popular_authors></Popular_authors>
-        <h1 className="text-center my-10 text-2xl  "> فعالترین نویسنده ها </h1>
-        <Most_active_authors></Most_active_authors>
 
+        <Popular_authors></Popular_authors>
+        {/* <h1 className="text-center my-10 text-2xl  "> فعالترین نویسنده ها </h1> */}
+        <div className="bg-white/80">
+          <Most_active_authors></Most_active_authors>
+        </div>
         {/* <div className="sticky-content-r"></div> */}
       </div>
-      <div>
-      <ReviewSection></ReviewSection>
-      </div>
+      {/* <div>
+        <ReviewSection></ReviewSection>
+      </div> */}
       <Footer />
     </div>
   );
