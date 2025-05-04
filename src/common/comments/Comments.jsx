@@ -715,6 +715,44 @@ const Comments = ({ chapterId }) => {
                             />
                           )}
                         </div>
+                        <p className="text-gray-800  w-170"> {reply.body} </p>
+                        <p
+                          onClick={() => {
+                            setIsClicked((prev) => ({
+                              ...prev,
+                              [reply.id]: !prev[reply.id],
+                            }));
+                          }}
+                          className="text-blue-700 hover:underline cursor-pointer inline-block mr-160 w-20"
+                        >
+                          جواب دادن
+                        </p>
+                        {isClicked[reply.id] ? (
+                          <CreateReply
+                            Id={reply.id}
+                            setIsClicked={setIsClicked}
+                          />
+                        ) : (
+                          <div></div>
+                        )}
+                      </div>
+                      <div className="grid place-items-center h-20 min-w-12 w-20">
+                        <section className=" text-center text-blue-600 hover:bg-blue-600 hover:text-white inline cursor-pointer duration-150 p-0.5 rounded-sm ml-1.5">
+                          {reply.user.name}
+                        </section>
+                        {reply.image != null ? (
+                          <img
+                            className="w-10  rounded-full "
+                            src={`http://45.158.169.198${reply.image}`}
+                            alt="asd"
+                          />
+                        ) : (
+                          <img
+                            className="w-10  rounded-full "
+                            src="/src/assets/images/user-image1.png"
+                            alt="user-png"
+                          />
+                        )}
                       </div>
                       <div className="w-[60vw] mt-8 mr-80 border-t-2 border-gray-500 mx-auto "></div>
                     </div>
