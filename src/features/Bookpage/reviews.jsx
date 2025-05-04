@@ -361,9 +361,10 @@ function Reviews({ book }) {
                         </h2>
                       </div>
                       <h1 className="font-bold text-xl">{review.title}</h1>
-                      <p className="text-[16px] font-[300] my-auto">
-                        {review.body}
-                      </p>
+                      <p
+                        className="text-[16px] font-[300] my-auto"
+                        dangerouslySetInnerHTML={{ __html: review.body }}
+                      />
                     </div>
                     <div></div>
                   </div>
