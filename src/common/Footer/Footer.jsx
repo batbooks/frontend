@@ -1,128 +1,87 @@
 import React from "react";
+import emailIcon from "../../assets/images/email.svg";
+import locationIcon from "../../assets/images/Location-icon.svg";
+import phoneIcon from "../../assets/images/phone.svg";
 
 function Footer() {
   return (
     <footer
-      style={{ direction: "rtl" }}
-      className="max-w-screen m-auto mt-15 bg-[#a3d5ff] flex flex-col pt-[35px] pb-[23px] divide-y divide-[#2F4F4F]/50 px-[80px] shadow-lg shadow-[#000000]/25"
+      dir="rtl"
+      className="max-w-screen m-auto mt-15 bg-[#a3d5ff] flex flex-col pt-[55px] pb-[30px] divide-y divide-[#2F4F4F]/50 px-[80px] shadow-lg shadow-[#000000]/25"
     >
-      <div className="flex pb-[57.5px] gap-[10px]">
-        <div className="flex grow-677 justify-between gap-[10px]">
+      <div className="flex pb-[20px] gap-[100px]">
+        <div className="flex grow-677 justify-between gap-[100px]">
           <div className="space-y-2.5">
-            <h1 className="text-[16px] text-[#265073] font-bold">
+            <h1 className="text-base text-[#265073] font-bold">
               شرکت BatBooks
             </h1>
             <ul className="space-y-2.5">
               <li>
-                <a
-                  className="text-[14px] text-[#000000] font-[400]"
-                  href="#about_us"
-                >
+                <a className="text-sm" href="#about_us">
                   درباره ما
                 </a>
               </li>
               <li>
-                <a
-                  className="text-[14px] text-[#000000] font-[400]"
-                  href="#rules"
-                >
+                <a className="text-sm" href="#rules">
                   قوانین و مقررات
                 </a>
               </li>
               <li>
-                <a
-                  className="text-[14px] text-[#000000] font-[400]"
-                  href="#suggestions"
-                >
+                <a className="text-sm" href="#suggestions">
                   پیشنهادات و انتقادات
                 </a>
               </li>
               <li>
-                <a
-                  className="text-[14px] text-[#000000] font-[400]"
-                  href="#FAQ"
-                >
+                <a className="text-sm" href="#FAQ">
                   پرسش های متداول
                 </a>
               </li>
               <li>
-                <a
-                  className="text-[14px] text-[#000000] font-[400]"
-                  href="#contact_us"
-                >
+                <a className="text-sm" href="#contact_us">
                   ارتباط با ما
                 </a>
               </li>
             </ul>
           </div>
           <div className="space-y-2.5">
-            <h1 className="text-[16px] text-[#265073] font-bold">
-              همکاری با ما
-            </h1>
+            <h1 className="text-base text-[#265073] font-bold">همکاری با ما</h1>
             <ul className="space-y-2.5">
               <li>
-                <a
-                  className="text-[14px] text-[#000000] font-[400]"
-                  href="#contact_creature"
-                >
+                <a className="text-sm" href="#contact_creature">
                   ارتباط با ناشران و چاپ اثر
                 </a>
               </li>
               <li>
-                <a className="text-[14px] text-[#000000] font-[400]">
-                  ما را در شبکه های اجتماعی
-                </a>
+                <a className="text-sm">ما را در شبکه های اجتماعی</a>
                 <br />
-                <a className="text-[14px] text-[#000000] font-[400]">
-                  به دیگران معرفی کنید...
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div className="space-y-2.5">
-            <h1 className="text-[16px] font-bold text-[#265073]">
-              مسیرهای ارتباطی
-            </h1>
-            <ul className="space-y-2.5">
-              <li>
-                <span className="text-[14px] text-[#000000] font-[400]">
-                  تلفن ثابت: 53227747 - (021)
-                </span>
-              </li>
-              <li>
-                <span className="text-[14px] text-[#000000] font-[400]">
-                  آدرس ایمیل: Email.iust.ac.ir
-                </span>
-              </li>
-              <li>
-                <span className="text-[14px] text-[#000000] font-[400]">
-                  نشانی: تهران، میدان رسالت،
-                </span>
-                <br />
-                <span className="text-[14px] text-[#000000] font-[400]">
-                  دانشگاه علم و صنعت ایران
-                </span>
-                <br />
-                <span className="text-[14px] text-[#000000] font-[400]">
-                  خیابان هنگام، خیابان دانشگاه،{" "}
-                </span>
+                <a className="text-sm">به دیگران معرفی کنید...</a>
               </li>
               <li className="flex gap-[15px] mt-[7px]">
-                <button className=" w-[25.65px] h-[25.65px] cursor-pointer ">
+                <button className=" w-[25px] h-[25px] cursor-pointer ">
                   <img
                     src="/images/whatsapp-logo.svg"
                     alt="whatsapp"
                     className="m-auto"
+                    onClick={() =>
+                      window.open(
+                        "https://chat.whatsapp.com/Hzy3OYlguCR8C8bmfheA8J",
+                        "_blank"
+                      )
+                    }
                   ></img>
                 </button>
-                <button className=" w-[25.65px] h-[25.65px] cursor-pointer">
+
+                <button className=" w-[25px] h-[25px] cursor-pointer">
                   <img
                     src="/images/telegram-logo.svg"
                     alt="telegram"
                     className="m-auto"
+                    onClick={() =>
+                      window.open("https://t.me/BatBooks_2025", "_blank")
+                    }
                   ></img>
                 </button>
-                <button className=" w-[25.65px] h-[25.65px] cursor-pointer">
+                <button className=" w-[25px] h-[25px] cursor-pointer">
                   <img
                     src="/images/instagram_logo.svg"
                     alt="instagram"
@@ -132,43 +91,58 @@ function Footer() {
               </li>
             </ul>
           </div>
-        </div>
-        <div className="flex flex-col gap-[39px] grow-603 ml-[57px] ">
-          <h1 className="mr-auto text-[32px] font-[700] text-[#000000] ml-[90px]">
-            BatBooks
-          </h1>
-          <div className="flex mr-auto gap-[22px] ">
-            <button className="flex bg-[#001F54] rounded-[12px] text-[#ffffff] gap-[18px] pr-[23px] pl-[15px] min-w-[150px] py-[7px] cursor-pointer">
-              <div className="flex flex-col m-auto">
-                <span className="text-[10px] mb-[-7px] font-[300] uppercase">
-                  get it on
-                </span>
-                <span className="text-[20px] font-[400]">myket</span>
-              </div>
-              <img
-                className="w-[30px] h-[30px] my-auto"
-                src="/images/myket.png"
-                alt="myket"
-              />
-            </button>
-            <button className="flex bg-[#001F54] rounded-[12px] text-[#ffffff] gap-[18px] pr-[23px] pl-[15px] min-w-[150px] py-[7px] cursor-pointer">
-              <div className="flex flex-col m-auto">
-                <span className="text-[10px] mb-[-7px] uppercase font-[300]">
-                  get it on
-                </span>
-                <span className="text-[20px] font-[400]">Bazzar</span>
-              </div>
-              <img
-                className="w-[30px] h-[30px] my-auto"
-                src="/images/bazzar.png"
-                alt="bazzar"
-              />
-            </button>
+          <div className="space-y-2.5">
+            <h1 className="text-base font-bold text-[#265073]">
+              مسیرهای ارتباطی
+            </h1>
+            <ul className="space-y-2.5">
+              <li>
+                <div className="flex flex-row gap-[3px]">
+                  <img src={phoneIcon} className="w-[14px] mb-[2px]" />
+                  <span className="text-sm text-black ">
+                    : 53227747 - (021)
+                  </span>
+                </div>
+              </li>
+              <li>
+                <div className="flex flex-row gap-[3px]">
+                  <img src={emailIcon} className="w-[14px] mb-[2px]" />
+                  <span className="text-sm text-black ">
+                    : batbook2025@gmail.com
+                  </span>
+                </div>
+              </li>
+              <li>
+                <div className="flex flex-row gap-[3px]">
+                  <div className="flex flex-col gap-[5px]">
+                    <div className="flex flex-row gap-[3px]">
+                      <img src={locationIcon} className="w-[14px]" />
+                      <span className="text-sm ">: تهران، میدان رسالت،</span>
+                    </div>
+
+                    <span className="text-sm mr-[2px]">
+                      دانشگاه علم و صنعت ایران،
+                    </span>
+
+                    <span className="text-sm mr-[2px]">
+                      خیابان هنگام، خیابان دانشگاه
+                    </span>
+                  </div>
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
+        <div className="flex flex-col gap-[20px] items-center grow-603">
+          <img src="/batbooksLogo.png" className="w-[150px]" />
+          <h1 className="text-[32px] text-center font-bold text-[#002D54]">
+            Bat<span className="text-[#2663CD]">Books</span>
+          </h1>
+        </div>
       </div>
-      <p className="text-[12px] m-auto font-[300] mt-[40.5px]">
-        Copyright © 73b4 - m485 BatBooks. All rights reserved
+      <p dir="rtl" className="text-sm text-right mt-[20px]">
+        © کلیه حقوق مادی و معنوی سایت برای{" "}
+        <span className="font-bold">batbooks</span> محفوظ است.
       </p>
     </footer>
   );

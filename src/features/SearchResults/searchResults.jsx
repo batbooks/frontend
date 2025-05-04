@@ -3,6 +3,33 @@ import Footer from "../../common/Footer/Footer";
 import { useState } from "react";
 import { Rating } from "@mui/material";
 
+const genres = [
+  "فانتزی",
+  "علمی-تخیلی",
+  "رمان(داستانی)",
+  "تاریخی",
+  "جنایی",
+  "معمایی",
+  "زندگینامه",
+  "توسعه فردی",
+  "عاشقانه",
+  "ترسناک",
+  "کمیک",
+  "کمدی",
+  "فانتزی",
+  "علمی-تخیلی",
+  "رمان(داستانی)",
+  "تاریخی",
+  "جنایی",
+  "معمایی",
+  "زندگینامه",
+  "توسعه فردی",
+  "عاشقانه",
+  "ترسناک",
+  "کمیک",
+  "کمدی",
+];
+
 export default function SearchResults({ searchingItem = "forum" }) {
   const [isSelectOpened, setIsSelectOpened] = useState(false);
   const [selectValue, setIsSelectValue] = useState("--انتخاب کنید--");

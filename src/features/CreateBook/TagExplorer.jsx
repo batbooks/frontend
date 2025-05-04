@@ -6,6 +6,7 @@ const TagExplorer = ({ onSelectTags, onSelectGenre }) => {
   const [selectedTags, setSelectedTags] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
+
   const [error, setError] = useState("");
   const [genres, setGenres] = useState([]);
   const [tagCategories, setTagCategories] = useState([]);
@@ -19,6 +20,7 @@ const TagExplorer = ({ onSelectTags, onSelectGenre }) => {
       }
     });
   };
+
   useEffect(() => {
     onSelectGenre && onSelectGenre(selectedGenres);
   }, [selectedGenres, onSelectGenre]);
@@ -30,8 +32,8 @@ const TagExplorer = ({ onSelectTags, onSelectGenre }) => {
         const token = localStorage.getItem("access_token");
 
         const [genreResponse, tagResponse] = await Promise.all([
-          fetch(`https://batbooks.liara.run/tag/genres/`),
-          fetch(`https://batbooks.liara.run/tag/tag-categories/`, {
+          fetch(`/api/tag/genres/`),
+          fetch(`/api/tag/tag-categories/`, {
             method: "GET",
 
             headers: {

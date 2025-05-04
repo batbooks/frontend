@@ -1,6 +1,7 @@
 import { useState } from "react";
 import LongParagraphInput from "../../../common/LongParagraphInput/longParagraphInput";
 import Loading from "../../../common/Loading/Loading";
+import Swal from "sweetalert2";
 
 export default function EditProfile({ setEditClicked }) {
   const [isSelectOpened, setIsSelectOpened] = useState(false);
@@ -22,16 +23,13 @@ export default function EditProfile({ setEditClicked }) {
       if (selectedFile) formData.append("image", selectedFile);
       if (userName) formData2.append("username", userName);
       if (formData) {
-        const response = await fetch(
-          `https://batbooks.liara.run/user/info/change/update/`,
-          {
-            method: "PUT",
-            body: formData,
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await fetch(`/api/user/info/change/update/`, {
+          method: "PUT",
+          body: formData,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         if (!response.ok) {
           throw new Error("درخواست موفق نبود");
@@ -39,16 +37,13 @@ export default function EditProfile({ setEditClicked }) {
       }
 
       if (formData2) {
-        const response = await fetch(
-          `https://batbooks.liara.run/user/info/change/username/`,
-          {
-            method: "PUT",
-            body: formData2,
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await fetch(`/api/user/info/change/username/`, {
+          method: "PUT",
+          body: formData2,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         if (!response.ok) {
           throw new Error("درخواست موفق نبود");
@@ -101,7 +96,10 @@ export default function EditProfile({ setEditClicked }) {
           ویرایش پروفایل
         </h1>
 
-        <form className="flex flex-col gap-[28.8px] z-3">
+        <form
+          onSubmit={(e) => e.preventDefault()}
+          className="flex flex-col gap-[28.8px] z-3"
+        >
           <div className="flex gap-[36px] z-4">
             <div className="flex flex-col z-5">
               <label className="text-[#000000]/70 text-[16.8px] font-[400] mb-[0.3px] z-6">
@@ -158,13 +156,13 @@ export default function EditProfile({ setEditClicked }) {
                     </span>
                   </button>
                 </li>
-                <li className="grow-1 flex z-10">
+                <li className="grow-1 flex z-10 rounded-b-[12px]">
                   <button
                     onClick={(e) => {
                       e.preventDefault();
                       setIsSelectValue("زن");
                     }}
-                    className="z-11 flex pr-[20.6px] text-[15px] text-[#000000]/70 w-full h-full cursor-pointer hover:bg-[#2663cd]/90 hover:cursor-pointer active:outline-none"
+                    className="z-11 flex pr-[20.6px] text-[15px] rounded-b-[12px] text-[#000000]/70 w-full h-full cursor-pointer hover:bg-[#2663cd]/90 hover:cursor-pointer active:outline-none"
                   >
                     <span className="z-12 left-auto my-auto font-bold">زن</span>
                   </button>
@@ -211,7 +209,7 @@ export default function EditProfile({ setEditClicked }) {
             <div className="w-[667.2px] h-[211.2px]">
               <LongParagraphInput
                 placeholder={"چند جمله درباره خودتان بنویسید..."}
-                setinputValue={setBio}
+                setInputValue={setBio}
               />
             </div>
           </div>
@@ -220,7 +218,16 @@ export default function EditProfile({ setEditClicked }) {
             onClick={async (e) => {
               await e.preventDefault();
               await handleChangeInfo();
-              window.location.reload();
+              Swal.fire({
+                title: "موفقیت",
+                text: "اطلاعات کاربری با موفقیت تغییر یافت",
+                icon: "success",
+                confirmButtonText: "باشه",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  window.location.reload();
+                }
+              });
             }}
             className="z-4 bg-[#2663cd] text-[#ffffff] items-center text-[16.8px] font-[400] w-[213.6px] outline-[2px] outline-[#000000]/21 py-[13.9px] rounded-[12px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
           >

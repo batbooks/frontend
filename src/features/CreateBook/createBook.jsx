@@ -1,36 +1,22 @@
 import Footer from "/src/common/Footer/footer";
 import Navbar from "/src/common/Navbar/navbar";
 import TagExplorer from "./TagExplorer";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import LongParagraphInput from "../../common/LongParagraphInput/longParagraphInput";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router";
 
 function CreateBook() {
   const [selectedGenres, setSelectedGenres] = useState([]);
-  const [allGenres, setAllGenres] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
   const [selectedTags, setSelectedTags] = useState([]);
 
-  useEffect(() => {
-    const fetchGenres = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch("https://batbooks.liara.run/tag/genres/");
-        const data = await response.json();
-        setAllGenres(data.genres);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchGenres();
-  }, []);
+  let navigate = useNavigate();
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -56,7 +42,7 @@ function CreateBook() {
         formData.append("tags", Number(tag.id));
       });
 
-      await fetch(`https://batbooks.liara.run/book/create/`, {
+      await fetch(`/api/book/create/`, {
         method: "POST",
         body: formData,
         headers: {
@@ -74,7 +60,7 @@ function CreateBook() {
           confirmButtonText: "باشه",
         }).then((result) => {
           if (result.isConfirmed) {
-            window.location.reload();
+            navigate("/mybooks");
           }
         });
       }, 100);

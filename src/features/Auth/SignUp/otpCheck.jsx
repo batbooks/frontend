@@ -31,7 +31,7 @@ function Otp() {
 
     setLoading(true);
     try {
-      const response = await fetch("https://batbooks.liara.run/auth/otp/", {
+      const response = await fetch("/api/auth/otp/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, code: otpCode }),

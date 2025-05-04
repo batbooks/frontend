@@ -11,20 +11,20 @@ import Loading from "../../../common/Loading/Loading";
 
 const IsReading = [1];
 const IsWriting = [1, 2];
-const WrittenBooks = [1, 2, 3, 4, 5, 6, 7, 8];
 const token = localStorage.getItem("access_token");
 export default function Profile() {
-  const [lastBook, setLastBook] = useState("");
+  const [lastBook, setLastBook] = useState({});
   const [followings, setFollowings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loading1, setLoading1] = useState(true);
   const [loading2, setLoading2] = useState(true);
   const [userInfo, setUserInfo] = useState([]);
   const [following, setFollowing] = useState([]);
+  const [writtenBooks, setWrittenBooks] = useState(0);
   const handleFollow = async (user) => {
     try {
       const response = await fetch(
-        `https://batbooks.liara.run/user/toggle/follow/${user.following_user_id}/`,
+        `/api/user/toggle/follow/${user.following_user_id}/`,
         {
           method: "GET",
 
@@ -46,7 +46,7 @@ export default function Profile() {
     const auth = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`https://batbooks.liara.run/auth/who/`, {
+        const response = await fetch(`/api/auth/who/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -71,15 +71,13 @@ export default function Profile() {
       setLoading2(true);
 
       try {
-        const response = await fetch(
-          `https://batbooks.liara.run/book/user/${userid}/`,
-          {
-            method: "GET",
-          }
-        );
+        const response = await fetch(`/api/book/user/${userid}/`, {
+          method: "GET",
+        });
 
         if (response.ok) {
           const data = await response.json();
+          setWrittenBooks(data.count);
           setLastBook(data.results[0]);
         } else {
         }
@@ -96,16 +94,13 @@ export default function Profile() {
     const fetchFollowings = async () => {
       setLoading1(true);
       try {
-        const response = await fetch(
-          `https://batbooks.liara.run/user/following/`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await fetch(`/api/user/following/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
         if (response.ok) {
           const data = await response.json();
           setFollowings(data.results);
@@ -120,20 +115,15 @@ export default function Profile() {
 
     fetchFollowings();
   }, []);
-  function getTimeAgo(dateString) {
-    const then = new Date(dateString);
-    const now = new Date();
-
-    const diffMs = now - then;
-    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-
-    if (diffHours < 24) {
-      return `${diffHours} ساعت پیش`;
-    } else {
-      const diffDays = Math.floor(diffHours / 24);
-      return `${diffDays} روز پیش`;
-    }
+  function getPersianDate(dateString) {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat("fa-IR", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).format(date);
   }
+  
 
   const dispatch = useDispatch();
   const [editClicked, setEditClicked] = useState(false);
@@ -143,6 +133,7 @@ export default function Profile() {
   const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
     navigate("/auth/login");
 
     useDispatch(logout());
@@ -157,11 +148,6 @@ export default function Profile() {
 
   return (
     <>
-      <div
-        className={`fixed flex justify-center top-2 w-[100%] transition-all duration-500 ${editClicked ? "visible opacity-100" : "invisible opacity-0"} z-2`}
-      >
-        <EditProfile setEditClicked={setEditClicked} />
-      </div>
       <div
         className={`${editClicked ? "bg-slate-200/20 blur-sm" : "blur-none"} transition-all duration-500`}
       >
@@ -205,7 +191,7 @@ export default function Profile() {
             ) : (
               <img
                 className="w-[236px] h-[267px] shadow-lg shadow-[#000000]/25 rounded-[30px]"
-                src={`https://batbooks.liara.run${userInfo.image}`}
+                src={`/api${userInfo.image}`}
                 alt="userimage"
               />
             )}
@@ -217,8 +203,9 @@ export default function Profile() {
               {userInfo.gender}
             </p>
             <p className="text-[16px] font-[300] mt-[12px]">تاریخ ملحق شدن</p>
+            {console.log(user)}
             <p className="text-[16px] font-[300] mt-[12px]">
-              {getTimeAgo(user.joined_date)}
+              {getPersianDate(user.joined_date)}
             </p>
           </div>
 
@@ -232,12 +219,12 @@ export default function Profile() {
                 onClick={() => {
                   navigate("/mybooks");
                 }}
-                className="flex flex-col bg-[#ffffff] px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:bg-[#2663cd]/90 hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none"
+                className="group flex flex-col bg-[#ffffff] px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:text-white focus:bg-[#2663cd]/90 hover:text-white hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:text-white active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none"
               >
-                <span className="text-[24px] font-[600] text-[#265073] mb-[-5px]">
+                <span className="text-[24px] font-[600] text-[#265073] mb-[-5px] group-focus:text-white group-hover:text-white group-active:text-white">
                   {userInfo.favorite_count}
                 </span>
-                <span className="font-[400] text-[#000000]/70 text-[14px]">
+                <span className="font-[400] text-[#000000]/70 text-[14px] group-focus:text-white group-hover:text-white group-active:text-white">
                   کتاب موردعلاقه
                 </span>
               </button>
@@ -245,35 +232,36 @@ export default function Profile() {
                 onClick={() => {
                   navigate("/mybooks");
                 }}
-                className="flex flex-col bg-[#ffffff] px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:bg-[#2663cd]/90 hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none"
+                className="group flex flex-col bg-[#ffffff] px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:bg-[#2663cd]/90 hover:bg-[#2663cd]/90 hover:cursor-pointer focus:text-white hover:text-white active:text-white transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none"
               >
-                <span className="text-[24px] font-[600] text-[#265073] mb-[-5px]">
-                  10
+                <span className="text-[24px] font-[600] text-[#265073] mb-[-5px] group-focus:text-white group-hover:text-white group-active:text-white">
+                  {writtenBooks}
                 </span>
-                <span className="font-[400] text-[#000000]/70 text-[14px]">
+                <span className="font-[400] text-[#000000]/70 text-[14px] group-focus:text-white group-hover:text-white group-active:text-white">
                   کتاب تالیف شده
                 </span>
               </button>
               <div className="flex flex-col items-center">
                 <button
-                  onClick={() => setIsFollowingOpened(!isFollowingOpened)}
+
+                  onClick={userInfo.following_count!=0?() => setIsFollowingOpened(!isFollowingOpened):() => setIsFollowingOpened(isFollowingOpened)}
                   onBlur={() =>
                     setTimeout(() => {
                       setIsFollowingOpened(false);
                     }, 250)
                   }
-                  className="flex flex-col bg-[#ffffff] px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:bg-[#2663cd]/90 hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none"
+                  className="group flex flex-col bg-[#ffffff] px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:bg-[#2663cd]/90 hover:bg-[#2663cd]/90 hover:cursor-pointer focus:text-white hover:text-white active:text-white transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none"
                 >
-                  <span className="text-[24px] font-[600] text-[#265073] mb-[-5px]">
+                  <span className="text-[24px] font-[600] text-[#265073] mb-[-5px] group-focus:text-white group-hover:text-white group-active:text-white">
                     {userInfo.following_count}
                   </span>
-                  <span className="font-[400] text-[#000000]/70 text-[14px]">
+                  <span className="font-[400] text-[#000000]/70 text-[14px] group-focus:text-white group-hover:text-white group-active:text-white">
                     نفر دنبال شده
                   </span>
                 </button>
                 <ul
                   dir="ltr"
-                  className={`z-10 absolute w-[487px] rounded-[5px] overflow-y-auto transition-opacity duration-400 ease-in-out ${isFollowingOpened ? "visible opacity-100" : "hidden opacity-0"} shadow-lg shadow-[#000000]/21 border-[2px] border-[#000000]/8 h-[304px] mt-[73px] bg-[#ffffff] divide-y divide-[#2F4F4F]/50`}
+                  className={`z-10 absolute w-[487px] rounded-[5px] overflow-y-auto transition-opacity duration-400 ease-in-out ${isFollowingOpened ? "visible opacity-100" : "hidden opacity-0"} shadow-lg shadow-[#000000]/21 h-[304px] mt-[73px] bg-[#ffffff] divide-y divide-[#2F4F4F]/50`}
                 >
                   {followings.map((user) => (
                     <UserFollowing user={user} />
@@ -293,7 +281,13 @@ export default function Profile() {
           </div>
 
           {lastBook ? (
-            <div className="min-w-[242px] h-[368px] mt-[32px]">
+            <div
+              onClick={() => {
+                navigate(`/book/${lastBook.id}`);
+              }}
+              className="min-w-[242px] h-[368px] mt-[32px]"
+            >
+              {console.log(lastBook.id)}
               <BookCard
                 title={lastBook.name}
                 author={lastBook.Author}
@@ -370,29 +364,50 @@ export default function Profile() {
       >
         <Footer />
       </div>
+      <div
+        className={`fixed flex justify-center top-2 w-[100%] transition-all duration-500 ${editClicked ? "visible opacity-100" : "invisible opacity-0"} z-2`}
+      >
+        <EditProfile setEditClicked={setEditClicked} />
+      </div>
     </>
   );
 
   function UserFollowing({ user }) {
+    const [isHoveredInnerButton, setIsHoveredInnerButton] = useState(false);
+
     return (
-      <li className="flex items-center h-[152px] pr-[33px] pl-[21px] justify-between">
+      <li
+        onClick={() => {
+          if (!isHoveredInnerButton) {
+            navigate(`/anotheruserprofile/${user.following_user_id}`);
+          }
+        }}
+        className={`flex items-center h-[152px] pr-[33px] pl-[21px] justify-between relative overflow-hidden p-[21px] bg-[#ffffff] outline-[2px] outline-[#000000]/21 rounded-[5px] cursor-pointer ${!isHoveredInnerButton ? "hover:ease-in-out hover:before:w-full hover:before:h-full hover:shadow-[#000000]/50 hover:shadow-lg hover:text-white" : ""} before:absolute before:w-0 before:h-0 before:bg-[#2663CD]/60 before:shadow-none before:inset-0 before:transition-all before:duration-[0.2s] transition-all active:before:bg-[#2663CD]/40 active:outline-none active:shadow-none active:ring-0 active:ring-offset-0`}
+      >
         {following[user.following_user_id] ? (
           <button
             onClick={() => handleFollow(user)}
-            className="h-[35px] text-[14px] text-[#ffffff] font-[300] py-[7px] px-[24px] bg-[#2663cd] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
+            onMouseEnter={() => setIsHoveredInnerButton(true)}
+            onMouseLeave={() => setIsHoveredInnerButton(false)}
+            className="btn py-[7px] px-[21px] !rounded-[10px] !w-fit !h-fit !ml-0 !mr-0 !mb-0"
           >
-            دنبال کردن
+            <span className="span-btn text-[14px] font-[300]">دنبال کردن</span>
           </button>
         ) : (
           <button
-            onClick={() => handleFollow(user)}
-            className="h-[35px] text-[14px] text-[#ffffff] font-[300] py-[7px] px-[24px] bg-[#2663cd] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
+            onClick={() => {
+              handleFollow(user);
+              location.reload();
+            }}
+            onMouseEnter={() => setIsHoveredInnerButton(true)}
+            onMouseLeave={() => setIsHoveredInnerButton(false)}
+            className="btn py-[7px] px-[21px] !rounded-[10px] !w-fit !h-fit !ml-0 !mr-0 !mb-0"
           >
-            دنبال نکردن
+            <span className="span-btn text-[14px] font-[300]">دنبال نکردن</span>
           </button>
         )}
 
-        <button className="flex items-center gap-[18px] cursor-pointer rounded-full">
+        <div className="relative flex items-center gap-[18px] cursor-pointer rounded-full">
           <div className="flex flex-col gap-[5px]">
             <span className="ml-auto text-[20px] font-[600]">
               {user.following}
@@ -415,7 +430,7 @@ export default function Profile() {
               className="rounded-full w-[110px] h-[110px]"
             />
           )}
-        </button>
+        </div>
       </li>
     );
   }
