@@ -1,50 +1,60 @@
 import Navbar from "../../common/Navbar/navbar";
 import Footer from "../../common/Footer/Footer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Rating } from "@mui/material";
 
-const genres = [
-  "فانتزی",
-  "علمی-تخیلی",
-  "رمان(داستانی)",
-  "تاریخی",
-  "جنایی",
-  "معمایی",
-  "زندگینامه",
-  "توسعه فردی",
-  "عاشقانه",
-  "ترسناک",
-  "کمیک",
-  "کمدی",
-  "فانتزی",
-  "علمی-تخیلی",
-  "رمان(داستانی)",
-  "تاریخی",
-  "جنایی",
-  "معمایی",
-  "زندگینامه",
-  "توسعه فردی",
-  "عاشقانه",
-  "ترسناک",
-  "کمیک",
-  "کمدی",
-];
-
-export default function SearchResults({ searchingItem = "forum" }) {
+export default function SearchResults({ searchingItem = "book" }) {
   const [isSelectOpened, setIsSelectOpened] = useState(false);
   const [selectValue, setIsSelectValue] = useState("--انتخاب کنید--");
+  const [isVisibleFilters, setIsVisibleFilters] = useState(false);
+  const [filterNum, setFilterNum] = useState(0);
+  const [filters, setFilters] = useState([
+    "رمان(داستانی)",
+    "علمی-تخیلی",
+    "جنائی",
+  ]);
+  const [genres, setGenres] = useState([]);
+  const [tags, setTags] = useState([]);
   const [forums, setForums] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]); //get current page forums from api
   const [people, setPeople] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]); //get current page people from api
   const [books, setBooks] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]); //get current page books from api
+
+  useEffect(() => {
+    const fetchGenresAndTags = async () => {
+      const response = await fetch(`/api/tag/genres/`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const response2 = await fetch(`/api/tag/tag-categories/`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      const data2 = await response2.json();
+      setGenres(data.genres);
+      setTags(data2.tag_categories);
+    };
+    if (searchingItem === "book") {
+      try {
+        fetchGenresAndTags();
+      } catch (err) {
+        console.error(err.message);
+      }
+    }
+  }, []);
 
   return (
     <>
       <Navbar />
       <main
         dir="rtl"
-        className={`flex flex-col items-center pt-[13px] pb-[60px] ${searchingItem == "book" ? "px-[98px]" : "px-[98px]"} w-[100%]`}
+        className={`flex flex-col items-center pt-[25px] pb-[60px] ${searchingItem == "book" ? "px-[98px]" : "px-[98px]"} w-[100%]`}
       >
-        <h1 className="font-bold text-[#265073] text-[32px] mb-[91px]">
+        <h1 className="font-bold text-[#265073] text-[32px] mb-[30px]">
           {searchingItem === "book"
             ? "جستجوی کتاب"
             : searchingItem === "people"
@@ -52,13 +62,29 @@ export default function SearchResults({ searchingItem = "forum" }) {
               : "تالار گفتگو"}
         </h1>
         <form
-          className={`flex gap-[26px] ${
-            searchingItem === "book" ? "mb-[26px]" : "mb-[37px]"
+          className={`flex gap-[26px] mb-[37px] ${
+            searchingItem === "book" ? "items-center" : ""
           }`}
+          onSubmit={(e) => e.preventDefault()}
         >
+          {searchingItem === "book" ? (
+            <div className="flex gap-[2px] ml-[-10px]">
+              <span className="text-[20px] font-[100]">{"["}</span>
+              <button
+                onClick={() => setIsVisibleFilters(!isVisibleFilters)}
+                className="cursor-pointer group relative"
+              >
+                <span className="text-[20px] font-[400] text-[#2663EB]">
+                  فیلترها
+                </span>
+                <div className="h-[1px] w-full absolute bg-[#2663EB] bottom-1.25 collapse group-hover:visible group-active:collapse"></div>
+              </button>
+              <span className="text-[20px] font-[100]">{"]"}</span>
+            </div>
+          ) : null}
           <div className="relative flex items-center">
             <input
-              className="w-[693px] h-[49px] py-[12.5px] pr-[26px] pl-[50px] bg-white rounded-[20px] outline-[2px] outline-[#000000]/30 shadow-lg shadow-[#000000]/25 focus:shadow-none focus:outline-[3px] focus:outline-[#2663cd] placeholder:text-[16px] placeholder:font-[300] placeholder:text-[#265073]"
+              className="w-[693px] h-[49px] py-[12.5px] pr-[26px] pl-[50px] bg-white rounded-[20px] outline-[2px] outline-[#000000]/21 shadow-lg shadow-[#000000]/25 focus:shadow-none focus:outline-[3px] focus:outline-[#2663cd] placeholder:text-[16px] placeholder:font-[300] placeholder:text-[#265073]"
               placeholder={
                 searchingItem === "book"
                   ? "نام کتاب"
@@ -84,62 +110,255 @@ export default function SearchResults({ searchingItem = "forum" }) {
             </span>
           </button>
         </form>
+        {searchingItem === "book" && isVisibleFilters ? (
+          <div className="flex flex-col w-full bg-[#A4C0ED] rounded-[20px] border-[2px] border-[#000000]/21 px-[55px] pt-[30px] pb-[60px] mb-[37px]">
+            <div className="flex flex-col gap-[17px] w-fit">
+              <div className="flex justify-between items-center">
+                <div className="flex gap-[3px] items-center">
+                  <img
+                    src="/src/assets/images/filter.png"
+                    alt="filter"
+                    className="min-w-[30px] max-w-[30px] min-h-[30px] max-h-[30px]"
+                  />
+                  <h2 className="text-[20px] font-[300] text-000000]">
+                    فیلترها ({filterNum})
+                  </h2>
+                </div>
+                <button className="group cursor-pointer relative">
+                  <span className="text-[16px] font-[400] text-[#A4C0ED]">
+                    حذف فیلترها
+                  </span>
+                  <div className="h-[1px] w-full absolute bg-[#A4C0ED] bottom-1.25 collapse group-hover:visible group-active:collapse"></div>
+                </button>
+              </div>
+              <div className="flex flex-wrap gap-[11px] mb-[20px]">
+                {filters.map((filter, i) => (
+                  <Filter key={i} filterName={filter} />
+                ))}
+              </div>
+            </div>
+            <h2 className="border-t-[1px] border-000000] pt-[20px] text-[20px] font-[300] text-000000] mb-[17px]">
+              ژانرها:
+            </h2>
+            <div className="flex flex-wrap gap-x-[25px] gap-y-[21px] mx-[30px] p-[17px] bg-[#FFF] rounded-[15px] border-[2px] border-[#000000]/21 mb-[50px]">
+              {genres.map((genre) => (
+                <GenreAndTag key={genre.id} genreOrTagName={genre.title} />
+              ))}
+            </div>
+            <h2 className="text-[20px] font-[300] text-000000] mb-[17px]">
+              دسته بندی تگ ها:
+            </h2>
+            <div className="flex flex-wrap gap-x-[25px] gap-y-[21px] mx-[30px] p-[17px] bg-[#FFF] rounded-[15px] border-[2px] border-[#000000]/21 mb-[17px]">
+              {tags.map((tagCategory) => (
+                <GenreAndTag
+                  key={tagCategory.id}
+                  genreOrTagName={tagCategory.title}
+                />
+              ))}
+            </div>
+            <h2 className="text-[20px] font-[300] text-000000] mb-[17px]">
+              جستجوی تگ ها:
+            </h2>
+            <input
+              className="p-[12px] mb-[17px] w-[calc(100%-60px)] mx-auto bg-white text-[16px] font-[300] max-h-[40px] rounded-[6px] outline-[2px] outline-[#000000]/21 focus:outline-[3px] focus:outline-[#A4C0ED] placeholder:text-[16px] placeholder:font-[300] placeholder:text-[#265073]"
+              placeholder="تگ مورد نظر خود را اینجا جستجو کنید..."
+            ></input>
+            <div className="flex flex-wrap gap-x-[25px] gap-y-[21px] mx-[30px] p-[17px] bg-[#FFF] rounded-[15px] border-[2px] border-[#000000]/21 mb-[50px]">
+              {tags.map((tagCategory) =>
+                tagCategory.tags.map((tag) => (
+                  <GenreAndTag key={tag.id} genreOrTagName={tag.title} />
+                ))
+              )}
+            </div>
+            <div className="flex justify-between w-[calc(100%-30px)] mb-[50px]">
+              <div className="flex flex-col gap-[17px]">
+                <h2 className="text-[20px] font-[300] text-000000]">
+                  تعداد فصل ها:
+                </h2>
+                <div className="flex justify-between mr-[30px] gap-[76px]">
+                  <div className="flex items-center gap-[9px]">
+                    <span className="text-[20px] font-[300] text-000000]">
+                      از:
+                    </span>
+                    <input className="h-[40px] w-[70px] bg-white rounded-[5px] border-[2px] border-[#000000]/21 text-center" />
+                  </div>
+                  <div className="flex items-center gap-[9px]">
+                    <span className="text-[20px] font-[300] text-000000]">
+                      تا:
+                    </span>
+                    <input className="h-[40px] w-[70px] bg-white rounded-[5px] border-[2px] border-[#000000]/21 text-center" />
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-col gap-[17px]">
+                <h2 className="text-[20px] font-[300] text-000000]">
+                  تعداد افرادی که پسندیده اند:
+                </h2>
+                <div className="flex justify-between mr-[30px] gap-[76px]">
+                  <div className="flex items-center gap-[9px]">
+                    <span className="text-[20px] font-[300] text-000000]">
+                      از:
+                    </span>
+                    <input className="h-[40px] w-[70px] bg-white rounded-[5px] border-[2px] border-[#000000]/21 text-center" />
+                  </div>
+                  <div className="flex items-center gap-[9px]">
+                    <span className="text-[20px] font-[300] text-000000]">
+                      تا:
+                    </span>
+                    <input className="h-[40px] w-[70px] bg-white rounded-[5px] border-[2px] border-[#000000]/21 text-center" />
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-col gap-[17px]">
+                <h2 className="text-[20px] font-[300] text-000000]">
+                  تعداد امتیازدهندگان:
+                </h2>
+                <div className="flex justify-between mr-[30px] gap-[76px]">
+                  <div className="flex items-center gap-[9px]">
+                    <span className="text-[20px] font-[300] text-000000]">
+                      از:
+                    </span>
+                    <input className="h-[40px] w-[70px] bg-white rounded-[5px] border-[2px] border-[#000000]/21 text-center" />
+                  </div>
+                  <div className="flex items-center gap-[9px]">
+                    <span className="text-[20px] font-[300] text-000000]">
+                      تا:
+                    </span>
+                    <input className="h-[40px] w-[70px] bg-white rounded-[5px] border-[2px] border-[#000000]/21 text-center" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-between w-[calc(100%-30px)] items-center mb-[50px]">
+              <div className="flex flex-col gap-[17px]">
+                <h2 className="text-[20px] font-[300] text-000000]">
+                  میانگین امتیازات کتاب:
+                </h2>
+                <div className="flex justify-between mr-[30px] gap-[76px]">
+                  <div className="flex items-center gap-[9px]">
+                    <span className="text-[20px] font-[300] text-000000]">
+                      از:
+                    </span>
+                    <input className="h-[40px] w-[70px] bg-white rounded-[5px] border-[2px] border-[#000000]/21 text-center" />
+                  </div>
+                  <div className="flex items-center gap-[9px]">
+                    <span className="text-[20px] font-[300] text-000000]">
+                      تا:
+                    </span>
+                    <input className="h-[40px] w-[70px] bg-white rounded-[5px] border-[2px] border-[#000000]/21 text-center" />
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-col gap-[17px]">
+                <h2 className="text-[20px] font-[300] text-000000]">
+                  وضعیت کتاب:
+                </h2>
+                <CheckBoxes />
+              </div>
+              <div className="flex flex-col gap-[17px]">
+                <h2 className="text-[20px] font-[300] text-000000]">
+                  نام نویسنده:
+                </h2>
+                <div className="flex gap-[6px]">
+                  <button className="btn !w-fit !h-fit !mb-0 !mx-0 !py-[10.5px] !px-[7px] !rounded-r-[50px] !rounded-l-[5px]">
+                    <span className="span-btn !text-[15px] !font-[400]">
+                      اعمال فیلتر
+                    </span>
+                  </button>
+                  <input
+                    placeholder="نام نویسنده"
+                    className="px-[8px] shadow-lg shadow-black/25 bg-white w-[210px] h-[43px] rounded-r-[5px] rounded-l-[45px] focus:outline-none"
+                  />
+                </div>
+              </div>
+            </div>
+            <h2 className="text-[20px] font-[300] text-000000] mb-[17px]">
+              عبارت کلیدی:
+            </h2>
+            <input
+              className="p-[12px] mb-[50px] w-[calc(100%-60px)] mx-auto bg-white text-[16px] font-[300] max-h-[40px] rounded-[6px] outline-[2px] outline-[#000000]/21 focus:outline-[3px] focus:outline-[#A4C0ED] placeholder:text-[16px] placeholder:font-[300] placeholder:text-[#265073]"
+              placeholder="جستجوی داستان براساس عبارت کلیدی خلاصه آن..."
+            ></input>
+            <div className="flex items-center justify-between w-[calc(100%-30px)]">
+              <h2 className="text-[20px] font-[300] text-000000]">
+                تاریخ انتشار:
+              </h2>
+              <div className="flex gap-[18px] items-center">
+                <span className="text-[20px] font-[300] text-000000] ml-[-9px]">
+                  از:
+                </span>
+                <SelectMenu
+                  placehold={"--روز--"}
+                  options={Array.from({ length: 30 }, (_, i) => `${i + 1}`)}
+                />
+                <SelectMenu
+                  placehold={"--ماه--"}
+                  options={[
+                    "فروردین",
+                    "اردیبهشت",
+                    "خرداد",
+                    "تیر",
+                    "مرداد",
+                    "شهریور",
+                    "مهر",
+                    "آبان",
+                    "آذر",
+                    "دی",
+                    "بهمن",
+                    "اسفند",
+                  ]}
+                />
+                <SelectMenu
+                  placehold={"--سال--"}
+                  options={Array.from({ length: 91 }, (_, i) => `${i + 1300}`)}
+                />
+              </div>
+              <div className="flex gap-[18px] items-center">
+                <span className="text-[20px] font-[300] text-000000] ml-[-9px]">
+                  تا:
+                </span>
+                <SelectMenu
+                  placehold={"--روز--"}
+                  options={Array.from({ length: 30 }, (_, i) => `${i + 1}`)}
+                />
+                <SelectMenu
+                  placehold={"--ماه--"}
+                  options={[
+                    "فروردین",
+                    "اردیبهشت",
+                    "خرداد",
+                    "تیر",
+                    "مرداد",
+                    "شهریور",
+                    "مهر",
+                    "آبان",
+                    "آذر",
+                    "دی",
+                    "بهمن",
+                    "اسفند",
+                  ]}
+                />
+                <SelectMenu
+                  placehold={"--سال--"}
+                  options={Array.from({ length: 91 }, (_, i) => `${i + 1300}`)}
+                />
+              </div>
+            </div>
+          </div>
+        ) : null}
         <div className="flex flex-col w-[100%]">
           {searchingItem !== "book" ? (
-            <h2 className="text-[16px] font-[600] mb-[31px]">نتایج جستجو</h2>
+            <h2 className="text-[16px] font-[300] mb-[31px]">نتایج جستجو</h2>
           ) : (
             <div className="flex items-center justify-between mb-[21px]">
-              <h2 className="text-[16px] font-[600]">نتایج جستجو</h2>
-              <div className="relative flex items-center gap-[10px]">
-                <h2 className="text-[16px] font-[600]">مرتب سازی براساس</h2>
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setIsSelectOpened(!isSelectOpened);
-                  }}
-                  onBlur={(e) => {
-                    e.preventDefault();
-                    setTimeout(() => {
-                      setIsSelectOpened(false);
-                    }, 250);
-                  }}
-                  className={`z-6 flex bg-[#ffffff] w-[147px] h-[45px] ${isSelectOpened ? "rounded-t-[12px]" : "rounded-[12px] shadow-lg shadow-[#000000]/21"} pl-[25px] pr-[5px] text-[13px] ${selectValue !== "--انتخاب کنید--" ? "text-[#000000]" : "text-[#265073]"} cursor-pointer outline-[2px] outline-[#000000]/21`}
-                >
-                  <div className="flex items-center hover:cursor-pointer z-7">
-                    <img
-                      src="/images/arrow.png"
-                      alt="arrow"
-                      className="w-[24px] h-[24px] z-8"
-                    ></img>
-                    <span className="z-8">{selectValue}</span>
-                  </div>
-                </button>
-                <ul
-                  className={`flex flex-col justify-between absolute left-0 bg-[#ffffff] w-[147px] mt-[137px] h-[90px] outline-[2px] outline-[#000000]/21 z-9 divide-y divide-[#2F4F4F]/50 rounded-b-[12px] ${isSelectOpened ? "visible" : "hidden"}`}
-                >
-                  <li className="grow-1 flex z-10">
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setIsSelectValue("تازه ترین");
-                      }}
-                      className="flex text-[15px] text-[#000000]/70 w-full h-full cursor-pointer hover:bg-[#2663cd]/90 hover:cursor-pointer active:outline-none z-11"
-                    >
-                      <span className="m-auto font-bold z-12">تازه ترین</span>
-                    </button>
-                  </li>
-                  <li className="grow-1 flex z-10 rounded-b-[12px]">
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setIsSelectValue("محبوب ترین");
-                      }}
-                      className="z-11 flex text-[15px] text-[#000000]/70 w-full h-full cursor-pointer hover:bg-[#2663cd]/90 hover:cursor-pointer active:outline-none rounded-b-[12px]"
-                    >
-                      <span className="z-12 m-auto font-bold">محبوب ترین</span>
-                    </button>
-                  </li>
-                </ul>
+              <h2 className="text-[16px] font-[300]">نتایج جستجو</h2>
+              <div className="flex items-center gap-[10px]">
+                <h2 className="text-[16px] font-[300]">مرتب سازی براساس</h2>
+                <SelectMenu
+                  width={147}
+                  placehold={"--انتخاب کنید--"}
+                  options={["تازه ترین", "محبوب ترین"]}
+                />
               </div>
             </div>
           )}
@@ -177,6 +396,150 @@ export default function SearchResults({ searchingItem = "forum" }) {
   );
 }
 
+function Filter({ filterName }) {
+  return (
+    <div className="items-center w-[160px] flex justify-between rounded-full bg-white px-[11px] py-[6px]">
+      <span className="text-[15px] font-[100]">{filterName}</span>
+      <button className="grid rounded-full cursor-pointer h-[15px] w-[15px] hover:bg-[#E5E5E5]/70 transition-colors duration-400 active:bg-[#E5E5E5] active:duration-100">
+        <span className="text-black text-[17px] font-[100] translate-y-[-4px] mx-auto">
+          &times;
+        </span>
+      </button>
+    </div>
+  );
+}
+
+function GenreAndTag({ genreOrTagName }) {
+  return (
+    <button className="btn !bg-[#2663CD]/80 !w-[215px] !h-fit !mb-0 !mx-0 !rounded-[10px] px-[18px] py-[10px]">
+      <span className="span-btn !text-[14px] !font-[300]">
+        {genreOrTagName}
+      </span>
+    </button>
+  );
+}
+
+function CheckBoxes() {
+  const [checkedNum, setCheckedNum] = useState(-1);
+
+  return (
+    <div className="flex mr-[30px] gap-[33px]">
+      <div className="flex items-center gap-[5px]">
+        <button
+          onClick={() => {
+            checkedNum === -1 || checkedNum === 0
+              ? setCheckedNum(1)
+              : setCheckedNum(-1);
+          }}
+          className="rounded-full cursor-pointer h-[30px] w-[30px] hover:bg-[#E5E5E5]/30 transition-colors duration-400 active:bg-[#E5E5E5]/50 active:duration-100"
+        >
+          {checkedNum === 1 ? (
+            <img
+              src="/src/assets/images/checked.png"
+              alt="checked"
+              className="h-[18px] w-[18px] mx-auto"
+            />
+          ) : (
+            <img
+              src="/src/assets/images/unchecked.png"
+              alt="unchecked"
+              className="h-[18px] w-[18px] mx-auto"
+            />
+          )}
+        </button>
+        <span className="text-[20px] text-000000] font-[400]">
+          به اتمام رسیده
+        </span>
+      </div>
+      <div className="flex items-center gap-[5px]">
+        <button
+          onClick={() => {
+            checkedNum === -1 || checkedNum === 1
+              ? setCheckedNum(0)
+              : setCheckedNum(-1);
+          }}
+          className="rounded-full cursor-pointer h-[30px] w-[30px] hover:bg-[#E5E5E5]/30 transition-colors duration-400 active:bg-[#E5E5E5]/50 active:duration-100"
+        >
+          {checkedNum === 0 ? (
+            <img
+              src="/src/assets/images/checked.png"
+              alt="checked"
+              className="h-[18px] w-[18px] mx-auto"
+            />
+          ) : (
+            <img
+              src="/src/assets/images/unchecked.png"
+              alt="unchecked"
+              className="h-[18px] w-[18px] mx-auto"
+            />
+          )}
+        </button>
+        <span className="text-[20px] text-000000] font-[400]">منتشر نشده</span>
+      </div>
+    </div>
+  );
+}
+
+function SelectMenu({ placehold, options, width = 100 }) {
+  const [isSelectOpened, setIsSelectOpened] = useState(false);
+  const [selectValue, setSelectValue] = useState(placehold);
+
+  return (
+    <div className="relative">
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          setIsSelectOpened(!isSelectOpened);
+        }}
+        onBlur={(e) => {
+          e.preventDefault();
+          setTimeout(() => {
+            setIsSelectOpened(false);
+          }, 250);
+        }}
+        className={`z-6 flex bg-[#ffffff] w-[${width}px] h-[45px] ${isSelectOpened ? "rounded-t-[12px]" : "rounded-[12px] shadow-lg shadow-[#000000]/21"} pl-[25px] pr-[5px] text-[13px] ${selectValue !== placehold ? "text-[#000000]" : "text-[#265073]"} cursor-pointer outline-[2px] outline-[#000000]/21`}
+      >
+        <div className="flex items-center hover:cursor-pointer z-7 gap-[5px]">
+          <img
+            src="/images/arrow.png"
+            alt="arrow"
+            className="w-[24px] h-[24px] z-8"
+          ></img>
+          <span className="z-8">{selectValue}</span>
+        </div>
+      </button>
+      <ul
+        className={`overflow-y-scroll flex flex-col absolute bg-[#ffffff] w-[${width}px] h-[90px] outline-[2px] outline-[#000000]/21 z-9 divide-y divide-[#2F4F4F]/50 rounded-b-[12px] ${isSelectOpened ? "visible" : "hidden"}`}
+      >
+        <li className="min-h-[45px] grow-1 flex z-10">
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              setSelectValue(`${placehold}`);
+            }}
+            className="z-11 flex text-[15px] text-[#000000]/70 w-full h-full cursor-pointer hover:bg-[#2663cd]/90 hover:cursor-pointer active:outline-none"
+          >
+            <span className="m-auto text-[#265073] z-12">{`${placehold}`}</span>
+          </button>
+        </li>
+        {options.map((option) => (
+          <li className="min-h-[45px] grow-1 flex z-10">
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                setSelectValue(`${option}`);
+              }}
+              className="z-11 flex text-[15px] text-[#000000]/70 w-full h-full cursor-pointer hover:bg-[#2663cd]/90 hover:cursor-pointer active:outline-none"
+            >
+              <span className="m-auto font-bold z-12">{`${option}`}</span>
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 function Book({
   coverImage,
   bookName = "نام کتاب",
@@ -194,7 +557,7 @@ function Book({
         <div className="flex flex-col gap-[5px]">
           <h3 className="text-[32px] font-[400]">{bookName}</h3>
           <div className="flex gap-[20px]">
-            <sapn className="text-[20px] font-[400]">{authorName}</sapn>
+            <span className="text-[20px] font-[400]">{authorName}</span>
             <Rating dir="ltr" readOnly precision={0.1} value={star} />
           </div>
           <p className="text-[14px] font-[300]">
