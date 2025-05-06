@@ -147,11 +147,9 @@ textarea {
 }
 
 .btn {
-  @apply relative overflow-hidden hover:ease-in-out hover:text-black hover:before:w-[900px] hover:before:h-[900px] before:absolute before:w-0 before:h-0 before:bg-[#4D8AFF] before:rounded-[50%] before:right-0 before:bottom-0 before:translate-[50%] before:transition-all before:duration-[0.2s] bg-[#2663CD] shadow-lg shadow-[#000]/25 text-white mx-auto mb-5 flex justify-center items-center  w-[143px] h-[38px] rounded-[46px] cursor-pointer focus:shadow-none focus:bg-[#2663CD]/90 focus:outline-none  active:bg-[#2663CD]/30 active:duration-300 active:outline-none active:ring-0 active:ring-offset-0 disabled:cursor-auto disabled:shadow-none disabled:bg-[#2663CD]/60 disabled:ring-0 disabled:ring-offset-0;
+  @apply relative overflow-hidden hover:ease-in-out hover:text-black hover:before:w-[900px] hover:before:h-[900px] before:absolute before:w-0 before:h-0 before:bg-[#4D8AFF] before:rounded-[50%] before:right-0 before:bottom-0 before:translate-[50%] before:transition-all before:duration-[0.2s] bg-[#2663CD] shadow-lg shadow-[#000]/25 text-white mx-auto mb-5 flex justify-center items-center w-[143px] h-[38px] rounded-[46px] cursor-pointer focus:bg-[#2663CD]/90 focus:outline-none active:shadow-none active:bg-[#2663CD]/30 active:outline-none disabled:cursor-auto disabled:shadow-none disabled:bg-[#2663CD]/60 disabled:hover:text-white disabled:before:bg-[#2663CD]/0;
 }
-.btn2 {
-  @apply  relative overflow-hidden hover:ease-in-out hover:text-black hover:before:w-[900px] hover:before:h-[900px] before:absolute before:w-0 before:h-0 before:bg-[#4D8AFF] before:rounded-[50%] before:right-0 before:bottom-0 before:translate-[50%] before:transition-all before:duration-[0.2s] bg-[#2663CD] shadow-lg shadow-[#000]/25 text-white mx-auto mb-5 flex justify-center items-center  w-[143px] h-[38px] rounded-[46px] cursor-pointer focus:shadow-none focus:bg-[#2663CD]/90 focus:outline-none  active:bg-[#2663CD]/30 active:duration-300 active:outline-none active:ring-0 active:ring-offset-0 disabled:cursor-auto disabled:shadow-none disabled:bg-[#2663CD]/60 disabled:ring-0 disabled:ring-offset-0;
-}
+
 .span-btn {
   @apply relative z-[2] transition-colors duration-[0.2s] ease-in-out;
 }

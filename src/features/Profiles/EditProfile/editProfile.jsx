@@ -96,7 +96,10 @@ export default function EditProfile({ setEditClicked }) {
           ویرایش پروفایل
         </h1>
 
-        <form className="flex flex-col gap-[28.8px] z-3">
+        <form
+          onSubmit={(e) => e.preventDefault()}
+          className="flex flex-col gap-[28.8px] z-3"
+        >
           <div className="flex gap-[36px] z-4">
             <div className="flex flex-col z-5">
               <label className="text-[#000000]/70 text-[16.8px] font-[400] mb-[0.3px] z-6">
@@ -206,7 +209,7 @@ export default function EditProfile({ setEditClicked }) {
             <div className="w-[667.2px] h-[211.2px]">
               <LongParagraphInput
                 placeholder={"چند جمله درباره خودتان بنویسید..."}
-                setinputValue={setBio}
+                setInputValue={setBio}
               />
             </div>
           </div>
@@ -219,7 +222,7 @@ export default function EditProfile({ setEditClicked }) {
                 title: "موفقیت",
                 text: "اطلاعات کاربری با موفقیت تغییر یافت",
                 icon: "success",
-                confirmButtonText: "بنازم",
+                confirmButtonText: "باشه",
               }).then((result) => {
                 if (result.isConfirmed) {
                   window.location.reload();
