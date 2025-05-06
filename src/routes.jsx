@@ -16,8 +16,9 @@ import EditChapter from "./features/EditChapter/editChapter.jsx";
 import ModifiedChapter from "./features/CreateChapter/modifiedChapter.jsx";
 import ReadingPage from "./features/ReadingChapter/chapterView.jsx";
 import CreateChapter from "./features/CreateChapter/createChapter.jsx";
-import Comments from "./features/Comments/Comment.jsx";
+import Threads from "./features/Threads/threads.jsx";
 import ShowAllBooks from "./features/ShowAllBooks/ShowAllBooks.jsx";
+import Comments from "./features/Comments/Comment.jsx";
 
 function AppRoutes() {
   return (
@@ -44,7 +45,11 @@ function AppRoutes() {
           path="/anotheruserprofile/:userId"
           element={<Another_User_Profile />}
         ></Route>
-        <Route path="/searchresults" element={<SearchResults />} />
+        <Route
+          path="/forums"
+          element={<SearchResults searchingItem="forum" />}
+        />
+        <Route path="/readingchapter" element={<ReadingPage chapterId={1} />} />
         <Route
           path="/createAndEditChapter/:chapterId"
           element={
@@ -79,6 +84,7 @@ function AppRoutes() {
             </Middleware>
           }
         />
+        <Route path="/threads/:forumId" element={<Threads forumId={3} />} />
       </Routes>
     </Router>
   );
