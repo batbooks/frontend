@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
 import { Rating } from "@mui/material";
 import Swal from "sweetalert2";
+import parse from "html-react-parser";
 
 function Reviews({ book }) {
   const { bookId } = useParams();
@@ -202,10 +203,14 @@ function Reviews({ book }) {
     const diffMins = Math.floor(diffMs / (1000 * 60));
     const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    const diffMonths = Math.floor(diffMs / (1000 * 60 * 60 * 24 * 30));
+    const diffYears = Math.floor(diffMs / (1000 * 60 * 60 * 24 * 30 * 12));
 
     if (diffMins < 60) return `${diffMins} دقیقه پیش`;
     if (diffHours < 24) return `${diffHours} ساعت پیش`;
-    return `${diffDays} روز پیش`;
+    if (diffDays <= 30) return `${diffDays} روز پیش`;
+    if (diffMonths < 12) return `${diffMonths} ماه پیش`;
+    return `${diffYears} سال پیش`;
   };
 
   return (
@@ -215,7 +220,7 @@ function Reviews({ book }) {
     >
       <div
         dir="ltr"
-        className=" bg-white flex flex-col rounded-[15px] shadow-[0px_0px_5px_#000] md:flex-row md:items-center md:justify-between mb-6 p-[48px]"
+        className=" bg-white flex flex-col rounded-[15px] shadow-[0px_0px_10px_#00000075] md:flex-row md:items-center md:justify-between mb-6 p-[48px]"
       >
         <div className="flex flex-col items-center mb-6 md:mb-0 bg-blue-300 p-6 rounded-[10px] shadow-[0_0_5px_#000]">
           <span className="text-4xl font-bold">
@@ -236,7 +241,6 @@ function Reviews({ book }) {
 
         <div className="flex-1 space-y-2 ml-8">
           {[1, 2, 3, 4, 5].map((star) => {
-            console.log(ratingArray[star]);
             return (
               <div key={star} className="flex items-center">
                 <span dir="rtl" className="w-12 text-sm">
@@ -246,7 +250,7 @@ function Reviews({ book }) {
                   <div
                     className="h-3 bg-blue-500 rounded-full"
                     style={{
-                      width: `${((ratingArray[star] || 0) / reviewsCount) * 100}%`,
+                      width: `${((ratingArray[star] || 0) / reviewsCount || 0) * 100}%`,
                     }}
                   ></div>
                 </div>
@@ -343,7 +347,7 @@ function Reviews({ book }) {
                   </div>
                   <div className=" w-full max-w-[1100px] min-h-[180px] p-6 rounded-[15px] border-black/20 border-[2px] shadow-sm shadow-black/21 bg-[#E0F2F1]">
                     <div className="flex flex-col gap-[10px]">
-                      <div className="flex flex-row gap-[600px]">
+                      <div className="flex flex-row gap-[500px]">
                         <h2 className="text-[15px] text-[#000000]/70 font-[300] ">
                           {getTimeAgo(review.created)}
                         </h2>
@@ -361,12 +365,10 @@ function Reviews({ book }) {
                         </h2>
                       </div>
                       <h1 className="font-bold text-xl">{review.title}</h1>
-                      <p
-                        className="text-[16px] font-[300] my-auto"
-                        dangerouslySetInnerHTML={{ __html: review.body }}
-                      />
+                      <div className="text-[16px] font-[300] my-auto">
+                        {parse(review.body)}
+                      </div>
                     </div>
-                    <div></div>
                   </div>
                 </div>
                 <div className="flex justify-between px-42">

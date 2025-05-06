@@ -83,21 +83,21 @@ function Signup() {
             <img
               src="/src/assets/images/lock.png"
               alt="lock-password"
-              className="absolute right-[150px] top-[50%] -translate-y-1/2"
+              className="absolute right-38 top-[50%] -translate-y-1/2"
             />
             {showPassword ? (
               <img
                 src="/src/assets/images/eye-on.png"
                 alt="eye-on-password"
                 onClick={handleShowPassword}
-                className="absolute z-50 mr-95 mt-2"
+                className="absolute z-50 left-38 top-[50%] -translate-y-1/2"
               />
             ) : (
               <img
                 src="/src/assets/images/eye-off.png"
                 alt="eye-off-password"
                 onClick={handleShowPassword}
-                className="absolute z-50 mr-95 mt-2"
+                className="absolute z-50 left-38 top-[50%] -translate-y-1/2"
               />
             )}
           </div>
@@ -112,21 +112,21 @@ function Signup() {
             <img
               src="/src/assets/images/lock.png"
               alt="lock-repeat-password"
-              className="absolute right-[150px] top-[50%] -translate-y-1/2"
+              className="absolute right-38 top-[50%] -translate-y-1/2"
             />
             {showRepeatPassword ? (
               <img
                 src="/src/assets/images/eye-on.png"
                 alt="eye-on-repeat-password"
                 onClick={handleShowRepeatPassword}
-                className="absolute z-50 mr-95 mt-2"
+                className="absolute z-50 left-38 top-[50%] -translate-y-1/2"
               />
             ) : (
               <img
                 src="/src/assets/images/eye-off.png"
                 alt="eye-off-repeat-password"
                 onClick={handleShowRepeatPassword}
-                className="absolute z-50 mr-95 mt-2"
+                className="absolute z-50 left-38 top-[50%] -translate-y-1/2"
               />
             )}
           </div>

@@ -61,13 +61,10 @@ const BookPage = () => {
         const [bookResponse, favoriteResponse, reveiewsResponse] =
           await Promise.all([
             fetch(`/api/book/${bookId}/`),
-            fetch(`/api/book-actions/is/favorite/${bookId}/`),
+            fetch(`/api/book-actions/is/favorite/${bookId}/`, {
+              headers: { Authorization: auth },
+            }),
             fetch(`/api/comments/book/${bookId}/reviews/`),
-            {
-              headers: {
-                Authorization: auth,
-              },
-            },
           ]);
 
         if (bookResponse.status == 404) {
@@ -104,6 +101,7 @@ const BookPage = () => {
   }, []);
 
   const handleFavorite = async () => {
+    const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(
         `/api/book-actions/toggle/favorite/${bookId}/`,
@@ -126,11 +124,11 @@ const BookPage = () => {
           }
         });
       }, 100);
+      setIsFavorite(!isFavorite);
     } catch (err) {
       console.error("Error:", err.message);
     } finally {
       setLoading(false);
-      setIsFavorite(!isFavorite);
     }
   };
 
@@ -152,7 +150,6 @@ const BookPage = () => {
       return;
     }
     try {
-      // Replace this with your actual API endpoint
       const response = await fetch(
         `/api/comments/book/${bookId}/reviews/create/`,
         {

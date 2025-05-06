@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { Navigate, useNavigate } from "react-router";
+import { Link, Navigate, useNavigate } from "react-router";
 import Forget_password_2 from "./Vf";
 
 function Forget_password() {
@@ -78,9 +78,7 @@ function Forget_password() {
   //     setIsSubmitting(false);
   //   }
   // };
-  const gotoloinpage = () => {
-    navigate("/auth/login");
-  };
+
   return (
     <div className="w-[100%] h-[100%] bg-[#D9F0FF]">
       <h2 className="text-[24px] mt-1.5 ml-2 font-bold text-[#002D54] absolute top-0 left-0">
@@ -91,8 +89,7 @@ function Forget_password() {
         className="flex flex-col m-auto mt-24 h-80 w-[39vw] bg-[#A4C0ED] rounded-lg"
       >
         <h2 style={styles.title} className="font-bold">
-          {" "}
-          بازیابی رمز عبور{" "}
+          بازیابی رمز عبور
         </h2>
         <form onSubmit={handleSendCode} style={styles.form}>
           <div className="relative">
@@ -114,7 +111,7 @@ function Forget_password() {
           </div>
           <div className="flex flex-row justify-center gap-[0.77vw]">
             <button type="submit" disabled={isLoading} className="btn">
-              ارسال کد
+              <span className="span-btn">ارسال کد</span>
             </button>
           </div>
 
@@ -122,13 +119,12 @@ function Forget_password() {
           {message && <div style={styles.message}>{message}</div>}
         </form>
 
-        <h1
-          onClick={gotoloinpage}
-          className="text-[1vw] text-[#2663CD] absolute top-83 left-[46vw] underline cursor-pointer"
+        <Link
+          to={"/auth/login"}
+          className="text-[1vw] hover:text-[#2663CD] absolute top-83 left-[46vw] cursor-pointer"
         >
-          {" "}
-          بازگشت به صفحه ورود{" "}
-        </h1>
+          بازگشت به صفحه ورود
+        </Link>
         <img
           src="/src/assets/images/mid-left.png"
           alt="mid-right"

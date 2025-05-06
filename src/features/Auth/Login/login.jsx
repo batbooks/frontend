@@ -37,16 +37,27 @@ function Login() {
     setLoading(true);
 
     try {
-      const response = await axios.post("/api/auth/token/", {
-        email,
-        password,
+      const response = await fetch("/api/auth/token/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
       });
-      // Cookies.set('access_token', 'value', { expires: 7,secure:true , path:'/'  } );
-      // Cookies.set('refresh_token', 'value', { expires: 7,secure:true , path:'/'  } );
-      localStorage.setItem("access_token", response.data.access);
-      localStorage.setItem("refresh_token", response.data.refresh);
+
+      if (!response.ok) {
+        throw new Error("Login failed");
+      }
+
+      const data = await response.json();
+
+      localStorage.setItem("access_token", data.access);
+      localStorage.setItem("refresh_token", data.refresh);
       navigate("/");
-      fetchuserinfo(response.data.access);
+      fetchuserinfo(data.access);
       const user = userinfo;
       dispatch(
         loginSuccess({
@@ -90,7 +101,7 @@ function Login() {
             <img
               src="/src/assets/images/user.png"
               alt="user"
-              className="absolute right-[150px] top-[50%] -translate-y-1/2"
+              className="absolute right-38 top-[50%] -translate-y-1/2"
             />
           </div>
           <div className="flex justify-center relative mb-3">
@@ -105,21 +116,21 @@ function Login() {
             <img
               src="/src/assets/images/lock.png"
               alt="lock-password"
-              className="absolute right-[150px] top-[50%] -translate-y-1/2"
+              className="absolute right-38 top-[50%] -translate-y-1/2"
             />
             {showPassword ? (
               <img
                 src="/src/assets/images/eye-on.png"
                 alt="eye-on-password"
                 onClick={handleShowPassword}
-                className="absolute z-50 mr-95 mt-2"
+                className="absolute left-38 top-[50%] -translate-y-1/2"
               />
             ) : (
               <img
                 src="/src/assets/images/eye-off.png"
                 alt="eye-off-password"
                 onClick={handleShowPassword}
-                className="absolute z-50 mr-95 mt-2"
+                className="absolute left-38 top-[50%] -translate-y-1/2"
               />
             )}
           </div>
@@ -128,12 +139,12 @@ function Login() {
               {loading ? "...در حال ورود" : "ورود"}
             </span>
           </button>
-          <button
-            className="mx-auto flex cursor-pointer justify-center"
-            onClick={() => navigate("/Forget_password")}
+          <Link
+            className="mx-auto flex cursor-pointer justify-center hover:text-[#2663CD]"
+            to={"/Forget_password"}
           >
             رمز عبور را فراموش کرده ام
-          </button>
+          </Link>
         </form>
         <img
           src="/src/assets/images/mid-left.png"
