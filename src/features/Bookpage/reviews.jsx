@@ -241,7 +241,6 @@ function Reviews({ book }) {
 
         <div className="flex-1 space-y-2 ml-8">
           {[1, 2, 3, 4, 5].map((star) => {
-            console.log(ratingArray[star]);
             return (
               <div key={star} className="flex items-center">
                 <span dir="rtl" className="w-12 text-sm">
