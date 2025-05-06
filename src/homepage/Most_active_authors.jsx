@@ -62,7 +62,7 @@ export default function Most_active_authors() {
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
         <span className=" absolute -bottom-3  ">فعالترین نویسنده ها</span>
-        <span className="absolute  -bottom-6  w-62  h-2 bg-gradient-to-l from-[#6f6fff] to-[#2828db] rounded-full z-0"></span>
+        <span className="absolute  -bottom-8  w-62  h-2 bg-gradient-to-l from-[#6f6fff] to-[#2828db] rounded-full z-0"></span>
       </motion.h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:mb-17  gap-6 ">
         {authors.map((author, index) => (
@@ -70,7 +70,7 @@ export default function Most_active_authors() {
         ))}
       </div>
       <div>
-        <button className=" btn2  w-[300px]! h-[50px]!  text-2xl ">
+        <button className=" btn  w-[300px]! h-[50px]!  text-2xl ">
           <span className="span-btn">نمایش کل کاربران</span>
         </button>
       </div>

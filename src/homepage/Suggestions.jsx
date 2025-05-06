@@ -57,18 +57,18 @@ export default function Suggestions() {
   const cardIds = [1, 2, 3, 4, 0];
   return (
     <div dir="rtl">
-      <div className="w-full h-[90vh] m-auto   bg-white/80 py-[50px] pb-[50px] relative overflow-hidden">
+      <div className="w-full h-[90vh] m-auto bg-white/80 py-[50px] pb-[50px] relative overflow-hidden">
         {/* عنوان بخش با استایل بهبود یافته */}
         <motion.h1
-          className="flex flex-row justify-between mb-10 text-3xl md:text-3xl font-extrabold text-right pr-[5vw] relative  text-gray-800"
+          className="flex flex-row justify-between mb-15 text-3xl md:text-3xl font-extrabold text-right pr-[5vw] relative  text-gray-800"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
           <span className=" absolute -bottom-3 right-21 ">پیشنهادی</span>
-          <span className="absolute  -bottom-6 right-21 w-28  h-2 bg-gradient-to-l from-[#6f6fff] to-[#2828db] rounded-full z-0"></span>
+          <span className="absolute  -bottom-8 right-21 w-28  h-2 bg-gradient-to-l from-[#6f6fff] to-[#2828db] rounded-full z-0"></span>
         </motion.h1>
-  
+
         {/* کارت‌ها با انیمیشن ورود از چپ */}
         <div className="flex flex-row gap-[6vw] p-20 pt-0 pb-0 items-center">
           {cardIds.map((id, index) => {
@@ -76,7 +76,7 @@ export default function Suggestions() {
               triggerOnce: true,
               threshold: 0.2,
             });
-  
+
             return (
               <motion.div
                 key={id}
@@ -102,4 +102,4 @@ export default function Suggestions() {
       </div>
     </div>
   );
-};
+}
