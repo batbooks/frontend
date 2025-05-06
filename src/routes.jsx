@@ -18,6 +18,7 @@ import ReadingPage from "./features/ReadingChapter/chapterView.jsx";
 import CreateChapter from "./features/CreateChapter/createChapter.jsx";
 import Threads from "./features/Threads/threads.jsx";
 import ShowAllBooks from "./features/ShowAllBooks/ShowAllBooks.jsx";
+import Comments from "./features/Comments/Comment.jsx";
 
 function AppRoutes() {
   return (
@@ -27,15 +28,8 @@ function AppRoutes() {
         <Route path="/auth/signup" element={<Signup />}></Route>
         <Route path="/auth/otp" element={<Otp />}></Route>
         <Route path="/auth/login" element={<Login />}></Route>
-
-        <Route
-          path="/userprofile"
-          element={
-            <Middleware>
-              <Profile />
-            </Middleware>
-          }
-        ></Route>
+        <Route path="/comment" element={<Comments />}></Route>
+        <Route path="/userprofile" element={<Profile />}></Route>
         <Route path="/book/:bookId" element={<BookPage />}></Route>
         <Route
           path="/mybooks/createbook"
@@ -45,7 +39,6 @@ function AppRoutes() {
             </Middleware>
           }
         ></Route>
-
         <Route path="/Forget_password" element={<Forget_password />} />
         <Route path="/Vf" element={<Vf />} />
         <Route
@@ -65,7 +58,6 @@ function AppRoutes() {
             </Middleware>
           }
         />
-        <Route path="/readingchapter" element={<ReadingPage />} />
         <Route
           path="/editChapter/:bookId"
           element={
@@ -74,17 +66,8 @@ function AppRoutes() {
             </Middleware>
           }
         />
-        <Route
-          path="/createChapter"
-          element={
-            <Middleware>
-              <CreateChapter />
-            </Middleware>
-          }
-        />
         <Route path="/chapter/:chapterId" element={<ReadingPage />} />
         <Route path="/showallbooks" element={<ShowAllBooks />} />
-        <Route path="/mybooks" element={<MyBooks />} />
         <Route
           path="/modifiedChapter/:id"
           element={
@@ -93,7 +76,6 @@ function AppRoutes() {
             </Middleware>
           }
         />
-
         <Route
           path="/mybooks"
           element={

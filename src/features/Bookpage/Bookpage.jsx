@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Rating, Select, MenuItem, FormControl } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { Editor } from "primereact/editor";
 import Footer from "../../common/Footer/Footer.jsx";
 import Navbar from "../../common/Navbar/navbar.jsx";
@@ -37,6 +38,7 @@ const BookPage = () => {
   const [reviewTitle, setReviewTitle] = useState("");
   const [reviewContent, setReviewContent] = useState("");
   const [reviewRating, setReviewRating] = useState(2.5);
+  const [reviewsCount, setReviewsCount] = useState(0);
   const [isSticky, setIsSticky] = useState(false);
   const [lastReadChapter, setLastReadChapter] = useState("");
   const [isClicked, setIsClicked] = useState(false);
@@ -44,6 +46,7 @@ const BookPage = () => {
   const [chapterId, setChapterId] = useState(0);
   const [isFavorite, setIsFavorite] = useState(false);
   const [chapterFound, setChapterFound] = useState(false);
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
 
   const chaptersPerPage = 10;
   const totalPages = Math.ceil((book?.chapters?.length || 0) / chaptersPerPage);
@@ -53,27 +56,33 @@ const BookPage = () => {
       try {
         setLoading(true);
         const token = localStorage.getItem("access_token");
+        const auth = token ? `Bearer ${token}` : "";
 
-        const [bookResponse, favoriteResponse] = await Promise.all([
-          fetch(`/api/book/${bookId}/`),
-          fetch(`/api/book-actions/is/favorite/${bookId}/`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
+        const [bookResponse, favoriteResponse, reveiewsResponse] =
+          await Promise.all([
+            fetch(`/api/book/${bookId}/`),
+            fetch(`/api/book-actions/is/favorite/${bookId}/`),
+            fetch(`/api/comments/book/${bookId}/reviews/`),
+            {
+              headers: {
+                Authorization: auth,
+              },
             },
-          }),
-        ]);
+          ]);
 
         if (bookResponse.status == 404) {
           setChapterFound(false);
         }
-        if (!bookResponse.ok || !favoriteResponse.ok) {
+        if (!bookResponse.ok) {
           throw new Error("Failed to fetch data");
         }
         setChapterFound(true);
         const bookData = await bookResponse.json();
         const favoriteData = await favoriteResponse.json();
+        const reviewsData = await reveiewsResponse.json();
 
         setBook(bookData);
+        setReviewsCount(reviewsData.count);
         setIsFavorite(favoriteData.is_favorite);
       } catch (err) {
         setError(err.message);
@@ -162,7 +171,6 @@ const BookPage = () => {
       );
 
       const data = await response.json();
-      console.log(data);
       if (response.ok) {
         setMessage("comment sent for review");
         // Redirect to verification page or next step after a short delay
@@ -203,35 +211,28 @@ const BookPage = () => {
           <img
             src={
               book.image
-                ? `/api/${book.image}`
+                ? `/api${book.image}`
                 : `https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-book-cover-design-template-34323b0f0734dccded21e0e3bebf004c_screen.jpg?ts=1637015198`
             }
             alt="Book Cover"
             className="rounded-lg shadow-lg w-full h-[500px]"
           />
-          <div className="grid grid-cols-1 mt-4">
-            <button
-              onClick={() => handleFavorite()}
-              className={`btn !shadow-lg !rounded-full !h-8  !w-full  ${
-                isFavorite ? "" : " !bg-[#FFFF] !text-black"
-              }`}
-            >
-              <span className="span-btn">
-                {isFavorite
-                  ? "حذف از مورد علاقه ها"
-                  : "اضافه کردن به مورد علاقه ها"}
-              </span>
-            </button>
-            <button
-              className={`btn !shadow-lg !rounded-full !h-8  !w-full  ${
-                book.readOnce ? "" : " !bg-[#FFFF] !text-black"
-              }`}
-            >
-              <span className="span-btn">
-                {book.readOnce ? "تا کنون خوانده شده" : "تا کنون خوانده نشده"}
-              </span>
-            </button>
-          </div>
+          {isAuthenticated ? (
+            <div className="grid grid-cols-1 mt-4">
+              <button
+                onClick={() => handleFavorite()}
+                className={`btn !shadow-lg !rounded-full !h-8  !w-full  ${
+                  isFavorite ? "" : " !bg-[#FFFF] !text-black"
+                }`}
+              >
+                <span className="span-btn">
+                  {isFavorite
+                    ? "حذف از مورد علاقه ها"
+                    : "اضافه کردن به مورد علاقه ها"}
+                </span>
+              </button>
+            </div>
+          ) : null}
         </div>
 
         {/* Main Content */}
@@ -243,21 +244,16 @@ const BookPage = () => {
             <h1 className="text-4xl font-bold mb-4">{book.name}</h1>
             <h2 className="text-2xl text-gray-600">{book.author}</h2>
 
-            <div className="flex items-center my-2 justify-end">
-              <span className="ml-2 text-gray-700 mb-1 font-bold opacity-70">
-                نظر
+            <div className="flex gap-[10px] items-center my-2 justify-end">
+              <span className=" text-gray-700 mb-1 font-bold opacity-70">
+                نقد
               </span>
-              <span className="ml-2 mr-2 text-gray-700 mb-1 font-bold opacity-70">
-                {book.reviewsCount || 0}
+              <span className=" mr-10 text-gray-700 mb-1 font-bold opacity-70">
+                {reviewsCount}
               </span>
-              <span className="ml-2 text-gray-700 mb-1 font-bold opacity-70">
-                رای
-              </span>
-              <span className="ml-2 mr-50 text-gray-700 mb-1 font-bold opacity-70">
-                {book.ratingsCount || 0}
-              </span>
-              <span className="ml-2 mr-7 text-gray-700 text-2xl mb-1">
-                {book.rating}
+
+              <span className=" text-gray-700 text-2xl mb-1">
+                {Math.round(book.rating * 10) / 10}
               </span>
               <Rating
                 name="half-rating-read"
@@ -350,12 +346,14 @@ const BookPage = () => {
       </div>
 
       {/* Review Section */}
-      <button
-        className="btn !mr-60 !rounded-[10px]"
-        onClick={() => setIsClicked(true)}
-      >
-        <span className="span-btn">نقد خود را بنویسید</span>
-      </button>
+      {isAuthenticated ? (
+        <button
+          className="btn !mr-30 !rounded-[10px]"
+          onClick={() => setIsClicked(true)}
+        >
+          <span className="span-btn">نقد خود را بنویسید</span>
+        </button>
+      ) : null}
       <form
         className={`w-auto bg-white text-gray-800 p-6 rounded-lg shadow-lg border mt-8 mx-20 ${isClicked ? "visible" : "hidden"}`}
         dir="rtl"
@@ -438,6 +436,7 @@ const BookPage = () => {
                   className="mr-2"
                   dir="ltr"
                 />
+                {reviewRating < 1 ? setReviewRating(1) : null}
                 <input
                   type="number"
                   step={0.1}
@@ -476,10 +475,7 @@ const BookPage = () => {
         </div>
       </form>
 
-      <div className="w-350 p-10 pl-28">
-        {/* <Reviews bookId={bookId} /> */}
-      </div>
-      <Reviews />
+      <Reviews book={book} />
       <Footer />
     </div>
   );

@@ -13,7 +13,7 @@ const IsReading = [1];
 const IsWriting = [1, 2];
 const token = localStorage.getItem("access_token");
 export default function Profile() {
-  const [lastBook, setLastBook] = useState("");
+  const [lastBook, setLastBook] = useState({});
   const [followings, setFollowings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loading1, setLoading1] = useState(true);
@@ -102,28 +102,34 @@ export default function Profile() {
 
     fetchFollowings();
   }, []);
-  function getTimeAgo(dateString) {
-    const then = new Date(dateString);
-    const now = new Date();
-
-    const diffMs = now - then;
-    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-
-    if (diffHours < 24) {
-      return `${diffHours} ساعت پیش`;
-    } else {
-      const diffDays = Math.floor(diffHours / 24);
-      return `${diffDays} روز پیش`;
-    }
+  function getPersianDate(dateString) {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat("fa-IR", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).format(date);
   }
+  
 
   const [editClicked, setEditClicked] = useState(false);
   const [isFollowingOpened, setIsFollowingOpened] = useState(false);
   const [isHoveredFavBook, setIsHoveredFavBook] = useState(false);
   const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
+  function getPersianDate(dateString) {
+    if (!dateString) return ""; // or return a fallback value
+    const [year, month, day] = dateString.split("T")[0].split("-");
+    const date = new Date(Date.UTC(year, month - 1, day));
+    return new Intl.DateTimeFormat("fa-IR", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).format(date);
+  }
   const handleLogout = () => {
     localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
     navigate("/auth/login");
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -195,7 +201,7 @@ export default function Profile() {
             </aside>
             <aside className="text-lg text-[20px]  font-light text-black tracking-wide pb-1 mb-3">تاریخ ملحق شدن</aside>
             <time className="text-[16px] font-normal  ">
-              {getTimeAgo(user.joined_date)}
+              {getPersianDate(user.joined_date)}
             </time>
             </section>
           </div>
@@ -234,7 +240,8 @@ export default function Profile() {
               </button>
               <div className="flex flex-col items-center">
                 <button
-                  onClick={() => setIsFollowingOpened(!isFollowingOpened)}
+
+                  onClick={userInfo.following_count!=0?() => setIsFollowingOpened(!isFollowingOpened):() => setIsFollowingOpened(isFollowingOpened)}
                   onBlur={() =>
                     setTimeout(() => {
                       setIsFollowingOpened(false);

@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 export default function BookCard({
   title,
@@ -7,12 +8,17 @@ export default function BookCard({
   coverImage,
   chapters,
   description,
-  children = null,
+  id = 1,
+  children = null
 }) {
   const [isFlipped, setIsFlipped] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div
+      onClick={() => {
+        navigate(`/book/${id}`);
+      }}
       className="relative  border-0 hover:shadow-white rounded-2xl w-full h-full cursor-pointer hover: transition-all duration-500"
       onMouseEnter={() => setIsFlipped(!isFlipped)}
       onMouseLeave={() => setIsFlipped(!isFlipped)}
