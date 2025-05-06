@@ -1,11 +1,6 @@
 import { useState } from "react";
 
-export default function Bookcard(
-  
-  {id,books,isHovered ,setIsHovered}
-) {
-
-
+export default function Bookcard({ id, books, isHovered, setIsHovered }) {
   return (
     <div
       onMouseEnter={() =>
@@ -22,7 +17,7 @@ export default function Bookcard(
           return newHovered;
         })
       }
-      className="w-[200px] h-[400px] shadow-2xl rounded-2xl bg-white text-black  hover:scale-105 transition-all duration-200"
+      className="w-[200px] h-[400px] shadow-2xl rounded-2xl bg-white text-black  hover:scale-105 transition-all duration-200 cursor-pointer"
     >
       <div className="relative cursor-pointer ">
         {isHovered[id] ? (
