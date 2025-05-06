@@ -102,16 +102,7 @@ export default function Profile() {
 
     fetchFollowings();
   }, []);
-  function getPersianDate(dateString) {
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat("fa-IR", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    }).format(date);
-  }
   
-
   const [editClicked, setEditClicked] = useState(false);
   const [isFollowingOpened, setIsFollowingOpened] = useState(false);
   const [isHoveredFavBook, setIsHoveredFavBook] = useState(false);
@@ -196,13 +187,16 @@ export default function Profile() {
             <strong className="text-[24px] text-[#000000] font-[400] mt-[8px] mb-[12px]">
               جزئیات
             </strong>
-            <aside className="text-lg font-light text-black tracking-wide pb-1 mb-3">
-              {userInfo.gender}
-            </aside>
-            <aside className="text-lg text-[20px]  font-light text-black tracking-wide pb-1 mb-3">تاریخ ملحق شدن</aside>
-            <time className="text-[16px] font-normal  ">
-              {getPersianDate(user.joined_date)}
-            </time>
+            <div className="bg-white min-h-[45px] rounded-[10px] p-[13px] mt-[10px] shadow-lg shadow-[#000000]/25">
+              <p className="text-[16px] text-[#000000] font-[300]">
+                {userInfo.gender}
+              </p>
+              <aside className="text-[16px] font-[300] mt-[12px]">
+                {/* {user.joined_date} */}
+                  تاریخ ثبت نام : 
+                {getPersianDate(user.joined_date)}
+              </aside>
+            </div>
             </section>
           </div>
 
