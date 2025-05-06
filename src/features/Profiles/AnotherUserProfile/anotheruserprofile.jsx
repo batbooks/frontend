@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import Footer from "/src/common/Footer/footer";
+import Footer from "/src/common/Footer/Footer";
 import Navbar from "/src/common/Navbar/navbar";
 import BookCard from "../../../common/BookCard/bookCard";
 import "./anotheruserprofile.css";
