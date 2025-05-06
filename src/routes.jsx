@@ -52,7 +52,10 @@ function AppRoutes() {
           path="/anotheruserprofile/:userId"
           element={<Another_User_Profile />}
         ></Route>
-        <Route path="/searchresults" element={<SearchResults />} />
+        <Route
+          path="/forums"
+          element={<SearchResults searchingItem="forum" />}
+        />
         <Route path="/readingchapter" element={<ReadingPage chapterId={1} />} />
         <Route
           path="/createAndEditChapter/:chapterId"
@@ -99,7 +102,7 @@ function AppRoutes() {
             </Middleware>
           }
         />
-        <Route path="/threads" element={<Threads/>} />
+        <Route path="/threads/:forumId" element={<Threads forumId={3} />} />
       </Routes>
     </Router>
   );

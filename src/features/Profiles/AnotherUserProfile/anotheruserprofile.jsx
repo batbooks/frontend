@@ -24,9 +24,7 @@ export default function Another_User_Profile() {
     const fetchBook = async () => {
       setLoading(true);
       try {
-        const response = await fetch(
-          `https://batbooks.liara.run/user/info/${userId}/`
-        );
+        const response = await fetch(`/api/user/info/${userId}/`);
         if (!response.ok) throw new Error("Failed to fetch book");
         const data = await response.json();
         setUser(data);
@@ -43,17 +41,14 @@ export default function Another_User_Profile() {
     const fetchFollowing = async () => {
       setLoading(true);
       try {
-        const response = await fetch(
-          `https://batbooks.liara.run/user/is/follow/${userId}/`,
-          {
-            method: "GET",
+        const response = await fetch(`/api/user/is/follow/${userId}/`, {
+          method: "GET",
 
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const data = await response.json();
         setFollowing(data.is_follow);
       } catch (err) {
@@ -71,21 +66,16 @@ export default function Another_User_Profile() {
       behavior: "smooth",
     });
   };
-  const 
-  handleFollow = async () => {
+  const handleFollow = async () => {
     try {
-      const response = await fetch(
-        `https://batbooks.liara.run/user/toggle/follow/${userId}/`,
-        {
-          method: "GET",
+      const response = await fetch(`/api/user/toggle/follow/${userId}/`, {
+        method: "GET",
 
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
     } catch (err) {
       console.error(err.message);
     }
@@ -130,16 +120,15 @@ export default function Another_User_Profile() {
       >
         <button
           className="bg-[#2663cd] text-[#ffffff] items-center rounded-[46px] py-[8px] px-[18px] mt-[15px] mb-[24px] ml-auto shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
-          onClick={()=>{handleFollow();setFollowing(!following)} }
+          onClick={() => {
+            handleFollow();
+            setFollowing(!following);
+          }}
         >
           {!following ? (
-            <span  className="font-[400] text-[16px]">
-              دنبال کردن
-            </span>
+            <span className="font-[400] text-[16px]">دنبال کردن</span>
           ) : (
-            <span  className="font-[400] text-[16px]">
-              دنبال نکردن
-            </span>
+            <span className="font-[400] text-[16px]">دنبال نکردن</span>
           )}
         </button>
         <h1 className="text-[#265073] text-[32px] font-[700] mx-auto absolute ml-[80px]">

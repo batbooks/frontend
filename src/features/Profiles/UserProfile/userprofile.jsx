@@ -20,20 +20,9 @@ export default function Profile() {
   const [loading2, setLoading2] = useState(true);
   const [userInfo, setUserInfo] = useState([]);
   const [following, setFollowing] = useState([]);
-  const [writtenBooks,setWrittenBooks]=useState(0)
+  const [writtenBooks, setWrittenBooks] = useState(0);
   const handleFollow = async (user) => {
     try {
-      const response = await fetch(
-        `http://45.158.169.198/user/toggle/follow/${user.following_user_id}/`,
-        {
-          method: "GET",
-
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
       setFollowing((prev) => ({
         ...prev,
         [user.following_user_id]: !prev[user.following_user_id],
@@ -46,7 +35,7 @@ export default function Profile() {
     const auth = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`https://batbooks.liara.run/auth/who/`, {
+        const response = await fetch(`/api/auth/who/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -71,19 +60,15 @@ export default function Profile() {
       setLoading2(true);
 
       try {
-        const response = await fetch(
-          `https://batbooks.liara.run/book/user/${userid}/`,
-          {
-            method: "GET",
-          }
-        );
+        const response = await fetch(`/api/book/user/${userid}/`, {
+          method: "GET",
+        });
 
         if (response.ok) {
           const data = await response.json();
-          setWrittenBooks(data.count)
+          setWrittenBooks(data.count);
           setLastBook(data.results[0]);
-        } else {
-        }
+        } else { /* empty */ }
       } catch (err) {
         console.error("Error:", err.message);
       } finally {
@@ -97,21 +82,17 @@ export default function Profile() {
     const fetchFollowings = async () => {
       setLoading1(true);
       try {
-        const response = await fetch(
-          `https://batbooks.liara.run/user/following/`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await fetch(`/api/user/following/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
         if (response.ok) {
           const data = await response.json();
           setFollowings(data.results);
-        } else {
-        }
+        } else { /* empty */ }
       } catch (err) {
         console.error("Error:", err.message);
       } finally {
@@ -136,16 +117,16 @@ export default function Profile() {
     }
   }
 
-  const dispatch = useDispatch();
   const [editClicked, setEditClicked] = useState(false);
   const [isFollowingOpened, setIsFollowingOpened] = useState(false);
   const [isHoveredFavBook, setIsHoveredFavBook] = useState(false);
-  const { user, isAuthenticated } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("access_token");
     navigate("/auth/login");
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     useDispatch(logout());
   };
 
@@ -201,21 +182,22 @@ export default function Profile() {
             ) : (
               <img
                 className="w-[236px] h-[267px] shadow-lg shadow-[#000000]/25 rounded-[30px]"
-                src={`https://batbooks.liara.run${userInfo.image}`}
+                src={`/api${userInfo.image}`}
                 alt="userimage"
               />
             )}
-
-            <h2 className="text-[24px] text-[#000000] font-[400] mt-[8px] mb-[12px]">
+            <section>
+            <strong className="text-[24px] text-[#000000] font-[400] mt-[8px] mb-[12px]">
               جزئیات
-            </h2>
-            <p className="text-[16px] text-[#000000] font-[300]">
+            </strong>
+            <aside className="text-lg font-light text-black tracking-wide pb-1 mb-3">
               {userInfo.gender}
-            </p>
-            <p className="text-[16px] font-[300] mt-[12px]">تاریخ ملحق شدن</p>
-            <p className="text-[16px] font-[300] mt-[12px]">
+            </aside>
+            <aside className="text-lg text-[20px]  font-light text-black tracking-wide pb-1 mb-3">تاریخ ملحق شدن</aside>
+            <time className="text-[16px] font-normal  ">
               {getTimeAgo(user.joined_date)}
-            </p>
+            </time>
+            </section>
           </div>
 
           <div className="w-[100%]">
@@ -230,12 +212,12 @@ export default function Profile() {
                 }}
                 className="group flex flex-col bg-[#ffffff] px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:text-white focus:bg-[#2663cd]/90 hover:text-white hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:text-white active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none"
               >
-                <span className="text-[24px] font-[600] text-[#265073] mb-[-5px] group-focus:text-white group-hover:text-white group-active:text-white">
+                <h4 className="text-[24px] font-normal text-[#265073] mb-[-5px] group-focus:text-white group-hover:text-white group-active:text-white">
                   {userInfo.favorite_count}
-                </span>
-                <span className="font-[400] text-[#000000]/70 text-[14px] group-focus:text-white group-hover:text-white group-active:text-white">
-                  کتاب موردعلاقه
-                </span>
+                </h4>
+                <h4 className="font-medium text-[#000000]/70 text-[14px] group-focus:text-white group-hover:text-white group-active:text-white">
+                  کتاب مورد علاقه
+                </h4>
               </button>
               <button
                 onClick={() => {
@@ -243,12 +225,12 @@ export default function Profile() {
                 }}
                 className="group flex flex-col bg-[#ffffff] px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:bg-[#2663cd]/90 hover:bg-[#2663cd]/90 hover:cursor-pointer focus:text-white hover:text-white active:text-white transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none"
               >
-                <span className="text-[24px] font-[600] text-[#265073] mb-[-5px] group-focus:text-white group-hover:text-white group-active:text-white">
+                <h4 className="text-[24px] font-[600] text-[#265073] mb-[-5px] group-focus:text-white group-hover:text-white group-active:text-white">
                   {writtenBooks}
-                </span>
-                <span className="font-[400] text-[#000000]/70 text-[14px] group-focus:text-white group-hover:text-white group-active:text-white">
+                </h4>
+                <h4 className="font-medium text-[#000000]/70 text-[14px] group-focus:text-white group-hover:text-white group-active:text-white">
                   کتاب تالیف شده
-                </span>
+                </h4>
               </button>
               <div className="flex flex-col items-center">
                 <button
@@ -260,12 +242,12 @@ export default function Profile() {
                   }
                   className="group flex flex-col bg-[#ffffff] px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:bg-[#2663cd]/90 hover:bg-[#2663cd]/90 hover:cursor-pointer focus:text-white hover:text-white active:text-white transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none"
                 >
-                  <span className="text-[24px] font-[600] text-[#265073] mb-[-5px] group-focus:text-white group-hover:text-white group-active:text-white">
+                  <h4 className="text-[24px] font-[600] text-[#265073] mb-[-5px] group-focus:text-white group-hover:text-white group-active:text-white">
                     {userInfo.following_count}
-                  </span>
-                  <span className="font-[400] text-[#000000]/70 text-[14px] group-focus:text-white group-hover:text-white group-active:text-white">
+                  </h4>
+                  <h4 className="font-medium text-[#000000]/70 text-[14px] group-focus:text-white group-hover:text-white group-active:text-white">
                     نفر دنبال شده
-                  </span>
+                  </h4>
                 </button>
                 <ul
                   dir="ltr"
@@ -281,15 +263,20 @@ export default function Profile() {
             <div>
               <h5 className="text-[16px] font-[300] mb-1">مشخصات:</h5>
               <div className="min-h-[230px] bg-white px-[25.7px] py-[16.6px] rounded-[10px] shadow-lg shadow-[#000000]/25">
-                <p className="text-[#000000]/70 text-[14px] font-[300]">
+                <h4 className="text-[#000000]/70 text-[14px] font-[300] text-lg  tracking-wide pb-1 mb-3">
                   {userInfo.bio}
-                </p>
+                </h4>
               </div>
             </div>
           </div>
 
           {lastBook ? (
-            <div onClick={()=>{navigate(`/book/${lastBook.id}`)}}  className="min-w-[242px] h-[368px] mt-[32px]">
+            <div
+              onClick={() => {
+                navigate(`/book/${lastBook.id}`);
+              }}
+              className="min-w-[242px] h-[368px] mt-[32px]"
+            >
               {console.log(lastBook.id)}
               <BookCard
                 title={lastBook.name}
@@ -322,7 +309,7 @@ export default function Profile() {
                   src="/src/assets/images/edit_sign.png"
                   alt="edit"
                 />
-                <span className="font-[400]">کتاب جدید خود را بنویسید</span>
+                <h4 className="font-[400]">کتاب جدید خود را بنویسید</h4>
               </button>
             </button>
           )}
@@ -336,7 +323,7 @@ export default function Profile() {
             IsReading.map(() => <ReadingBook />)
           ) : (
             <div className="flex items-center mb-[40px] gap-[12px]">
-              <p>اخیرا کتابی را مطالعه نکرده اید...</p>
+              <h4>اخیرا کتابی را مطالعه نکرده اید...</h4>
               <button className="max-w-[196px] transition-all duration-200 bg-[#2663cd] text-[#ffffff] text-[16px] items-center rounded-[46px] py-[8px] px-[18px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
                 مشاهده تمامی کتاب ها
               </button>
@@ -353,7 +340,7 @@ export default function Profile() {
               IsWriting.map(() => <WritingBook />)
             ) : (
               <div className="flex items-center gap-[12px]">
-                <p>اخیرا کتابی را تالیف نکرده اید...</p>
+                <h4>اخیرا کتابی را تالیف نکرده اید...</h4>
                 <button className="max-w-[196px] transition-all duration-200 bg-[#2663cd] text-[#ffffff] text-[16px] items-center rounded-[46px] py-[8px] px-[18px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
                   مشاهده تمامی کتاب ها
                 </button>
@@ -382,7 +369,7 @@ export default function Profile() {
       <li
         onClick={() => {
           if (!isHoveredInnerButton) {
-            navigate(`/anotheruserprofile/${user.following_user_id}`)
+            navigate(`/anotheruserprofile/${user.following_user_id}`);
           }
         }}
         className={`flex items-center h-[152px] pr-[33px] pl-[21px] justify-between relative overflow-hidden p-[21px] bg-[#ffffff] outline-[2px] outline-[#000000]/21 rounded-[5px] cursor-pointer ${!isHoveredInnerButton ? "hover:ease-in-out hover:before:w-full hover:before:h-full hover:shadow-[#000000]/50 hover:shadow-lg hover:text-white" : ""} before:absolute before:w-0 before:h-0 before:bg-[#2663CD]/60 before:shadow-none before:inset-0 before:transition-all before:duration-[0.2s] transition-all active:before:bg-[#2663CD]/40 active:outline-none active:shadow-none active:ring-0 active:ring-offset-0`}
@@ -394,28 +381,31 @@ export default function Profile() {
             onMouseLeave={() => setIsHoveredInnerButton(false)}
             className="btn py-[7px] px-[21px] !rounded-[10px] !w-fit !h-fit !ml-0 !mr-0 !mb-0"
           >
-            <span className="span-btn text-[14px] font-[300]">دنبال کردن</span>
+            <h4 className="span-btn text-[14px] font-[300]">دنبال کردن</h4>
           </button>
         ) : (
           <button
-            onClick={() => {handleFollow(user);location.reload()}}
+            onClick={() => {
+              handleFollow(user);
+              location.reload();
+            }}
             onMouseEnter={() => setIsHoveredInnerButton(true)}
             onMouseLeave={() => setIsHoveredInnerButton(false)}
             className="btn py-[7px] px-[21px] !rounded-[10px] !w-fit !h-fit !ml-0 !mr-0 !mb-0"
           >
-            <span className="span-btn text-[14px] font-[300]">دنبال نکردن</span>
+            <h4 className="span-btn text-[14px] font-[300]">دنبال نکردن</h4>
           </button>
         )}
 
         <div className="relative flex items-center gap-[18px] cursor-pointer rounded-full">
           <div className="flex flex-col gap-[5px]">
-            <span className="ml-auto text-[20px] font-[600]">
+            <h4 className="ml-auto text-[20px] font-[600]">
               {user.following}
-            </span>
-            <span
+            </h4>
+            <h4
               dir="rtl"
               className="text-[12px] font-[400] text-[#265073]"
-            ></span>
+            ></h4>
           </div>
           {user.following_image == null ? (
             <img
@@ -447,7 +437,7 @@ export default function Profile() {
             ></img>
             <div className="flex flex-col mr-[26px] mt-[27px]">
               <h6 className="text-[32px] font-[400] mb-[5px]">نام کتاب</h6>
-              <p className="mb-[5px] text-[20px] font-[400]">نام نویسنده</p>
+              <h4 className="mb-[5px] text-[20px] font-[400]">نام نویسنده</h4>
               <Rating
                 style={{ direction: "ltr" }}
                 name="half-rating-read"
@@ -461,7 +451,7 @@ export default function Profile() {
             <div className="w-[538px] h-[21px] bg-[#ffffff] rounded-[30px] shadow-lg shadow-[#000000]/25">
               <div className="w-[83%] h-[100%] bg-[#26A541] rounded-[30px] shadow-lg shadow-[#000000]/25"></div>
             </div>
-            <p className="text-[16px] font-[400] mr-3">83%</p>
+            <h4 className="text-[16px] font-[400] mr-3">83%</h4>
           </div>
           <button className="bg-[#2663CD] rounded-[10px] text-[#ffffff] text-[16px] font-[400] py-[9px] px-[32px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
             ادامه دادن
@@ -482,7 +472,7 @@ export default function Profile() {
           ></img>
           <div className="flex flex-col gap-[5px] m-auto">
             <h6 className="text-[32px] font-[400]">نام کتاب</h6>
-            <span className="text-[20px] font-[400]">فصل فلان ام</span>
+            <h4 className="text-[20px] font-[400]">فصل فلان ام</h4>
           </div>
         </div>
         <button className="bg-[#2663CD] rounded-[10px] text-[#ffffff] text-[16px] font-[400] py-[5.5px] px-[32px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">

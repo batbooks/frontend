@@ -1,4 +1,7 @@
 import React from "react";
+import emailIcon from "../../assets/images/email.svg";
+import locationIcon from "../../assets/images/Location-icon.svg";
+import phoneIcon from "../../assets/images/phone.svg";
 
 function Footer() {
   return (
@@ -95,10 +98,7 @@ function Footer() {
             <ul className="space-y-2.5">
               <li>
                 <div className="flex flex-row gap-[3px]">
-                  <img
-                    src="src/assets/images/phone.svg"
-                    className="w-[14px] mb-[2px]"
-                  />
+                  <img src={phoneIcon} className="w-[14px] mb-[2px]" />
                   <span className="text-sm text-black ">
                     : 53227747 - (021)
                   </span>
@@ -106,10 +106,7 @@ function Footer() {
               </li>
               <li>
                 <div className="flex flex-row gap-[3px]">
-                  <img
-                    src="src/assets/images/email.svg"
-                    className="w-[14px] mb-[2px]"
-                  />
+                  <img src={emailIcon} className="w-[14px] mb-[2px]" />
                   <span className="text-sm text-black ">
                     : batbook2025@gmail.com
                   </span>
@@ -119,10 +116,7 @@ function Footer() {
                 <div className="flex flex-row gap-[3px]">
                   <div className="flex flex-col gap-[5px]">
                     <div className="flex flex-row gap-[3px]">
-                      <img
-                        src="src/assets/images/Location-icon.svg"
-                        className="w-[14px]"
-                      />
+                      <img src={locationIcon} className="w-[14px]" />
                       <span className="text-sm ">: تهران، میدان رسالت،</span>
                     </div>
 
@@ -140,7 +134,7 @@ function Footer() {
           </div>
         </div>
         <div className="flex flex-col gap-[20px] items-center grow-603">
-          <img src="././public/batbooksLogo.png" className="w-[150px]" />
+          <img src="/batbooksLogo.png" className="w-[150px]" />
           <h1 className="text-[32px] text-center font-bold text-[#002D54]">
             Bat<span className="text-[#2663CD]">Books</span>
           </h1>
