@@ -259,7 +259,7 @@ export default function Another_User_Profile() {
               </p>
               <p className="text-[16px] font-[300] mt-[12px]">
                 {/* {user.joined_date} */}
-
+                        تاریخ ثبت نام :
                 {getPersianDate(user.joined_date)}
               </p>
             </div>
