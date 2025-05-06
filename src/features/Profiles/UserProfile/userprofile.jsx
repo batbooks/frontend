@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import EditProfile from "../EditProfile/editProfile";
-import Footer from "/src/common/Footer/footer";
+import Footer from "/src/common/Footer/Footer";
 import Navbar from "/src/common/Navbar/navbar";
 import { Rating } from "@mui/material";
 import BookCard from "../../../common/BookCard/bookCard";

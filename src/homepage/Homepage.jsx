@@ -3,7 +3,7 @@ import Newest_books from "./Newest_books";
 import Suggestions from "./Suggestions";
 import Popular_authors from "./Popular_authors";
 import Most_active_authors from "./Most_active_authors";
-import Banner from "./banner";
+import Banner from "./Banner";
 import Right from "./right";
 import Left from "./left";
 import Navbar from "../common/Navbar/navbar";
