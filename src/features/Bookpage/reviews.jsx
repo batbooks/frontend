@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
 import { Rating } from "@mui/material";
 import Swal from "sweetalert2";
-import ReactMarkdown from "react-markdown";
+import parse from "html-react-parser";
 
 function Reviews({ book }) {
   const { bookId } = useParams();
@@ -367,7 +367,7 @@ function Reviews({ book }) {
                       </div>
                       <h1 className="font-bold text-xl">{review.title}</h1>
                       <div className="text-[16px] font-[300] my-auto">
-                        <ReactMarkdown>{review.body}</ReactMarkdown>
+                        {parse(review.body)}
                       </div>
                     </div>
                   </div>
