@@ -271,7 +271,7 @@ export default function Another_User_Profile() {
             {console.log(user)}
             <div className="flex gap-[20px] mb-[19px] ">
               <button
-                onClick={() => handleScrollDown(0.9)}
+                
                 className="flex flex-col  bg-[#ffffff] px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:bg-[#2663cd]/90 hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none"
               >
                 <span className="text-[24px] font-[600] text-[#265073] mb-[-5px]">
@@ -282,7 +282,7 @@ export default function Another_User_Profile() {
                 </span>
               </button>
               <button
-                onClick={() => handleScrollDown(1.4)}
+                onClick={() => handleScrollDown(0.9)}
                 className="flex flex-col   bg-[#ffffff] px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:bg-[#2663cd]/90 hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none"
               >
                 <span className="text-[24px] font-[600] text-[#265073] mb-[-5px]">

@@ -60,6 +60,7 @@ export default function Vf() {
         setTimeout(() => navigate("/login"), 2000);
       }
     } catch (err) {
+      
       setErrors({
         general: " خطا در بازیابی رمز عبور. لطفا دوباره امتحان کنید ",
       });

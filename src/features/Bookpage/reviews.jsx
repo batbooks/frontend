@@ -78,6 +78,7 @@ function Reviews({ book }) {
         [userId]: data.is_follow,
       }));
     } catch (err) {
+
       console.error(err.message);
     } finally {
       setLoading1(false);
@@ -105,7 +106,14 @@ function Reviews({ book }) {
       );
     } catch (err) {
       console.error(err);
-    } finally {
+      Swal.fire({
+        title: "ارور ",
+        text: " درخواست موفقیت آمیز نبود ",
+        icon: "error",
+        confirmButtonText: "باشه",
+      })
+    }
+   finally {
       setTimeout(() => {
         Swal.fire({
           title: "نقد شما با موفقیت حذف شد.",
@@ -191,6 +199,13 @@ function Reviews({ book }) {
         },
       });
     } catch (err) {
+      Swal.fire({
+        title: "ارور ",
+        text: " درخواست موفقیت آمیز نبود ",
+        icon: "error",
+        confirmButtonText: "باشه",
+      })
+    
       console.error(err.message);
     }
   };
@@ -321,7 +336,7 @@ function Reviews({ book }) {
                           >
                             <span className="span-btn">حذف نقد</span>
                           </button>
-                          <button className="btn  !py-[5px] !px-[38px] !text-[14px] !font-[400]">
+                          <button className="btn  !py-[5px] !px-[38px] !text-[14px] !font-[400] !hidden">
                             <span className="span-btn">ویرایش نقد</span>
                           </button>
                         </div>

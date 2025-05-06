@@ -24,13 +24,13 @@ function Footer() {
       <div className="flex pb-[20px] gap-[100px]">
         <div className="flex grow-677 justify-between gap-[100px]">
           <div className="space-y-2.5">
-            <h1 className="text-base text-[#265073] font-bold">
+            <h1 className="text-base text-[#184061] font-bold ">
               شرکت BatBooks
             </h1>
             <ul className="space-y-2.5">
               <li>
                 <button
-                  className="text-sm"
+                  className="text-sm cursor-pointer"
                   onClick={() =>
                     handleItemClick(
                       <div
@@ -73,7 +73,7 @@ function Footer() {
               </li>
               <li>
                 <button
-                  className="text-sm"
+                  className="text-sm cursor-pointer"
                   onClick={() =>
                     handleItemClick(
                       <div
@@ -133,13 +133,13 @@ function Footer() {
                           </li>
                         </ol>
 
-                        <p class="bg-yellow-50 border-r-4 border-yellow-400 p-3 rounded-md text-yellow-800">
+                        <p class="bg-yellow-50 border-r-4 ml-2 border-yellow-400 p-3 rounded-md text-yellow-800">
                           <strong>اخطار:</strong> در صورت عدم رعایت هرکدام از
                           قوانین، مدیران مجاز به اعمال محدودیت یا توقیف حساب
                           کاربری خواهند بود.
                         </p>
 
-                        <p class="bg-blue-50 border-r-4 border-blue-400 p-3 rounded-md text-blue-800">
+                        <p class="bg-blue-50 border-r-4 ml-2 border-blue-400 p-3 rounded-md text-blue-800">
                           <strong>نکته:</strong> حق تغییر قوانین برای مدیریت
                           محفوظ بوده و کاربران موظف به رعایت قوانین جدید هستند.
                         </p>
@@ -161,7 +161,7 @@ function Footer() {
               </li>
               <li>
                 <button
-                  className="text-sm"
+                  className="text-sm cursor-pointer"
                   onClick={() =>
                     handleItemClick(
                       <div
@@ -248,7 +248,7 @@ function Footer() {
             </ul>
           </div>
           <div className="space-y-2.5">
-            <h1 className="text-base text-[#265073] font-bold">همکاری با ما</h1>
+            <h1 className="text-base text-[#184061] font-bold">همکاری با ما</h1>
             <ul className="space-y-2.5">
               <li>
                 <a className="text-sm" href="#contact_creature">
@@ -296,7 +296,7 @@ function Footer() {
             </ul>
           </div>
           <div className="space-y-2.5">
-            <h1 className="text-base font-bold text-[#265073]">
+            <h1 className="text-base font-bold text-[#184061]">
               مسیرهای ارتباطی
             </h1>
             <ul className="space-y-2.5">

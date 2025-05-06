@@ -29,7 +29,14 @@ function AppRoutes() {
         <Route path="/auth/otp" element={<Otp />}></Route>
         <Route path="/auth/login" element={<Login />}></Route>
         <Route path="/comment" element={<Comments />}></Route>
-        <Route path="/userprofile" element={<Profile />}></Route>
+        <Route
+          path="/userprofile"
+          element={
+            <Middleware>
+              <Profile/>
+            </Middleware>
+          }
+        ></Route>
         <Route path="/book/:bookId" element={<BookPage />}></Route>
         <Route
           path="/mybooks/createbook"

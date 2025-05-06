@@ -38,7 +38,7 @@ const EditChapter = () => {
           <button
             onClick={() => {
               setChapterMode(1);
-              navigate(`/createChapter/`, {
+              navigate(`/createAndEditChapter/${bookId}`, {
                 state: { id: bookId },
               });
             }}
@@ -47,7 +47,7 @@ const EditChapter = () => {
             <img src="/src/assets/images/add_sign.svg" alt="add" />
             اضافه کردن فصل جدید
           </button>
-          <span className="font-bold text-[32px] text-[#265073]">
+          <span className="font-bold text-[27px] text-[#265073]">
             نام کتاب : {bookData.name}
           </span>
         </div>
@@ -56,19 +56,19 @@ const EditChapter = () => {
           <table className="rounded-[10px] min-w-full text-center text-sm bg-white shadow-lg shadow-[#000000]/31">
             <thead className="bg-[#2663cd]/90 rounded-[10px]">
               <tr className="rounded-[30px]">
-                <th className="px-[12px] py-[18px] text-[12px] text-white font-semibold rounded-tl-[10px]">
+                <th className="px-[10px] py-[16px] text-[14px] text-white font-semibold rounded-tl-[10px]">
                   ویرایش فصل
                 </th>
-                <th className="text-center px-[12px] py-[18px] text-[12px] text-white font-semibold w-[139px]  border-l-[2px] border-[#B9B9B9]">
+                <th className="text-center px-[10px] py-[16px] text-[14px] text-white font-semibold w-[139px]  border-l-[2px] border-[#B9B9B9]">
                   آخرین ویرایش
                 </th>
-                <th className="px-[12px] py-[18px] text-[12px] text-white font-semibold w-[139px] text-center border-l-[2px] border-[#B9B9B9]">
+                <th className="px-[10px] py-[16px] text-[14px] text-white font-semibold w-[139px] text-center border-l-[2px] border-[#B9B9B9]">
                   امتیاز
                 </th>
-                <th className="px-[12px] py-[18px] text-[12px] text-white font-semibold text-right border-l-[2px] border-[#B9B9B9]">
+                <th className="px-[10px] py-[16px] text-[14px] text-white font-semibold text-right border-l-[2px] border-[#B9B9B9]">
                   نام فصل
                 </th>
-                <th className="px-[12px] py-[18px] text-[12px] text-white font-semibold w-[90px] text-center border-l-[2px] border-[#B9B9B9] rounded-tr-[10px]">
+                <th className="px-[10px] py-[16px] text-[14px] text-white font-semibold w-[90px] text-center border-l-[2px] border-[#B9B9B9] rounded-tr-[10px]">
                   شماره فصل
                 </th>
               </tr>
@@ -118,16 +118,16 @@ function Chapter({
           ویرایش
         </button>
       </td>
-      <td className="text-center px-[12px] py-[18px] text-[12px] font-[300] border-t-[2px] border-l-[2px] border-[#B9B9B9]">
+      <td className="text-center px-[12px] py-[18px] text-[14px]  border-t-[2px] border-l-[2px] border-[#B9B9B9]">
         {chapterEditedIn}
       </td>
-      <td className="text-center px-[12px] py-[18px] text-[12px] font-[300] border-t-[2px] border-l-[2px] border-[#B9B9B9]">
+      <td className="text-center px-[12px] py-[18px] text-[14px]  border-t-[2px] border-l-[2px] border-[#B9B9B9]">
         {chapterPages}
       </td>
-      <td className="text-right px-[12px] py-[18px] text-[12px] font-[300] border-t-[2px] border-l-[2px] border-[#B9B9B9]">
+      <td className="text-right px-[12px] py-[18px] text-[14px]  border-t-[2px] border-l-[2px] border-[#B9B9B9]">
         {chapterName}
       </td>
-      <td className="text-center px-[12px] py-[18px] text-[12px] font-[300] border-t-[2px] border-l-[2px] border-[#B9B9B9]">
+      <td className="text-center px-[12px] py-[18px] text-[14px]  border-t-[2px] border-l-[2px] border-[#B9B9B9]">
         {chapterNum}
       </td>
     </tr>

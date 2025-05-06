@@ -126,7 +126,12 @@ const BookPage = () => {
       }, 100);
       setIsFavorite(!isFavorite);
     } catch (err) {
-      console.error("Error:", err.message);
+      Swal.fire({
+        title: "ارور ",
+        text: " درخواست موفقیت آمیز نبود ",
+        icon: "error",
+        confirmButtonText: "باشه",
+      });
     } finally {
       setLoading(false);
     }

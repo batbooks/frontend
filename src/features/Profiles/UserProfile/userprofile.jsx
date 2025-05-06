@@ -23,6 +23,17 @@ export default function Profile() {
   const [writtenBooks, setWrittenBooks] = useState(0);
   const handleFollow = async (user) => {
     try {
+      const response = await fetch(
+        `/api/user/toggle/follow/${user.following_user_id}/`,   
+        {
+          method: "GET",
+
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       setFollowing((prev) => ({
         ...prev,
         [user.following_user_id]: !prev[user.following_user_id],
@@ -408,6 +419,7 @@ export default function Profile() {
               className="text-[12px] font-[400] text-[#265073]"
             ></h4>
           </div>
+          
           {user.following_image == null ? (
             <img
               src={"/src/assets/images/following.png"}
@@ -416,7 +428,7 @@ export default function Profile() {
             />
           ) : (
             <img
-              src={`batbooks.liara.run${user.following_image}`}
+              src={`http://45.158.169.198${user.following_image}`}
               alt="following"
               className="rounded-full w-[110px] h-[110px]"
             />
