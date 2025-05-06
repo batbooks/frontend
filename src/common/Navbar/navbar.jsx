@@ -195,7 +195,7 @@ function Navbar() {
                 setIsVisiblePanel(false);
               }
             }}
-            className="gap-[10px] mt-[81px] flex flex-col w-[155px] items-center mr-[-29px] rounded-full"
+            className="gap-[10px] mt-[85px] flex flex-col w-[155px] items-center mr-[-29px] rounded-full"
           >
             <button
               className="cursor-pointer flex focus:outline-none"
