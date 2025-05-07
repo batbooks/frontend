@@ -20,7 +20,7 @@ export default function MyBooks() {
       setLoading(true);
       const token = localStorage.getItem("access_token");
       try {
-        const response = await fetch(`/api/book/my/`, {
+        const response = await fetch(`http://45.158.169.198/book/my/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -45,7 +45,7 @@ export default function MyBooks() {
       setLoading2(true);
       const token = localStorage.getItem("access_token");
       try {
-        const response = await fetch(`/api/book-actions/get/favorite/`, {
+        const response = await fetch(`http://45.158.169.198/book-actions/get/favorite/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -146,7 +146,7 @@ export default function MyBooks() {
                           description={book.description}
                           coverImage={
                             book.image
-                              ? `/api/${book.image}`
+                              ? `http://45.158.169.198/${book.image}`
                               : `/src/assets/images/book_sample1.png`
                           }
                         />

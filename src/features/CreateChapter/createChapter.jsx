@@ -15,7 +15,7 @@ const CreateChapter = () => {
   const handlesubmit = async (e) => {
     e.prevent.default;
     try {
-      const response = await fetch(`/api/book/chapter/create/`, {
+      const response = await fetch(`http://45.158.169.198/book/chapter/create/`, {
         method: "POST",
         body: JSON.stringify({
           book: id,

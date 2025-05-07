@@ -32,7 +32,7 @@ export default function Another_User_Profile() {
       setLoading(true);
       console.log("asda");
       try {
-        const response = await fetch(`/api/user/info/${userId}/`);
+        const response = await fetch(`http://45.158.169.198/user/info/${userId}/`);
         if (!response.ok) throw new Error("Failed to fetch book");
         const data = await response.json();
         setUser(data);
@@ -48,7 +48,7 @@ export default function Another_User_Profile() {
 
       try {
         const response = await fetch(
-          `/api/book/user/${userId}/`,
+          `http://45.158.169.198/book/user/${userId}/`,
           {
             method: "GET",
           }
@@ -76,7 +76,7 @@ export default function Another_User_Profile() {
     const fetchFollowing = async () => {
       setLoading1(true);
       try {
-        const response = await fetch(`/api/user/is/follow/${userId}/`, {
+        const response = await fetch(`http://45.158.169.198/user/is/follow/${userId}/`, {
           method: "GET",
 
           headers: {
@@ -99,7 +99,7 @@ export default function Another_User_Profile() {
       setLoading2(true);
       try {
         const response = await fetch(
-          `/api/user/is/Not_Interested/${userId}/`,
+          `http://45.158.169.198/user/is/Not_Interested/${userId}/`,
           {
             method: "GET",
 
@@ -141,7 +141,7 @@ export default function Another_User_Profile() {
   const handleFollow = async () => {
     try {
       const response = await fetch(
-        `/api/user/toggle/follow/${userId}/`,
+        `http://45.158.169.198/user/toggle/follow/${userId}/`,
         {
           method: "GET",
 
@@ -158,7 +158,7 @@ export default function Another_User_Profile() {
   const handleBlockd = async () => {
     try {
       const response = await fetch(
-        `/api/user/toggle/Not_Interested/${userId}/`,
+        `http://45.158.169.198/user/toggle/Not_Interested/${userId}/`,
         {
           method: "GET",
 
@@ -450,7 +450,7 @@ export function Book({ book, isLast = false, minw = 180, h = 254 }) {
         title={book.name}
         author={book.Author}
         coverImage={
-          book.image != null ? `/api/${book.image}` : "/20.jpg"
+          book.image != null ? `http://45.158.169.198/${book.image}` : "/20.jpg"
         }
         description={book.description}
         chapters={80}

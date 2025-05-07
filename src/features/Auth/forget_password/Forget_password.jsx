@@ -27,7 +27,7 @@ function Forget_password() {
 
     try {
       // Replace this with your actual API endpoint
-      const response = await fetch("/api/auth/reset-password/send-otp/", {
+      const response = await fetch("http://45.158.169.198/auth/reset-password/send-otp/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

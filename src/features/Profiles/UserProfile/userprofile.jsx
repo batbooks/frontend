@@ -35,7 +35,7 @@ export default function Profile() {
     const auth = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`/api/auth/who/`, {
+        const response = await fetch(`http://45.158.169.198/auth/who/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -60,7 +60,7 @@ export default function Profile() {
       setLoading2(true);
 
       try {
-        const response = await fetch(`/api/book/user/${userid}/`, {
+        const response = await fetch(`http://45.158.169.198/book/user/${userid}/`, {
           method: "GET",
         });
 
@@ -82,7 +82,7 @@ export default function Profile() {
     const fetchFollowings = async () => {
       setLoading1(true);
       try {
-        const response = await fetch(`/api/user/following/`, {
+        const response = await fetch(`http://45.158.169.198/user/following/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

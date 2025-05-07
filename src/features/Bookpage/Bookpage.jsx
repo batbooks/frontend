@@ -60,11 +60,11 @@ const BookPage = () => {
 
         const [bookResponse, favoriteResponse, reveiewsResponse] =
           await Promise.all([
-            fetch(`/api/book/${bookId}/`),
-            fetch(`/api/book-actions/is/favorite/${bookId}/`, {
+            fetch(`http://45.158.169.198/book/${bookId}/`),
+            fetch(`http://45.158.169.198/book-actions/is/favorite/${bookId}/`, {
               headers: { Authorization: auth },
             }),
-            fetch(`/api/comments/book/${bookId}/reviews/`),
+            fetch(`http://45.158.169.198/comments/book/${bookId}/reviews/`),
           ]);
 
         if (bookResponse.status == 404) {
@@ -104,7 +104,7 @@ const BookPage = () => {
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(
-        `/api/book-actions/toggle/favorite/${bookId}/`,
+        `http://45.158.169.198/book-actions/toggle/favorite/${bookId}/`,
         {
           method: "GET",
           headers: {
@@ -151,7 +151,7 @@ const BookPage = () => {
     }
     try {
       const response = await fetch(
-        `/api/comments/book/${bookId}/reviews/create/`,
+        `http://45.158.169.198/comments/book/${bookId}/reviews/create/`,
         {
           method: "POST",
           headers: {

@@ -31,7 +31,7 @@ function Reviews({ book }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchPage(`/api/comments/book/${bookId}/reviews/`);
+    fetchPage(`http://45.158.169.198/comments/book/${bookId}/reviews/`);
   }, [bookId]);
 
   const fetchPage = async (url) => {
@@ -65,7 +65,7 @@ function Reviews({ book }) {
   const fetchFollowing = async (userId) => {
     setLoading1(true);
     try {
-      const response = await fetch(`/api/user/is/follow/${userId}/`, {
+      const response = await fetch(`http://45.158.169.198/user/is/follow/${userId}/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -94,7 +94,7 @@ function Reviews({ book }) {
   const handleDeleteReview = async () => {
     try {
       const response = await fetch(
-        `/api/comments/book/${bookId}/reviews/my-review/`,
+        `http://45.158.169.198/comments/book/${bookId}/reviews/my-review/`,
         {
           method: "DELETE",
           headers: {
@@ -150,7 +150,7 @@ function Reviews({ book }) {
       })
     );
 
-    await fetch(`/api/comments/review/like/${reviewId}/`, {
+    await fetch(`http://45.158.169.198/comments/review/like/${reviewId}/`, {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -175,7 +175,7 @@ function Reviews({ book }) {
       })
     );
 
-    await fetch(`/api/comments/review/dislike/${reviewId}/`, {
+    await fetch(`http://45.158.169.198/comments/review/dislike/${reviewId}/`, {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -183,7 +183,7 @@ function Reviews({ book }) {
 
   const handleFollow = async (reviewId) => {
     try {
-      const response = await fetch(`/api/user/toggle/follow/${reviewId}/`, {
+      const response = await fetch(`http://45.158.169.198/user/toggle/follow/${reviewId}/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

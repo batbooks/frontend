@@ -20,7 +20,7 @@ function AppContent() {
       setLoading(true);
       if (localStorage.getItem("refresh_token")) {
         try {
-          const response = await fetch(`/api/auth/token/refresh/`, {
+          const response = await fetch(`http://45.158.169.198/auth/token/refresh/`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -52,7 +52,7 @@ function AppContent() {
       setLoading(true);
 
       try {
-        const response = await fetch(`/api/auth/who/`, {
+        const response = await fetch(`http://45.158.169.198/auth/who/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

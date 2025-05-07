@@ -32,8 +32,8 @@ const TagExplorer = ({ onSelectTags, onSelectGenre }) => {
         const token = localStorage.getItem("access_token");
 
         const [genreResponse, tagResponse] = await Promise.all([
-          fetch(`/api/tag/genres/`),
-          fetch(`/api/tag/tag-categories/`, {
+          fetch(`http://45.158.169.198/tag/genres/`),
+          fetch(`http://45.158.169.198/tag/tag-categories/`, {
             method: "GET",
 
             headers: {

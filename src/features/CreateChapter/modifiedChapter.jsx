@@ -16,7 +16,7 @@ const ModifiedChapter = () => {
     const fetchChapter = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`/api/book/chapter/${chapterId}/`, {
+        const response = await fetch(`http://45.158.169.198/book/chapter/${chapterId}/`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -47,7 +47,7 @@ const ModifiedChapter = () => {
     setLoading(true);
     console.log("sfdf");
     try {
-      const response = await fetch(`/api/book/chapter/${chapterId}/`, {
+      const response = await fetch(`http://45.158.169.198/book/chapter/${chapterId}/`, {
         method: "PUT",
         body: JSON.stringify({
           title: chapterName,

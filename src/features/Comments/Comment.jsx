@@ -27,7 +27,7 @@ export default function Comments({ chapterId }) {
     const fetchComments = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`/api/comments/chapter/${chapterId}/`, {
+        const response = await fetch(`http://45.158.169.198/comments/chapter/${chapterId}/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -225,7 +225,7 @@ function Comment({
   const fetchReplies = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/comments/comment/${commentId}/`, {
+      const response = await fetch(`http://45.158.169.198/comments/comment/${commentId}/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -635,7 +635,7 @@ function ReplyBox({ isLast, commentId, setHidden }) {
 
     try {
       const token = localStorage.getItem("access_token");
-      const response = await fetch(`/api/comments/reply_to/${commentId}/`, {
+      const response = await fetch(`http://45.158.169.198/comments/reply_to/${commentId}/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -737,7 +737,7 @@ function LikeAndDislike({ likeNum, dislikeNum, likeState, commentorreplyId }) {
     try {
       setLoading(true);
       const token = localStorage.getItem("access_token");
-      const response = await fetch(`/api/comments/like/${commentorreplyId}/`, {
+      const response = await fetch(`http://45.158.169.198/comments/like/${commentorreplyId}/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -757,7 +757,7 @@ function LikeAndDislike({ likeNum, dislikeNum, likeState, commentorreplyId }) {
       setLoading(true);
       const token = localStorage.getItem("access_token");
       const response = await fetch(
-        `/api/comments/dislike/${commentorreplyId}/`,
+        `http://45.158.169.198/comments/dislike/${commentorreplyId}/`,
         {
           method: "GET",
           headers: {

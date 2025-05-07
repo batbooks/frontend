@@ -12,7 +12,7 @@ export default function VoteAndReview({ chapter, commentsCount }) {
     e.preventDefault();
     try {
       const token = localStorage.getItem("access_token");
-      const response = await fetch("/api/comments/create/", {
+      const response = await fetch("http://45.158.169.198/comments/create/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

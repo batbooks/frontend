@@ -28,7 +28,7 @@ const ReadingPage = () => {
       setLoading(true);
 
       try {
-        const response = await fetch(`/api/book/chapter/${chapterId}/`, {
+        const response = await fetch(`http://45.158.169.198/book/chapter/${chapterId}/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

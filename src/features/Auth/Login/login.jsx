@@ -16,7 +16,7 @@ function Login() {
   let navigate = useNavigate();
   const fetchuserinfo = async (token) => {
     try {
-      const response = await fetch(`/api/auth/who/`, {
+      const response = await fetch(`http://45.158.169.198/auth/who/`, {
         method: "GET",
 
         headers: {
@@ -37,7 +37,7 @@ function Login() {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/auth/token/", {
+      const response = await fetch("http://45.158.169.198/auth/token/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

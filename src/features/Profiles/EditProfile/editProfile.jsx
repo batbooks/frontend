@@ -23,7 +23,7 @@ export default function EditProfile({ setEditClicked }) {
       if (selectedFile) formData.append("image", selectedFile);
       if (userName) formData2.append("username", userName);
       if (formData) {
-        const response = await fetch(`/api/user/info/change/update/`, {
+        const response = await fetch(`http://45.158.169.198/user/info/change/update/`, {
           method: "PUT",
           body: formData,
           headers: {
@@ -37,7 +37,7 @@ export default function EditProfile({ setEditClicked }) {
       }
 
       if (formData2) {
-        const response = await fetch(`/api/user/info/change/username/`, {
+        const response = await fetch(`http://45.158.169.198/user/info/change/username/`, {
           method: "PUT",
           body: formData2,
           headers: {
