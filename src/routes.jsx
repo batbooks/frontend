@@ -56,6 +56,7 @@ function AppRoutes() {
           path="/forums"
           element={<SearchResults searchingItem="forum" />}
         />
+        <Route path="/searchresults" element={<SearchResults />} />
         <Route path="/readingchapter" element={<ReadingPage chapterId={1} />} />
         <Route
           path="/createAndEditChapter/:chapterId"
