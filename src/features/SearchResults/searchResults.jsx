@@ -22,12 +22,13 @@ const SearchResults = ({ searchingItem = "forum" }) => {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://45.158.169.198/forum/?page=${currentPage}&page_size=${itemsPerPage}`
+        `http://45.158.169.198/forum/?page=${currentPage}`
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
+      console.log(data)
       setForums(data.results);
       setTotalPages(Math.ceil(data.count / itemsPerPage));
     } catch (err) {
