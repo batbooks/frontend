@@ -23,6 +23,7 @@ function Signup() {
         body: JSON.stringify({ email, password, c_password: repeatPassword }),
       });
       const data = await response.json();
+      
       if (response.ok) {
         navigate("/auth/otp", { state: { email: { email } } });
       } else {
@@ -30,7 +31,12 @@ function Signup() {
         throw new Error(data[0]);
       }
     } catch (err) {
-      setError(err.message);
+      if(password.length<8){
+        setError(" طول پسورد شما کم است ")
+      }
+      else{
+        setError(" ایمیل شما اشتباه است ")
+      }
     } finally {
       setLoading(false);
     }
@@ -85,7 +91,7 @@ function Signup() {
               alt="lock-password"
               className="absolute right-38 top-[50%] -translate-y-1/2"
             />
-            {showPassword ? (
+            {!showPassword ? (
               <img
                 src="/src/assets/images/eye-on.png"
                 alt="eye-on-password"
@@ -114,7 +120,7 @@ function Signup() {
               alt="lock-repeat-password"
               className="absolute right-38 top-[50%] -translate-y-1/2"
             />
-            {showRepeatPassword ? (
+            {!showRepeatPassword ? (
               <img
                 src="/src/assets/images/eye-on.png"
                 alt="eye-on-repeat-password"
@@ -130,14 +136,16 @@ function Signup() {
               />
             )}
           </div>
+          {error != "" ? (
+            <p className="text-red-600 text-center mb-2">{error}</p>
+          ) : null}
           <button type="submit" className="btn" disabled={loading}>
             <span className="span-btn">
               {loading ? "...در حال ثبت نام" : "ثبت نام"}
             </span>
           </button>
-          {error != "" ? (
-            <p className="text-red-600 text-center mt-5">{error}</p>
-          ) : null}
+          
+         
         </form>
         <img
           src="/src/assets/images/mid-left.png"

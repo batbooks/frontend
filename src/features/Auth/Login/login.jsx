@@ -12,6 +12,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const [userinfo, setuserinfo] = useState({});
   const [loading, setLoading] = useState(false);
+  const [error,seterror]=useState("")
   // const token = localStorage.getItem("access_token");
   let navigate = useNavigate();
   const fetchuserinfo = async (token) => {
@@ -33,14 +34,16 @@ function Login() {
   };
 
   async function handleSubmit(e) {
+    console.log("adsda");
     e.preventDefault();
     setLoading(true);
 
     try {
-      const response = await fetch("/api/auth/token/", {
+      const response = await fetch("http://45.158.169.198/auth/token/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          
         },
         body: JSON.stringify({
           email,
@@ -48,28 +51,37 @@ function Login() {
         }),
       });
 
-      if (!response.ok) {
-        throw new Error("Login failed");
+      // if (!response.ok) {
+      //   throw new Error("Login failed");
+      // }
+      if (response.status==401){
+        seterror(" اطلاعات خود را درست وارد کنید ")
       }
+      if (response.ok) {
+        const data = await response.json();
 
-      const data = await response.json();
-
-      localStorage.setItem("access_token", data.access);
-      localStorage.setItem("refresh_token", data.refresh);
-      navigate("/");
-      fetchuserinfo(data.access);
-      const user = userinfo;
-      dispatch(
-        loginSuccess({
-          user,
-        })
-      );
+        console.log(response.error, "asdasd");
+        localStorage.setItem("access_token", data.access);
+        localStorage.setItem("refresh_token", data.refresh);
+        navigate("/");
+        fetchuserinfo(data.access);
+        const user = userinfo;
+        location.reload();
+        dispatch(
+          loginSuccess({
+            user,
+          })
+        );
+      }
+      else{
+        seterror(" اطلاعات خود را درست وارد کنید ")
+      }
     } catch (err) {
-      console.error(err.message);
+      seterror(" اطلاعات خود را درست وارد کنید ")
+      console.log(err.detail)
       dispatch(logout());
     } finally {
       setLoading(false);
-      location.reload();
     }
   }
 
@@ -118,7 +130,7 @@ function Login() {
               alt="lock-password"
               className="absolute right-38 top-[50%] -translate-y-1/2"
             />
-            {showPassword ? (
+            {!showPassword ? (
               <img
                 src="/src/assets/images/eye-on.png"
                 alt="eye-on-password"
@@ -134,17 +146,20 @@ function Login() {
               />
             )}
           </div>
+         {error!=""?<div className="text-center text-red-600 mb-1">{error}</div>:<></>}
           <button type="submit" className="btn" disabled={loading}>
             <span className="span-btn">
               {loading ? "...در حال ورود" : "ورود"}
             </span>
           </button>
+          
           <Link
             className="mx-auto flex cursor-pointer justify-center hover:text-[#2663CD]"
             to={"/Forget_password"}
           >
             رمز عبور را فراموش کرده ام
           </Link>
+          
         </form>
         <img
           src="/src/assets/images/mid-left.png"
@@ -174,6 +189,7 @@ function Login() {
         alt="bottom-right"
         className=" absolute right-[0px] bottom-0 w-[33vw] ascept-auto"
       />
+      
     </div>
   );
 }
