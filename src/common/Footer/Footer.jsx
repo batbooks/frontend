@@ -133,13 +133,13 @@ function Footer() {
                           </li>
                         </ol>
 
-                        <p class="bg-yellow-50 border-r-4 border-yellow-400 p-3 rounded-md text-yellow-800">
+                        <p class="bg-yellow-50 border-r-4 ml-2 border-yellow-400 p-3 rounded-md text-yellow-800">
                           <strong>اخطار:</strong> در صورت عدم رعایت هرکدام از
                           قوانین، مدیران مجاز به اعمال محدودیت یا توقیف حساب
                           کاربری خواهند بود.
                         </p>
 
-                        <p class="bg-blue-50 border-r-4 border-blue-400 p-3 rounded-md text-blue-800">
+                        <p class="bg-blue-50 border-r-4 ml-2 border-blue-400 p-3 rounded-md text-blue-800">
                           <strong>نکته:</strong> حق تغییر قوانین برای مدیریت
                           محفوظ بوده و کاربران موظف به رعایت قوانین جدید هستند.
                         </p>
