@@ -382,9 +382,10 @@ export default function Another_User_Profile() {
             )}
           </div>
         </div> */}
-        <h6 className="text-[24px] font-[400] text-[#265073] ml-auto mb-[25px]">
+        <h6 className="text-[24px] font-[400] text-[#265073] ml-auto mb-[25px] ">
           کتاب های تالیف شده
         </h6>
+
 
         <div
           ref={containerRef2}
@@ -427,6 +428,8 @@ export default function Another_User_Profile() {
               <span>موردی برای نمایش وجود ندارد...</span>
             )}
           </div>
+          {UserWritten.length>8?          <button className="btn w-[200px]!"><span className="span-btn "> مشاهده تمام موارد </span></button>
+:null}
         </div>
       </main>
       <div className="mt-[-60px]">
