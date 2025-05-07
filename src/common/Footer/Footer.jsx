@@ -24,13 +24,13 @@ function Footer() {
       <div className="flex pb-[20px] gap-[100px]">
         <div className="flex grow-677 justify-between gap-[100px]">
           <div className="space-y-2.5">
-            <h1 className="text-base text-[#265073] font-bold">
+            <h1 className="text-base text-[#184061] font-bold ">
               شرکت BatBooks
             </h1>
             <ul className="space-y-2.5">
               <li>
                 <button
-                  className="text-sm"
+                  className="text-sm cursor-pointer"
                   onClick={() =>
                     handleItemClick(
                       <div
@@ -73,7 +73,7 @@ function Footer() {
               </li>
               <li>
                 <button
-                  className="text-sm"
+                  className="text-sm cursor-pointer"
                   onClick={() =>
                     handleItemClick(
                       <div
@@ -161,7 +161,7 @@ function Footer() {
               </li>
               <li>
                 <button
-                  className="text-sm"
+                  className="text-sm cursor-pointer"
                   onClick={() =>
                     handleItemClick(
                       <div
@@ -248,7 +248,7 @@ function Footer() {
             </ul>
           </div>
           <div className="space-y-2.5">
-            <h1 className="text-base text-[#265073] font-bold">همکاری با ما</h1>
+            <h1 className="text-base text-[#184061] font-bold">همکاری با ما</h1>
             <ul className="space-y-2.5">
               <li>
                 <a className="text-sm" href="#contact_creature">
@@ -296,7 +296,7 @@ function Footer() {
             </ul>
           </div>
           <div className="space-y-2.5">
-            <h1 className="text-base font-bold text-[#265073]">
+            <h1 className="text-base font-bold text-[#184061]">
               مسیرهای ارتباطی
             </h1>
             <ul className="space-y-2.5">

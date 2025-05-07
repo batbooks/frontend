@@ -46,7 +46,7 @@ function Forget_password() {
         throw new Error(data.message || "Failed to send verification code");
       }
     } catch (err) {
-      setError(err.message || "Verification failed. Please try again.");
+      setError(" ایمیل خود را درست وارد کنید ");
     } finally {
       setIsLoading(false);
     }
@@ -109,13 +109,14 @@ function Forget_password() {
               />
             </div>
           </div>
+          {error && <div  className="text-red-600">{error}</div>}
           <div className="flex flex-row justify-center gap-[0.77vw]">
             <button type="submit" disabled={isLoading} className="btn">
-              <span className="span-btn">ارسال کد</span>
+              <span className="span-btn ">ارسال کد</span>
             </button>
           </div>
 
-          {error && <div style={styles.error}>{error}</div>}
+          
           {message && <div style={styles.message}>{message}</div>}
         </form>
 

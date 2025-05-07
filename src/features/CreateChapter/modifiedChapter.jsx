@@ -59,12 +59,18 @@ const ModifiedChapter = () => {
         },
       });
 
-      if (!response.ok) throw new Error("Failed to update chapter");
+      if (response.ok) {
 
-      const data = await response.json();
+      
       console.log("Chapter updated:", data);
+      }
     } catch (err) {
-      console.error("Error updating chapter:", err.message);
+      Swal.fire({
+        title: "ارور ",
+        text: " درخواست موفقیت آمیز نبود ",
+        icon: "error",
+        confirmButtonText: "باشه",
+      })
     } finally {
       setLoading(false);
     }
@@ -116,7 +122,7 @@ const ModifiedChapter = () => {
             <div className="mx-auto">
               <button
                 onClick={handleSubmit}
-                className="mt-[36px] text-[16.8px] font-[400] text-[#ffffff] rounded-[12px] border-[2px] border-[#000000]/21 px-[86px] py-[13.5px] bg-[#2663CD] shadow-lg shadow-[#000000]/25"
+                className="cursor-pointer mt-[36px] text-[16.8px] font-[400] text-[#ffffff] rounded-[12px] border-[2px] border-[#000000]/21 px-[86px] py-[13.5px] bg-[#2663CD] shadow-lg shadow-[#000000]/25"
               >
                 اعمال تغییرات
               </button>
