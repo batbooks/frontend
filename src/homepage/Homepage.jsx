@@ -38,7 +38,7 @@ export default function Homepage() {
     },
   };
   useEffect(() => {
-    window.scrollBy({ top: 50, behavior: "smooth" }); // scrolls down 100px smoothly
+    window.scrollBy({ top: 85, behavior: "smooth" }); // scrolls down 100px smoothly
   }, []);
   return (
     <div className="">
