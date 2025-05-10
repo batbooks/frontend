@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
   BookOpen,
@@ -9,18 +9,15 @@ import {
   Globe,
   Shield,
   Flame,
+  Search,
+  Scroll,
+  Smile,
+  Wand,
+  Sword
 } from "lucide-react";
-const colorr = "bg-blue-300";
-const genres = [
-  { name: "Fantasy", novels: 2453, color: colorr, icon: BookOpen },
-  { name: "Romance", novels: 3211, color: colorr, icon: Heart },
-  { name: "Sci-Fi", novels: 1876, color: colorr, icon: Rocket },
-  { name: "Horror", novels: 945, color: colorr, icon: Skull },
-  { name: "Action", novels: 1547, color: colorr, icon: Flashlight },
-  { name: "Adventure", novels: 1289, color: colorr, icon: Globe },
-  { name: "Mystery", novels: 1023, color: colorr, icon: Shield },
-  { name: "Trending", novels: 856, color: colorr, icon: Flame },
-];
+
+
+
 
 const GenreCard = ({ name, novels, color, Icon }) => (
   <motion.div
@@ -44,8 +41,51 @@ const GenreCard = ({ name, novels, color, Icon }) => (
 );
 
 const ExploreByGenre = () => {
+  const[loading,setLoading]=useState(false)
+  const [genresData,setGenres]=useState([])
+  useEffect(() => {
+    
+    const fetchGenres = async () => {
+      setLoading(true);
+      
+      try {
+        const response = await fetch(`/api/category/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        console.log("asd")
+        if (response.ok) {
+          const data = await response.json();
+          setGenres(data)
+         
+        }
+      } catch (error) {
+        console.error("خطا در ارسال به سرور:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchGenres();
+  }, []);
+  const colorr = "bg-blue-300";
+  
+console.log(genresData)
+  const genres = [
+    { name: genresData[3]?.title, novels: genresData[0]?.book_count, color: colorr, icon: Search },
+    { name: genresData[2]?.title, novels: genresData[2]?.book_count, color: colorr, icon: Heart },
+    { name: genresData[5]?.title, novels: genresData[5]?.book_count, color: colorr, icon:  Scroll},
+    { name: genresData[4]?.title, novels:genresData[4]?.book_count, color: colorr, icon: Skull },
+    { name: genresData[6]?.title, novels: genresData[6]?.book_count, color: colorr, icon: Smile },
+    { name: genresData[0]?.title, novels: genresData[0]?.book_count, color: colorr, icon: Wand },
+    { name: genresData[7]?.title, novels: genresData[7]?.book_count, color: colorr, icon:Sword  },
+    { name: genresData[1]?.title, novels: genresData[1]?.book_count, color: colorr, icon: Rocket }
+  ];
+
   return (
-    <section className="py-24 px-6 max-w-[1440px] m-auto text-center relative overflow-hidden">
+    <section className="py-24 px-6 max-w-[1420px] m-auto text-center relative overflow-hidden">
       {/* پس‌زمینه با افکت لطیف */}
       <div className="absolute inset-0 bg-[url('/pattern.svg')] opacity-10 bg-repeat pointer-events-none blur-sm scale-105"></div>
 
