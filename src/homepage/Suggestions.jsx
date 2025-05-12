@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Book_card from "./book_card";
 import Bookcard from "./Bookcard";
 import { useInView } from "react-intersection-observer";
@@ -54,7 +54,37 @@ export default function Suggestions() {
     false,
     false,
   ]);
+  const [suggestions,setSuggestions]=useState([])
+  const [loading,setLoading]=useState([])
+  const [error,setError]=useState("")
   const cardIds = [1, 2, 3, 4, 0];
+  useEffect(() => {
+      
+      const fetchSuggestions = async () => {
+        setLoading(true);
+        
+        try {
+          const response = await fetch(`/api/suggestion/book/`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          console.log("asd")
+          if (response.ok) {
+            const data = await response.json();
+            setSuggestions(data)
+           
+          }
+        } catch (error) {
+          setError(error.message)
+        } finally {
+          setLoading(false);
+        }
+      };
+    
+      fetchSuggestions();
+    }, []);
   return (
     <div dir="rtl">
       <div className="w-full h-[90vh] m-auto bg-white/80 py-[50px] pb-[50px] relative overflow-hidden">
@@ -70,7 +100,7 @@ export default function Suggestions() {
         </motion.h1>
 
         {/* کارت‌ها با انیمیشن ورود از چپ */}
-        <div className="flex flex-row gap-[6vw] p-20 pt-0 pb-0 items-center">
+        <div className="flex flex-row justify-start gap-[4vw]  p-20 pt-0 pb-0 items-center">
           {cardIds.map((id, index) => {
             const [ref, inView] = useInView({
               triggerOnce: true,
@@ -91,7 +121,7 @@ export default function Suggestions() {
               >
                 <Bookcard
                   id={id}
-                  books={books}
+                  suggestions={suggestions}
                   isHovered={isHovered}
                   setIsHovered={setIsHovered}
                 />

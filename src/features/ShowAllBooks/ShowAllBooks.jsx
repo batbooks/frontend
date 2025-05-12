@@ -9,7 +9,7 @@ const favBooks = [
 ];
 
 export default function ShowAllBooks({
-  bookModel = "fav",
+  bookModel = "another",
   anotherUser = "ممد",
 }) {
   return (
