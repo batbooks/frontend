@@ -204,10 +204,10 @@ const BookPage = () => {
     );
   }
   return (
-    <div className="overflow-x-hidden">
+    <div className="">
       <Navbar />
 
-      <div className="flex bg-[#D9F0FF] min-h-screen p-5 flex-row-reverse text-right ">
+      <div className="flex min-h-screen p-5 flex-row-reverse text-right ">
         {/* Sidebar */}
         <div className={`w-[23.3vw]  transition-all duration-500 ease-in-out`}>
           <img
@@ -224,7 +224,7 @@ const BookPage = () => {
               <button
                 onClick={() => handleFavorite()}
                 className={`btn !shadow-lg !rounded-full !h-8  !w-full  ${
-                  isFavorite ? "" : " !bg-[#FFFF] !text-black"
+                  isFavorite ? "before:!bg-[#FF3B30] !bg-[#CC2F26]" : ""
                 }`}
               >
                 <span className="span-btn">
@@ -242,7 +242,7 @@ const BookPage = () => {
           {/* <SearchBar /> */}
 
           {/* Book Details */}
-          <div className="bg-[#D9F0FF] p-5 mb-5 relative z-10">
+          <div className=" p-5 mb-5 relative z-10">
             <h1 className="text-4xl font-bold mb-4">{book.name}</h1>
             <h2 className="text-2xl text-gray-600">{book.author}</h2>
 
@@ -299,7 +299,7 @@ const BookPage = () => {
           </div>
 
           {/* Chapter List */}
-          <div className="bg-[#D9F0FF] p-5 relative z-0">
+          <div className=" p-5 relative z-0">
             <h2 className="text-xl font-bold mb-3">فهرست فصل‌ها</h2>
             <div className="overflow-x-auto">
               <table className="w-full border-collapse">
@@ -357,7 +357,7 @@ const BookPage = () => {
         </button>
       ) : null}
       <form
-        className={`w-auto bg-white text-gray-800 p-6 rounded-lg shadow-lg border mt-8 mx-20 ${isClicked ? "visible" : "hidden"}`}
+        className={`w-auto bg-[#d9f0ff] text-gray-800 p-6 rounded-lg shadow-lg border mt-8 mx-20 ${isClicked ? "visible" : "hidden"}`}
         dir="rtl"
         onSubmit={handleSubmitReview}
       >
@@ -375,20 +375,18 @@ const BookPage = () => {
         <div className="space-y-6">
           <div className="flex flex-row justify-between w-[90%] items-center">
             <div>
-              <label className="block text-gray-600 mb-1 text-sm">
-                عنوان نقد
-              </label>
+              <label className="block mb-1 text-sm">عنوان نقد</label>
 
               <input
                 type="text"
                 value={reviewTitle}
                 onChange={(e) => setReviewTitle(e.target.value)}
                 placeholder="عنوان نقد خود را وارد کنید..."
-                className="w-[500px] px-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-[500px] bg-white px-4 py-2 rounded-[5px] border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
             <div>
-              <label className="block text-gray-600 mb-1 text-sm">
+              <label className="block  mb-1 text-sm">
                 آخرین چپتر خوانده شده
               </label>
               <Select
@@ -397,7 +395,7 @@ const BookPage = () => {
                   setLastReadChapter(e.target.key);
                   setChapterId(e.target.value);
                 }}
-                className="w-[180px]  rounded-[10px] text-lg text-center font-vazir"
+                className="w-[180px] bg-white rounded-[10px] text-lg text-center font-vazir"
                 MenuProps={{
                   PaperProps: {
                     sx: { fontFamily: "Vazir" },
@@ -412,14 +410,15 @@ const BookPage = () => {
                   },
                 }}
               >
-                <MenuItem className="font-vazir" value={0}>
+                <MenuItem className="font-vazir" value={0} dir="rtl">
                   انتخاب چپتر
                 </MenuItem>
                 {book.chapters.map((chapter, index) => (
                   <MenuItem
-                    className="font-vazir"
+                    className="font-vazir "
                     value={chapter.id}
                     key={chapter.title}
+                    dir="rtl"
                   >
                     {index + 1}.{chapter.title}
                   </MenuItem>
@@ -450,19 +449,22 @@ const BookPage = () => {
                       ? setReviewRating(e.target.value)
                       : setReviewRating(0)
                   }
-                  className="w-[70px] text-[20px] rounded-[10px] text-center border border-gray-300"
+                  className="w-[70px] bg-white text-[20px] rounded-[10px] text-center border border-gray-300"
                 />
               </section>
             </div>
           </div>
           <div>
-            <label className="block text-gray-600 mb-1 text-sm">
-              محتوای نظر
-            </label>
+            <label className="block  mb-1 text-sm">محتوای نظر</label>
             <Editor
               value={reviewContent}
               onTextChange={(e) => setReviewContent(e.htmlValue)}
-              style={{ height: "200px" }}
+              style={{
+                height: "200px",
+                backgroundColor: "white",
+                borderBottomLeftRadius: "10px",
+                borderBottomRightRadius: "10px",
+              }}
             />
           </div>
 
@@ -471,7 +473,7 @@ const BookPage = () => {
           </button>
         </div>
 
-        <div className="mt-6 bg-blue-100 text-blue-800 border-l-4 border-blue-600 p-4 text-xs rounded">
+        <div className="mt-6 bg-white text-blue-800 border-l-4 border-blue-600 p-4 text-xs rounded-[5px]">
           <strong>⚠ لطفا با احترام نظر دهید!</strong> از نقد سازنده استقبال می
           شود؛ لطفا محترمانه برخورد کنید و قوانین را رعایت کنید.
         </div>

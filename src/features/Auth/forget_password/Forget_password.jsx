@@ -80,11 +80,13 @@ function Forget_password() {
   // };
 
   return (
-    <div className="w-[100%] h-[100%] bg-[#D9F0FF]">
-      <h2 className="text-[24px] mt-1.5 ml-2 font-bold text-[#002D54] absolute top-0 left-0">
-        Bat<span className="text-[#2663CD]">Books</span>
-      </h2>
-      <div
+    <div className="w-full h-[100vh] bg-[#D9F0FF]">
+      <div className="flex gap-1 items-center ">
+        <h2 className="text-[24px] mt-1.5 ml-2 font-bold text-[#002D54]">
+          Bat<span className="text-[#2663CD]">Books</span>
+        </h2>
+      </div>
+      <main
         style={styles.container}
         className="flex flex-col m-auto mt-24 h-80 w-[39vw] bg-[#A4C0ED] rounded-lg"
       >
@@ -109,39 +111,38 @@ function Forget_password() {
               />
             </div>
           </div>
-          {error && <div  className="text-red-600">{error}</div>}
+          {error && <div className="text-red-600">{error}</div>}
           <div className="flex flex-row justify-center gap-[0.77vw]">
             <button type="submit" disabled={isLoading} className="btn">
               <span className="span-btn ">ارسال کد</span>
             </button>
           </div>
 
-          
           {message && <div style={styles.message}>{message}</div>}
         </form>
 
         <Link
           to={"/auth/login"}
-          className="text-[1vw] hover:text-[#2663CD] absolute top-83 left-[46vw] cursor-pointer"
+          className="text-[1vw] text-center mx-auto flex justify-center hover:text-[#2663CD]   cursor-pointer"
         >
           بازگشت به صفحه ورود
         </Link>
         <img
           src="/src/assets/images/mid-left.png"
           alt="mid-right"
-          className="w-45 absolute top-53 left-[30vw] "
+          className="w-45 absolute top-64 left-[30vw] "
         />
         {/* <img src="batbooks.png" alt="mid-right" className="w-[5.2vw] absolute top-3 left-0 "/> */}
 
         <img
-          src="/src/assets/images/bottom-right.png"
-          alt="bottom-right"
-          className="absolute right-[0px] bottom-0 w-[33vw] ascept-auto"
-        />
-        <img
           src="/src/assets/images/bottom-left.png"
           alt="bottom-left"
           className="absolute left-0 bottom-0 w-[25vw] aspect-auto"
+        />
+        <img
+          src="/src/assets/images/bottom-right.png"
+          alt="bottom-right"
+          className=" absolute right-[0px] bottom-0 w-[33vw] aspect-auto"
         />
 
         <img
@@ -149,7 +150,7 @@ function Forget_password() {
           alt="mid-right"
           className="w-[13vw]   absolute -top-1 left-[62.3vw] min-w-32"
         />
-      </div>
+      </main>
     </div>
   );
 }

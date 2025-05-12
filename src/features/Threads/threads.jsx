@@ -11,10 +11,10 @@ const Threads = () => {
   const [loading, setLoading] = useState(false);
   const [paginationLinks, setPaginationLinks] = useState({
     next: null,
-    previous: null
+    previous: null,
   });
   const { forumId } = useParams();
-  
+
   const itemsPerPage = 10;
 
   const onSearch = () => {
@@ -24,7 +24,7 @@ const Threads = () => {
   // Fetch forum data
   useEffect(() => {
     if (!forumId) return;
-  
+
     const fetchData = async () => {
       setLoading(true);
       try {
@@ -32,26 +32,26 @@ const Threads = () => {
         if (currentPage > 1) {
           url += `?page=${currentPage}`;
         }
-        
+
         const res = await fetch(url);
         const data = await res.json();
-        
+
         if (data.results && Array.isArray(data.results)) {
           setForumData(data.results);
           setTotalItems(data.count);
           setPaginationLinks({
             next: data.links.next,
-            previous: data.links.previous
+            previous: data.links.previous,
           });
         } else {
           setForumData([]);
           setTotalItems(0);
           setPaginationLinks({
             next: null,
-            previous: null
+            previous: null,
           });
         }
-        
+
         console.log("API Response:", data);
       } catch (error) {
         console.error("Failed to load forum data:", error);
@@ -59,7 +59,7 @@ const Threads = () => {
         setTotalItems(0);
         setPaginationLinks({
           next: null,
-          previous: null
+          previous: null,
         });
       } finally {
         setLoading(false);
@@ -85,7 +85,7 @@ const Threads = () => {
         </h1>
 
         {/* Search Box */}
-        <div className="flex items-center justify-center bg-[#D9F0FF] p-6">
+        <div className="flex items-center justify-center  p-6">
           <div className="relative w-full max-w-lg">
             <input
               type="text"
@@ -110,12 +110,20 @@ const Threads = () => {
           نتایج جستجو
         </h1>
 
-        <div dir="rtl" className="bg-[#a3d5ff] p-[20px] w-[90%] mx-auto rounded-2xl">
+        <div
+          dir="rtl"
+          className="bg-[#a3d5ff] p-[20px] w-[90%] mx-auto rounded-2xl"
+        >
           {loading ? (
-            <p className="text-center text-[#265073] text-lg">در حال بارگذاری...</p>
+            <p className="text-center text-[#265073] text-lg">
+              در حال بارگذاری...
+            </p>
           ) : (
             <>
-              <div dir="rtl" className="grid grid-cols-2 gap-4 place-items-end ">
+              <div
+                dir="rtl"
+                className="grid grid-cols-2 gap-4 place-items-end "
+              >
                 {forumData.length > 0 ? (
                   forumData.map((item) => <Card key={item.id} data={item} />)
                 ) : (
@@ -130,25 +138,33 @@ const Threads = () => {
                 <div dir="rtl" className="flex justify-center mt-6">
                   <nav className="inline-flex rounded-md shadow">
                     <button
-                      onClick={() => paginate(currentPage > 1 ? currentPage - 1 : 1)}
+                      onClick={() =>
+                        paginate(currentPage > 1 ? currentPage - 1 : 1)
+                      }
                       disabled={!paginationLinks.previous}
                       className="px-3 py-1 rounded-r-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       قبلی
                     </button>
-                    
+
                     {[...Array(totalPages).keys()].map((number) => (
                       <button
                         key={number + 1}
                         onClick={() => paginate(number + 1)}
-                        className={`px-3 py-1 border-t border-b border-gray-300 ${currentPage === number + 1 ? 'bg-blue-500 text-white' : 'bg-white text-gray-500 hover:bg-gray-50'}`}
+                        className={`px-3 py-1 border-t border-b border-gray-300 ${currentPage === number + 1 ? "bg-blue-500 text-white" : "bg-white text-gray-500 hover:bg-gray-50"}`}
                       >
                         {number + 1}
                       </button>
                     ))}
-                    
+
                     <button
-                      onClick={() => paginate(currentPage < totalPages ? currentPage + 1 : totalPages)}
+                      onClick={() =>
+                        paginate(
+                          currentPage < totalPages
+                            ? currentPage + 1
+                            : totalPages
+                        )
+                      }
                       disabled={!paginationLinks.next}
                       className="px-3 py-1 rounded-l-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                     >

@@ -60,7 +60,6 @@ export default function Vf() {
         setTimeout(() => navigate("/login"), 2000);
       }
     } catch (err) {
-      
       setErrors({
         general: " خطا در بازیابی رمز عبور. لطفا دوباره امتحان کنید ",
       });
@@ -74,8 +73,13 @@ export default function Vf() {
     navigate("/Forget_password");
   };
   return (
-    <div className="w-full h-[70vh] flex flex-col relative md:h-[93vh] md:max-h-[950px]  lg:h-full  ">
-      <div className="flex flex-col relative items-center justify-center h-full mt-15   lg:h-120 ">
+    <div className="w-full h-[100vh] bg-[#D9F0FF] flex flex-col relative   ">
+      <div className="flex gap-1 items-center ">
+        <h2 className="text-[24px] mt-1.5 ml-2 font-bold text-[#002D54]">
+          Bat<span className="text-[#2663CD]">Books</span>
+        </h2>
+      </div>
+      <main className="flex flex-col relative items-center justify-center h-full mt-15   lg:h-120 ">
         {/* <img src="middle-left.png" alt="mid-right" className="w-[5.2vw] absolute top-3 left-0 "/> */}
         <div className="flex flex-col relative w-[80vw]  h-full mt-50 p-8 pr-[2vw] pl-[2vw] pt-20 bg-[#A4C0ED] rounded-lg shadow-md md:pt-50   lg:flex lg:flex-col lg:mt-0 lg:relative lg:w-[40vw] lg:h-110 lg:p-8 lg:pr-[2vw] lg:pl-[2vw] lg:pt-20 lg:bg-[#A4C0ED] lg:rounded-lg lg:shadow-md">
           <h2 className="text-xl font-bold text-center text-gray-700 mb-6">
@@ -166,7 +170,9 @@ export default function Vf() {
             {/* Submit Button */}
             <div className="flex justify-center">
               <button type="submit" disabled={loading} className="btn">
-                {loading ? "در حال پردازش..." : "بازیابی"}
+                <span className="span-btn">
+                  {loading ? "در حال پردازش..." : "بازیابی"}
+                </span>
               </button>
             </div>
           </form>
@@ -176,7 +182,7 @@ export default function Vf() {
           alt="mid-right"
           className="w-[13vw]   absolute top-30 left-[65.3vw] min-w-32 md:left-[67vw] md:w-[30vw] md:top-20  lg:left-[62.3vw] lg:-top-18 lg:w-[13vw]"
         />
-      </div>
+      </main>
       <h1
         onClick={gotoloinpage}
         className="text-[1vw] text-[#2663CD] absolute top-150 left-[45vw] underline md:top-200 lg:top-123 lg:left-[45vw] "
@@ -188,19 +194,13 @@ export default function Vf() {
       <img
         src="/src/assets/images/bottom-left.png"
         alt="bottom-left"
-        className=" w-[17vw] absolute top-[83vh] left-0 min-w-50 md:top-290 lg:w-[17vw] lg:absolute lg:top-123 lg:left-0 lg:min-w-50 "
+        className="absolute left-0 bottom-0 w-[25vw] aspect-auto"
       />
       <img
         src="/src/assets/images/bottom-right.png"
-        alt="bottom-left"
-        className="w-[35vw]  absolute top-52 right-0 min-w-100 hidden lg:block   "
+        alt="bottom-right"
+        className=" absolute right-[0px] bottom-0 w-[33vw] aspect-auto"
       />
-
-      <p className="text-[1.5vw] font-bold absolute top-4 left-[1vw] ">
-      <h2 className="text-[24px] mt-1.5 ml-2 font-bold text-[rgb(0,45,84)]">
-          Bat<span className="text-[#2663CD]">Books</span>
-        </h2>
-      </p>
     </div>
   );
 }
