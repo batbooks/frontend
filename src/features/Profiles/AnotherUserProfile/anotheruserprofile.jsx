@@ -47,12 +47,9 @@ export default function Another_User_Profile() {
       setLoading3(true);
 
       try {
-        const response = await fetch(
-          `/api/book/user/${userId}/`,
-          {
-            method: "GET",
-          }
-        );
+        const response = await fetch(`/api/book/user/${userId}/`, {
+          method: "GET",
+        });
 
         if (response.ok) {
           const data = await response.json();
@@ -98,17 +95,14 @@ export default function Another_User_Profile() {
     const fetchBlocked = async () => {
       setLoading2(true);
       try {
-        const response = await fetch(
-          `/api/user/is/Not_Interested/${userId}/`,
-          {
-            method: "GET",
+        const response = await fetch(`/api/user/is/Not_Interested/${userId}/`, {
+          method: "GET",
 
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const data = await response.json();
 
         setBlocked(data.is_not_interested);
@@ -140,17 +134,14 @@ export default function Another_User_Profile() {
 
   const handleFollow = async () => {
     try {
-      const response = await fetch(
-        `/api/user/toggle/follow/${userId}/`,
-        {
-          method: "GET",
+      const response = await fetch(`/api/user/toggle/follow/${userId}/`, {
+        method: "GET",
 
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
     } catch (err) {
       console.error(err.message);
     }
@@ -202,7 +193,7 @@ export default function Another_User_Profile() {
         <Loading />
       </div>
     );
-    
+
   return (
     <>
       <Navbar />
@@ -259,8 +250,7 @@ export default function Another_User_Profile() {
               </p>
               <p className="text-[16px] font-[300] mt-[12px]">
                 {/* {user.joined_date} */}
-                        تاریخ ثبت نام :
-                {getPersianDate(user.joined_date)}
+                تاریخ ثبت نام :{getPersianDate(user.joined_date)}
               </p>
             </div>
           </div>
@@ -270,10 +260,7 @@ export default function Another_User_Profile() {
 
             {console.log(user)}
             <div className="flex gap-[20px] mb-[19px] ">
-              <button
-                
-                className="flex flex-col  bg-[#ffffff] px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:bg-[#2663cd]/90 hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none"
-              >
+              <button className="flex flex-col  bg-[#ffffff] px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:bg-[#2663cd]/90 hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none">
                 <span className="text-[24px] font-[600] text-[#265073] mb-[-5px]">
                   {user.favorite_count ? user.favorite_count : 0}
                 </span>
@@ -310,9 +297,7 @@ export default function Another_User_Profile() {
                 author={lastBook.Author}
                 title={lastBook.name}
                 coverImage={
-                  lastBook.image != null
-                    ? `/api${lastBook.image}`
-                    : "/23.png"
+                  lastBook.image != null ? `/api${lastBook.image}` : "/23.png"
                 }
                 chapters={80}
                 description={lastBook.description}
@@ -321,7 +306,6 @@ export default function Another_User_Profile() {
           ) : (
             <div className="mb-[32px] p-[32px] pr-0 ">
               <img
-                
                 src="/27.png"
                 alt="favoritebook"
                 className="min-w-[242px]  rounded-[20px] h-[344px]    mr-0 ml-auto   shadow-lg  "
@@ -386,7 +370,6 @@ export default function Another_User_Profile() {
           کتاب های تالیف شده
         </h6>
 
-
         <div
           ref={containerRef2}
           className="overflow-x-scroll scrollbar-opacity-0 w-[100%] ml-auto py-5"
@@ -410,16 +393,12 @@ export default function Another_User_Profile() {
                 className="rotate-180"
               ></img>
             </button>
-            
           ) : null}
           <div className="flex z-1 gap-[25px]">
             {UserWritten[0] ? (
               UserWritten.map((book, index) =>
                 index !== UserWritten.length - 1 ? (
-                  <Book
-                    book={book}
-                   
-                  />
+                  <Book book={book} />
                 ) : (
                   <Book book={book} isLast={true} />
                 )
@@ -428,8 +407,11 @@ export default function Another_User_Profile() {
               <span>موردی برای نمایش وجود ندارد...</span>
             )}
           </div>
-          {UserWritten.length>8?          <button className="btn w-[200px]!"><span className="span-btn "> مشاهده تمام موارد </span></button>
-:null}
+          {UserWritten.length > 8 ? (
+            <button className="btn w-[200px]!">
+              <span className="span-btn "> مشاهده تمام موارد </span>
+            </button>
+          ) : null}
         </div>
       </main>
       <div className="mt-[-60px]">
@@ -449,12 +431,10 @@ export function Book({ book, isLast = false, minw = 180, h = 254 }) {
       }}
     >
       <BookCard
-       id={book.id}
+        id={book.id}
         title={book.name}
         author={book.Author}
-        coverImage={
-          book.image != null ? `/api/${book.image}` : "/20.jpg"
-        }
+        coverImage={book.image != null ? `/api/${book.image}` : "/20.jpg"}
         description={book.description}
         chapters={80}
       />
