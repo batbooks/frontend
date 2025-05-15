@@ -107,6 +107,16 @@ function Navbar() {
                   <span className="text-[13px] font-bold">پروفایل کاربری</span>
                 </button>
               </li>
+              <li className="w-[155px] h-[38px] bg-[#ffffff]">
+                <button onClick={() => {
+                    setSelectedItem(0);
+                    setIsVisibleUser(false);
+                    navigate("/mybooks/createbook");
+                  }}
+                   className="text-[#000000]/70 w-full h-full cursor-pointer pl-[53px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto">
+                  <span className="text-[13px] font-bold"> نوشتن کتاب جدید</span>
+                </button>
+              </li>
               <li className="w-[155px] h-[38px] bg-[#ffffff] rounded-b-[10px]">
                 <button
                   onClick={() => {
@@ -234,6 +244,7 @@ function Navbar() {
                   onClick={() => {
                     setSelectedItem(0);
                     setIsVisiblePanel(false);
+                    navigate("/forums");
                   }}
                   className="text-[#000000]/70 w-full h-full rounded-t-[10px] cursor-pointer pl-[89px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >

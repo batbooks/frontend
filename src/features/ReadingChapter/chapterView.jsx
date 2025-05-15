@@ -8,6 +8,7 @@ import { useLocation, useParams } from "react-router";
 import Comments from "../../features/Comments/Comment";
 import Loading from "../../common/Loading/Loading";
 import ReactMarkdown from "react-markdown";
+import moment from "jalali-moment";
 const ReadingPage = () => {
   const { chapterId } = useParams();
   const [id, setId] = useState();
@@ -47,7 +48,10 @@ const ReadingPage = () => {
           setAuthor(data.Author);
           setSeason(data.title);
           setRating(data.rating);
-          setPublished(format(new Date(data.created_at), "yyyy/MM/dd"));
+          const shamsiDate = moment(data.created_at).locale('fa').format('jYYYY/jMM/jDD');
+          setPublished(shamsiDate);
+
+          // setPublished(format(new Date(data.created_at), "yyyy/MM/dd"));
         }
       } catch (error) {
         console.error("خطا در ارسال به سرور:", error);

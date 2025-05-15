@@ -29,7 +29,7 @@ export default function Card({ data }) {
         </h1>
 
         {/* اطلاعات نویسنده و تاریخ */}
-        <div className="flex flex-row-reverse justify-between items-center w-full">
+        <div className="flex flex-row-reverse justify-between items-center w-full mt-2.5">
         <h4 className="text-[#333333] text-sm">
             ساخته شده در: {formatDate(created_at)}
           </h4>

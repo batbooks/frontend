@@ -235,7 +235,7 @@ export default function Another_User_Profile() {
             {!blocked ? (
               <span className="font-[400] text-[16px]">مسدود کردن</span>
             ) : (
-              <span className="font-[400] text-[16px]">آزاد سازی</span>
+              <span className="font-[400] text-[16px]">رفع مسدودی</span>
             )}
           </button>
         </div>

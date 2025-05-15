@@ -28,7 +28,7 @@ const SearchResults = ({ searchingItem = "forum" }) => {
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
-      console.log(data)
+      console.log(data);
       setForums(data.results);
       setTotalPages(Math.ceil(data.count / itemsPerPage));
     } catch (err) {
@@ -45,9 +45,14 @@ const SearchResults = ({ searchingItem = "forum" }) => {
   return (
     <>
       <Navbar />
-      <main dir="rtl" className="flex flex-col items-center pt-[13px] pb-[113px] px-[98px] w-[100%]">
-        <h1 className="font-bold text-[#265073] text-[32px] mb-[91px]">تالار گفتگو</h1>
-        
+      <main
+        dir="rtl"
+        className="flex flex-col items-center pt-[13px] pb-[113px] px-[98px] w-[100%]"
+      >
+        <h1 className="font-bold text-[#265073] text-[32px] mb-[91px]">
+          تالار گفتگو
+        </h1>
+
         {/* Search Box */}
         <form className="flex gap-[26px] mb-[37px]">
           <div className="relative flex items-center">
@@ -62,16 +67,22 @@ const SearchResults = ({ searchingItem = "forum" }) => {
             />
           </div>
           <button className="!py-[12px] !px-[28px] !rounded-[20px] !w-fit !h-fit !mb-0 !ml-0 !mr-0 shadow-2xl btn">
-            <span className="span-btn !text-[16px] !font-[400]">جستجوی گفتگو</span>
+            <span className="span-btn !text-[16px] !font-[400]">
+              جستجوی گفتگو
+            </span>
           </button>
         </form>
 
         <div className="flex flex-col w-full">
           <h2 className="text-[16px] font-[600] mb-[31px]">نتایج جستجو</h2>
-          
-          {loading && <div className="text-center py-4">در حال بارگذاری...</div>}
-          {error && <div className="text-center text-red-500 py-4">خطا: {error}</div>}
-          
+
+          {loading && (
+            <div className="text-center py-4">در حال بارگذاری...</div>
+          )}
+          {error && (
+            <div className="text-center text-red-500 py-4">خطا: {error}</div>
+          )}
+
           <div className="grid grid-cols-2 gap-[25px] mb-[30px]">
             {forums.length > 0 ? (
               forums.map((forum) => (
@@ -94,96 +105,98 @@ const SearchResults = ({ searchingItem = "forum" }) => {
 
           {/* Pagination */}
           {totalPages > 1 && (
-  <div className="flex justify-center gap-2 my-6 items-center">
-    {/* Previous Button */}
-    <button
-      onClick={() => handlePageChange(currentPage - 1)}
-      disabled={currentPage === 1}
-      className={`px-3 py-1 rounded-md ${
-        currentPage === 1
-          ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-          : 'bg-blue-500 text-white hover:bg-blue-600'
-      }`}
-    >
-      قبلی
-    </button>
+            <div className="flex justify-center gap-2 my-6 items-center">
+              {/* Previous Button */}
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className={`px-3 py-1 rounded-md ${
+                  currentPage === 1
+                    ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                    : "bg-blue-500 text-white hover:bg-blue-600"
+                }`}
+              >
+                قبلی
+              </button>
 
-    {/* First Page */}
-    {currentPage > 3 && totalPages > 5 && (
-      <>
-        <button
-          onClick={() => handlePageChange(1)}
-          className={`px-3 py-1 rounded-md ${
-            currentPage === 1
-              ? 'bg-blue-700 text-white'
-              : 'bg-blue-500 text-white hover:bg-blue-600'
-          }`}
-        >
-          1
-        </button>
-        {currentPage > 4 && <span className="px-2">...</span>}
-      </>
-    )}
+              {/* First Page */}
+              {currentPage > 3 && totalPages > 5 && (
+                <>
+                  <button
+                    onClick={() => handlePageChange(1)}
+                    className={`px-3 py-1 rounded-md ${
+                      currentPage === 1
+                        ? "bg-blue-700 text-white"
+                        : "bg-blue-500 text-white hover:bg-blue-600"
+                    }`}
+                  >
+                    1
+                  </button>
+                  {currentPage > 4 && <span className="px-2">...</span>}
+                </>
+              )}
 
-    {/* Middle Pages */}
-    {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-      let pageNum;
-      if (totalPages <= 5) {
-        pageNum = i + 1;
-      } else if (currentPage <= 3) {
-        pageNum = i + 1;
-      } else if (currentPage >= totalPages - 2) {
-        pageNum = totalPages - 4 + i;
-      } else {
-        pageNum = currentPage - 2 + i;
-      }
+              {/* Middle Pages */}
+              {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                let pageNum;
+                if (totalPages <= 5) {
+                  pageNum = i + 1;
+                } else if (currentPage <= 3) {
+                  pageNum = i + 1;
+                } else if (currentPage >= totalPages - 2) {
+                  pageNum = totalPages - 4 + i;
+                } else {
+                  pageNum = currentPage - 2 + i;
+                }
 
-      return (
-        <button
-          key={pageNum}
-          onClick={() => handlePageChange(pageNum)}
-          className={`px-3 py-1 rounded-md ${
-            currentPage === pageNum
-              ? 'bg-blue-700 text-white'
-              : 'bg-blue-500 text-white hover:bg-blue-600'
-          }`}
-        >
-          {pageNum}
-        </button>
-      );
-    })}
+                return (
+                  <button
+                    key={pageNum}
+                    onClick={() => handlePageChange(pageNum)}
+                    className={`px-3 py-1 rounded-md ${
+                      currentPage === pageNum
+                        ? "bg-blue-700 text-white"
+                        : "bg-blue-500 text-white hover:bg-blue-600"
+                    }`}
+                  >
+                    {pageNum}
+                  </button>
+                );
+              })}
 
-    {/* Last Page */}
-    {currentPage < totalPages - 2 && totalPages > 5 && (
-      <>
-        {currentPage < totalPages - 3 && <span className="px-2">...</span>}
-        <button
-          onClick={() => handlePageChange(totalPages)}
-          className={`px-3 py-1 rounded-md ${
-            currentPage === totalPages
-              ? 'bg-blue-700 text-white'
-              : 'bg-blue-500 text-white hover:bg-blue-600'
-          }`}
-        >
-          {totalPages}
-        </button>
-      </>
-    )}
+              {/* Last Page */}
+              {currentPage < totalPages - 2 && totalPages > 5 && (
+                <>
+                  {currentPage < totalPages - 3 && (
+                    <span className="px-2">...</span>
+                  )}
+                  <button
+                    onClick={() => handlePageChange(totalPages)}
+                    className={`px-3 py-1 rounded-md ${
+                      currentPage === totalPages
+                        ? "bg-blue-700 text-white"
+                        : "bg-blue-500 text-white hover:bg-blue-600"
+                    }`}
+                  >
+                    {totalPages}
+                  </button>
+                </>
+              )}
 
-    {/* Next Button */}
-    <button
-      onClick={() => handlePageChange(currentPage + 1)}
-      disabled={currentPage === totalPages}
-      className={`px-3 py-1 rounded-md ${
-        currentPage === totalPages
-          ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-          : 'bg-blue-500 text-white hover:bg-blue-600'
-      }`}
-    >
-      بعدی
-    </button>
-  </div>
-)}
+              {/* Next Button */}
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className={`px-3 py-1 rounded-md ${
+                  currentPage === totalPages
+                    ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                    : "bg-blue-500 text-white hover:bg-blue-600"
+                }`}
+              >
+                بعدی
+              </button>
+            </div>
+          )}
         </div>
       </main>
       <Footer />
@@ -192,12 +205,19 @@ const SearchResults = ({ searchingItem = "forum" }) => {
 };
 
 // Forum Component
-const Forum = ({ forumId, forumName, forumDescription, createdAt, bookId, forumImage }) => {
+const Forum = ({
+  forumId,
+  forumName,
+  forumDescription,
+  createdAt,
+  bookId,
+  forumImage,
+}) => {
   const navigate = useNavigate();
 
   const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString('fa-IR', options);
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    return new Date(dateString).toLocaleDateString("fa-IR", options);
   };
 
   const getImageSrc = () => {
@@ -210,7 +230,7 @@ const Forum = ({ forumId, forumName, forumDescription, createdAt, bookId, forumI
   return (
     <button
       onClick={() => navigate(`/threads/${forumId}`)}
-      className="relative overflow-hidden py-[10px] pr-[10px] pl-[90px] bg-[#a3d5ff] outline-[2px] outline-[#000000]/21 rounded-[15px] gap-[38px] flex items-center cursor-pointer hover:ease-in-out hover:before:w-full hover:before:h-full before:absolute before:w-0 before:h-0 before:bg-[#2663CD]/40 before:shadow-none hover:shadow-[#000000]/21 hover:shadow-lg before:inset-0 before:transition-all before:duration-[0.2s] transition-all active:before:bg-[#2663CD]/20 active:outline-none active:shadow-none"
+      className="relative overflow-hidden py-[10px] pr-[10px] pl-[90px] bg-[#a3d5ff] outline-[2px] outline-[#000000]/21 rounded-[15px] gap-[38px] flex items-center cursor-pointer hover:ease-in-out hover:before:w-full hover:before:h-full before:absolute before:w-0 before:h-0 before:bg-[#2663CD]/40 before:shadow-none hover:shadow-[#000000]/21 hover:shadow-lg before:inset-0 before:transition-all before:duration-[0.5s] before:ease-in-out transition-all active:before:bg-[#2663CD]/20 active:outline-none active:shadow-none"
     >
       <img
         src={getImageSrc()}
@@ -224,9 +244,7 @@ const Forum = ({ forumId, forumName, forumDescription, createdAt, bookId, forumI
             ایجاد شده در {formatDate(createdAt)}
           </span>
         </div>
-        <p className="text-[14px] font-[300]">
-          {forumDescription}
-        </p>
+        <p className="text-[14px] font-[300]">{forumDescription}</p>
       </div>
     </button>
   );
