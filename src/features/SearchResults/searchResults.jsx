@@ -1066,7 +1066,7 @@ function Person({ person }) {
         />
         <div className="flex flex-col gap-[7px] items-start">
           <h3 >{person.name.length > 12 ? person.name.slice(0, 12) + '...' : person.name}</h3>
-          <span>{person.user_info.favorite_count}</span>
+          <span>{person.user_info.following_count}</span>
         </div>
       </div>
       <button
