@@ -7,7 +7,8 @@ import { format } from "date-fns";
 import { useLocation, useParams } from "react-router";
 import Comments from "../../features/Comments/Comment";
 import Loading from "../../common/Loading/Loading";
-import ReactMarkdown from "react-markdown";
+import parse from "html-react-parser";
+
 const ReadingPage = () => {
   const { chapterId } = useParams();
   const [id, setId] = useState();
@@ -135,7 +136,7 @@ const ReadingPage = () => {
             dir="rtl"
             className=" text-[18px] font-[400] bg-white px-15 py-[7px] leading-15 border border-[#2663cd]"
           >
-            <ReactMarkdown>{chapterBody}</ReactMarkdown>
+            {parse(chapterBody)}
           </div>
 
           <div className="flex justify-between py-[41px]">
