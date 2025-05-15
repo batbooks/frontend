@@ -107,12 +107,12 @@ const Threads = () => {
 
         {/* Results Section */}
         <h1 dir="rtl" className="mr-21 my-3.5 font-semibold text-xl">
-          نتایج جستجو
+          نتایج جستجو:
         </h1>
 
         <div
           dir="rtl"
-          className="bg-[#a3d5ff] p-[20px] w-[90%] mx-auto rounded-2xl"
+          className="bg-[#a3d5ff] p-[20px] pl-[0px] pr-[30px] w-[90%] mx-auto rounded-2xl shadow-lg shadow-[#000000]/25 border-[2px] border-[#000000]/8"
         >
           {loading ? (
             <p className="text-center text-[#265073] text-lg">
@@ -122,12 +122,12 @@ const Threads = () => {
             <>
               <div
                 dir="rtl"
-                className="grid grid-cols-2 gap-4 place-items-end "
+                className="grid grid-cols-2 gap-x-4 gap-y-2 mr-[35px] "
               >
                 {forumData.length > 0 ? (
                   forumData.map((item) => <Card key={item.id} data={item} />)
                 ) : (
-                  <p className="col-span-2 text-center text-[#265073] text-lg">
+                  <p className="col-span-2 text-center font-semibold text-lg">
                     هیچ پستی یافت نشد.
                   </p>
                 )}

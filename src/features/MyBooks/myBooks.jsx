@@ -97,10 +97,7 @@ export default function MyBooks() {
   return (
     <>
       <Navbar />
-      <main
-        dir="rtl"
-        className="pt-[16px] pr-[7px] pb-[59px] text-center bg-[#D9F0FF]"
-      >
+      <main dir="rtl" className="pt-[16px] pr-[7px] pb-[59px] text-center">
         <h1 className="text-[32px] font-bold text-[#1A365D] mb-[16px]">
           کتاب های من
         </h1>

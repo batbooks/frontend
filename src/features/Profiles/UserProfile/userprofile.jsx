@@ -185,26 +185,24 @@ export default function Profile() {
 
         <div className="flex bg-[#A4C0ED] rounded-[35px] shadow-lg shadow-[#000000]/25 mb-[40px] pl-[52px] pb-[52px] pr-[23px] pt-[20px] gap-[39px] border-[2px] border-[#000000]/8">
           <div className="min-w-[236px]">
-            {userInfo.image == null ? (
+            <div className="w-[236px] aspect-square rounded-full overflow-hidden">
               <img
-                className="w-[236px] h-[267px] shadow-lg shadow-[#000000]/25 rounded-[30px]"
-                src="src\assets\images\user_image.png"
-                alt="userimage1"
-              />
-            ) : (
-              <img
-                className="w-[236px] h-[267px] shadow-lg shadow-[#000000]/25 rounded-[30px]"
-                src={`/api${userInfo.image}`}
+                className="w-full h-full shadow-lg shadow-[#000000]/25 object-cover"
+                src={
+                  userInfo.image
+                    ? `/api${userInfo.image}`
+                    : `/src/assets/images/user_image.png`
+                }
                 alt="userimage"
               />
-            )}
+            </div>
             <section>
               <strong className="text-[24px] text-[#000000] font-[400] mt-[8px] mb-[12px]">
                 جزئیات
               </strong>
               <div className="bg-white min-h-[45px] rounded-[10px] p-[13px] mt-[10px] shadow-lg shadow-[#000000]/25">
                 <p className="text-[16px] text-[#000000] font-[300]">
-                  {userInfo.gender}
+                  {userInfo.gender === "female" ? "زن" : "مرد"}
                 </p>
                 <aside className="text-[16px] font-[300] mt-[12px]">
                   {/* {user.joined_date} */}

@@ -199,100 +199,120 @@ export default function Another_User_Profile() {
       <Navbar />
 
       <main
-        style={{ direction: "rtl" }}
-        className="flex flex-col max-w-screen m-auto pr-[60px] pb-[100px] pt-[13px] shadow-2xl shadow-[#000000]-25 items-center overflow-hidden"
+        dir="rtl"
+        className="flex flex-col gap-[20px] max-w-screen m-auto pr-[50px] pb-[100px] pt-[13px] shadow-2xl shadow-[#000000]-25 items-center overflow-hidden"
       >
-        <div className=" mt-[35px] mb-[0px] ml-auto  ">
-          <button
-            className="h-full bg-[#2663cd] text-[#ffffff]  rounded-[46px] py-[8px] px-[18px] mt-[15px] mb-[24px] ml-auto shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
-            onClick={() => {
-              handleFollow();
-              setFollowing(!following);
-            }}
-          >
-            {!following ? (
-              <span className="font-[400] text-[16px]">دنبال کردن</span>
-            ) : (
-              <span className="font-[400] text-[16px]">دنبال نکردن</span>
-            )}
-          </button>
-          <button
-            className="h-full bg-red-500 text-[#ffffff]  rounded-[46px] py-[8px] px-[18px] mt-[15px] mb-[24px] ml-auto shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-red-500 focus:ring-offset-2 focus:ring-[2px] mr-5 focus:shadow-none hover:bg-red-500/85 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
-            onClick={() => {
-              handleBlockd();
-              setBlocked(!blocked);
-            }}
-          >
-            {!blocked ? (
-              <span className="font-[400] text-[16px]">مسدود کردن</span>
-            ) : (
-              <span className="font-[400] text-[16px]">آزاد سازی</span>
-            )}
-          </button>
-        </div>
-        <h1 className="text-[#265073] text-[32px] font-[700] mx-auto absolute ml-[80px] ">
+        <h1 className="text-[#265073] text-[32px] font-[700] mx-auto ">
           پروفایل کاربری
         </h1>
-        {/* {console.log(getPersianDate("2025-04-25T14:21:14.505699+03:30"))} */}
         <div className="flex min-w-[90vw] bg-[#A4C0ED] ml-auto rounded-[35px] shadow-lg shadow-[#000000]/25 mb-[40px] pl-[52px] pr-[23px] pt-[20px] gap-[39px] border-[2px] border-[#000000]/8 ">
-          <div className="min-w-[236px] ">
-            <img
-              className="w-[236px] h-[267px] shadow-lg shadow-[#000000]/25 rounded-[30px]"
-              src="/src/assets/images/user_image.png"
-              alt="userimage"
-            />
-            <h2 className="text-[20px] text-[#000000] font-[400] mt-[15px]  mb-[12px]">
-              جزئیات
-            </h2>
-            <div className="bg-white min-h-[45px] rounded-[10px] p-[10px] mt-[10px] shadow-lg shadow-[#000000]/25">
-              <p className="text-[16px] text-[#000000] font-[300]">
-                {user.gender}
-              </p>
-              <p className="text-[16px] font-[300] mt-[12px]">
-                {/* {user.joined_date} */}
-                تاریخ ثبت نام :{getPersianDate(user.joined_date)}
-              </p>
+          <div className="min-w-[236px] flex flex-col gap-[15px]">
+            <div className="w-[236px] aspect-square rounded-full overflow-hidden">
+              <img
+                className="w-full h-full shadow-lg shadow-[#000000]/25 object-cover"
+                src={
+                  user.image
+                    ? `/api${user.image}`
+                    : `/src/assets/images/user_image.png`
+                }
+                alt="userimage"
+              />
             </div>
-          </div>
+            <h3 className="  text-[24px] font-bold text-center">{user.user}</h3>
 
-          <div className="w-full  m-[32px] mt-0 ml-0 ">
-            <h3 className="text-[24px] font-[300]  mb-[15px]">{user.user}</h3>
-
-            {console.log(user)}
-            <div className="flex gap-[20px] mb-[19px] ">
-              <button className="flex flex-col  bg-[#ffffff] px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:bg-[#2663cd]/90 hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none">
-                <span className="text-[24px] font-[600] text-[#265073] mb-[-5px]">
-                  {user.favorite_count ? user.favorite_count : 0}
-                </span>
-                <span className="font-[400] text-[#000000]/70 text-[14px]">
-                  کتاب موردعلاقه
-                </span>
+            <div className=" flex flex-col  ">
+              <button
+                className="btn !w-full"
+                onClick={() => {
+                  handleFollow();
+                  setFollowing(!following);
+                }}
+              >
+                {!following ? (
+                  <span className="span-btn">دنبال کردن</span>
+                ) : (
+                  <span className="span-btn">دنبال نکردن</span>
+                )}
               </button>
               <button
-                onClick={() => handleScrollDown(0.9)}
-                className="flex flex-col   bg-[#ffffff] px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:bg-[#2663cd]/90 hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none"
+                className=" btn  !bg-red-700 !w-full before:!bg-[#FF3B30] "
+                onClick={() => {
+                  handleBlockd();
+                  setBlocked(!blocked);
+                }}
               >
-                <span className="text-[24px] font-[600] text-[#265073] mb-[-5px]">
+                {!blocked ? (
+                  <span className=" span-btn">مسدود کردن</span>
+                ) : (
+                  <span className="span-btn">رفع مسدودیت</span>
+                )}
+              </button>
+            </div>
+          </div>
+          <div className="w-full m-[32px] mt-0 ml-0 ">
+            <h1 className="text-[26px] font-bold">قفسه ها:</h1>
+            {console.log(user)}
+            <div className="flex gap-[20px] mb-[19px] ">
+              <button
+                onClick={() => handleScrollDown(0.9)}
+                className=" btn !m-0 !mt-[10px] !min-h-[60px] !flex !flex-col !bg-[#ffffff]  !rounded-[10px]"
+              >
+                <span className=" span-btn !text-[24px] !font-[600] !text-[#265073]">
                   {numberOfWrittenBooks}
                 </span>
-                <span className=" font-[400] text-[#000000]/70 text-[14px]">
+                <span className="span-btn !font-[400] !text-[#000000]/70 !text-[14px]">
                   کتاب تالیف شده
                 </span>
               </button>
+              <button
+                onClick={() => handleScrollDown(1.8)}
+                className=" btn !m-0 !mt-[10px] !min-h-[60px] !flex !flex-col !bg-[#ffffff]  !rounded-[10px]"
+              >
+                <span className=" span-btn !text-[24px] !font-[600] !text-[#265073]">
+                  5
+                </span>
+                <span className="span-btn !font-[400] !text-[#000000]/70 !text-[14px]">
+                  پلی لیست
+                </span>
+              </button>
             </div>
-
-            <div className=" mb-[50px] ">
-              <h5 className="text-[16px] font-[300] mb-1">مشخصات:</h5>
-              <div className="min-w-175 h-61 bg-white px-[25.7px] py-[16.6px] rounded-[10px] shadow-lg shadow-[#000000]/25 ma">
-                <p className="text-[#000000]/70 text-[14px] font-[300]   ">
-                  {user.bio}
+            <h1 className="text-[26px] font-bold mb-1">مشخصات:</h1>
+            <div className="relative bg-white h-[230px] rounded-[10px] shadow-lg shadow-[#000000]/25">
+              <div className="pt-[11px] px-[20px] mt-[10px] ">
+                <p className="font-semibold text-[16px] mb-[5px]">بیوگرافی:</p>
+                <div className="min-w-175">
+                  <p className="text-[#000000] text-[14px] font-[300]">
+                    {user.bio}
+                    {user.bio}
+                    <br />
+                    {user.bio}
+                    <br />
+                    {user.bio}
+                    <br />
+                    {user.bio}
+                    <br />
+                    {user.bio}
+                    <br />
+                  </p>
+                </div>
+                <p className="text-[14px] absolute bottom-10">
+                  <span className="font-semibold">جنسیت:</span>{" "}
+                  {user.gender === "female" ? "زن" : "مرد"}
+                </p>
+                <p className="text-[14px] font-[300] absolute bottom-2">
+                  {/* {user.joined_date} */}
+                  <span className="font-semibold"> تاریخ ثبت نام: </span>
+                  {getPersianDate(user.joined_date)}
                 </p>
               </div>
             </div>
           </div>
 
           {UserWritten[0] ? (
-            <div className="min-w-[242px] h-[375px] m-[32px]  ml-0 ">
+            <div className="min-w-[242px] h-[375px] m-[32px] mt-[5px]  ml-0 ">
+              <h1 className="text-[18px] font-bold mb-1">
+                آخرین کتاب نوشته شده:
+              </h1>
               <BookCard
                 author={lastBook.Author}
                 title={lastBook.name}
