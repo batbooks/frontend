@@ -22,8 +22,7 @@ function Reviews({ book }) {
   const [loading, setLoading] = useState(true);
   const [ratingArray, setRatingArray] = useState([]);
   const [reviewsCount, setReviewsCount] = useState(0);
-  const [following, setFollowing] = useState(false);
-  const [loading1, setLoading1] = useState(false);
+  const [setLoading1] = useState(false);
   const [followingMap, setFollowingMap] = useState({});
 
   const token = localStorage.getItem("access_token");
