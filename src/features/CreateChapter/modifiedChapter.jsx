@@ -60,9 +60,7 @@ const ModifiedChapter = () => {
       });
 
       if (response.ok) {
-
-      
-      console.log("Chapter updated:", data);
+        console.log("Chapter updated:", data);
       }
     } catch (err) {
       Swal.fire({
@@ -70,7 +68,7 @@ const ModifiedChapter = () => {
         text: " درخواست موفقیت آمیز نبود ",
         icon: "error",
         confirmButtonText: "باشه",
-      })
+      });
     } finally {
       setLoading(false);
     }
@@ -78,7 +76,7 @@ const ModifiedChapter = () => {
   return !loading ? (
     <>
       <Navbar />
-      <div className="m-auto py-[120px] bg-[#D9F0FF]">
+      <div className="m-auto py-[120px]">
         <div
           dir="rtl"
           style={{

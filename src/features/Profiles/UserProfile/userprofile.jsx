@@ -24,7 +24,7 @@ export default function Profile() {
   const handleFollow = async (user) => {
     try {
       const response = await fetch(
-        `/api/user/toggle/follow/${user.following_user_id}/`,   
+        `/api/user/toggle/follow/${user.following_user_id}/`,
         {
           method: "GET",
 
@@ -79,7 +79,9 @@ export default function Profile() {
           const data = await response.json();
           setWrittenBooks(data.count);
           setLastBook(data.results[0]);
-        } else { /* empty */ }
+        } else {
+          /* empty */
+        }
       } catch (err) {
         console.error("Error:", err.message);
       } finally {
@@ -103,7 +105,9 @@ export default function Profile() {
         if (response.ok) {
           const data = await response.json();
           setFollowings(data.results);
-        } else { /* empty */ }
+        } else {
+          /* empty */
+        }
       } catch (err) {
         console.error("Error:", err.message);
       } finally {
@@ -113,7 +117,7 @@ export default function Profile() {
 
     fetchFollowings();
   }, []);
-  
+
   const [editClicked, setEditClicked] = useState(false);
   const [isFollowingOpened, setIsFollowingOpened] = useState(false);
   const [isHoveredFavBook, setIsHoveredFavBook] = useState(false);
@@ -154,7 +158,7 @@ export default function Profile() {
       </div>
       <main
         style={{ direction: "rtl" }}
-        className={`z-1 flex flex-col max-w-screen m-auto bg-[#d9f0ff] px-[80px] pb-[90px] pt-[13px] shadow-2xl shadow-[#000000]-25 transition-all duration-500 ${editClicked ? "bg-slate-200/20 blur-sm" : "blur-none"}`}
+        className={`z-1 flex flex-col max-w-screen m-auto px-[80px] pb-[90px] pt-[13px] shadow-2xl shadow-[#000000]-25 transition-all duration-500 ${editClicked ? "bg-slate-200/20 blur-sm" : "blur-none"}`}
       >
         <div className="flex justify-between">
           <button
@@ -181,33 +185,30 @@ export default function Profile() {
 
         <div className="flex bg-[#A4C0ED] rounded-[35px] shadow-lg shadow-[#000000]/25 mb-[40px] pl-[52px] pb-[52px] pr-[23px] pt-[20px] gap-[39px] border-[2px] border-[#000000]/8">
           <div className="min-w-[236px]">
-            {userInfo.image == null ? (
+            <div className="w-[236px] aspect-square rounded-full overflow-hidden">
               <img
-                className="w-[236px] h-[267px] shadow-lg shadow-[#000000]/25 rounded-[30px]"
-                src="src\assets\images\user_image.png"
-                alt="userimage1"
-              />
-            ) : (
-              <img
-                className="w-[236px] h-[267px] shadow-lg shadow-[#000000]/25 rounded-[30px]"
-                src={`/api${userInfo.image}`}
+                className="w-full h-full shadow-lg shadow-[#000000]/25 object-cover"
+                src={
+                  userInfo.image
+                    ? `/api${userInfo.image}`
+                    : `/src/assets/images/user_image.png`
+                }
                 alt="userimage"
               />
-            )}
-            <section>
-            <strong className="text-[24px] text-[#000000] font-[400] mt-[8px] mb-[12px]">
-              جزئیات
-            </strong>
-            <div className="bg-white min-h-[45px] rounded-[10px] p-[13px] mt-[10px] shadow-lg shadow-[#000000]/25">
-              <p className="text-[16px] text-[#000000] font-[300]">
-                {userInfo.gender}
-              </p>
-              <aside className="text-[16px] font-[300] mt-[12px]">
-                {/* {user.joined_date} */}
-                  تاریخ ثبت نام : 
-                {getPersianDate(user.joined_date)}
-              </aside>
             </div>
+            <section>
+              <strong className="text-[24px] text-[#000000] font-[400] mt-[8px] mb-[12px]">
+                جزئیات
+              </strong>
+              <div className="bg-white min-h-[45px] rounded-[10px] p-[13px] mt-[10px] shadow-lg shadow-[#000000]/25">
+                <p className="text-[16px] text-[#000000] font-[300]">
+                  {userInfo.gender === "female" ? "زن" : "مرد"}
+                </p>
+                <aside className="text-[16px] font-[300] mt-[12px]">
+                  {/* {user.joined_date} */}
+                  تاریخ ثبت نام :{getPersianDate(user.joined_date)}
+                </aside>
+              </div>
             </section>
           </div>
 
@@ -245,8 +246,11 @@ export default function Profile() {
               </button>
               <div className="flex flex-col items-center">
                 <button
-
-                  onClick={userInfo.following_count!=0?() => setIsFollowingOpened(!isFollowingOpened):() => setIsFollowingOpened(isFollowingOpened)}
+                  onClick={
+                    userInfo.following_count != 0
+                      ? () => setIsFollowingOpened(!isFollowingOpened)
+                      : () => setIsFollowingOpened(isFollowingOpened)
+                  }
                   onBlur={() =>
                     setTimeout(() => {
                       setIsFollowingOpened(false);
@@ -411,15 +415,13 @@ export default function Profile() {
 
         <div className="relative flex items-center gap-[18px] cursor-pointer rounded-full">
           <div className="flex flex-col gap-[5px]">
-            <h4 className="ml-auto text-[20px] font-[600]">
-              {user.following}
-            </h4>
+            <h4 className="ml-auto text-[20px] font-[600]">{user.following}</h4>
             <h4
               dir="rtl"
               className="text-[12px] font-[400] text-[#265073]"
             ></h4>
           </div>
-          
+
           {user.following_image == null ? (
             <img
               src={"/src/assets/images/following.png"}
