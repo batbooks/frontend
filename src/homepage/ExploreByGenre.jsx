@@ -13,11 +13,8 @@ import {
   Scroll,
   Smile,
   Wand,
-  Sword
+  Sword,
 } from "lucide-react";
-
-
-
 
 const GenreCard = ({ name, novels, color, Icon }) => (
   <motion.div
@@ -41,13 +38,12 @@ const GenreCard = ({ name, novels, color, Icon }) => (
 );
 
 const ExploreByGenre = () => {
-  const[loading,setLoading]=useState(false)
-  const [genresData,setGenres]=useState([])
+  const [loading, setLoading] = useState(false);
+  const [genresData, setGenres] = useState([]);
   useEffect(() => {
-    
     const fetchGenres = async () => {
       setLoading(true);
-      
+
       try {
         const response = await fetch(`/api/category/`, {
           method: "GET",
@@ -55,11 +51,10 @@ const ExploreByGenre = () => {
             "Content-Type": "application/json",
           },
         });
-        console.log("asd")
+        console.log("asd");
         if (response.ok) {
           const data = await response.json();
-          setGenres(data)
-         
+          setGenres(data);
         }
       } catch (error) {
         console.error("خطا در ارسال به سرور:", error);
@@ -67,21 +62,61 @@ const ExploreByGenre = () => {
         setLoading(false);
       }
     };
-  
+
     fetchGenres();
   }, []);
   const colorr = "bg-blue-300";
-  
-console.log(genresData)
+
+  console.log(genresData);
   const genres = [
-    { name: genresData[3]?.title, novels: genresData[0]?.book_count, color: colorr, icon: Search },
-    { name: genresData[2]?.title, novels: genresData[2]?.book_count, color: colorr, icon: Heart },
-    { name: genresData[5]?.title, novels: genresData[5]?.book_count, color: colorr, icon:  Scroll},
-    { name: genresData[4]?.title, novels:genresData[4]?.book_count, color: colorr, icon: Skull },
-    { name: genresData[6]?.title, novels: genresData[6]?.book_count, color: colorr, icon: Smile },
-    { name: genresData[0]?.title, novels: genresData[0]?.book_count, color: colorr, icon: Wand },
-    { name: genresData[7]?.title, novels: genresData[7]?.book_count, color: colorr, icon:Sword  },
-    { name: genresData[1]?.title, novels: genresData[1]?.book_count, color: colorr, icon: Rocket }
+    {
+      name: genresData[3]?.title,
+      novels: genresData[0]?.book_count,
+      color: colorr,
+      icon: Search,
+    },
+    {
+      name: genresData[2]?.title,
+      novels: genresData[2]?.book_count,
+      color: colorr,
+      icon: Heart,
+    },
+    {
+      name: genresData[5]?.title,
+      novels: genresData[5]?.book_count,
+      color: colorr,
+      icon: Scroll,
+    },
+    {
+      name: genresData[4]?.title,
+      novels: genresData[4]?.book_count,
+      color: colorr,
+      icon: Skull,
+    },
+    {
+      name: genresData[6]?.title,
+      novels: genresData[6]?.book_count,
+      color: colorr,
+      icon: Smile,
+    },
+    {
+      name: genresData[0]?.title,
+      novels: genresData[0]?.book_count,
+      color: colorr,
+      icon: Wand,
+    },
+    {
+      name: genresData[7]?.title,
+      novels: genresData[7]?.book_count,
+      color: colorr,
+      icon: Sword,
+    },
+    {
+      name: genresData[1]?.title,
+      novels: genresData[1]?.book_count,
+      color: colorr,
+      icon: Rocket,
+    },
   ];
 
   return (
