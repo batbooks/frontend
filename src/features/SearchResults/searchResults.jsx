@@ -61,27 +61,35 @@ export default function SearchResults({ searchingItem = "people" }) {
   }, [searchingItem, currentpage]);
 
   const fetchPeople = async (page = 1) => {
+    console.log(currentpage1);
     setLoading(true);
     setAllOfThem(false);
     console.log(page);
-    try {
-      const response = await fetch(
-        `/api/user/search/${searched}/?page=${page}`
-      );
-      if (response.ok) {
-        const data = await response.json();
-        setPeople(data.results);
-        setTotalPages(Math.ceil(data.count / itemsPerPage));
+    if (searched.length < 3) {
+      setError(" کلمه سرچ شده باید بزرگتر از سه حرف باشد ");
+      setTotalPages(0);
+      setPeople([])
+    } 
+      try {
+        const response = await fetch(
+          `/api/user/search/${searched}/?page=${page}`
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setPeople(data.results);
+          setTotalPages(Math.ceil(data.count / itemsPerPage));
+        }
+      } catch (err) {
+        if (searched.length < 3) {
+          setError(" کلمه سرچ شده باید بزرگتر از سه حرف باشد ");
+        }
+        console.log(error);
+        setError(err.message);
+        setTotalPages(0);
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      if (searched.length < 3) {
-        setError(" کلمه سرچ شده باید بزرگتر از سه حرف باشد ");
-      }
-      console.log(error);
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
+    
   };
   const handlePageChange = (page) => {
     setcurrentpage(page);
@@ -159,6 +167,8 @@ export default function SearchResults({ searchingItem = "people" }) {
                 if (searchingItem == "people") {
                   fetchPeople();
                 }
+                setcurrentpage1(1);
+                setTotalPages(0);
               }}
               className="!py-[12px] !px-[28px] !rounded-[20px] !w-fit !h-fit !mb-0 !ml-0 !mr-0 shadow-2xl btn"
             >
@@ -1065,7 +1075,11 @@ function Person({ person }) {
           className="rounded-full w-[110px] h-[110px]"
         />
         <div className="flex flex-col gap-[7px] items-start">
-          <h3 >{person.name.length > 12 ? person.name.slice(0, 12) + '...' : person.name}</h3>
+          <h3>
+            {person.name.length > 12
+              ? person.name.slice(0, 12) + "..."
+              : person.name}
+          </h3>
           <span>{person.user_info.following_count}</span>
         </div>
       </div>
