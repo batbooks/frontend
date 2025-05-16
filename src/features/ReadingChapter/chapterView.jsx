@@ -8,6 +8,7 @@ import { useLocation, useParams } from "react-router";
 import Comments from "../../features/Comments/Comment";
 import Loading from "../../common/Loading/Loading";
 import parse from "html-react-parser";
+import ReactMarkdown from "react-markdown";
 
 const ReadingPage = () => {
   const { chapterId } = useParams();
