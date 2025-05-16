@@ -4,6 +4,8 @@ import Footer from "../../common/Footer/Footer";
 import { Editor } from "primereact/editor";
 import { useParams } from "react-router";
 import Loading from "../../common/Loading/Loading";
+import parse from "html-react-parser";
+import Swal from "sweetalert2";
 
 const ModifiedChapter = () => {
   const [chapterName, setChapterName] = useState("");
@@ -58,11 +60,16 @@ const ModifiedChapter = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-
+      const data = await response.json();
+      console.log(response);
+      console.log(data);
       if (response.ok) {
-
-      
-      console.log("Chapter updated:", data);
+        console.log("Chapter updated:", data);
+        Swal.fire({
+          title: " فصل با موفقیت ویرایش شد",
+          icon: "success",
+          confirmButtonText: "باشه",
+        });
       }
     } catch (err) {
       Swal.fire({
@@ -70,7 +77,7 @@ const ModifiedChapter = () => {
         text: " درخواست موفقیت آمیز نبود ",
         icon: "error",
         confirmButtonText: "باشه",
-      })
+      });
     } finally {
       setLoading(false);
     }
@@ -78,45 +85,47 @@ const ModifiedChapter = () => {
   return !loading ? (
     <>
       <Navbar />
-      <div className="m-auto py-[120px] bg-[#D9F0FF]">
+      <div className="m-auto py-[50px]">
         <div
           dir="rtl"
           style={{
-            backgroundColor: "#A4C0ED",
-            width: "1170px",
             borderRadius: "30px",
           }}
-          className="mx-auto flex flex-col px-[75px] pt-[27px] pb-[72px] shadow-lg border-[2px] border-[#000000]/21"
+          className="bg-[#A4C0ED] w-[90%] mx-auto flex flex-col px-[75px] pt-[27px] pb-[72px] shadow-lg border-[2px] border-[#000000]/21"
         >
           <span className="font-bold text-[32px] text-[#265073] mx-auto">
             ویرایش فصل
           </span>
 
-          <div className="flex flex-col">
-            <h2 className="text-[26px] text-[#265073] font-[700]">نام فصل:</h2>
-
-            <div className="my-4">
-              <label className="text-[#333333] font-[400] text-[20px] ml-[190px]">
-                نام فصل :
-              </label>
+          <div className="flex flex-col items-center">
+            <div className="flex flex-col my-4">
+              <label className=" font-bold text-[20px]">نام فصل :</label>
               <input
                 type="text"
                 value={chapterName}
                 onChange={(e) => setChapterName(e.target.value)}
-                className="px-[26.6px] bg-[#ffffff] rounded-[12px] w-[492px] h-[54px] mb-[27px] border-[2px] border-[#000000]/21"
+                className="px-[26px] bg-white rounded-[12px] w-[492px] h-[54px] mb-[27px] border-[2px] border-[#000000]/21"
               />
             </div>
-
-            <div className="flex flex-col">
-              <label className="text-[#333333] font-[400] text-[20px] mb-[1px]">
-                محتوای فصل :
-              </label>
-              <Editor
-                value={chapterContent}
-                onTextChange={(e) => setChapterContent(e.htmlValue)}
-                style={{ height: "286px" }}
-                className="border-[2px] border-[#000000]/21 bg-white"
-              />
+            <div className="grid grid-cols-[1fr_2fr] justify-items-stretch gap-5">
+              <div className="flex flex-col">
+                <label className=" font-bold text-[20px] mb-[1px]">
+                  محتوای فصل :
+                </label>
+                <Editor
+                  value={chapterContent}
+                  onTextChange={(e) => setChapterContent(e.htmlValue)}
+                  className="border-[2px]  h-full border-[#000000]/21 bg-white"
+                />
+              </div>
+              <div>
+                <label className=" font-bold text-[20px] mb-[1px]">
+                  پیش نمایش محتوای فصل:
+                </label>
+                <div className="bg-white h-full text-[16px]  px-[10px] py-[7px] leading-10 border border-[#2663cd]">
+                  {parse(chapterContent)}
+                </div>
+              </div>
             </div>
 
             <div className="mx-auto">

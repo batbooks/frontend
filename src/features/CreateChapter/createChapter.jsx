@@ -39,7 +39,7 @@ const CreateChapter = () => {
   return (
     <>
       <Navbar />
-      <div className="m-auto py-[120px] bg-[#D9F0FF]">
+      <div className="m-auto py-[120px]">
         <div
           dir="rtl"
           style={{

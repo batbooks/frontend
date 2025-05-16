@@ -54,40 +54,38 @@ export default function Suggestions() {
     false,
     false,
   ]);
-  const [suggestions,setSuggestions]=useState([])
-  const [loading,setLoading]=useState([])
-  const [error,setError]=useState("")
+  const [suggestions, setSuggestions] = useState([]);
+  const [loading, setLoading] = useState([]);
+  const [error, setError] = useState("");
   const cardIds = [1, 2, 3, 4, 0];
   useEffect(() => {
-      
-      const fetchSuggestions = async () => {
-        setLoading(true);
-        
-        try {
-          const response = await fetch(`/api/suggestion/book/`, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-          console.log("asd")
-          if (response.ok) {
-            const data = await response.json();
-            setSuggestions(data)
-           
-          }
-        } catch (error) {
-          setError(error.message)
-        } finally {
-          setLoading(false);
+    const fetchSuggestions = async () => {
+      setLoading(true);
+
+      try {
+        const response = await fetch(`/api/suggestion/book/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        console.log("asd");
+        if (response.ok) {
+          const data = await response.json();
+          setSuggestions(data);
         }
-      };
-    
-      fetchSuggestions();
-    }, []);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSuggestions();
+  }, []);
   return (
     <div dir="rtl">
-      <div className="w-full h-[90vh] m-auto bg-white/80 py-[50px] pb-[50px] relative overflow-hidden">
+      <div className="w-full h-[90vh] m-auto bg-[#D9F0FF]/80 py-[50px] pb-[50px] relative overflow-hidden">
         {/* عنوان بخش با استایل بهبود یافته */}
         <motion.h1
           className="flex flex-row justify-between mb-15 text-3xl md:text-3xl font-extrabold text-right pr-[5vw] relative  text-gray-800"

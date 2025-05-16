@@ -23,7 +23,7 @@ function Signup() {
         body: JSON.stringify({ email, password, c_password: repeatPassword }),
       });
       const data = await response.json();
-      
+
       if (response.ok) {
         navigate("/auth/otp", { state: { email: { email } } });
       } else {
@@ -31,11 +31,10 @@ function Signup() {
         throw new Error(data[0]);
       }
     } catch (err) {
-      if(password.length<8){
-        setError(" طول پسورد شما کم است ")
-      }
-      else{
-        setError(" ایمیل شما اشتباه است ")
+      if (password.length < 8) {
+        setError(" طول پسورد شما کم است ");
+      } else {
+        setError(" ایمیل شما اشتباه است ");
       }
     } finally {
       setLoading(false);
@@ -50,7 +49,7 @@ function Signup() {
   }
 
   return (
-    <div className="w-[100vw] h-[100vh] bg-[#D9F0FF]">
+    <div className="w-[100vw] h-[100vh] ">
       <div className="flex gap-1 items-center ">
         <h2 className="text-[24px] mt-1.5 ml-2 font-bold text-[#002D54]">
           Bat<span className="text-[#2663CD]">Books</span>
@@ -144,8 +143,6 @@ function Signup() {
               {loading ? "...در حال ثبت نام" : "ثبت نام"}
             </span>
           </button>
-          
-         
         </form>
         <img
           src="/src/assets/images/mid-left.png"
