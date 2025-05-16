@@ -5,31 +5,33 @@ import { Rating } from "@mui/material";
 import { useNavigate } from "react-router";
 import Loading from "../../common/Loading/Loading";
 
-export default function SearchResults({ searchingItem = "book" }) {
+export default function SearchResults({ searchingItem = "people" }) {
+  const [allOfThem, setAllOfThem] = useState(true);
   const [isVisibleFilters, setIsVisibleFilters] = useState(false);
-  const [people, setPeople] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]); //get current page people from api
-  const [books, setBooks] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]); //get current page books from api
+  const [people, setPeople] = useState([]); //get current page people from api
+  const [books, setBooks] = useState([]); //get current page books from api
   const [forums, setForums] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentpage, setcurrentpage] = useState(1);
+  const [currentpage1, setcurrentpage1] = useState(1);
+
   const [totalPages, setTotalPages] = useState(1);
   const itemsPerPage = 10;
+  const [searched, setSearched] = useState("");
 
+  // const [people, setPeople] = useState([]);
   useEffect(() => {
     if (searchingItem === "forum") {
       const fetchForums = async () => {
         setLoading(true);
         try {
-          const response = await fetch(
-            `http://45.158.169.198/forum/?page=${currentPage}&page_size=${itemsPerPage}`
-          );
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
+          const response = await fetch(`/api/forum/?page=${currentpage}`);
+          if (response.ok) {
+            const data = await response.json();
+            setForums(data.results);
+            setTotalPages(Math.ceil(data.count / itemsPerPage));
           }
-          const data = await response.json();
-          setForums(data.results);
-          setTotalPages(Math.ceil(data.count / itemsPerPage));
         } catch (err) {
           setError(err.message);
         } finally {
@@ -38,12 +40,64 @@ export default function SearchResults({ searchingItem = "book" }) {
       };
       fetchForums();
     }
-  }, [searchingItem, currentPage]);
+    if (searchingItem === "people") {
+      const fetchPeople = async () => {
+        setLoading(true);
+        try {
+          const response = await fetch(`/api/user/users/all/?page=1`);
+          if (response.ok) {
+            const data = await response.json();
+            setPeople(data.results);
+            setTotalPages(Math.ceil(data.count / itemsPerPage));
+          }
+        } catch (err) {
+          setError(err.message);
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchPeople();
+    }
+  }, [searchingItem, currentpage]);
 
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
+  const fetchPeople = async (page = 1) => {
+    setLoading(true);
+    setAllOfThem(false);
+    console.log(page);
+    try {
+      const response = await fetch(
+        `/api/user/search/${searched}/?page=${page}`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setPeople(data.results);
+        setTotalPages(Math.ceil(data.count / itemsPerPage));
+      }
+    } catch (err) {
+      if (searched.length < 3) {
+        setError(" کلمه سرچ شده باید بزرگتر از سه حرف باشد ");
+      }
+      console.log(error);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
+  const handlePageChange = (page) => {
+    setcurrentpage(page);
+  };
+  const handlePageChangeSearched = (page) => {
+    setcurrentpage1(page);
 
+    fetchPeople(page);
+  };
+  if (loading) {
+    return (
+      <div className="h-[100vh] grid place-items-center">
+        <Loading />
+      </div>
+    );
+  }
   return (
     <>
       <Navbar />
@@ -82,9 +136,16 @@ export default function SearchResults({ searchingItem = "book" }) {
             ) : null}
             <div className="relative flex items-center">
               <input
+                onChange={(e) => {
+                  setSearched(e.target.value);
+                }}
                 className="w-[693px] h-[49px] py-[12.5px] pr-[26px] pl-[50px] bg-white rounded-[20px] outline-[2px] outline-[#000000]/21 shadow-lg shadow-[#000000]/25 focus:shadow-none focus:outline-[3px] focus:outline-[#2663cd] placeholder:text-[16px] placeholder:font-[300] placeholder:text-[#265073]"
                 placeholder={
-                  searchingItem === "people" ? "نام کاربری" : "نام کتاب"
+                  searchingItem === "people"
+                    ? "نام کاربری"
+                    : searchingItem == "book"
+                      ? "نام کتاب"
+                      : "موضوع تالار"
                 }
               />
               <img
@@ -93,9 +154,20 @@ export default function SearchResults({ searchingItem = "book" }) {
                 className="w-[24px] h-[24px] z-2 ml-[15px] absolute left-0"
               />
             </div>
-            <button className="!py-[12px] !px-[28px] !rounded-[20px] !w-fit !h-fit !mb-0 !ml-0 !mr-0 shadow-2xl btn">
+            <button
+              onClick={() => {
+                if (searchingItem == "people") {
+                  fetchPeople();
+                }
+              }}
+              className="!py-[12px] !px-[28px] !rounded-[20px] !w-fit !h-fit !mb-0 !ml-0 !mr-0 shadow-2xl btn"
+            >
               <span className="span-btn !text-[16px] !font-[400]">
-                {searchingItem === "forum" ? "جستجوی گفتگو" : "جستجوی کاربر"}
+                {searchingItem === "forum"
+                  ? "جستجوی گفتگو"
+                  : searchingItem == "book"
+                    ? "جستجوی کتاب"
+                    : "جستجوی فرد"}
               </span>
             </button>
           </div>
@@ -104,6 +176,7 @@ export default function SearchResults({ searchingItem = "book" }) {
           <SearchFilters searchingItem={searchingItem} />
         ) : null}
         <div className="flex flex-col w-[100%]">
+          {error == "" ? <div>{error} asda </div> : null}
           {searchingItem !== "book" ? (
             <h2 className="text-[16px] font-[300] mb-[31px]">نتایج جستجو</h2>
           ) : (
@@ -161,21 +234,22 @@ export default function SearchResults({ searchingItem = "book" }) {
             </div>
           ) : (
             <div className="grid grid-cols-3 gap-[25px] mb-[30px]">
-              {people.map((i) => (
-                <Person key={i} />
+              {people.map((person) => (
+                <Person person={person} key={person.id} />
               ))}
             </div>
           )}
 
           {/* Pagination */}
-          {totalPages > 1 && (
+          {totalPages > 1 && allOfThem && (
             <div className="flex justify-center gap-2 my-6 items-center">
+              {console.log("useEffect")}
               {/* Previous Button */}
               <button
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1}
+                onClick={() => handlePageChange(currentpage - 1)}
+                disabled={currentpage === 1}
                 className={`px-3 py-1 rounded-md ${
-                  currentPage === 1
+                  currentpage === 1
                     ? "bg-gray-200 text-gray-500 cursor-not-allowed"
                     : "bg-blue-500 text-white hover:bg-blue-600"
                 }`}
@@ -184,19 +258,19 @@ export default function SearchResults({ searchingItem = "book" }) {
               </button>
 
               {/* First Page */}
-              {currentPage > 3 && totalPages > 5 && (
+              {currentpage > 3 && totalPages > 5 && (
                 <>
                   <button
                     onClick={() => handlePageChange(1)}
                     className={`px-3 py-1 rounded-md ${
-                      currentPage === 1
+                      currentpage === 1
                         ? "bg-blue-700 text-white"
                         : "bg-blue-500 text-white hover:bg-blue-600"
                     }`}
                   >
                     1
                   </button>
-                  {currentPage > 4 && <span className="px-2">...</span>}
+                  {currentpage > 4 && <span className="px-2">...</span>}
                 </>
               )}
 
@@ -205,12 +279,12 @@ export default function SearchResults({ searchingItem = "book" }) {
                 let pageNum;
                 if (totalPages <= 5) {
                   pageNum = i + 1;
-                } else if (currentPage <= 3) {
+                } else if (currentpage <= 3) {
                   pageNum = i + 1;
-                } else if (currentPage >= totalPages - 2) {
+                } else if (currentpage >= totalPages - 2) {
                   pageNum = totalPages - 4 + i;
                 } else {
-                  pageNum = currentPage - 2 + i;
+                  pageNum = currentpage - 2 + i;
                 }
 
                 return (
@@ -218,7 +292,7 @@ export default function SearchResults({ searchingItem = "book" }) {
                     key={pageNum}
                     onClick={() => handlePageChange(pageNum)}
                     className={`px-3 py-1 rounded-md ${
-                      currentPage === pageNum
+                      currentpage === pageNum
                         ? "bg-blue-700 text-white"
                         : "bg-blue-500 text-white hover:bg-blue-600"
                     }`}
@@ -229,15 +303,15 @@ export default function SearchResults({ searchingItem = "book" }) {
               })}
 
               {/* Last Page */}
-              {currentPage < totalPages - 2 && totalPages > 5 && (
+              {currentpage < totalPages - 2 && totalPages > 5 && (
                 <>
-                  {currentPage < totalPages - 3 && (
+                  {currentpage < totalPages - 3 && (
                     <span className="px-2">...</span>
                   )}
                   <button
                     onClick={() => handlePageChange(totalPages)}
                     className={`px-3 py-1 rounded-md ${
-                      currentPage === totalPages
+                      currentpage === totalPages
                         ? "bg-blue-700 text-white"
                         : "bg-blue-500 text-white hover:bg-blue-600"
                     }`}
@@ -249,10 +323,106 @@ export default function SearchResults({ searchingItem = "book" }) {
 
               {/* Next Button */}
               <button
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
+                onClick={() => handlePageChange(currentpage + 1)}
+                disabled={currentpage === totalPages}
                 className={`px-3 py-1 rounded-md ${
-                  currentPage === totalPages
+                  currentpage === totalPages
+                    ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                    : "bg-blue-500 text-white hover:bg-blue-600"
+                }`}
+              >
+                بعدی
+              </button>
+            </div>
+          )}
+          {totalPages > 1 && !allOfThem && (
+            <div className="flex justify-center gap-2 my-6 items-center">
+              {console.log("searched")}
+              {/* Previous Button */}
+              <button
+                onClick={() => {
+                  handlePageChangeSearched(currentpage1 - 1);
+                }}
+                disabled={currentpage1 === 1}
+                className={`px-3 py-1 rounded-md ${
+                  currentpage1 === 1
+                    ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                    : "bg-blue-500 text-white hover:bg-blue-600"
+                }`}
+              >
+                قبلی
+              </button>
+
+              {/* First Page */}
+              {currentpage1 > 3 && totalPages > 5 && (
+                <>
+                  <button
+                    onClick={() => handlePageChangeSearched(1)}
+                    className={`px-3 py-1 rounded-md ${
+                      currentpage1 === 1
+                        ? "bg-blue-700 text-white"
+                        : "bg-blue-500 text-white hover:bg-blue-600"
+                    }`}
+                  >
+                    1
+                  </button>
+                  {currentpage1 > 4 && <span className="px-2">...</span>}
+                </>
+              )}
+
+              {/* Middle Pages */}
+              {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                let pageNum;
+                if (totalPages <= 5) {
+                  pageNum = i + 1;
+                } else if (currentpage1 <= 3) {
+                  pageNum = i + 1;
+                } else if (currentpage1 >= totalPages - 2) {
+                  pageNum = totalPages - 4 + i;
+                } else {
+                  pageNum = currentpage1 - 2 + i;
+                }
+
+                return (
+                  <button
+                    key={pageNum}
+                    onClick={() => handlePageChangeSearched(pageNum)}
+                    className={`px-3 py-1 rounded-md ${
+                      currentpage1 === pageNum
+                        ? "bg-blue-700 text-white"
+                        : "bg-blue-500 text-white hover:bg-blue-600"
+                    }`}
+                  >
+                    {pageNum}
+                  </button>
+                );
+              })}
+
+              {/* Last Page */}
+              {currentpage1 < totalPages - 2 && totalPages > 5 && (
+                <>
+                  {currentpage1 < totalPages - 3 && (
+                    <span className="px-2">...</span>
+                  )}
+                  <button
+                    onClick={() => handlePageChangeSearched(totalPages)}
+                    className={`px-3 py-1 rounded-md ${
+                      currentpage1 === totalPages
+                        ? "bg-blue-700 text-white"
+                        : "bg-blue-500 text-white hover:bg-blue-600"
+                    }`}
+                  >
+                    {totalPages}
+                  </button>
+                </>
+              )}
+
+              {/* Next Button */}
+              <button
+                onClick={() => handlePageChangeSearched(currentpage1 + 1)}
+                disabled={currentpage1 === totalPages}
+                className={`px-3 py-1 rounded-md ${
+                  currentpage1 === totalPages
                     ? "bg-gray-200 text-gray-500 cursor-not-allowed"
                     : "bg-blue-500 text-white hover:bg-blue-600"
                 }`}
@@ -830,15 +1000,60 @@ const Forum = ({
   );
 };
 
-function Person() {
+function Person({ person }) {
   const [isFollowing, setIsFollowing] = useState(false);
   const [isHoveredInnerButton, setIsHoveredInnerButton] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  //useeffect for following |||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+  useEffect(() => {
+    setLoading(true);
+    const fetchFollowing = async () => {
+      try {
+        const response = await fetch(`/api/user/is/follow/${person.id}/`, {
+          method: "GET",
 
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        });
+        const data = await response.json();
+        setIsFollowing(data.is_follow);
+      } catch (err) {
+        console.log(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchFollowing();
+  }, []);
+  const handleFollow = async () => {
+    try {
+      const response = await fetch(`/api/user/toggle/follow/${person.id}/`, {
+        method: "GET",
+
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      });
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+  if (loading) {
+    return (
+      <div className="h-[100vh] grid place-items-center">
+        <Loading />
+      </div>
+    );
+  }
   return (
     <button
       onClick={() => {
         if (!isHoveredInnerButton) {
-          console.log("navigate to userprofile");
+          navigate(`/anotheruserprofile/${person.id}`);
         }
       }}
       className={`relative overflow-hidden p-[21px] bg-[#A4C0ED] outline-[2px] outline-[#000000]/21 rounded-[20px] flex items-center justify-between cursor-pointer ${!isHoveredInnerButton ? "hover:ease-in-out hover:before:w-full hover:before:h-full hover:shadow-[#000000]/50 hover:shadow-lg hover:text-white" : ""} before:absolute before:w-0 before:h-0 before:bg-[#2663CD]/60 before:shadow-none before:inset-0 before:transition-all before:duration-[0.2s] transition-all active:before:bg-[#2663CD]/40 active:outline-none active:shadow-none active:ring-0 active:ring-offset-0`}
@@ -850,8 +1065,8 @@ function Person() {
           className="rounded-full w-[110px] h-[110px]"
         />
         <div className="flex flex-col gap-[7px] items-start">
-          <h3>نام کاربری</h3>
-          <span>1342 کتاب موردعلاقه</span>
+          <h3 >{person.name.length > 12 ? person.name.slice(0, 12) + '...' : person.name}</h3>
+          <span>{person.user_info.following_count}</span>
         </div>
       </div>
       <button
@@ -859,6 +1074,7 @@ function Person() {
         onMouseLeave={() => setIsHoveredInnerButton(false)}
         onClick={() => {
           setIsFollowing(!isFollowing);
+          handleFollow();
         }}
         className="btn py-[7px] px-[21px] !rounded-[10px] !w-fit !h-fit !ml-0 !mr-0 !mb-0"
       >
