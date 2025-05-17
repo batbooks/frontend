@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { useLocation } from "react-router-dom";
-import { logout } from "../../redux/infoSlice";
 
 function Navbar() {
   const [isVisiblePanel, setIsVisiblePanel] = useState(false);
@@ -17,7 +16,6 @@ function Navbar() {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
     navigate("/auth/login");
-    // useDispatch(logout());
   };
 
   const location = useLocation();
@@ -44,7 +42,7 @@ function Navbar() {
   return (
     <header
       dir="rtl"
-      className={`${isVisiblePanel || isVisibleUser ? "relative" : ""} sticky top-0 z-50  ${isScrolled ? "h-[70px] shadow-md transition-all duration-300" : ""} h-[100px] max-w-screen m-auto flex bg-[#a3d5ff] justify-between py-[1px] pl-[50px] pr-[30px]`}
+      className={`sticky top-0 z-102 ${isScrolled ? "h-[70px] shadow-md transition-all duration-300" : ""}  h-[100px] max-w-screen m-auto flex bg-[#a3d5ff] justify-between py-[1px] pl-[50px] pr-[30px]`}
     >
       <nav className="flex items-center gap-[60px]">
         <div
@@ -53,7 +51,7 @@ function Navbar() {
               setIsVisibleUser(false);
             }
           }}
-          className="flex flex-col mt-[86px] gap-[10px] rounded-full"
+          className={`relative flex flex-col ${isVisibleUser ? "mt-[86px]" : ""} gap-[10px] rounded-full`}
         >
           <button
             className="rounded-full cursor-pointer hover:outline-none focus:outline-none"
@@ -93,7 +91,7 @@ function Navbar() {
           </button>
           {isAuthenticated ? (
             <ul
-              className={`w-[155px] h-[76px] divide-y divide-[#2F4F4F]/50 shadow-lg shadow-[#000000]/25 rounded-[10px] ${isVisibleUser ? "opacity-100" : "opacity-0"} ${isVisibleUser ? "visible" : "invisible"} transition-opacity duration-1000 ease-in-out`}
+              className={`w-[155px] h-[76px] divide-y divide-[#2F4F4F]/50 shadow-lg shadow-[#000000]/25 rounded-[10px] transition-opacity duration-1000 ease-in-out ${isVisibleUser ? "opacity-100 pointer-events-auto relative" : "opacity-0 pointer-events-none absolute mt-[60px]"}`}
             >
               <li className="w-[155px] h-[38px] bg-[#ffffff] rounded-t-[10px]">
                 <button
@@ -124,7 +122,7 @@ function Navbar() {
             </ul>
           ) : (
             <ul
-              className={`w-[155px] h-[76px] divide-y divide-[#2F4F4F]/50 shadow-lg shadow-[#000000]/25 rounded-[10px] ${isVisibleUser ? "opacity-100" : "opacity-0"} ${isVisibleUser ? "visible" : "invisible"} transition-opacity duration-1000 ease-in-out`}
+              className={`w-[155px] h-[76px] divide-y divide-[#2F4F4F]/50 shadow-lg shadow-[#000000]/25 rounded-[10px] transition-opacity duration-1000 ease-in-out ${isVisibleUser ? "opacity-100 pointer-events-auto relative" : "opacity-0 pointer-events-none absolute mt-[60px]"}`}
             >
               <li className="w-[155px] h-[38px] bg-[#ffffff] rounded-t-[10px]">
                 <button
@@ -156,7 +154,9 @@ function Navbar() {
           )}
         </div>
 
-        <ul className="flex items-center gap-[66px] mr-[-105px]">
+        <ul
+          className={`flex items-center gap-[66px] ${isVisibleUser ? "-mr-[105px]" : ""}`}
+        >
           <li className="flex flex-col items-center">
             <button
               onClick={() => {
@@ -195,7 +195,7 @@ function Navbar() {
                 setIsVisiblePanel(false);
               }
             }}
-            className="gap-[10px] mt-[85px] flex flex-col w-[155px] items-center mr-[-29px] rounded-full"
+            className={`relative gap-[10px] ${isVisiblePanel ? "mt-[85px]" : ""} flex flex-col w-[155px] items-center mr-[-29px] rounded-full`}
           >
             <button
               className="cursor-pointer flex focus:outline-none"
@@ -227,7 +227,7 @@ function Navbar() {
               <span>پنل ارتباطی</span>
             </button>
             <ul
-              className={`w-[155px] h-[76px] divide-y divide-[#2F4F4F]/50 shadow-lg shadow-[#000000]/25 rounded-[10px] ${isVisiblePanel ? "opacity-100" : "opacity-0"} ${isVisiblePanel ? "visible" : "invisible"} transition-opacity duration-1000 ease-in-out`}
+              className={`w-[155px] h-[76px] divide-y divide-[#2F4F4F]/50 shadow-lg shadow-[#000000]/25 rounded-[10px] transition-opacity duration-1000 ease-in-out ${isVisiblePanel ? "opacity-100 pointer-events-auto relative" : "opacity-0 pointer-events-none absolute mt-[34px]"}`}
             >
               <li className="w-[155px] h-[38px] bg-[#ffffff] rounded-t-[10px]">
                 <button

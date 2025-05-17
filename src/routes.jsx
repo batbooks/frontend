@@ -33,7 +33,7 @@ function AppRoutes() {
           path="/userprofile"
           element={
             <Middleware>
-              <Profile/>
+              <Profile />
             </Middleware>
           }
         ></Route>

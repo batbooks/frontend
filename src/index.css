@@ -151,5 +151,5 @@ textarea {
 }
 
 .span-btn {
-  @apply relative z-[2] transition-colors duration-[0.2s] ease-in-out;
+  @apply relative transition-colors duration-[0.2s] ease-in-out;
 }
