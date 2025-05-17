@@ -156,15 +156,14 @@ function Navbar() {
             </ul>
           )}
         </div>
-        
-        
-          <button
-            className="md:hidden flex items-center"
-            // onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            <img src={menuIcon} alt="menu" className="w-6 h-6" />
-          </button>
-        
+
+        <button
+          className="md:hidden flex items-center"
+          // onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        >
+          <img src={menuIcon} alt="menu" className="w-6 h-6" />
+        </button>
+
         <ul className="hidden md:flex items-center gap-[66px] mr-[-105px]">
           <li className="flex flex-col items-center">
             <button
@@ -243,6 +242,9 @@ function Navbar() {
                   onClick={() => {
                     setSelectedItem(0);
                     setIsVisiblePanel(false);
+                    navigate("/searchresults", {
+                      state: { searchingItem: "forum" },
+                    });
                   }}
                   className="text-[#000000]/70 w-full h-full rounded-t-[10px] cursor-pointer pl-[89px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
@@ -254,6 +256,9 @@ function Navbar() {
                   onClick={() => {
                     setSelectedItem(0);
                     setIsVisiblePanel(false);
+                    navigate("/searchresults", {
+                      state: { searchingItem: "people" },
+                    });
                   }}
                   className="text-[#000000]/70 w-full h-full rounded-b-[10px] cursor-pointer pl-[118px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >

@@ -20,8 +20,14 @@ export default function SearchResults() {
   const itemsPerPage = 10;
   const [searched, setSearched] = useState("");
   const location = useLocation();
-  const searchingItem = location.state?.searchingItem.searchingItem;
+  const [searchingItem, setSearchingItem] = useState("book");
+
+  console.log(location.state?.searchingItem);
   // const [people, setPeople] = useState([]);
+  useEffect(() => {
+    setSearchingItem(location.state?.searchingItem);
+    
+  });
   useEffect(() => {
     if (searchingItem === "forum") {
       const fetchForums = async () => {
@@ -69,28 +75,27 @@ export default function SearchResults() {
     if (searched.length < 3) {
       setError(" کلمه سرچ شده باید بزرگتر از سه حرف باشد ");
       setTotalPages(0);
-      setPeople([])
-    } 
-      try {
-        const response = await fetch(
-          `/api/user/search/${searched}/?page=${page}`
-        );
-        if (response.ok) {
-          const data = await response.json();
-          setPeople(data.results);
-          setTotalPages(Math.ceil(data.count / itemsPerPage));
-        }
-      } catch (err) {
-        if (searched.length < 3) {
-          setError(" کلمه سرچ شده باید بزرگتر از سه حرف باشد ");
-        }
-        console.log(error);
-        setError(err.message);
-        setTotalPages(0);
-      } finally {
-        setLoading(false);
+      setPeople([]);
+    }
+    try {
+      const response = await fetch(
+        `/api/user/search/${searched}/?page=${page}`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setPeople(data.results);
+        setTotalPages(Math.ceil(data.count / itemsPerPage));
       }
-    
+    } catch (err) {
+      if (searched.length < 3) {
+        setError(" کلمه سرچ شده باید بزرگتر از سه حرف باشد ");
+      }
+      console.log(error);
+      setError(err.message);
+      setTotalPages(0);
+    } finally {
+      setLoading(false);
+    }
   };
   const handlePageChange = (page) => {
     setcurrentpage(page);
