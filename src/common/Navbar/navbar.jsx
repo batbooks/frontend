@@ -45,7 +45,7 @@ function Navbar() {
   return (
     <header
       dir="rtl"
-      className={`${isVisiblePanel || isVisibleUser ? "relative" : ""} sticky top-0 z-50  ${isScrolled ? "h-[70px] shadow-md transition-all duration-300" : ""} h-[100px] max-w-screen m-auto flex bg-[#a3d5ff] justify-between py-[1px] pl-[50px] pr-[30px]`}
+      className={`${isVisiblePanel || isVisibleUser ? "relative" : ""} sticky top-0 z-50  lg:${isScrolled ? "h-[70px] shadow-md transition-all duration-300" : ""} h-[100px] max-w-screen m-auto flex bg-[#a3d5ff] justify-between py-[1px] pl-[50px] pr-[30px]`}
     >
       <nav className="flex items-center gap-[60px]">
         <div
@@ -156,8 +156,16 @@ function Navbar() {
             </ul>
           )}
         </div>
-
-        <ul className="flex items-center gap-[66px] mr-[-105px]">
+        
+        
+          <button
+            className="md:hidden flex items-center"
+            // onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            <img src={menuIcon} alt="menu" className="w-6 h-6" />
+          </button>
+        
+        <ul className="hidden md:flex items-center gap-[66px] mr-[-105px]">
           <li className="flex flex-col items-center">
             <button
               onClick={() => {

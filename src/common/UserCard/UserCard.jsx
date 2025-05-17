@@ -7,7 +7,7 @@ export default function UserCard({ user }) {
       {console.log(user)}
       <div className="flex items-center gap-4 ">
         <img
-          className="min-w-30 h-30 w-30 rounded-full object-cover border-2 border-white cursor-pointer"
+          className="min-w-15 w-20 h-20 sm:min-w-15 sm:h-23 sm:w-23 lg:min-w-30 lg:h-30 lg:w-30 rounded-full object-cover border-2 border-white cursor-pointer"
           src={
             user.image != null
               ? `/api/${user.image}`
@@ -16,7 +16,7 @@ export default function UserCard({ user }) {
           alt={user.user}
         />
         <div className="text-right">
-          <h2 className="font-semibold text-lg mb-2 max-w-[150px] truncate">
+          <h2 className="font-semibold text-sm sm:text-base lg:text-lg mb-2 max-w-[150px] truncate">
             {user.user}
           </h2>
           <p className="text-md text-gray-800 flex items-center gap-1 mb-2 justify-start">
@@ -27,7 +27,7 @@ export default function UserCard({ user }) {
           </p>
         </div>
       </div>
-      <button className="ml-4 px-4 py-2 bg-[#2663CD] text-white text-md rounded-md hover:bg-blue-700 transition cursor-pointer h-fit">
+      <button className=" text-nowrap px-2 lg:px-4 py-2 bg-[#2663CD] text-white text-[13px] md:text-sm lg:text-md rounded-md hover:bg-blue-700 transition cursor-pointer h-fit">
         دنبال کردن
       </button>
     </div>

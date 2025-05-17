@@ -85,22 +85,22 @@ export default function Most_active_authors() {
   return (
     <div dir="rtl" className="w-full mb-8 px-4 sm:px-8 lg:px-16 py-10 ">
       <motion.h1
-        className="flex flex-row justify-between mb-15 text-3xl md:text-3xl font-extrabold text-right relative  text-gray-800"
+        className="flex flex-col items-center gap-2 lg:flex-row justify-between mb-15 text-center lg:text-right text-2xl sm:text-3xl font-extrabold relative  text-gray-800"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
         <span className=" absolute -bottom-3 ">فعالترین نویسنده ها </span>
-        <span className="absolute  -bottom-8 w-62  h-2 bg-gradient-to-l from-[#6f6fff] to-[#2828db] rounded-full z-0"></span>
+        <span className="absolute  -bottom-8 w-50 sm:w-63  h-2 bg-gradient-to-l from-[#6f6fff] to-[#2828db] rounded-full z-0"></span>
       </motion.h1>
       {console.log(activeAuthors)}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:mb-17  gap-6 ">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 mb-17  gap-6 ">
         {activeAuthors.map((author, index) => (
           <UserCard key={index} user={author} />
         ))}
       </div>
       <div>
-        <button className=" btn  w-[300px]! h-[50px]!  text-2xl ">
+         <button className=" btn !w-50 sm:!w-[300px] sm:!h-[50px]  sm:!text-2xl ">
           <span className="span-btn">نمایش کل کاربران</span>
         </button>
       </div>
