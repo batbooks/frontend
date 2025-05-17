@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { useLocation } from "react-router-dom";
 import { logout } from "../../redux/infoSlice";
+import menuIcon from "../../assets/images/menu.svg";
 
 function Navbar() {
   const [isVisiblePanel, setIsVisiblePanel] = useState(false);
