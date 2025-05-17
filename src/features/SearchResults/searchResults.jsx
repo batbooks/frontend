@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../../common/Navbar/navbar";
 import Footer from "../../common/Footer/Footer";
 import { Rating } from "@mui/material";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import Loading from "../../common/Loading/Loading";
 
-export default function SearchResults({ searchingItem = "people" }) {
+export default function SearchResults() {
   const [allOfThem, setAllOfThem] = useState(true);
   const [isVisibleFilters, setIsVisibleFilters] = useState(false);
   const [people, setPeople] = useState([]); //get current page people from api
@@ -19,7 +19,8 @@ export default function SearchResults({ searchingItem = "people" }) {
   const [totalPages, setTotalPages] = useState(1);
   const itemsPerPage = 10;
   const [searched, setSearched] = useState("");
-
+  const location = useLocation();
+  const searchingItem = location.state?.searchingItem.searchingItem;
   // const [people, setPeople] = useState([]);
   useEffect(() => {
     if (searchingItem === "forum") {

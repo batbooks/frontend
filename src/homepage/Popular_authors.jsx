@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import UserCard from "../common/UserCard/UserCard";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router";
 
 const authors = [
   {
@@ -57,6 +58,7 @@ export default function Popular_authors() {
   const [popularAuthors, setPopularAuthors] = useState([]);
   const [loading, setLoading] = useState([]);
   const [error, setError] = useState("");
+  const navigate=useNavigate()
   useEffect(() => {
     const fetchPopularAuthors = async () => {
       setLoading(true);
@@ -99,7 +101,7 @@ export default function Popular_authors() {
         ))}
       </div>
       <div>
-        <button className=" btn !w-50 sm:!w-[300px] sm:!h-[50px]  sm:!text-2xl ">
+        <button onClick={()=>navigate("/searchresults",{ state: { searchingItem:  "people"  } })} className=" btn !w-50 sm:!w-[300px] sm:!h-[50px]  sm:!text-2xl ">
           <span className="span-btn">نمایش کل کاربران</span>
         </button>
       </div>

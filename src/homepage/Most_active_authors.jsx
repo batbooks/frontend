@@ -100,7 +100,7 @@ export default function Most_active_authors() {
         ))}
       </div>
       <div>
-         <button className=" btn !w-50 sm:!w-[300px] sm:!h-[50px]  sm:!text-2xl ">
+         <button onClick={()=>navigate("/searchresults",{ state: { searchingItem: { searchingItem } } })} className=" btn !w-50 sm:!w-[300px] sm:!h-[50px]  sm:!text-2xl ">
           <span className="span-btn">نمایش کل کاربران</span>
         </button>
       </div>
