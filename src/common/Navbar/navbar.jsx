@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { useLocation } from "react-router-dom";
+import { logout } from "../../redux/infoSlice";
+import menuIcon from "../../assets/images/menu.svg";
 
 function Navbar() {
   const [isVisiblePanel, setIsVisiblePanel] = useState(false);
@@ -77,13 +79,13 @@ function Navbar() {
           >
             {isAuthenticated && user.user_info.image != null ? (
               <img
-                className="w-[50px] h-[50px] rounded-full"
+                className="w-[50px] h-[50px] rounded-[30px]"
                 src={`/api${user.user_info.image}`}
                 alt="User Image 2"
               />
             ) : (
               <img
-                className="w-[50px] h-[50px] rounded-full"
+                className="w-[50px] h-[50px] rounded-[30px]"
                 src="/images/user_none.png"
                 alt="User Image 3"
               />
