@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Rating } from "@mui/material";
+import { useNavigate } from "react-router";
 export default function Bookcard({ id, suggestions, isHovered, setIsHovered }) {
+  const navigate = useNavigate();
   return (
     <div
       onMouseEnter={() =>
@@ -17,12 +19,14 @@ export default function Bookcard({ id, suggestions, isHovered, setIsHovered }) {
           return newHovered;
         })
       }
+      onClick={() => navigate(`/book/${suggestions[id].id}`)}
       className="flex flex-col w-full max-w-[160px] md:max-w-[180px] lg:max-w-[220px] sm:h-80 lg:h-[350px] shadow-2xl rounded-2xl bg-white text-black  hover:scale-105 transition-all duration-200 cursor-pointer items-center"
     >
       <div className="relative cursor-pointer ">
         {isHovered[id] ? (
           <img
-            className="w-[220px] rounded-t-2xl blur-[4px] transition-all duration-150"
+            
+            className="w-[220px] rounded-t-2xl blur-[4px] transition-all duration-100"
             src={
               suggestions[id]?.image != null
                 ? `/api/${suggestions[id]?.image}`
@@ -32,7 +36,7 @@ export default function Bookcard({ id, suggestions, isHovered, setIsHovered }) {
           />
         ) : (
           <img
-            className="w-[220px] rounded-t-2xl transition-all duration-150 "
+            className="w-[220px] rounded-t-2xl transition-all duration-100 "
             src={
               suggestions[id]?.image != null
                 ? `/api/${suggestions[id]?.image}`
