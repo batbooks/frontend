@@ -7,6 +7,7 @@ import { format } from "date-fns";
 import { useLocation, useParams } from "react-router";
 import Comments from "../../features/Comments/Comment";
 import Loading from "../../common/Loading/Loading";
+import parse from "html-react-parser";
 import ReactMarkdown from "react-markdown";
 import moment from "jalali-moment";
 const ReadingPage = () => {
@@ -135,14 +136,13 @@ const ReadingPage = () => {
               </span>
             </button>
           </div>
-          {/* <div className="full-width-line mb-[41px]"></div> */}
           <div
             dir="rtl"
-            className="mb-[500px] text-[18px] font-[400] bg-white px-15 py-[7px] leading-15 border border-[#2663cd]"
+            className=" text-[18px] font-[400] bg-white px-15 py-[7px] leading-15 border border-[#2663cd]"
           >
-            <ReactMarkdown>{chapterBody}</ReactMarkdown>
+            {parse(chapterBody)}
           </div>
-          <div className="full-width-line"></div>
+
           <div className="flex justify-between py-[41px]">
             <button
               style={{ borderRadius: "10px" }}
@@ -161,7 +161,6 @@ const ReadingPage = () => {
               </span>
             </button>
           </div>
-          {/* <div className="full-width-line"></div> */}
         </div>
       </div>
       <Comments chapterId={chapterId}></Comments>

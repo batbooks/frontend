@@ -38,7 +38,7 @@ export default function Homepage() {
     },
   };
   useEffect(() => {
-    window.scrollBy({ top: 50, behavior: "smooth" }); // scrolls down 100px smoothly
+    window.scrollBy({ top: 85, behavior: "smooth" }); // scrolls down 100px smoothly
   }, []);
   return (
     <div className="">
@@ -112,7 +112,7 @@ export default function Homepage() {
           </motion.div>
         </header>
 
-        <div className="bg-white">
+        <div className="bg-[#D9F0FF]">
           <ExploreByGenre></ExploreByGenre>
         </div>
         <Newest_books></Newest_books>
@@ -120,7 +120,7 @@ export default function Homepage() {
 
         <Popular_authors></Popular_authors>
         {/* <h1 className="text-center my-10 text-2xl  "> فعالترین نویسنده ها </h1> */}
-        <div className="bg-white/80">
+        <div className="bg-[#D9F0FF]">
           <Most_active_authors></Most_active_authors>
         </div>
         {/* <div className="sticky-content-r"></div> */}

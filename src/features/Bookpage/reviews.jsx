@@ -33,7 +33,7 @@ function Reviews({ book }) {
     fetchPage(`/api/comments/book/${bookId}/reviews/`);
   }, [bookId]);
 
-  const fetchPage = async (url) => {
+  const fetchPage = async (url, append = false) => {
     setLoading(true);
     const token = localStorage.getItem("access_token");
 
@@ -48,10 +48,14 @@ function Reviews({ book }) {
       });
       const data = await response.json();
 
-      setAllreviews(data.results.reviews);
+      const newReviews = data.results.reviews;
+
+      setAllreviews((prevReviews) =>
+        append ? [...prevReviews, ...newReviews] : newReviews
+      );
       setNextUrl(data.links.next);
       setPrevUrl(data.links.previous);
-      mapLikes(data.results.reviews);
+      mapLikes(append ? [...allreviews, ...newReviews] : newReviews);
       setRatingArray(data.results.rating_counts);
       setReviewsCount(data.count);
     } catch (err) {
@@ -104,6 +108,12 @@ function Reviews({ book }) {
       );
     } catch (err) {
       console.error(err);
+      Swal.fire({
+        title: "ارور ",
+        text: " درخواست موفقیت آمیز نبود ",
+        icon: "error",
+        confirmButtonText: "باشه",
+      });
     } finally {
       setTimeout(() => {
         Swal.fire({
@@ -190,6 +200,13 @@ function Reviews({ book }) {
         },
       });
     } catch (err) {
+      Swal.fire({
+        title: "ارور ",
+        text: " درخواست موفقیت آمیز نبود ",
+        icon: "error",
+        confirmButtonText: "باشه",
+      });
+
       console.error(err.message);
     }
   };
@@ -215,13 +232,13 @@ function Reviews({ book }) {
   return (
     <main
       dir="rtl"
-      className=" mb-[60px] mx-[100px] flex flex-col bg-[#D9F0FF] p-4"
+      className=" mb-[60px] mx-[100px] flex flex-col bg-white p-4"
     >
       <div
         dir="ltr"
-        className=" bg-white flex flex-col rounded-[15px] shadow-[0px_0px_10px_#00000075] md:flex-row md:items-center md:justify-between mb-6 p-[48px]"
+        className="  bg-blue-300 flex flex-col rounded-[15px] border-[2px] border-[#000000]/21 md:flex-row md:items-center md:justify-between mb-6 p-[48px]"
       >
-        <div className="flex flex-col items-center mb-6 md:mb-0 bg-blue-300 p-6 rounded-[10px] shadow-[0_0_5px_#000]">
+        <div className="flex flex-col items-center mb-6 md:mb-0 bg-[#d9f0ff] p-6 rounded-[10px] shadow-[0_0_5px_#000]">
           <span className="text-4xl font-bold">
             {Math.round(book.rating * 10) / 10}
           </span>
@@ -245,15 +262,17 @@ function Reviews({ book }) {
                 <span dir="rtl" className="w-12 text-sm">
                   {star} ستاره
                 </span>
-                <div className="flex-1 h-3 bg-gray-200 rounded-full mx-2">
+                <div className="flex-1 h-3 bg-white rounded-full mx-2">
                   <div
-                    className="h-3 bg-blue-500 rounded-full"
+                    className="h-3 bg-blue-600 rounded-full"
                     style={{
                       width: `${((ratingArray[star] || 0) / reviewsCount || 0) * 100}%`,
                     }}
                   ></div>
                 </div>
-                <span className="text-sm">{ratingArray[star] || 0}</span>
+                <span className="text-sm inline-block min-w-[20px] ">
+                  {ratingArray[star] || 0}
+                </span>
               </div>
             );
           })}
@@ -270,7 +289,7 @@ function Reviews({ book }) {
         <div className="flex flex-col gap-[36px]">
           {allreviews.map((review) => (
             <div key={review.id} className="flex flex-col">
-              <div className=" flex flex-col gap-[22px] px-[25px] py-[30px] shadow-md bg-[#A4C0ED] border-[2px] border-[#000000]/21 rounded-[25px]">
+              <div className=" flex flex-col gap-[22px] px-[25px] py-[30px] shadow-md bg-blue-300 border-[2px] border-[#000000]/21 rounded-[25px]">
                 <div className="flex gap-[25px]">
                   <div className="flex flex-col items-center gap-[16px]">
                     <div className="w-[83px] h-[83px] rounded-full overflow-hidden">
@@ -320,7 +339,7 @@ function Reviews({ book }) {
                           >
                             <span className="span-btn">حذف نقد</span>
                           </button>
-                          <button className="btn  !py-[5px] !px-[38px] !text-[14px] !font-[400]">
+                          <button className="btn  !py-[5px] !px-[38px] !text-[14px] !font-[400] !hidden">
                             <span className="span-btn">ویرایش نقد</span>
                           </button>
                         </div>
@@ -344,10 +363,10 @@ function Reviews({ book }) {
                       )
                     ) : null}
                   </div>
-                  <div className=" w-full max-w-[1100px] min-h-[180px] p-6 rounded-[15px] border-black/20 border-[2px] shadow-sm shadow-black/21 bg-[#E0F2F1]">
+                  <div className=" w-full max-w-[1100px] min-h-[180px] p-6 rounded-[15px] border-black/20 border-[2px] shadow-sm shadow-black/21 bg-[#d9f0ff]">
                     <div className="flex flex-col gap-[10px]">
                       <div className="flex flex-row gap-[500px]">
-                        <h2 className="text-[15px] text-[#000000]/70 font-[300] ">
+                        <h2 className="text-[15px] text-[#000000]/70">
                           {getTimeAgo(review.created)}
                         </h2>
                         <h2>
@@ -425,27 +444,21 @@ function Reviews({ book }) {
               </div>
             </div>
           ))}
-          <div className="flex justify-between mt-[50px] gap-[12px]">
-            <button
-              onClick={() => nextUrl && fetchPage(nextUrl)}
-              className="btn !mx-0 !px-[23px] !py-[7.5px] !rounded-full bg-[#2663CD] text-white flex items-center gap-[8px]"
-            >
-              <span className="span-btn !text-[14px] !font-[300]">بعدی</span>
-              <FaArrowRight className="span-btn" />
-            </button>
-            <button
-              onClick={() => prevUrl && fetchPage(prevUrl)}
-              className="btn !mx-0 !px-[23px] !py-[7.5px] !rounded-full bg-[#2663CD] text-white flex items-center gap-[8px]"
-            >
-              <FaArrowLeft className="span-btn" />
-              <span className="span-btn !text-[14px] !font-[300]">قبلی</span>
-            </button>
-          </div>
+          {nextUrl && (
+            <div className="flex justify-center mt-[30px]">
+              <button
+                onClick={() => fetchPage(nextUrl, true)}
+                className="btn !rounded-full !w-[200px]"
+              >
+                <span className="span-btn  !text-nowrap">
+                  مشاهده نقدهای بیشتر
+                </span>
+              </button>
+            </div>
+          )}
         </div>
       ) : (
-        <p className="text-center text-gray-600 mt-[50px]">
-          نظری ثبت نشده است.
-        </p>
+        <p className="text-center mt-[30px]">نظری ثبت نشده است</p>
       )}
     </main>
   );

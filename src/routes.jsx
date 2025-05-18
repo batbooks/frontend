@@ -19,7 +19,7 @@ import CreateChapter from "./features/CreateChapter/createChapter.jsx";
 import Threads from "./features/Threads/threads.jsx";
 import ShowAllBooks from "./features/ShowAllBooks/ShowAllBooks.jsx";
 import Comments from "./features/Comments/Comment.jsx";
-
+import ChatPage from "./common/Chat/Chat.jsx";
 function AppRoutes() {
   return (
     <Router>
@@ -29,7 +29,14 @@ function AppRoutes() {
         <Route path="/auth/otp" element={<Otp />}></Route>
         <Route path="/auth/login" element={<Login />}></Route>
         <Route path="/comment" element={<Comments />}></Route>
-        <Route path="/userprofile" element={<Profile />}></Route>
+        <Route
+          path="/userprofile"
+          element={
+            <Middleware>
+              <Profile/>
+            </Middleware>
+          }
+        ></Route>
         <Route path="/book/:bookId" element={<BookPage />}></Route>
         <Route
           path="/mybooks/createbook"
@@ -89,6 +96,7 @@ function AppRoutes() {
           }
         />
         <Route path="/threads/:forumId" element={<Threads forumId={3} />} />
+         <Route path="chat" element={<ChatPage/>} />
       </Routes>
     </Router>
   );

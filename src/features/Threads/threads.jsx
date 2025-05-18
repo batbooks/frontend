@@ -149,7 +149,7 @@ const Threads = () => {
         </h1>
 
         {/* Search Box */}
-        <div className="flex items-center justify-center bg-[#D9F0FF] p-6">
+        <div className="flex items-center justify-center  p-6">
           <div className="relative w-full max-w-lg">
             <input
               type="text"
@@ -181,7 +181,7 @@ const Threads = () => {
 
         {/* Results Section */}
         <h1 dir="rtl" className="mr-21 my-3.5 font-semibold text-xl">
-          نتایج جستجو
+          نتایج جستجو:
         </h1>
         <div className="bg-transparent">
           <CustomModal
@@ -210,7 +210,7 @@ const Threads = () => {
                 {forumData.length > 0 ? (
                   forumData.map((item) => <Card key={item.id} data={item} />)
                 ) : (
-                  <p className="col-span-2 text-center text-[#265073] text-lg">
+                  <p className="col-span-2 text-center font-semibold text-lg">
                     هیچ پستی یافت نشد.
                   </p>
                 )}

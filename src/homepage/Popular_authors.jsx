@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import UserCard from "../common/UserCard/UserCard";
 import { motion } from "framer-motion";
 
@@ -52,7 +52,36 @@ const authors = [
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIm2CWzfiMbqIPMJ32QvKMkapvArB7NQDJVg&s",
   },
 ];
+
 export default function Popular_authors() {
+  const [popularAuthors, setPopularAuthors] = useState([]);
+  const [loading, setLoading] = useState([]);
+  const [error, setError] = useState("");
+  useEffect(() => {
+    const fetchPopularAuthors = async () => {
+      setLoading(true);
+
+      try {
+        const response = await fetch(`/api/popular/author/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        console.log("asd");
+        if (response.ok) {
+          const data = await response.json();
+          setPopularAuthors(data);
+        }
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPopularAuthors();
+  }, []);
   return (
     <div dir="rtl" className="w-full mb-8 px-4 sm:px-8 lg:px-16 py-10 ">
       <motion.h1
@@ -65,7 +94,7 @@ export default function Popular_authors() {
         <span className="absolute  -bottom-8 w-73  h-2 bg-gradient-to-l from-[#6f6fff] to-[#2828db] rounded-full z-0"></span>
       </motion.h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:mb-17  gap-6 ">
-        {authors.map((author, index) => (
+        {popularAuthors.map((author, index) => (
           <UserCard key={index} user={author} />
         ))}
       </div>

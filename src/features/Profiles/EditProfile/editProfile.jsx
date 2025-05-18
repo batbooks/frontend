@@ -31,8 +31,17 @@ export default function EditProfile({ setEditClicked }) {
           },
         });
 
-        if (!response.ok) {
-          throw new Error("درخواست موفق نبود");
+        if (response.ok) {
+          Swal.fire({
+            title: "موفقیت",
+            text: "اطلاعات کاربری با موفقیت تغییر یافت",
+            icon: "success",
+            confirmButtonText: "باشه",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
+            }
+          }, 100);
         }
       }
 
@@ -50,9 +59,17 @@ export default function EditProfile({ setEditClicked }) {
         }
       }
 
-      if (!formData && !formData2) throw new Error("هیچ تغییراتی انجام نشده!");
+      throw new Error("هیچ تغییراتی انجام نشده!");
     } catch (error) {
-      console.error("خطا در ارسال به سرور:", error);
+      console.log(error);
+      if (!formData && !formData2) {
+        Swal.fire({
+          title: "ارور در ارسال اطلاعات ",
+          text: "دوباره امتحان کنید ",
+          icon: "error",
+          confirmButtonText: "باشه",
+        });
+      }
     } finally {
       setLoading(false);
     }
@@ -216,18 +233,8 @@ export default function EditProfile({ setEditClicked }) {
 
           <button
             onClick={async (e) => {
-              await e.preventDefault();
+              e.preventDefault();
               await handleChangeInfo();
-              Swal.fire({
-                title: "موفقیت",
-                text: "اطلاعات کاربری با موفقیت تغییر یافت",
-                icon: "success",
-                confirmButtonText: "باشه",
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  window.location.reload();
-                }
-              });
             }}
             className="z-4 bg-[#2663cd] text-[#ffffff] items-center text-[16.8px] font-[400] w-[213.6px] outline-[2px] outline-[#000000]/21 py-[13.9px] rounded-[12px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
           >
