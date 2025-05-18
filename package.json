@@ -26,6 +26,7 @@
     "flowbite": "^3.1.2",
     "framer-motion": "^12.9.2",
     "html-react-parser": "^5.2.3",
+    "jalali-moment": "^3.3.11",
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.485.0",
     "prime-react": "^1.0.0",
