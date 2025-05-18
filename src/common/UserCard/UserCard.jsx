@@ -16,7 +16,7 @@ export default function UserCard({ user }) {
           alt={user.user}
         />
         <div className="text-right">
-          <h2 className="font-semibold text-sm sm:text-base lg:text-lg mb-2 max-w-[150px] truncate">
+          <h2 className="font-semibold text-sm  sm:text-base lg:text-lg mb-2 max-w-20 md:max-w-30 lg:max-w-40 truncate">
             {user.user}
           </h2>
           <p className="text-md text-gray-800 flex items-center gap-1 mb-2 justify-start">
