@@ -990,7 +990,7 @@ const Forum = ({
   return (
     <button
       onClick={() => navigate(`/threads/${forumId}`)}
-      className="relative overflow-hidden py-[10px] pr-[10px] pl-[90px] bg-[#a3d5ff] outline-[2px] outline-[#000000]/21 rounded-[15px] gap-[38px] flex items-center cursor-pointer hover:ease-in-out hover:before:w-full hover:before:h-full before:absolute before:w-0 before:h-0 before:bg-[#2663CD]/40 before:shadow-none hover:shadow-[#000000]/21 hover:shadow-lg before:inset-0 before:transition-all before:duration-[0.2s] transition-all active:before:bg-[#2663CD]/20 active:outline-none active:shadow-none"
+      className="relative overflow-hidden py-[10px] pr-[10px] pl-[90px] bg-[#a3d5ff] outline-[2px] outline-[#000000]/21 rounded-[15px] gap-[38px] flex items-center cursor-pointer hover:ease-in-out hover:before:w-full hover:before:h-full before:absolute before:w-0 before:h-0 before:bg-[#2663CD]/40 before:shadow-none hover:shadow-[#000000]/21 hover:shadow-lg before:inset-0 before:transition-all before:duration-[0.6s] before:ease-in-out transition-all active:before:bg-[#2663CD]/20 active:outline-none active:shadow-none"
     >
       <img
         src={getImageSrc()}

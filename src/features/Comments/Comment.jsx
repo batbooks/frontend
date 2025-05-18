@@ -18,9 +18,7 @@ export default function Comments({ chapterId }) {
   const [loading, setLoading] = useState(false);
   const [showingComments, setShowingComments] = useState([]);
   const [nextCommentLink, setNextCommentLink] = useState("");
-  const [prevCommentLink, setPrevCommentLink] = useState("");
   const [commentsCount, setCommentsCount] = useState(0);
-  const showingCommentsCount = showingComments.length;
   const { user, isAuthenticated } = useSelector((state) => state.auth);
 
   useEffect(() => {
@@ -40,7 +38,6 @@ export default function Comments({ chapterId }) {
 
         const data = await response.json();
         setNextCommentLink(data.links.next);
-        setPrevCommentLink(data.links.previous);
         setShowingComments(data.results);
         setCommentsCount(data.count);
       } catch (err) {
@@ -60,13 +57,11 @@ export default function Comments({ chapterId }) {
       }
     };
     fetchComments();
-  }, []);
+  }, [chapterId]);
 
-  const nextComments = async () => {
-    const tempComments = showingComments;
+  const loadMoreComments = async () => {
     try {
       setLoading(true);
-      setShowingComments([]);
       const response = await fetch(nextCommentLink, {
         method: "GET",
         headers: {
@@ -76,9 +71,8 @@ export default function Comments({ chapterId }) {
       if (!response.ok) throw new Error("مشکلی پیش اومد...دوباره تلاش کنید");
 
       const data = await response.json();
-      setShowingComments(data.results);
+      setShowingComments([...showingComments, ...data.results]);
       setNextCommentLink(data.links.next);
-      setPrevCommentLink(data.links.previous);
     } catch (err) {
       setTimeout(() => {
         Swal.fire({
@@ -89,40 +83,6 @@ export default function Comments({ chapterId }) {
           showConfirmButton: false,
         });
       }, 100);
-      setShowingComments(tempComments);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const prevComments = async () => {
-    const tempComments = showingComments;
-    try {
-      setLoading(true);
-      setShowingComments([]);
-      const response = await fetch(prevCommentLink, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (!response.ok) throw new Error("مشکلی پیش اومد...دوباره تلاش کنید");
-
-      const data = await response.json();
-      setShowingComments(data.results);
-      setNextCommentLink(data.links.next);
-      setPrevCommentLink(data.links.previous);
-    } catch (err) {
-      setTimeout(() => {
-        Swal.fire({
-          title: `${err.message}`,
-          icon: "error",
-          showCloseButton: true,
-          showCancelButton: false,
-          showConfirmButton: false,
-        });
-      }, 100);
-      setShowingComments(tempComments);
     } finally {
       setLoading(false);
     }
@@ -155,39 +115,23 @@ export default function Comments({ chapterId }) {
                   ? comment.like.includes(user.id)
                     ? 1
                     : comment.dislike.includes(user.id)
-                      ? 0
-                      : -1
+                    ? 0
+                    : -1
                   : -1
               }
             />
           ))}
         </div>
         {loading ? <Loading /> : null}
-        {showingCommentsCount !== commentsCount && !loading ? (
-          <div className="flex justify-between">
-            <button
-              onClick={nextComments}
-              className="btn !px-[23px] !py-[7px] !rounded-full !mt-[50px] !mx-0 !mb-0 !h-fit !w-fit !flex !gap-[12px] !items-center"
-              disabled={nextCommentLink === null ? true : false}
-            >
-              <FaArrowRight
-                size={16}
-                className="relative z-2 transition-colors duration-[0.2s] ease-in-out"
-              />
-              <span className="span-btn text-[16px] font-[300]">صفحه بعد</span>
-            </button>
-            <button
-              onClick={prevComments}
-              className="btn !px-[23px] !py-[7px] !rounded-full !mt-[50px] !mx-0 !mb-0 !h-fit !w-fit !flex !gap-[12px] !items-center"
-              disabled={prevCommentLink === null ? true : false}
-            >
-              <span className="span-btn text-[16px] font-[300]">صفحه قبل</span>
-              <FaArrowLeft
-                size={16}
-                className="relative z-2 transition-colors duration-[0.2s] ease-in-out"
-              />
-            </button>
-          </div>
+        {nextCommentLink && !loading ? (
+          <button
+            onClick={loadMoreComments}
+            className="btn !px-[23px] !py-[7px] !rounded-full !mt-[50px] !mx-auto !mb-0 !h-fit !w-fit !flex !gap-[12px] !items-center"
+          >
+            <span className="span-btn text-[16px] font-[300]">
+              مشاهده موارد بیشتر
+            </span>
+          </button>
         ) : null}
         {commentsCount === 0 && !loading ? (
           <div className="mx-auto py-6">
@@ -320,11 +264,15 @@ function Comment({
   return (
     <div className="flex flex-col">
       <div
-        className={`flex flex-col gap-[22px] px-[25px] py-[30px] bg-[#A4C0ED] border-[2px] border-[#000000]/21 rounded-[25px] ${isClickedReplies || isClickedReply ? "rounded-bl-[0px]" : ""}`}
+        className={`flex flex-col gap-[22px] px-[25px] py-[30px] bg-[#A4C0ED] border-[2px] border-[#000000]/21 rounded-[25px] ${
+          isClickedReplies || isClickedReply ? "rounded-bl-[0px]" : ""
+        }`}
       >
         <div className="gap-[25px] flex">
           <div
-            className={`flex flex-col items-center gap-[16px] ${isAuthenticated && userId === user.id ? "mx-[40px]" : ""} relative`}
+            className={`flex flex-col items-center gap-[16px] ${
+              isAuthenticated && userId === user.id ? "mx-[40px]" : ""
+            } relative`}
           >
             {userImage === null ? (
               <img
@@ -353,7 +301,11 @@ function Comment({
           </div>
           <div className="flex flex-col gap-[22px] w-[100%]">
             <div
-              className={`p-6 ${(isAuthenticated && userId !== user.id) || !isAuthenticated ? "min-h-[170px]" : "min-h-[120px]"} rounded-[15px] border-black/20 border-[2px] shadow-sm shadow-black/21 bg-[#E0F2F1]`}
+              className={`p-6 ${
+                (isAuthenticated && userId !== user.id) || !isAuthenticated
+                  ? "min-h-[170px]"
+                  : "min-h-[120px]"
+              } rounded-[15px] border-black/20 border-[2px] shadow-sm shadow-black/21 bg-[#E0F2F1]`}
             >
               <h2 className="text-[15px] text-[#000000]/70 font-[300] mb-[15px]">
                 {getTimeAgo(dateTime)}
@@ -466,8 +418,8 @@ function Comment({
                     ? reply.like.includes(user.id)
                       ? 1
                       : reply.dislike.includes(user.id)
-                        ? 0
-                        : -1
+                      ? 0
+                      : -1
                     : -1
                 }
               />
@@ -493,8 +445,8 @@ function Comment({
                     ? reply.like.includes(user.id)
                       ? 1
                       : reply.dislike.includes(user.id)
-                        ? 0
-                        : -1
+                      ? 0
+                      : -1
                     : -1
                 }
               />
@@ -560,11 +512,15 @@ function Reply({
 
   return (
     <div
-      className={`flex flex-col gap-[25px] px-[20px] py-[25px] bg-[#A4C0ED] ${isLast ? "rounded-b-[23px]" : ""}`}
+      className={`flex flex-col gap-[25px] px-[20px] py-[25px] bg-[#A4C0ED] ${
+        isLast ? "rounded-b-[23px]" : ""
+      }`}
     >
       <div className="gap-[25px] flex">
         <div
-          className={`flex flex-col items-center gap-[9px] ${isAuthenticated && userId === user.id ? "mx-[40px]" : ""} relative`}
+          className={`flex flex-col items-center gap-[9px] ${
+            isAuthenticated && userId === user.id ? "mx-[40px]" : ""
+          } relative`}
         >
           {userImage === null ? (
             <img
@@ -592,7 +548,11 @@ function Reply({
           ) : null}
         </div>
         <div
-          className={`p-6 ${(isAuthenticated && userId !== user.id) || !isAuthenticated ? "min-h-[170px]" : "min-h-[120px]"} w-[100%] rounded-[15px] border-black/20 border-[2px] shadow-sm shadow-black/21 bg-[#E0F2F1]`}
+          className={`p-6 ${
+            (isAuthenticated && userId !== user.id) || !isAuthenticated
+              ? "min-h-[170px]"
+              : "min-h-[120px]"
+          } w-[100%] rounded-[15px] border-black/20 border-[2px] shadow-sm shadow-black/21 bg-[#E0F2F1]`}
         >
           <h2 className="text-[15px] text-[#000000]/70 font-[300] mb-[15px]">
             {getTimeAgo(dateTime)}
@@ -673,7 +633,9 @@ function ReplyBox({ isLast, commentId, setHidden }) {
 
   return (
     <div
-      className={`flex px-[20px] py-[25px] bg-[#A4C0ED] gap-[25px] ${isLast ? "rounded-b-[23px]" : ""}`}
+      className={`flex px-[20px] py-[25px] bg-[#A4C0ED] gap-[25px] ${
+        isLast ? "rounded-b-[23px]" : ""
+      }`}
     >
       <div className="flex flex-col items-center gap-[9px] mx-[33px]">
         <img
@@ -701,7 +663,9 @@ function ReplyBox({ isLast, commentId, setHidden }) {
             setError("این فیلد خالی است.لطفا چیزی بنویسید...");
           }
         }}
-        className={`!py-[12px] !px-[60px] btn !rounded-[15px] !w-fit !h-fit ${error ? "!mb-[32px]" : "!mb-0"} !ml-0 !mr-0 !mt-auto`}
+        className={`!py-[12px] !px-[60px] btn !rounded-[15px] !w-fit !h-fit ${
+          error ? "!mb-[32px]" : "!mb-0"
+        } !ml-0 !mr-0 !mt-auto`}
       >
         <span className="span-btn !text-[16px] !font-[300] !text-nowrap">
           ثبت پاسخ
@@ -846,7 +810,13 @@ function LikeAndDislike({ likeNum, dislikeNum, likeState, commentorreplyId }) {
               }
             }
           }}
-          className={`h-fit w-fit ${loading ? "cursor-progress" : isAuthenticated ? "cursor-pointer" : "cursor-auto"}`}
+          className={`h-fit w-fit ${
+            loading
+              ? "cursor-progress"
+              : isAuthenticated
+              ? "cursor-pointer"
+              : "cursor-auto"
+          }`}
         >
           {isDislikedVisible ? (
             <AiFillDislike
@@ -934,14 +904,16 @@ function LikeAndDislike({ likeNum, dislikeNum, likeState, commentorreplyId }) {
               }
             }
           }}
-          className={`h-fit w-fit ${loading ? "cursor-progress" : isAuthenticated ? "cursor-pointer" : "cursor-auto"}`}
+          className={`h-fit w-fit ${
+            loading
+              ? "cursor-progress"
+              : isAuthenticated
+              ? "cursor-pointer"
+              : "cursor-auto"
+          }`}
         >
           {isLikedVisible ? (
-            <AiFillLike
-              color="blue"
-              size={25}
-              className="pointer-events-none"
-            />
+            <AiFillLike color="blue" size={25} className="pointer-events-none" />
           ) : (
             <AiOutlineLike
               color="blue"
