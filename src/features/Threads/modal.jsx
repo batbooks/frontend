@@ -55,6 +55,7 @@ const CustomModal = ({ open, setOpen, handleSubmit, input1, setInput1 }) => {
 
           <div  className="flex flex-row gap-3">
             <button
+            onClick={handleSubmit}
               type="submit"
               className="bg-[#2663CD] cursor-pointer text-white px-6 py-2 rounded-[10px] shadow-md hover:bg-[#2663cd]/90 transition"
             >

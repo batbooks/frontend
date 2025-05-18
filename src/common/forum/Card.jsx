@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Card({ data }) {
   const { name, author, created_at } = data;
-
+  console.log(data)
   const formatDate = (isoDate) => {
     if (!isoDate) return "تاریخ نامعلوم";
     
