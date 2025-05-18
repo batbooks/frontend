@@ -44,7 +44,7 @@ export default function SearchResults({ searchingItem = "people" }) {
       const fetchPeople = async () => {
         setLoading(true);
         try {
-          const response = await fetch(`/api/user/users/all/?page=1`);
+          const response = await fetch(`/api/user/users/all/?page=${currentpage}`);
           if (response.ok) {
             const data = await response.json();
             setPeople(data.results);
