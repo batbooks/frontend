@@ -16,8 +16,10 @@ import EditChapter from "./features/EditChapter/editChapter.jsx";
 import ModifiedChapter from "./features/CreateChapter/modifiedChapter.jsx";
 import ReadingPage from "./features/ReadingChapter/chapterView.jsx";
 import CreateChapter from "./features/CreateChapter/createChapter.jsx";
+import Threads from "./features/Threads/threads.jsx";
 import ShowAllBooks from "./features/ShowAllBooks/ShowAllBooks.jsx";
-
+import Comments from "./features/Comments/Comment.jsx";
+import ChatPage from "./common/Chat/Chat.jsx";
 function AppRoutes() {
   return (
     <Router>
@@ -26,13 +28,13 @@ function AppRoutes() {
         <Route path="/auth/signup" element={<Signup />}></Route>
         <Route path="/auth/otp" element={<Otp />}></Route>
         <Route path="/auth/login" element={<Login />}></Route>
-
+        <Route path="/comment" element={<Comments />}></Route>
         <Route
           path="/userprofile"
           element={
-            
-              <Profile />
-            
+            <Middleware>
+              <Profile/>
+            </Middleware>
           }
         ></Route>
         <Route path="/book/:bookId" element={<BookPage />}></Route>
@@ -44,13 +46,16 @@ function AppRoutes() {
             </Middleware>
           }
         ></Route>
-
         <Route path="/Forget_password" element={<Forget_password />} />
         <Route path="/Vf" element={<Vf />} />
         <Route
           path="/anotheruserprofile/:userId"
           element={<Another_User_Profile />}
         ></Route>
+        <Route
+          path="/forums"
+          element={<SearchResults searchingItem="forum" />}
+        />
         <Route path="/searchresults" element={<SearchResults />} />
         <Route path="/readingchapter" element={<ReadingPage chapterId={1} />} />
         <Route
@@ -61,7 +66,6 @@ function AppRoutes() {
             </Middleware>
           }
         />
-        <Route path="/readingchapter" element={<ReadingPage />} />
         <Route
           path="/editChapter/:bookId"
           element={
@@ -70,17 +74,8 @@ function AppRoutes() {
             </Middleware>
           }
         />
-        <Route
-          path="/createChapter"
-          element={
-            <Middleware>
-              <CreateChapter />
-            </Middleware>
-          }
-        />
         <Route path="/chapter/:chapterId" element={<ReadingPage />} />
         <Route path="/showallbooks" element={<ShowAllBooks />} />
-        <Route path="/mybooks" element={<MyBooks />} />
         <Route
           path="/modifiedChapter/:id"
           element={
@@ -89,7 +84,6 @@ function AppRoutes() {
             </Middleware>
           }
         />
-
         <Route
           path="/mybooks"
           element={
@@ -98,6 +92,8 @@ function AppRoutes() {
             </Middleware>
           }
         />
+        <Route path="/threads/:forumId" element={<Threads forumId={3} />} />
+         <Route path="chat" element={<ChatPage/>} />
       </Routes>
     </Router>
   );

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Rating, Select, MenuItem, FormControl } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { Editor } from "primereact/editor";
 import Footer from "../../common/Footer/Footer.jsx";
 import Navbar from "../../common/Navbar/navbar.jsx";
@@ -37,6 +38,7 @@ const BookPage = () => {
   const [reviewTitle, setReviewTitle] = useState("");
   const [reviewContent, setReviewContent] = useState("");
   const [reviewRating, setReviewRating] = useState(2.5);
+  const [reviewsCount, setReviewsCount] = useState(0);
   const [isSticky, setIsSticky] = useState(false);
   const [lastReadChapter, setLastReadChapter] = useState("");
   const [isClicked, setIsClicked] = useState(false);
@@ -44,6 +46,7 @@ const BookPage = () => {
   const [chapterId, setChapterId] = useState(0);
   const [isFavorite, setIsFavorite] = useState(false);
   const [chapterFound, setChapterFound] = useState(false);
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
 
   const chaptersPerPage = 10;
   const totalPages = Math.ceil((book?.chapters?.length || 0) / chaptersPerPage);
@@ -53,27 +56,30 @@ const BookPage = () => {
       try {
         setLoading(true);
         const token = localStorage.getItem("access_token");
+        const auth = token ? `Bearer ${token}` : "";
 
-        const [bookResponse, favoriteResponse] = await Promise.all([
-          fetch(`/api/book/${bookId}/`),
-          fetch(`/api/book-actions/is/favorite/${bookId}/`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }),
-        ]);
+        const [bookResponse, favoriteResponse, reveiewsResponse] =
+          await Promise.all([
+            fetch(`/api/book/${bookId}/`),
+            fetch(`/api/book-actions/is/favorite/${bookId}/`, {
+              headers: { Authorization: auth },
+            }),
+            fetch(`/api/comments/book/${bookId}/reviews/`),
+          ]);
 
         if (bookResponse.status == 404) {
           setChapterFound(false);
         }
-        if (!bookResponse.ok || !favoriteResponse.ok) {
+        if (!bookResponse.ok) {
           throw new Error("Failed to fetch data");
         }
         setChapterFound(true);
         const bookData = await bookResponse.json();
         const favoriteData = await favoriteResponse.json();
+        const reviewsData = await reveiewsResponse.json();
 
         setBook(bookData);
+        setReviewsCount(reviewsData.count);
         setIsFavorite(favoriteData.is_favorite);
       } catch (err) {
         setError(err.message);
@@ -95,6 +101,7 @@ const BookPage = () => {
   }, []);
 
   const handleFavorite = async () => {
+    const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(
         `/api/book-actions/toggle/favorite/${bookId}/`,
@@ -117,11 +124,16 @@ const BookPage = () => {
           }
         });
       }, 100);
+      setIsFavorite(!isFavorite);
     } catch (err) {
-      console.error("Error:", err.message);
+      Swal.fire({
+        title: "ارور ",
+        text: " درخواست موفقیت آمیز نبود ",
+        icon: "error",
+        confirmButtonText: "باشه",
+      });
     } finally {
       setLoading(false);
-      setIsFavorite(!isFavorite);
     }
   };
 
@@ -143,7 +155,6 @@ const BookPage = () => {
       return;
     }
     try {
-      // Replace this with your actual API endpoint
       const response = await fetch(
         `/api/comments/book/${bookId}/reviews/create/`,
         {
@@ -162,7 +173,6 @@ const BookPage = () => {
       );
 
       const data = await response.json();
-      console.log(data);
       if (response.ok) {
         setMessage("comment sent for review");
         // Redirect to verification page or next step after a short delay
@@ -194,44 +204,37 @@ const BookPage = () => {
     );
   }
   return (
-    <div className="overflow-x-hidden">
+    <div className="">
       <Navbar />
 
-      <div className="flex bg-[#D9F0FF] min-h-screen p-5 flex-row-reverse text-right ">
+      <div className="flex min-h-screen p-5 flex-row-reverse text-right ">
         {/* Sidebar */}
         <div className={`w-[23.3vw]  transition-all duration-500 ease-in-out`}>
           <img
             src={
               book.image
-                ? `/api/${book.image}`
+                ? `/api${book.image}`
                 : `https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-book-cover-design-template-34323b0f0734dccded21e0e3bebf004c_screen.jpg?ts=1637015198`
             }
             alt="Book Cover"
             className="rounded-lg shadow-lg w-full h-[500px]"
           />
-          <div className="grid grid-cols-1 mt-4">
-            <button
-              onClick={() => handleFavorite()}
-              className={`btn !shadow-lg !rounded-full !h-8  !w-full  ${
-                isFavorite ? "" : " !bg-[#FFFF] !text-black"
-              }`}
-            >
-              <span className="span-btn">
-                {isFavorite
-                  ? "حذف از مورد علاقه ها"
-                  : "اضافه کردن به مورد علاقه ها"}
-              </span>
-            </button>
-            <button
-              className={`btn !shadow-lg !rounded-full !h-8  !w-full  ${
-                book.readOnce ? "" : " !bg-[#FFFF] !text-black"
-              }`}
-            >
-              <span className="span-btn">
-                {book.readOnce ? "تا کنون خوانده شده" : "تا کنون خوانده نشده"}
-              </span>
-            </button>
-          </div>
+          {isAuthenticated ? (
+            <div className="grid grid-cols-1 mt-4">
+              <button
+                onClick={() => handleFavorite()}
+                className={`btn !shadow-lg !rounded-full !h-8  !w-full  ${
+                  isFavorite ? "before:!bg-[#FF3B30] !bg-[#CC2F26]" : ""
+                }`}
+              >
+                <span className="span-btn">
+                  {isFavorite
+                    ? "حذف از مورد علاقه ها"
+                    : "اضافه کردن به مورد علاقه ها"}
+                </span>
+              </button>
+            </div>
+          ) : null}
         </div>
 
         {/* Main Content */}
@@ -239,25 +242,20 @@ const BookPage = () => {
           {/* <SearchBar /> */}
 
           {/* Book Details */}
-          <div className="bg-[#D9F0FF] p-5 mb-5 relative z-10">
+          <div className=" p-5 mb-5 relative z-10">
             <h1 className="text-4xl font-bold mb-4">{book.name}</h1>
             <h2 className="text-2xl text-gray-600">{book.author}</h2>
 
-            <div className="flex items-center my-2 justify-end">
-              <span className="ml-2 text-gray-700 mb-1 font-bold opacity-70">
-                نظر
+            <div className="flex gap-[10px] items-center my-2 justify-end">
+              <span className=" text-gray-700 mb-1 font-bold opacity-70">
+                نقد
               </span>
-              <span className="ml-2 mr-2 text-gray-700 mb-1 font-bold opacity-70">
-                {book.reviewsCount || 0}
+              <span className=" mr-10 text-gray-700 mb-1 font-bold opacity-70">
+                {reviewsCount}
               </span>
-              <span className="ml-2 text-gray-700 mb-1 font-bold opacity-70">
-                رای
-              </span>
-              <span className="ml-2 mr-50 text-gray-700 mb-1 font-bold opacity-70">
-                {book.ratingsCount || 0}
-              </span>
-              <span className="ml-2 mr-7 text-gray-700 text-2xl mb-1">
-                {book.rating}
+
+              <span className=" text-gray-700 text-2xl mb-1">
+                {Math.round(book.rating * 10) / 10}
               </span>
               <Rating
                 name="half-rating-read"
@@ -301,7 +299,7 @@ const BookPage = () => {
           </div>
 
           {/* Chapter List */}
-          <div className="bg-[#D9F0FF] p-5 relative z-0">
+          <div className=" p-5 relative z-0">
             <h2 className="text-xl font-bold mb-3">فهرست فصل‌ها</h2>
             <div className="overflow-x-auto">
               <table className="w-full border-collapse">
@@ -350,14 +348,16 @@ const BookPage = () => {
       </div>
 
       {/* Review Section */}
-      <button
-        className="btn !mr-60 !rounded-[10px]"
-        onClick={() => setIsClicked(true)}
-      >
-        <span className="span-btn">نقد خود را بنویسید</span>
-      </button>
+      {isAuthenticated ? (
+        <button
+          className="btn !mr-30 !rounded-[10px]"
+          onClick={() => setIsClicked(true)}
+        >
+          <span className="span-btn">نقد خود را بنویسید</span>
+        </button>
+      ) : null}
       <form
-        className={`w-auto bg-white text-gray-800 p-6 rounded-lg shadow-lg border mt-8 mx-20 ${isClicked ? "visible" : "hidden"}`}
+        className={`w-auto bg-[#d9f0ff] text-gray-800 p-6 rounded-lg shadow-lg border mt-8 mx-20 ${isClicked ? "visible" : "hidden"}`}
         dir="rtl"
         onSubmit={handleSubmitReview}
       >
@@ -375,20 +375,18 @@ const BookPage = () => {
         <div className="space-y-6">
           <div className="flex flex-row justify-between w-[90%] items-center">
             <div>
-              <label className="block text-gray-600 mb-1 text-sm">
-                عنوان نقد
-              </label>
+              <label className="block mb-1 text-sm">عنوان نقد</label>
 
               <input
                 type="text"
                 value={reviewTitle}
                 onChange={(e) => setReviewTitle(e.target.value)}
                 placeholder="عنوان نقد خود را وارد کنید..."
-                className="w-[500px] px-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-[500px] bg-white px-4 py-2 rounded-[5px] border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
             <div>
-              <label className="block text-gray-600 mb-1 text-sm">
+              <label className="block  mb-1 text-sm">
                 آخرین چپتر خوانده شده
               </label>
               <Select
@@ -397,7 +395,7 @@ const BookPage = () => {
                   setLastReadChapter(e.target.key);
                   setChapterId(e.target.value);
                 }}
-                className="w-[180px]  rounded-[10px] text-lg text-center font-vazir"
+                className="w-[180px] bg-white rounded-[10px] text-lg text-center font-vazir"
                 MenuProps={{
                   PaperProps: {
                     sx: { fontFamily: "Vazir" },
@@ -412,14 +410,15 @@ const BookPage = () => {
                   },
                 }}
               >
-                <MenuItem className="font-vazir" value={0}>
+                <MenuItem className="font-vazir" value={0} dir="rtl">
                   انتخاب چپتر
                 </MenuItem>
                 {book.chapters.map((chapter, index) => (
                   <MenuItem
-                    className="font-vazir"
+                    className="font-vazir "
                     value={chapter.id}
                     key={chapter.title}
+                    dir="rtl"
                   >
                     {index + 1}.{chapter.title}
                   </MenuItem>
@@ -438,6 +437,7 @@ const BookPage = () => {
                   className="mr-2"
                   dir="ltr"
                 />
+                {reviewRating < 1 ? setReviewRating(1) : null}
                 <input
                   type="number"
                   step={0.1}
@@ -449,19 +449,22 @@ const BookPage = () => {
                       ? setReviewRating(e.target.value)
                       : setReviewRating(0)
                   }
-                  className="w-[70px] text-[20px] rounded-[10px] text-center border border-gray-300"
+                  className="w-[70px] bg-white text-[20px] rounded-[10px] text-center border border-gray-300"
                 />
               </section>
             </div>
           </div>
           <div>
-            <label className="block text-gray-600 mb-1 text-sm">
-              محتوای نظر
-            </label>
+            <label className="block  mb-1 text-sm">محتوای نظر</label>
             <Editor
               value={reviewContent}
               onTextChange={(e) => setReviewContent(e.htmlValue)}
-              style={{ height: "200px" }}
+              style={{
+                height: "200px",
+                backgroundColor: "white",
+                borderBottomLeftRadius: "10px",
+                borderBottomRightRadius: "10px",
+              }}
             />
           </div>
 
@@ -470,16 +473,13 @@ const BookPage = () => {
           </button>
         </div>
 
-        <div className="mt-6 bg-blue-100 text-blue-800 border-l-4 border-blue-600 p-4 text-xs rounded">
+        <div className="mt-6 bg-white text-blue-800 border-l-4 border-blue-600 p-4 text-xs rounded-[5px]">
           <strong>⚠ لطفا با احترام نظر دهید!</strong> از نقد سازنده استقبال می
           شود؛ لطفا محترمانه برخورد کنید و قوانین را رعایت کنید.
         </div>
       </form>
 
-      <div className="w-350 p-10 pl-28">
-        {/* <Reviews bookId={bookId} /> */}
-      </div>
-      <Reviews />
+      <Reviews book={book} />
       <Footer />
     </div>
   );

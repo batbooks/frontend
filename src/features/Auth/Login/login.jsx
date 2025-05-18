@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -13,6 +12,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const [userinfo, setuserinfo] = useState({});
   const [loading, setLoading] = useState(false);
+  const [error,seterror]=useState("")
   // const token = localStorage.getItem("access_token");
   let navigate = useNavigate();
   const fetchuserinfo = async (token) => {
@@ -34,32 +34,54 @@ function Login() {
   };
 
   async function handleSubmit(e) {
+    console.log("adsda");
     e.preventDefault();
     setLoading(true);
 
     try {
-      const response = await axios.post("/api/auth/token/", {
-        email,
-        password,
+      const response = await fetch("http://45.158.169.198/auth/token/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
       });
-      // Cookies.set('access_token', 'value', { expires: 7,secure:true , path:'/'  } );
-      // Cookies.set('refresh_token', 'value', { expires: 7,secure:true , path:'/'  } );
-      localStorage.setItem("access_token", response.data.access);
-      localStorage.setItem("refresh_token", response.data.refresh);
-      navigate("/");
-      fetchuserinfo(response.data.access);
-      const user = userinfo;
-      dispatch(
-        loginSuccess({
-          user,
-        })
-      );
+
+      // if (!response.ok) {
+      //   throw new Error("Login failed");
+      // }
+      if (response.status==401){
+        seterror(" اطلاعات خود را درست وارد کنید ")
+      }
+      if (response.ok) {
+        const data = await response.json();
+
+        console.log(response.error, "asdasd");
+        localStorage.setItem("access_token", data.access);
+        localStorage.setItem("refresh_token", data.refresh);
+        navigate("/");
+        fetchuserinfo(data.access);
+        const user = userinfo;
+        location.reload();
+        dispatch(
+          loginSuccess({
+            user,
+          })
+        );
+      }
+      else{
+        seterror(" اطلاعات خود را درست وارد کنید ")
+      }
     } catch (err) {
-      console.error(err.message);
+      seterror(" اطلاعات خود را درست وارد کنید ")
+      console.log(err.detail)
       dispatch(logout());
     } finally {
       setLoading(false);
-      location.reload();
     }
   }
 
@@ -91,7 +113,7 @@ function Login() {
             <img
               src="/src/assets/images/user.png"
               alt="user"
-              className="absolute right-[150px] top-[50%] -translate-y-1/2"
+              className="absolute right-38 top-[50%] -translate-y-1/2"
             />
           </div>
           <div className="flex justify-center relative mb-3">
@@ -106,35 +128,38 @@ function Login() {
             <img
               src="/src/assets/images/lock.png"
               alt="lock-password"
-              className="absolute right-[150px] top-[50%] -translate-y-1/2"
+              className="absolute right-38 top-[50%] -translate-y-1/2"
             />
-            {showPassword ? (
+            {!showPassword ? (
               <img
                 src="/src/assets/images/eye-on.png"
                 alt="eye-on-password"
                 onClick={handleShowPassword}
-                className="absolute z-50 mr-95 mt-2"
+                className="absolute left-38 top-[50%] -translate-y-1/2"
               />
             ) : (
               <img
                 src="/src/assets/images/eye-off.png"
                 alt="eye-off-password"
                 onClick={handleShowPassword}
-                className="absolute z-50 mr-95 mt-2"
+                className="absolute left-38 top-[50%] -translate-y-1/2"
               />
             )}
           </div>
+         {error!=""?<div className="text-center text-red-600 mb-1">{error}</div>:<></>}
           <button type="submit" className="btn" disabled={loading}>
             <span className="span-btn">
               {loading ? "...در حال ورود" : "ورود"}
             </span>
           </button>
-          <button
-            className="mx-auto flex cursor-pointer justify-center"
-            onClick={() => navigate("/Forget_password")}
+          
+          <Link
+            className="mx-auto flex cursor-pointer justify-center hover:text-[#2663CD]"
+            to={"/Forget_password"}
           >
             رمز عبور را فراموش کرده ام
-          </button>
+          </Link>
+          
         </form>
         <img
           src="/src/assets/images/mid-left.png"
@@ -164,6 +189,7 @@ function Login() {
         alt="bottom-right"
         className=" absolute right-[0px] bottom-0 w-[33vw] ascept-auto"
       />
+      
     </div>
   );
 }

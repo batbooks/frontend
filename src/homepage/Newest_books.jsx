@@ -1,5 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Book_card from "./book_card";
+import Bookcard from "./Bookcard";
+import { useInView } from "react-intersection-observer";
+import { motion } from "framer-motion";
+
 const books = [
   {
     title: "Hypogeum, I",
@@ -8,7 +12,6 @@ const books = [
     description:
       "Deep beneath the earth lies an ancient chamber known as the Hypogeum. Follow the journey of an unlikely hero as they uncover its mysteries and face the darkness that lurks within.",
     chapters: 21,
-    genres:["fantasy","crime","comedy"]
   },
   {
     title: "Curse of the Exchanged",
@@ -25,59 +28,105 @@ const books = [
     description:
       "When an ancient flame that never dies falls into the wrong hands, the world teeters on the brink of chaos. Only one person holds the key to extinguishing the cursed fire.",
     chapters: 21,
-    genres:["fantasy","crime","comedy"]
+  },
+  {
+    title: "Hypogeum, I",
+    author: "trembling rabbit",
+    coverImage: "4.png",
+    description:
+      "Deep beneath the earth lies an ancient chamber known as the Hypogeum. Follow the journey of an unlikely hero as they uncover its mysteries and face the darkness that lurks within.",
+    chapters: 21,
+  },
+  {
+    title: "Hypogeum, I",
+    author: "trembling rabbit",
+    coverImage: "5.png",
+    description:
+      "Deep beneath the earth lies an ancient chamber known as the Hypogeum. Follow the journey of an unlikely hero as they uncover its mysteries and face the darkness that lurks within.",
+    chapters: 21,
   },
 ];
+export default function Suggestions() {
+  const [isHovered, setIsHovered] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
+  const cardIds = [1, 2, 3, 4, 0];
+  const [suggestions, setSuggestions] = useState([]);
+  const [loading, setLoading] = useState([]);
+  const [error, setError] = useState("");
 
-export default function Newest_books() {
+  useEffect(() => {
+    const fetchSuggestions = async () => {
+      setLoading(true);
+
+      try {
+        const response = await fetch(`/api/newest/book/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        console.log("asd");
+        if (response.ok) {
+          const data = await response.json();
+          setSuggestions(data);
+        }
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSuggestions();
+  }, []);
   return (
-    <div className=" h-[75vh]">
-      <h1 className="text-right mb-8 text-4xl mr-20 font-bold pt-[30px]"> تازه ترین ها </h1>
-      <div className="      flex flex-row gap-24 items-center justify-center ">
-        <div className="w-[200px] h-[320px]">
-          <Book_card
-            author={books[0].author}
-            title={books[0].title}
-            coverImage="20.jpg"
-            description={books[0].description}
-            chapters={books[0].chapters}
-          ></Book_card>
-        </div>
-        <div className="w-50 h-[320px]">
-          <Book_card
-            author={books[0].author}
-            title={books[0].title}
-            coverImage="20.jpg"
-            description={books[0].description}
-            chapters={books[0].chapters}
-          ></Book_card>
-        </div>
-        <div className="w-50 h-[320px]">
-          <Book_card
-            author={books[0].author}
-            title={books[0].title}
-            coverImage="20.jpg"
-            description={books[0].description}
-            chapters={books[0].chapters}
-          ></Book_card>
-        </div>
-        <div className="w-50 h-[320px]">
-          <Book_card
-            author={books[0].author}
-            title={books[0].title}
-            coverImage="21.png"
-            description={books[0].description}
-            chapters={books[0].chapters}
-          ></Book_card>
-        </div>
-        <div className="w-50 h-[320px]">
-          <Book_card
-            author={books[0].author}
-            title={books[0].title}
-            coverImage="22.jpg"
-            description={books[0].description}
-            chapters={books[0].chapters}
-          ></Book_card>
+    <div dir="rtl">
+      <div className="w-full h-[90vh] m-auto   py-[50px] pb-[50px] relative overflow-hidden">
+        {/* عنوان بخش با استایل بهبود یافته */}
+        <motion.h1
+          className="flex flex-row justify-between mb-15 text-3xl md:text-3xl font-extrabold text-right pr-[4vw] relative  text-gray-800"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
+          <span className=" absolute -bottom-3 right-21 "> تازه ترین ها</span>
+          <span className="absolute  -bottom-8 right-21 w-35  h-2 bg-gradient-to-l from-[#6f6fff] to-[#2828db] rounded-full z-0"></span>
+        </motion.h1>
+
+        {/* کارت‌ها با انیمیشن ورود از چپ */}
+        <div className="flex flex-row justify-start gap-[4vw] p-20 pt-0 pb-0 items-center">
+          {cardIds.map((id, index) => {
+            const [ref, inView] = useInView({
+              triggerOnce: true,
+              threshold: 0.2,
+            });
+
+            return (
+              <motion.div
+                key={id}
+                ref={ref}
+                initial={{ opacity: 0, x: -50 }}
+                animate={inView ? { opacity: 1, x: 0 } : {}}
+                transition={{
+                  delay: index * 0.15,
+                  duration: 0.5,
+                  ease: "easeOut",
+                }}
+              >
+                <Bookcard
+                  id={id}
+                  suggestions={suggestions}
+                  isHovered={isHovered}
+                  setIsHovered={setIsHovered}
+                />
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </div>

@@ -23,6 +23,7 @@ function Signup() {
         body: JSON.stringify({ email, password, c_password: repeatPassword }),
       });
       const data = await response.json();
+
       if (response.ok) {
         navigate("/auth/otp", { state: { email: { email } } });
       } else {
@@ -30,7 +31,11 @@ function Signup() {
         throw new Error(data[0]);
       }
     } catch (err) {
-      setError(err.message);
+      if (password.length < 8) {
+        setError(" طول پسورد شما کم است ");
+      } else {
+        setError(" ایمیل شما اشتباه است ");
+      }
     } finally {
       setLoading(false);
     }
@@ -44,7 +49,7 @@ function Signup() {
   }
 
   return (
-    <div className="w-[100vw] h-[100vh] bg-[#D9F0FF]">
+    <div className="w-[100vw] h-[100vh] ">
       <div className="flex gap-1 items-center ">
         <h2 className="text-[24px] mt-1.5 ml-2 font-bold text-[#002D54]">
           Bat<span className="text-[#2663CD]">Books</span>
@@ -83,21 +88,21 @@ function Signup() {
             <img
               src="/src/assets/images/lock.png"
               alt="lock-password"
-              className="absolute right-[150px] top-[50%] -translate-y-1/2"
+              className="absolute right-38 top-[50%] -translate-y-1/2"
             />
-            {showPassword ? (
+            {!showPassword ? (
               <img
                 src="/src/assets/images/eye-on.png"
                 alt="eye-on-password"
                 onClick={handleShowPassword}
-                className="absolute z-50 mr-95 mt-2"
+                className="absolute z-50 left-38 top-[50%] -translate-y-1/2"
               />
             ) : (
               <img
                 src="/src/assets/images/eye-off.png"
                 alt="eye-off-password"
                 onClick={handleShowPassword}
-                className="absolute z-50 mr-95 mt-2"
+                className="absolute z-50 left-38 top-[50%] -translate-y-1/2"
               />
             )}
           </div>
@@ -112,32 +117,32 @@ function Signup() {
             <img
               src="/src/assets/images/lock.png"
               alt="lock-repeat-password"
-              className="absolute right-[150px] top-[50%] -translate-y-1/2"
+              className="absolute right-38 top-[50%] -translate-y-1/2"
             />
-            {showRepeatPassword ? (
+            {!showRepeatPassword ? (
               <img
                 src="/src/assets/images/eye-on.png"
                 alt="eye-on-repeat-password"
                 onClick={handleShowRepeatPassword}
-                className="absolute z-50 mr-95 mt-2"
+                className="absolute z-50 left-38 top-[50%] -translate-y-1/2"
               />
             ) : (
               <img
                 src="/src/assets/images/eye-off.png"
                 alt="eye-off-repeat-password"
                 onClick={handleShowRepeatPassword}
-                className="absolute z-50 mr-95 mt-2"
+                className="absolute z-50 left-38 top-[50%] -translate-y-1/2"
               />
             )}
           </div>
+          {error != "" ? (
+            <p className="text-red-600 text-center mb-2">{error}</p>
+          ) : null}
           <button type="submit" className="btn" disabled={loading}>
             <span className="span-btn">
               {loading ? "...در حال ثبت نام" : "ثبت نام"}
             </span>
           </button>
-          {error != "" ? (
-            <p className="text-red-600 text-center mt-5">{error}</p>
-          ) : null}
         </form>
         <img
           src="/src/assets/images/mid-left.png"
