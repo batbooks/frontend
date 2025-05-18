@@ -316,6 +316,8 @@ export default function Another_User_Profile() {
                 }
                 chapters={80}
                 description={lastBook.description}
+                id={lastBook.id}
+
               />
             </div>
           ) : (
