@@ -11,17 +11,47 @@ import Loading from "../../common/Loading/Loading.jsx";
 import Swal from "sweetalert2";
 
 const Pagination = ({ totalPages, currentPage, onPageChange }) => {
+  const getPageNumbers = () => {
+    const pages = [];
+
+    if (totalPages <= 10) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+
+    pages.push(1);
+    if (currentPage > 4) pages.push("...");
+
+    const start = Math.max(2, currentPage - 2);
+    const end = Math.min(totalPages - 1, currentPage + 2);
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+
+    if (currentPage < totalPages - 2) pages.push("...");
+
+    pages.push(totalPages);
+
+    return pages;
+  };
+
+  const pageNumbers = getPageNumbers();
+
   return (
-    <div className="flex justify-center mt-4">
-      {Array.from({ length: totalPages }, (_, i) => (
+    <div className="flex flex-wrap justify-center gap-2 mt-4">
+      {pageNumbers.map((page, idx) => (
         <button
-          key={i}
-          className={`px-3 py-1 mx-1 ${
-            currentPage === i + 1 ? "bg-blue-600 text-white" : "bg-gray-300"
-          } rounded-lg`}
-          onClick={() => onPageChange(i + 1)}
+          key={idx}
+          disabled={page === "..."}
+          onClick={() => typeof page === "number" && onPageChange(page)}
+          className={`px-3 py-1 rounded-lg ${
+            page === "..."
+              ? "bg-transparent cursor-default"
+              : currentPage === page
+                ? "bg-blue-600 text-white"
+                : "bg-gray-300 hover:bg-gray-400"
+          }`}
         >
-          {i + 1}
+          {page}
         </button>
       ))}
     </div>
@@ -207,9 +237,9 @@ const BookPage = () => {
     <div className="">
       <Navbar />
 
-      <div className="flex min-h-screen p-5 flex-row-reverse text-right ">
+      <div className="flex min-h-screen p-5 flex-col md:flex-row-reverse text-right ">
         {/* Sidebar */}
-        <div className={`w-[23.3vw]  transition-all duration-500 ease-in-out`}>
+        <div className="md:w-1/3 xl:w-1/4  transition-all duration-500 ease-in-out">
           <img
             src={
               book.image
@@ -217,7 +247,7 @@ const BookPage = () => {
                 : `https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-book-cover-design-template-34323b0f0734dccded21e0e3bebf004c_screen.jpg?ts=1637015198`
             }
             alt="Book Cover"
-            className="rounded-lg shadow-lg w-full h-[500px]"
+            className="rounded-lg shadow-lg w-full xl:h-[500px]"
           />
           {isAuthenticated ? (
             <div className="grid grid-cols-1 mt-4">
@@ -238,13 +268,13 @@ const BookPage = () => {
         </div>
 
         {/* Main Content */}
-        <div className="w-3/4 mr-auto flex flex-col">
+        <div className="w-full md:w-2/3 xl:w-3/4 mr-auto flex flex-col">
           {/* <SearchBar /> */}
 
           {/* Book Details */}
-          <div className=" p-5 mb-5 relative z-10">
-            <h1 className="text-4xl font-bold mb-4">{book.name}</h1>
-            <h2 className="text-2xl text-gray-600">{book.author}</h2>
+          <div className=" text-right p-5 pt-0 mb-5 md:relative z-10">
+            <h1 className=" text-4xl font-bold mb-4">{book.name}</h1>
+            <h2 className="text-2xl text-gray-600">{book.Author}</h2>
 
             <div className="flex gap-[10px] items-center my-2 justify-end">
               <span className=" text-gray-700 mb-1 font-bold opacity-70">
@@ -299,12 +329,12 @@ const BookPage = () => {
           </div>
 
           {/* Chapter List */}
-          <div className=" p-5 relative z-0">
+          <div className="  md:p-5 relative z-0">
             <h2 className="text-xl font-bold mb-3">فهرست فصل‌ها</h2>
-            <div className="overflow-x-auto">
+            <div className="">
               <table className="w-full border-collapse">
                 <thead>
-                  <tr className="bg-blue-400 text-white">
+                  <tr className="bg-blue-400 text-white text-sm text-nowrap">
                     <th className="p-3">نام فصل</th>
                     <th className="p-3">تاریخ انتشار</th>
                     <th className="p-3">شماره فصل</th>
@@ -324,7 +354,7 @@ const BookPage = () => {
                           })
                         }
                         key={chapter.id || index}
-                        className="border-b hover:bg-blue-100 cursor-pointer"
+                        className="border-b hover:bg-blue-100 cursor-pointer text-sm"
                       >
                         <td className="p-3">
                           {chapter.title || `فصل ${index + 1}`}
@@ -332,7 +362,10 @@ const BookPage = () => {
                         <td className="p-3">
                           {chapter.releaseDate || "۱۴۰۲/۰۷/۰۱"}
                         </td>
-                        <td className="p-3">{chapter.number || index + 1}</td>
+                        <td className="p-3">
+                          {chapter.number ??
+                            index + 1 + (currentPage - 1) * chaptersPerPage}
+                        </td>
                       </tr>
                     ))}
                 </tbody>
@@ -350,14 +383,14 @@ const BookPage = () => {
       {/* Review Section */}
       {isAuthenticated ? (
         <button
-          className="btn !mr-30 !rounded-[10px]"
+          className="btn md:!mr-30  !rounded-[10px]"
           onClick={() => setIsClicked(true)}
         >
           <span className="span-btn">نقد خود را بنویسید</span>
         </button>
       ) : null}
       <form
-        className={`w-auto bg-[#d9f0ff] text-gray-800 p-6 rounded-lg shadow-lg border mt-8 mx-20 ${isClicked ? "visible" : "hidden"}`}
+        className={`w-auto bg-[#d9f0ff] text-gray-800 p-3 lg:p-6 rounded-lg shadow-lg border mt-8 mb-8 lg:mx-20 ${isClicked ? "visible" : "hidden"}`}
         dir="rtl"
         onSubmit={handleSubmitReview}
       >
@@ -373,8 +406,8 @@ const BookPage = () => {
           ثبت نقد
         </h3>
         <div className="space-y-6">
-          <div className="flex flex-row justify-between w-[90%] items-center">
-            <div>
+          <div className="w-full flex flex-col gap-10 lg:flex-row lg:gap-0 justify-between  items-center">
+            <div className="w-full px-2">
               <label className="block mb-1 text-sm">عنوان نقد</label>
 
               <input
@@ -382,10 +415,10 @@ const BookPage = () => {
                 value={reviewTitle}
                 onChange={(e) => setReviewTitle(e.target.value)}
                 placeholder="عنوان نقد خود را وارد کنید..."
-                className="w-[500px] bg-white px-4 py-2 rounded-[5px] border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full xl:w-[500px] bg-white px-4 py-2 rounded-[5px] border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-            <div>
+            <div className="w-full flex flex-col items-center">
               <label className="block  mb-1 text-sm">
                 آخرین چپتر خوانده شده
               </label>
@@ -426,7 +459,7 @@ const BookPage = () => {
               </Select>
               <div className="text-red-600">{error}</div>
             </div>
-            <div>
+            <div className="w-full flex flex-col items-center">
               <section className="flex items-center gap-[10px]">
                 <Rating
                   precision={0.1}
