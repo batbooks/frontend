@@ -85,7 +85,7 @@ function Review() {
     <div className="flex flex-col">
       <div className="flex mb-[12px]">
         <h2 className="text-[20px] font-[400]">نام کتاب: </h2>
-        <h2 className="text-[20px] font-semibold text-[#2663CD]">
+        <h2 className="text-[20px] font-semibold text-[#2663CD] cursor-pointer">
           در مسیر رودخانه
         </h2>
       </div>
