@@ -35,7 +35,7 @@ function Footer() {
                     handleItemClick(
                       <div
                         dir="rtl"
-                        class="text-right text-gray-800 leading-7 space-y-4 pr-2"
+                        class="text-right text-gray-800 leading-7 space-y-4 pr-2 pl-4 "
                       >
                         <h2 class="text-2xl font-bold text-blue-900 border-b pb-2 mb-4">
                           درباره ما
@@ -78,7 +78,7 @@ function Footer() {
                     handleItemClick(
                       <div
                         dir="rtl"
-                        class="text-right text-gray-800 leading-7 max-h-[400px] overflow-y-auto pr-2 space-y-4"
+                        class="text-right text-gray-800 leading-7 max-h-[400px] overflow-y-auto pr-2 space-y-4 pl-4"
                       >
                         <h2 class="text-2xl font-bold text-blue-900 mb-4">
                           قوانین و مقررات
@@ -166,13 +166,13 @@ function Footer() {
                     handleItemClick(
                       <div
                         dir="rtl"
-                        class="text-right text-gray-800 leading-7 space-y-6 max-h-[400px] overflow-y-auto pr-2"
+                        class="text-right text-gray-800 leading-7 space-y-6 max-h-[400px] overflow-y-auto pr-2 pl-5"
                       >
                         <h2 class="text-2xl font-bold text-blue-900 border-b pb-2 mb-4">
                           پرسش‌های متداول
                         </h2>
 
-                        <div class="space-y-2">
+                        <div class="space-y-2 ">
                           <h3 class="text-lg font-semibold text-blue-800">
                             من یک نویسنده/ناشر هستم. در چه زمینه‌هایی می‌توانم
                             با شما همکاری کنم؟
