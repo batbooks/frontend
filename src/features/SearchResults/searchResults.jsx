@@ -2214,7 +2214,7 @@ const Forum = ({
 
   const getImageSrc = () => {
     if (forumImage) {
-      return `http://45.158.169.198${forumImage}`;
+      return `https://www.batbooks.ir${forumImage}`;
     }
     return `/src/assets/images/book_sample${bookId % 10 || 1}.png`;
   };
