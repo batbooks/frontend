@@ -21,8 +21,8 @@ function Footer() {
       dir="rtl"
       className="max-w-screen m-auto mt-15 bg-[#a3d5ff] flex flex-col pt-[55px] pb-[30px] divide-y divide-[#2F4F4F]/50 px-[80px] shadow-lg shadow-[#000000]/25"
     >
-      <div className="flex pb-[20px] gap-[100px]">
-        <div className="flex grow-677 justify-between gap-[100px]">
+      <div className="flex pb-[20px] md:gap-[100px]">
+        <div className="flex flex-col md:grid md:grid-cols-2 lg:flex lg:flex-row  grow-677 justify-between gap-[50px] lg:gap-[100px] text-nowrap">
           <div className="space-y-2.5">
             <h1 className="text-base text-[#184061] font-bold ">
               شرکت BatBooks
@@ -312,7 +312,7 @@ function Footer() {
                 <div className="flex flex-row gap-[3px]">
                   <img src={emailIcon} className="w-[14px] mb-[2px]" />
                   <span className="text-sm text-black ">
-                    : batbook2025@gmail.com
+                    : info@batbooks.ir
                   </span>
                 </div>
               </li>
@@ -337,9 +337,9 @@ function Footer() {
             </ul>
           </div>
         </div>
-        <div className="flex flex-col gap-[20px] items-center grow-603">
-          <img src="/batbooksLogo.png" className="w-[150px]" />
-          <h1 className="text-[32px] text-center font-bold text-[#002D54]">
+        <div className="flex flex-col gap-[20px] items-center md:justify-center lg:justify-start grow-603">
+          <img src="/batbooksLogo.png" className="w-[150px] hidden md:block" />
+          <h1 className="text-[32px] text-center font-bold text-[#002D54] hidden md:block">
             Bat<span className="text-[#2663CD]">Books</span>
           </h1>
         </div>
