@@ -112,7 +112,7 @@ export default function Suggestions() {
 
             return (
               <motion.div
-                className="flex flex-col items-center"
+                className="flex flex-col items-center "
                 key={id}
                 ref={ref}
                 initial={{ opacity: 0, x: -50 }}
