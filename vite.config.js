@@ -12,7 +12,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://45.158.169.198/",
+        target: "https://www.batbooks.ir/",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },

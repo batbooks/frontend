@@ -430,7 +430,7 @@ export default function Profile() {
             />
           ) : (
             <img
-              src={`http://45.158.169.198${user.following_image}`}
+              src={`https://www.batbooks.ir${user.following_image}`}
               alt="following"
               className="rounded-full w-[110px] h-[110px]"
             />

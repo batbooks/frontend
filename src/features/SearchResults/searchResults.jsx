@@ -68,28 +68,27 @@ export default function SearchResults({ searchingItem = "people" }) {
     if (searched.length < 3) {
       setError(" کلمه سرچ شده باید بزرگتر از سه حرف باشد ");
       setTotalPages(0);
-      setPeople([])
-    } 
-      try {
-        const response = await fetch(
-          `/api/user/search/${searched}/?page=${page}`
-        );
-        if (response.ok) {
-          const data = await response.json();
-          setPeople(data.results);
-          setTotalPages(Math.ceil(data.count / itemsPerPage));
-        }
-      } catch (err) {
-        if (searched.length < 3) {
-          setError(" کلمه سرچ شده باید بزرگتر از سه حرف باشد ");
-        }
-        console.log(error);
-        setError(err.message);
-        setTotalPages(0);
-      } finally {
-        setLoading(false);
+      setPeople([]);
+    }
+    try {
+      const response = await fetch(
+        `/api/user/search/${searched}/?page=${page}`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setPeople(data.results);
+        setTotalPages(Math.ceil(data.count / itemsPerPage));
       }
-    
+    } catch (err) {
+      if (searched.length < 3) {
+        setError(" کلمه سرچ شده باید بزرگتر از سه حرف باشد ");
+      }
+      console.log(error);
+      setError(err.message);
+      setTotalPages(0);
+    } finally {
+      setLoading(false);
+    }
   };
   const handlePageChange = (page) => {
     setcurrentpage(page);
@@ -982,7 +981,7 @@ const Forum = ({
 
   const getImageSrc = () => {
     if (forumImage) {
-      return `http://45.158.169.198${forumImage}`;
+      return `https://www.batbooks.ir${forumImage}`;
     }
     return `/src/assets/images/book_sample${bookId % 10 || 1}.png`;
   };
