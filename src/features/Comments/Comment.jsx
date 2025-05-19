@@ -695,7 +695,7 @@ function LikeAndDislike({ likeNum, dislikeNum, likeState, commentorreplyId }) {
       setIsDislikedVisible(true);
       setIsDislikeClicked(true);
     }
-  }, []);
+  }, [likeState]);
 
   const toggleLike = async () => {
     try {
