@@ -134,7 +134,7 @@ export default function Comments({ chapterId }) {
         <VoteAndReview chapter={chapterId} commentsCount={commentsCount} />
       ) : null}
       <main dir="rtl" className="mt-[20px] mb-[60px] mx-[71px] flex flex-col">
-        <h1 className="text-[22px] font-[400] mb-[30px]">نظرات کاربران:</h1>
+        <h1 className="text-[22px] mb-[30px]">نظرات کاربران:</h1>
         <div className="flex flex-col gap-[36px]">
           {showingComments.map((comment) => (
             <Comment
@@ -144,9 +144,7 @@ export default function Comments({ chapterId }) {
               userImage={comment.image}
               userName={comment.user.name}
               dateTime={comment.created}
-              content={
-                <p className="text-[16px] font-[300] my-auto">{comment.body}</p>
-              }
+              content={<p className="text-[16px] my-auto">{comment.body}</p>}
               likeNum={comment.like.length}
               dislikeNum={comment.dislike.length}
               key={comment.id}
@@ -174,7 +172,7 @@ export default function Comments({ chapterId }) {
                 size={16}
                 className="relative z-2 transition-colors duration-[0.2s] ease-in-out"
               />
-              <span className="span-btn text-[16px] font-[300]">صفحه بعد</span>
+              <span className="span-btn text-[16px]">صفحه بعد</span>
             </button>
             <button
               onClick={prevComments}
