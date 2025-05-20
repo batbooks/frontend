@@ -8,25 +8,11 @@ import { Rating } from "@mui/material";
 import { AiFillLike, AiFillDislike } from "react-icons/ai";
 
 export default function UserDashboard() {
-  const { user, isAuthenticated } = useSelector((state) => state.auth);
   const [menuNum, setMenuNum] = useState(1);
 
   return (
     <div className="flex gap-[40px] w-full">
       <div className="sticky flex flex-col h-fit bg-[#a4c0ed] min-w-[250px] max-w-[250px] pt-[15px] pb-[18px] px-[12px] gap-[12px] outline-[2px] outline-[#000]/21 rounded-[5px] shadow-md">
-        {isAuthenticated && user.user_info.image != null ? (
-          <img
-            className="w-[90px] h-[90px] rounded-full mx-auto mb-[15px]"
-            src={`/api${user.user_info.image}`}
-            alt="User Image 2"
-          />
-        ) : (
-          <img
-            className="w-[90px] h-[90px] rounded-full mx-auto mb-[15px]"
-            src="/src/assets/images/user_none2.png"
-            alt="User Image 3"
-          />
-        )}
         <button
           onClick={() => {
             setMenuNum(1);
@@ -60,7 +46,7 @@ export default function UserDashboard() {
             کتاب های در حال خواندن
           </span>
         </button>
-        <button className="btn !mx-0 !rounded-[5px] !mb-0 !w-full !h-fit gap-[5px] py-[10px] pr-[5px] pl-[5px] !shadow-none outline-[1px] outline-[#000]/21 !focus:outline-[1px] !focus:outline-[#000]/21 !bg-[#CD6326BF] before:!bg-[#FF8A4DBF]">
+        <button className="btn !mx-0 !rounded-[5px] !mb-0 !w-full !h-fit gap-[5px] py-[10px] pr-[5px] pl-[5px] !shadow-none outline-[1px] outline-[#000]/21 !focus:outline-[1px] !focus:outline-[#000]/21 !bg-red-700 before:!bg-[#FF3B30]">
           <LogoutIcon className="relative" />
           <span className="span-btn !text-[16px] !ml-auto">
             خروج از حساب کاربری
