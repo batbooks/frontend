@@ -158,7 +158,7 @@ export default function Profile() {
       </div>
       <main
         style={{ direction: "rtl" }}
-        className="flex flex-col gap-[20px] max-w-screen m-auto pr-[50px] pb-[100px] pt-[13px] shadow-2xl shadow-[#000000]-25 items-center overflow-hidden"
+        className="flex flex-col gap-[20px] max-w-screen px-[80px] pb-[90px] pt-[13px] shadow-2xl shadow-[#000000]-25 items-center overflow-hidden"
       >
         <h1 className="text-[#265073] text-[32px] font-[700] mx-auto ">
           پروفایل کاربری
