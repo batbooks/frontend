@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import UserCard from "../common/UserCard/UserCard";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router";
 
 const authors = [
   {
@@ -54,6 +55,7 @@ const authors = [
 ];
 
 export default function Popular_authors() {
+  const navigate = useNavigate();
   const [popularAuthors, setPopularAuthors] = useState([]);
   const [loading, setLoading] = useState([]);
   const [error, setError] = useState("");
@@ -99,7 +101,10 @@ export default function Popular_authors() {
         ))}
       </div>
       <div>
-        <button className=" btn  w-[300px]! h-[50px]!  text-2xl ">
+        <button
+          onClick={() => navigate("/people")}
+          className=" btn  w-[300px]! h-[50px]!  text-2xl "
+        >
           <span className="span-btn">نمایش کل کاربران</span>
         </button>
       </div>
