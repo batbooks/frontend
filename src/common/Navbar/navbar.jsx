@@ -44,7 +44,7 @@ function Navbar() {
   return (
     <header
       dir="rtl"
-      className={`sticky top-0 z-102 ${isScrolled ? "h-[70px] shadow-md transition-all duration-300" : ""}  h-[100px] max-w-screen m-auto flex bg-[#a3d5ff] justify-between py-[1px] pl-[50px] pr-[30px]`}
+      className={`${isVisiblePanel || isVisibleUser ? "relative" : ""} sticky top-0 z-50  lg:${isScrolled ? "h-[70px] shadow-md transition-all duration-300" : ""} h-[100px] max-w-screen m-auto flex bg-[#a3d5ff] justify-between py-[1px] pl-[50px] pr-[30px]`}
     >
       <nav className="flex items-center gap-[60px]">
         <div
@@ -108,13 +108,18 @@ function Navbar() {
                 </button>
               </li>
               <li className="w-[155px] h-[38px] bg-[#ffffff]">
-                <button onClick={() => {
+                <button
+                  onClick={() => {
                     setSelectedItem(0);
                     setIsVisibleUser(false);
                     navigate("/mybooks/createbook");
                   }}
-                   className="text-[#000000]/70 w-full h-full cursor-pointer pl-[53px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto">
-                  <span className="text-[13px] font-bold"> نوشتن کتاب جدید</span>
+                  className="text-[#000000]/70 w-full h-full cursor-pointer pl-[53px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
+                >
+                  <span className="text-[13px] font-bold">
+                    {" "}
+                    نوشتن کتاب جدید
+                  </span>
                 </button>
               </li>
               <li className="w-[155px] h-[38px] bg-[#ffffff] rounded-b-[10px]">
@@ -246,7 +251,9 @@ function Navbar() {
                   onClick={() => {
                     setSelectedItem(0);
                     setIsVisiblePanel(false);
-                    navigate("/forums");
+                    navigate("/searchresults", {
+                      state: { searchingItem: "forum" },
+                    });
                   }}
                   className="text-[#000000]/70 w-full h-full rounded-t-[10px] cursor-pointer pl-[89px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
@@ -258,7 +265,9 @@ function Navbar() {
                   onClick={() => {
                     setSelectedItem(0);
                     setIsVisiblePanel(false);
-                    navigate("/people");
+                    navigate("/searchresults", {
+                      state: { searchingItem: "people" },
+                    });
                   }}
                   className="text-[#000000]/70 w-full h-full rounded-b-[10px] cursor-pointer pl-[118px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >

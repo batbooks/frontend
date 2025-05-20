@@ -112,6 +112,7 @@ export default function AdvancedSearchBook() {
               </button>
 
               {/* First Page */}
+
               {currentpage > 3 && totalPages > 5 && (
                 <>
                   <button
@@ -170,6 +171,7 @@ export default function AdvancedSearchBook() {
                         : "bg-blue-500 text-white hover:bg-blue-600"
                     }`}
                   >
+                    {console.log(totalPages)}
                     {totalPages}
                   </button>
                 </>
