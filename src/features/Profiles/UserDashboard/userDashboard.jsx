@@ -12,7 +12,7 @@ export default function UserDashboard() {
   const [menuNum, setMenuNum] = useState(1);
 
   return (
-    <div className="flex gap-[40px]">
+    <div className="flex gap-[40px] w-full">
       <div className="sticky flex flex-col h-fit bg-[#a4c0ed] min-w-[250px] max-w-[250px] pt-[15px] pb-[18px] px-[12px] gap-[12px] outline-[2px] outline-[#000]/21 rounded-[5px] shadow-md">
         {isAuthenticated && user.user_info.image != null ? (
           <img
@@ -67,7 +67,7 @@ export default function UserDashboard() {
           </span>
         </button>
       </div>
-      <div className="flex flex-col gap-[35px]">
+      <div className="flex flex-col gap-[35px] w-full">
         {menuNum === 1 ? [1, 2].map((_, i) => <Review key={i} />) : null}
         {menuNum === 2
           ? [1, 2].map((_, i) => <Comment isClickedReplies={_ === 1} key={i} />)
