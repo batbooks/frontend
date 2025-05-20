@@ -55,6 +55,7 @@ const authors = [
 ];
 
 export default function Most_active_authors() {
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchActiveAuthors = async () => {
       setLoading(true);
@@ -83,7 +84,6 @@ export default function Most_active_authors() {
   const [activeAuthors, setActiveAuthors] = useState([]);
   const [loading, setLoading] = useState([]);
   const [error, setError] = useState("");
-  const navigate = useNavigate();
 
   return (
     <div dir="rtl" className="w-full mb-8 px-4 sm:px-8 lg:px-16 py-10 ">
@@ -104,12 +104,8 @@ export default function Most_active_authors() {
       </div>
       <div>
         <button
-          onClick={() =>
-            navigate("/searchresults", {
-              state: { searchingItem: "people" },
-            })
-          }
-          className=" btn !w-50 sm:!w-[300px] sm:!h-[50px]  sm:!text-2xl "
+          onClick={() => navigate("/people")}
+          className=" btn  w-[300px]! h-[50px]!  text-2xl "
         >
           <span className="span-btn">نمایش کل کاربران</span>
         </button>

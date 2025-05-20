@@ -55,10 +55,10 @@ const authors = [
 ];
 
 export default function Popular_authors() {
+  const navigate = useNavigate();
   const [popularAuthors, setPopularAuthors] = useState([]);
   const [loading, setLoading] = useState([]);
   const [error, setError] = useState("");
-  const navigate=useNavigate()
   useEffect(() => {
     const fetchPopularAuthors = async () => {
       setLoading(true);
@@ -85,7 +85,10 @@ export default function Popular_authors() {
     fetchPopularAuthors();
   }, []);
   return (
-    <div dir="rtl" className="w-full mb-8 px-4 sm:px-8 lg:px-16 py-10 bg-[#D9F0FF]">
+    <div
+      dir="rtl"
+      className="w-full mb-8 px-4 sm:px-8 lg:px-16 py-10 bg-[#D9F0FF]"
+    >
       <motion.h1
         className="flex flex-col items-center gap-2 lg:flex-row justify-between mb-15 text-center lg:text-right text-2xl sm:text-3xl font-extrabold relative  text-gray-800"
         initial={{ opacity: 0, y: -20 }}
@@ -101,7 +104,10 @@ export default function Popular_authors() {
         ))}
       </div>
       <div>
-        <button onClick={()=>navigate("/searchresults",{ state: { searchingItem:  "people"  } })} className=" btn !w-50 sm:!w-[300px] sm:!h-[50px]  sm:!text-2xl ">
+        <button
+          onClick={() => navigate("/people")}
+          className=" btn  w-[300px]! h-[50px]!  text-2xl "
+        >
           <span className="span-btn">نمایش کل کاربران</span>
         </button>
       </div>

@@ -3,7 +3,6 @@ import { createContext, useContext } from "react";
 import Navbar from "../../common/Navbar/navbar";
 import Footer from "../../common/Footer/Footer";
 import { Rating } from "@mui/material";
-import { useLocation, useNavigate } from "react-router";
 import Loading from "../../common/Loading/Loading";
 import DatePicker from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
@@ -12,264 +11,92 @@ import Swal from "sweetalert2";
 
 const SharedStateContext = createContext();
 
-export default function SearchResults() {
-  const [allOfThem, setAllOfThem] = useState(true);
-  const [people, setPeople] = useState([]);
-  const [showingBooks, setShowingBooks] = useState([1, 2]);
-  const [forums, setForums] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+export default function AdvancedSearchBook() {
+  const [allBooks, setAllBooks] = useState([]);
+  const [showingBooks, setShowingBooks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [flag, setFlag] = useState(true);
   const [currentpage, setcurrentpage] = useState(1);
-  const [currentpage1, setcurrentpage1] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [searched, setSearched] = useState("");
-  const location = useLocation();
-  const [searchingItem, setSearchingItem] = useState("book");
-
-  // const [people, setPeople] = useState([]);
-  const [loading2, setLoading2] = useState(false);
-  const [loading3, setLoading3] = useState(false);
-
   const itemsPerPage = 10;
 
   useEffect(() => {
-    const item = location.state?.searchingItem;
-
-    setSearchingItem(item);
-
-    if (searchingItem === "book") {
-      const fetchAllBooks = async () => {
-        setLoading2(true);
-        try {
-          const response = await fetch(`/api/book/all/?page=${currentpage}`, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-          if (!response.ok) {
-            throw new Error("مشکلی پیش اومد...دوباره تلاش کنید");
-          }
-          const data = await response.json();
-          setShowingBooks(data);
-        } catch (err) {
-          setTimeout(() => {
-            Swal.fire({
-              title: `${err.message}`,
-              icon: "error",
-              confirmButtonText: "تلاش مجدد",
-            }).then((result) => {
-              if (result.isConfirmed) {
-                window.location.reload();
-              }
-            });
-          }, 100);
-        } finally {
-          setLoading2(false);
+    const fetchAllBooks = async () => {
+      try {
+        const response = await fetch(`/api/book/all/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (!response.ok) {
+          throw new Error("مشکلی پیش اومد...دوباره تلاش کنید");
         }
-      };
-      fetchAllBooks();
-    }
-    if (searchingItem === "forum") {
-      const fetchForums = async () => {
-        setLoading(true);
-        try {
-          const response = await fetch(`/api/forum/?page=${currentpage}`);
-          if (response.ok) {
-            const data = await response.json();
-            setForums(data.results);
-            setTotalPages(Math.ceil(data.count / itemsPerPage));
-            console.log(totalPages);
-          }
-        } catch (err) {
-          setError(err.message);
-        } finally {
-          setLoading(false);
-        }
-      };
-      fetchForums();
-    }
-    if (searchingItem === "people") {
-      const fetchPeople = async () => {
-        setLoading3(true);
-        try {
-          const response = await fetch(
-            `/api/user/users/all/?page=${currentpage}`
-          );
-          if (response.ok) {
-            const data = await response.json();
-            setPeople(data.results);
-            setTotalPages(Math.ceil(data.count / itemsPerPage));
-
-            console.log(totalPages);
-          }
-        } catch (err) {
-          setError(err.message);
-        } finally {
-          setLoading3(false);
-        }
-      };
-      fetchPeople();
-    }
-  }, [searchingItem, currentpage]);
-
-  const fetchPeople = async (page = 1) => {
-    setLoading(true);
-    setAllOfThem(false);
-    if (searched.length < 3) {
-      setError(" کلمه سرچ شده باید بزرگتر از سه حرف باشد ");
-      setTotalPages(0);
-      setPeople([]);
-    }
-    try {
-      const response = await fetch(
-        `/api/user/search/${searched}/?page=${page}`
-      );
-      if (response.ok) {
         const data = await response.json();
-        setPeople(data.results);
-        setTotalPages(Math.ceil(data.count / itemsPerPage));
+        setAllBooks(data);
+        setTotalPages(Math.ceil(data.length / itemsPerPage));
+        setShowingBooks(data.filter((_, i) => i < 10));
+      } catch (err) {
+        setTimeout(() => {
+          Swal.fire({
+            title: `${err.message}`,
+            icon: "error",
+            confirmButtonText: "تلاش مجدد",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
+            }
+          });
+        }, 100);
+      } finally {
+        setLoading(false);
+        setFlag(false);
       }
-    } catch (err) {
-      if (searched.length < 3) {
-        setError(" کلمه سرچ شده باید بزرگتر از سه حرف باشد ");
-      }
-      setError(err.message);
-      setTotalPages(0);
-    } finally {
-      setLoading(false);
-    }
-  };
-  const handlePageChange = (page) => {
-    setcurrentpage(page);
-  };
-  const handlePageChangeSearched = (page) => {
-    setcurrentpage1(page);
+    };
+    fetchAllBooks();
+  }, []);
 
-    fetchPeople(page);
-  };
-  if (loading) {
-    return (
-      <div className="h-[100vh] grid place-items-center">
-        <Loading />
-      </div>
+  useEffect(() => {
+    if (!flag) setLoading(false);
+  }, [showingBooks, flag]);
+
+  const handlePageChange = (page) => {
+    setLoading(true);
+    setcurrentpage(page);
+    setShowingBooks(
+      allBooks.filter((_, i) => i < page * 10 && i >= (page - 1) * 10)
     );
-  }
+  };
+
   return (
     <>
       <Navbar />
       <main
         dir="rtl"
-        className={`flex flex-col items-center pt-[25px] pb-[60px] ${searchingItem === "book" ? "px-[50px]" : "px-[98px]"} w-[100%]`}
+        className="flex flex-col items-center pt-[25px] pb-[60px] px-[50px] w-[100%]"
       >
         <h1 className="font-bold text-[#265073] text-[32px] mb-[30px]">
-          {searchingItem === "book"
-            ? "جستجوی کتاب"
-            : searchingItem === "people"
-              ? "افراد"
-              : "تالار گفتگو"}
+          جستجوی کتاب
         </h1>
-        <form className="mb-[37px]" onSubmit={(e) => e.preventDefault()}>
-          <div className={`flex gap-[26px]`}>
-            {searchingItem === "people" ? (
-              <input
-                onChange={(e) => {
-                  setSearched(e.target.value);
-                }}
-                className="w-[693px] h-[49px] py-[12.5px] pr-[26px] pl-[50px] bg-white rounded-[20px] outline-[2px] outline-[#000000]/21 shadow-lg shadow-[#000000]/25 focus:shadow-none focus:outline-[3px] focus:outline-[#2663cd] placeholder:text-[16px] placeholder:font-[300] placeholder:text-[#265073]"
-                placeholder="نام کاربری"
-              />
-            ) : searchingItem === "forum" ? (
-              <input
-                className="w-[693px] h-[49px] py-[12.5px] px-[26px] bg-white rounded-[20px] outline-[2px] outline-[#000000]/21 shadow-lg shadow-[#000000]/25 focus:shadow-none focus:outline-[3px] focus:outline-[#2663cd] placeholder:text-[16px] placeholder:font-[300] placeholder:text-[#265073]"
-                placeholder="نام کتاب"
-              />
-            ) : null}
-
-            {searchingItem === "forum" ? (
-              <button className="!py-[12px] !px-[28px] !rounded-[20px] !w-fit !h-fit !mb-0 !ml-0 !mr-0 shadow-2xl btn">
-                <span className="span-btn !text-[16px] !font-[400]">
-                  جستجوی گفتگو
-                </span>
-              </button>
-            ) : searchingItem === "people" ? (
-              <button
-                onClick={() => {
-                  if (searchingItem == "people") {
-                    fetchPeople();
-                  }
-                  setcurrentpage1(1);
-                  setTotalPages(0);
-                }}
-                className="!py-[12px] !px-[28px] !rounded-[20px] !w-fit !h-fit !mb-0 !ml-0 !mr-0 shadow-2xl btn"
-              >
-                <span className="span-btn !text-[16px] !font-[400]">
-                  جستجوی فرد
-                </span>
-              </button>
-            ) : null}
-          </div>
-        </form>
-        {searchingItem === "book" ? (
-          <SearchFilters
-            setLoading2={setLoading2}
-            setShowingBooks={setShowingBooks}
-          />
-        ) : null}
+        <SearchFilters
+          setLoading={setLoading}
+          setShowingBooks={setShowingBooks}
+        />
         <div className="flex flex-col w-[100%]">
-          {error == "" ? <div>{error} asda </div> : null}
-          {searchingItem !== "book" ? (
-            <h2 className="text-[16px] font-[300] mb-[31px]">نتایج جستجو</h2>
-          ) : showingBooks.length === 0 ? (
+          {loading ? (
+            <div className="mx-auto">
+              <Loading />
+            </div>
+          ) : showingBooks.length === 0 && !loading ? (
             <>
               <h2 className="text-[16px] right-0 font-[300]">نتایج جستجو</h2>
               <p className="text-[24px] mx-auto">موردی یافت نشد</p>
             </>
-          ) : (
-            <SearchBookResults books={showingBooks} loading2={loading2} />
-          )}
-          {searchingItem === "forum" ? (
-            <div>
-              {loading && (
-                <div className="text-center py-4">در حال بارگذاری...</div>
-              )}
-              {error && (
-                <div className="text-center text-red-500 py-4">
-                  خطا: {error}
-                </div>
-              )}
-
-              <div className="grid grid-cols-2 gap-[25px] mb-[30px]">
-                {forums?.length > 0 ? (
-                  forums.map((forum) => (
-                    <Forum
-                      key={forum.id}
-                      forumId={forum.id}
-                      forumName={forum.name}
-                      forumDescription={forum.description}
-                      createdAt={forum.created_at}
-                      bookId={forum.book}
-                      forumImage={forum.image}
-                    />
-                  ))
-                ) : (
-                  <div className="col-span-2 text-center py-8 text-[#265073] text-lg">
-                    {loading ? "در حال بارگذاری..." : "هیچ فرومی یافت نشد."}
-                  </div>
-                )}
-              </div>
-            </div>
-          ) : (
-            <div className="grid grid-cols-3 gap-[25px] mb-[30px]">
-              {people.map((person) => (
-                <Person person={person} key={person.id} />
-              ))}
-            </div>
-          )}
-
+          ) : !loading ? (
+            <SearchBookResults books={showingBooks} loading={loading} />
+          ) : null}
           {/* Pagination */}
-
-          {totalPages > 1 && allOfThem && (
+          {totalPages > 1 && (
             <div className="flex justify-center gap-2 my-6 items-center">
               {/* Previous Button */}
               <button
@@ -364,101 +191,6 @@ export default function SearchResults() {
               </button>
             </div>
           )}
-          {totalPages > 1 && !allOfThem && (
-            <div className="flex justify-center gap-2 my-6 items-center">
-              {/* Previous Button */}
-              <button
-                onClick={() => {
-                  handlePageChangeSearched(currentpage1 - 1);
-                }}
-                disabled={currentpage1 === 1}
-                className={`px-3 py-1 rounded-md ${
-                  currentpage1 === 1
-                    ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                    : "bg-blue-500 text-white hover:bg-blue-600"
-                }`}
-              >
-                قبلی
-              </button>
-
-              {/* First Page */}
-              {currentpage1 > 3 && totalPages > 5 && (
-                <>
-                  <button
-                    onClick={() => handlePageChangeSearched(1)}
-                    className={`px-3 py-1 rounded-md ${
-                      currentpage1 === 1
-                        ? "bg-blue-700 text-white"
-                        : "bg-blue-500 text-white hover:bg-blue-600"
-                    }`}
-                  >
-                    1
-                  </button>
-                  {currentpage1 > 4 && <span className="px-2">...</span>}
-                </>
-              )}
-
-              {/* Middle Pages */}
-              {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                let pageNum;
-                if (totalPages <= 5) {
-                  pageNum = i + 1;
-                } else if (currentpage1 <= 3) {
-                  pageNum = i + 1;
-                } else if (currentpage1 >= totalPages - 2) {
-                  pageNum = totalPages - 4 + i;
-                } else {
-                  pageNum = currentpage1 - 2 + i;
-                }
-
-                return (
-                  <button
-                    key={pageNum}
-                    onClick={() => handlePageChangeSearched(pageNum)}
-                    className={`px-3 py-1 rounded-md ${
-                      currentpage1 === pageNum
-                        ? "bg-blue-700 text-white"
-                        : "bg-blue-500 text-white hover:bg-blue-600"
-                    }`}
-                  >
-                    {pageNum}
-                  </button>
-                );
-              })}
-
-              {/* Last Page */}
-              {currentpage1 < totalPages - 2 && totalPages > 5 && (
-                <>
-                  {currentpage1 < totalPages - 3 && (
-                    <span className="px-2">...</span>
-                  )}
-                  <button
-                    onClick={() => handlePageChangeSearched(totalPages)}
-                    className={`px-3 py-1 rounded-md ${
-                      currentpage1 === totalPages
-                        ? "bg-blue-700 text-white"
-                        : "bg-blue-500 text-white hover:bg-blue-600"
-                    }`}
-                  >
-                    {totalPages}
-                  </button>
-                </>
-              )}
-
-              {/* Next Button */}
-              <button
-                onClick={() => handlePageChangeSearched(currentpage1 + 1)}
-                disabled={currentpage1 === totalPages}
-                className={`px-3 py-1 rounded-md ${
-                  currentpage1 === totalPages
-                    ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                    : "bg-blue-500 text-white hover:bg-blue-600"
-                }`}
-              >
-                بعدی
-              </button>
-            </div>
-          )}
         </div>
       </main>
       <Footer />
@@ -466,89 +198,32 @@ export default function SearchResults() {
   );
 }
 
-function SearchBookResults({ books, loading2 }) {
-  const [selectValue, setSelectValue] = useState("--انتخاب کنید--");
-  const [isSelectOpened, setIsSelectOpened] = useState(false);
+function SearchBookResults({ books, loading }) {
+  if (loading) {
+    return (
+      <div className="h-[100vh] grid place-items-center">
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col">
       <div className="flex items-center justify-between mb-[21px]">
         <h2 className="text-[16px] font-[300]">نتایج جستجو</h2>
-        <div className="flex items-center gap-[10px]">
-          <h2 className="text-[16px] font-[300]">مرتب سازی براساس</h2>
-          <div className="relative">
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                setIsSelectOpened(!isSelectOpened);
-              }}
-              onBlur={(e) => {
-                e.preventDefault();
-                setTimeout(() => {
-                  setIsSelectOpened(false);
-                }, 250);
-              }}
-              className={`z-6 flex bg-[#ffffff] w-[147px] h-[45px] ${isSelectOpened ? "rounded-t-[12px]" : "rounded-[12px] shadow-lg shadow-[#000000]/21"} pl-[25px] pr-[5px] text-[13px] ${selectValue !== "--انتخاب کنید--" ? "text-[#000000]" : "text-[#265073]"} cursor-pointer outline-[2px] outline-[#000000]/21`}
-            >
-              <div className="flex items-center hover:cursor-pointer z-7 gap-[5px]">
-                <img
-                  src="/images/arrow.png"
-                  alt="arrow"
-                  className="w-[24px] h-[24px] z-8"
-                ></img>
-                <span className="z-8">{selectValue}</span>
-              </div>
-            </button>
-            <ul
-              className={`overflow-y-scroll flex flex-col absolute bg-[#ffffff] w-[147px] h-[90px] outline-[2px] outline-[#000000]/21 z-9 divide-y divide-[#2F4F4F]/50 rounded-b-[12px] ${isSelectOpened ? "visible" : "hidden"}`}
-            >
-              <li className={`min-h-[45px] grow-1 w-full z-10`}>
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setSelectValue("--انتخاب کنید--");
-                  }}
-                  className="z-11 flex text-[15px] text-[#000000]/70 w-full h-full cursor-pointer hover:bg-[#2663cd]/90 hover:cursor-pointer active:outline-none"
-                >
-                  <span className="m-auto text-[#265073] z-12">
-                    {"--انتخاب کنید--"}
-                  </span>
-                </button>
-              </li>
-              {["تازه ترین", "محبوب ترین"].map((option, i) => (
-                <li className={`min-h-[45px] grow-1 w-full z-10`} key={i}>
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setSelectValue(`${option}`);
-                    }}
-                    className="z-11 flex text-[15px] text-[#000000]/70 w-full h-full cursor-pointer hover:bg-[#2663cd]/90 hover:cursor-pointer active:outline-none"
-                  >
-                    <span className="m-auto font-bold z-12">{`${option}`}</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
+        <SelectMenu />
       </div>
       <div className="grid grid-cols-2 gap-x-[37px] gap-y-[25px] mb-[30px]">
-        {loading2 ? (
-          <div className="mx-auto">
-            <Loading />
-          </div>
-        ) : (
-          books.map((book) => (
-            <Book
-              key={book.id}
-              coverImage={book.image}
-              bookName={book.name}
-              authorName={book.Author}
-              star={book.rating}
-              bookDescription={book.description}
-            />
-          ))
-        )}
+        {books.map((book, i) => (
+          <Book
+            key={i}
+            coverImage={book.image}
+            bookName={book.name}
+            authorName={book.Author}
+            star={book.rating}
+            bookDescription={book.description}
+          />
+        ))}
       </div>
     </div>
   );
@@ -1388,7 +1063,7 @@ function AvgScores({ setFilters }) {
         <div className="gap-[9px] flex items-center">
           <span className="text-[20px] font-[300] ">از:</span>
           <div className="flex items-center gap-[9px] relative group">
-            <div className="flex-col absolute mb-[-5px] hidden group-hover:flex group-focus-within:group-hover:hidden">
+            <div className="flex-col absolute mb-[-5px] hidden group-hover:flex">
               <div className="flex flex-col items-center mb-[-4px]">
                 <button
                   onClick={() => {
@@ -1480,14 +1155,14 @@ function AvgScores({ setFilters }) {
               dir="ltr"
               value={avgScoreFrom.toFixed(1)}
               disabled
-              className="h-[40px] w-[80px] bg-white rounded-[5px] text-center outline-[2px] outline-[#000000]/21 focus:outline-[3px] focus:outline-[#2663CD]"
+              className="h-[40px] w-[80px] bg-white rounded-[5px] text-center outline-[2px] outline-[#000000]/21"
             />
           </div>
         </div>
         <div className="gap-[9px] flex items-center">
           <span className="text-[20px] font-[300] ">تا:</span>
           <div className="flex items-center relative group">
-            <div className="flex-col absolute mb-[-5px] hidden group-hover:flex group-focus-within:group-hover:hidden">
+            <div className="flex-col absolute mb-[-5px] hidden group-hover:flex">
               <div className="flex flex-col items-center mb-[-4px]">
                 <button
                   onClick={() => {
@@ -1579,7 +1254,7 @@ function AvgScores({ setFilters }) {
               dir="ltr"
               value={avgScoreTo.toFixed(1)}
               disabled
-              className="h-[40px] w-[80px] bg-white rounded-[5px] text-center outline-[2px] outline-[#000000]/21 focus:outline-[3px] focus:outline-[#2663CD]"
+              className="h-[40px] w-[80px] bg-white rounded-[5px] text-center outline-[2px] outline-[#000000]/21"
             />
           </div>
         </div>
@@ -2169,6 +1844,71 @@ function FromToInputs({
   );
 }
 
+function SelectMenu() {
+  const [selectValue, setSelectValue] = useState("--انتخاب کنید--");
+  const [isSelectOpened, setIsSelectOpened] = useState(false);
+
+  return (
+    <div className="flex items-center gap-[10px]">
+      <h2 className="text-[16px] font-[300]">مرتب سازی براساس</h2>
+      <div className="relative">
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            setIsSelectOpened(!isSelectOpened);
+          }}
+          onBlur={(e) => {
+            e.preventDefault();
+            setTimeout(() => {
+              setIsSelectOpened(false);
+            }, 250);
+          }}
+          className={`z-6 flex bg-[#ffffff] w-[147px] h-[45px] ${isSelectOpened ? "rounded-t-[12px]" : "rounded-[12px] shadow-lg shadow-[#000000]/21"} pl-[25px] pr-[5px] text-[13px] ${selectValue !== "--انتخاب کنید--" ? "text-[#000000]" : "text-[#265073]"} cursor-pointer outline-[2px] outline-[#000000]/21`}
+        >
+          <div className="flex items-center hover:cursor-pointer z-7 gap-[5px]">
+            <img
+              src="/images/arrow.png"
+              alt="arrow"
+              className="w-[24px] h-[24px] z-8"
+            ></img>
+            <span className="z-8">{selectValue}</span>
+          </div>
+        </button>
+        <ul
+          className={`overflow-y-scroll flex flex-col absolute bg-[#ffffff] w-[147px] h-[90px] outline-[2px] outline-[#000000]/21 z-9 divide-y divide-[#2F4F4F]/50 rounded-b-[12px] ${isSelectOpened ? "visible" : "hidden"}`}
+        >
+          <li className={`min-h-[45px] grow-1 w-full z-10`}>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                setSelectValue("--انتخاب کنید--");
+              }}
+              className="z-11 flex text-[15px] text-[#000000]/70 w-full h-full cursor-pointer hover:bg-[#2663cd]/90 hover:cursor-pointer active:outline-none"
+            >
+              <span className="m-auto text-[#265073] z-12">
+                {"--انتخاب کنید--"}
+              </span>
+            </button>
+          </li>
+          {["تازه ترین", "محبوب ترین"].map((option, i) => (
+            <li className={`min-h-[45px] grow-1 w-full z-10`} key={i}>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  setSelectValue(`${option}`);
+                }}
+                className="z-11 flex text-[15px] text-[#000000]/70 w-full h-full cursor-pointer hover:bg-[#2663cd]/90 hover:cursor-pointer active:outline-none"
+              >
+                <span className="m-auto font-bold z-12">{`${option}`}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
 function Book({ coverImage, bookName, authorName, star, bookDescription }) {
   return (
     <div className="gap-[20px] py-[26px] pl-[30px] pr-[13px] bg-[#A4C0ED] rounded-[25px] outline-[2px] outline-[#000000]/21 flex items-center justify-between">
@@ -2192,7 +1932,9 @@ function Book({ coverImage, bookName, authorName, star, bookDescription }) {
             <span className="text-[18px] font-[400]">مؤلف: {authorName}</span>
             <Rating dir="ltr" readOnly precision={0.01} value={star} />
           </div>
-          <p className="text-[14px] font-[300] top-0">{bookDescription}</p>
+          <p className="text-[14px] font-[300] top-0">
+            خلاصه کتاب: {bookDescription}
+          </p>
         </div>
       </div>
       <div className="flex flex-col gap-[13px]">
@@ -2203,140 +1945,6 @@ function Book({ coverImage, bookName, authorName, star, bookDescription }) {
           <span className="span-btn">مشاهده جزئیات کتاب</span>
         </button>
       </div>
-    </div>
-  );
-}
-
-const Forum = ({
-  forumId,
-  forumName,
-  forumDescription,
-  createdAt,
-  bookId,
-  forumImage,
-}) => {
-  const navigate = useNavigate();
-
-  const formatDate = (dateString) => {
-    const options = { year: "numeric", month: "long", day: "numeric" };
-    return new Date(dateString).toLocaleDateString("fa-IR", options);
-  };
-
-  const getImageSrc = () => {
-    if (forumImage) {
-      return `https://www.batbooks.ir${forumImage}`;
-    }
-    return `/src/assets/images/book_sample${bookId % 10 || 1}.png`;
-  };
-
-  return (
-    <button
-      onClick={() => navigate(`/threads/${forumId}`)}
-      className="relative overflow-hidden py-[10px] pr-[10px] pl-[90px] bg-[#a3d5ff] outline-[2px] outline-[#000000]/21 rounded-[15px] gap-[38px] flex items-center cursor-pointer hover:ease-in-out hover:before:w-full hover:before:h-full before:absolute before:w-0 before:h-0 before:bg-[#2663CD]/40 before:shadow-none hover:shadow-[#000000]/21 hover:shadow-lg before:inset-0 before:transition-all before:duration-[0.6s] before:ease-in-out transition-all active:before:bg-[#2663CD]/20 active:outline-none active:shadow-none"
-    >
-      <img
-        src={getImageSrc()}
-        alt="book cover"
-        className="relative w-[105px] h-[132px] rounded-[5px] z-2 object-cover"
-      />
-      <div className="flex flex-col text-start relative z-2">
-        <h3 className="text-[20px] font-[400] text-black">{forumName}</h3>
-        <div className="flex gap-[13px] mb-[13px]">
-          <span className="text-[12px] font-[300] text-[#333333]">
-            ایجاد شده در {formatDate(createdAt)}
-          </span>
-        </div>
-        <p className="text-[14px] font-[300]">{forumDescription}</p>
-      </div>
-    </button>
-  );
-};
-
-function Person({ person }) {
-  const [isFollowing, setIsFollowing] = useState(false);
-  const [isHoveredInnerButton, setIsHoveredInnerButton] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-  //useeffect for following |||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-  useEffect(() => {
-    setLoading(true);
-    const fetchFollowing = async () => {
-      try {
-        const response = await fetch(`/api/user/is/follow/${person.id}/`, {
-          method: "GET",
-
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-          },
-        });
-        const data = await response.json();
-        setIsFollowing(data.is_follow);
-      } catch (err) {
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchFollowing();
-  }, []);
-  const handleFollow = async () => {
-    try {
-      const response = await fetch(`/api/user/toggle/follow/${person.id}/`, {
-        method: "GET",
-
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        },
-      });
-    } catch (err) {
-      console.error(err.message);
-    }
-  };
-  if (loading) {
-    return (
-      <div className="h-[100vh] grid place-items-center">
-        <Loading />
-      </div>
-    );
-  }
-  return (
-    <div
-      onClick={() => {
-        if (!isHoveredInnerButton) {
-          navigate(`/anotheruserprofile/${person.id}`);
-        }
-      }}
-      className={`relative overflow-hidden p-[21px] bg-[#A4C0ED] outline-[2px] outline-[#000000]/21 rounded-[20px] flex items-center justify-between cursor-pointer ${!isHoveredInnerButton ? "hover:ease-in-out hover:before:w-full hover:before:h-full hover:shadow-[#000000]/50 hover:shadow-lg hover:text-white" : ""} before:absolute before:w-0 before:h-0 before:bg-[#2663CD]/60 before:shadow-none before:inset-0 before:transition-all before:duration-[0.2s] transition-all active:before:bg-[#2663CD]/40 active:outline-none active:shadow-none active:ring-0 active:ring-offset-0`}
-    >
-      <div className="flex items-center gap-[21px] relative">
-        <img
-          src="/src/assets/images/following.png"
-          alt="follow"
-          className="rounded-full w-[110px] h-[110px]"
-        />
-        <div className="flex flex-col gap-[7px] items-start">
-          <h3>
-            {person.name.length > 12
-              ? person.name.slice(0, 12) + "..."
-              : person.name}
-          </h3>
-          <span>{person.user_info.following_count}</span>
-        </div>
-      </div>
-      <button
-        onMouseEnter={() => setIsHoveredInnerButton(true)}
-        onMouseLeave={() => setIsHoveredInnerButton(false)}
-        onClick={() => {
-          setIsFollowing(!isFollowing);
-          handleFollow();
-        }}
-        className="btn py-[7px] px-[21px] !rounded-[10px] !w-fit !h-fit !ml-0 !mr-0 !mb-0"
-      >
-        <span className="span-btn text-[14px] font-[300]">
-          {isFollowing ? "دنبال نکردن" : "دنبال کردن"}
-        </span>
-      </button>
     </div>
   );
 }
