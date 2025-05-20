@@ -272,7 +272,7 @@ const BookPage = () => {
           {/* <SearchBar /> */}
 
           {/* Book Details */}
-          <div className=" text-right p-5 pt-0 mb-5 md:relative z-10">
+          <div className=" text-right p-5 pt-0 mb-5 z-10">
             <h1 className=" text-4xl font-bold mb-4">{book.name}</h1>
             <h2 className="text-2xl text-gray-600">{book.Author}</h2>
 
@@ -301,30 +301,40 @@ const BookPage = () => {
             </p>
 
             <div className="mt-2">
-              {book.genres?.map((genre, index) => (
-                <span
-                  key={index}
-                  className="bg-gray-200 px-5 py-1 rounded-lg text-sm mx-2"
-                >
-                  {genre}
-                </span>
-              ))}
               <span dir="rtl" className="font-semibold">
                 ژانر ها:
               </span>
+              <div
+                className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-8 gap-2 text-center"
+                dir="rtl"
+              >
+                {book.genres?.map((genre, index) => (
+                  <span
+                    key={index}
+                    className="bg-gray-200 px-1 py-1 rounded-lg text-sm  text-nowrap"
+                  >
+                    {genre}
+                  </span>
+                ))}
+              </div>
             </div>
             <div className="mt-5">
-              {book.tags?.map((tag, index) => (
-                <span
-                  key={index}
-                  className="bg-gray-200 px-5 py-1 rounded-lg text-sm mx-2"
-                >
-                  {tag}
-                </span>
-              ))}
               <span dir="rtl" className="font-semibold">
                 تگ ها:
               </span>
+              <div
+                className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2"
+                dir="rtl"
+              >
+                {book.tags?.map((tag, index) => (
+                  <span
+                    key={index}
+                    className=" bg-gray-200 px-1 py-1 rounded-lg text-sm text-center"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -390,7 +400,7 @@ const BookPage = () => {
         </button>
       ) : null}
       <form
-        className={`w-auto bg-[#d9f0ff] text-gray-800 p-3 lg:p-6 rounded-lg shadow-lg border mt-8 mb-8 lg:mx-20 ${isClicked ? "visible" : "hidden"}`}
+        className={`w-auto bg-[#d9f0ff] text-gray-800 p-3 lg:p-6 rounded-lg shadow-lg border mt-8 mb-8 md:mx-20 ${isClicked ? "visible" : "hidden"}`}
         dir="rtl"
         onSubmit={handleSubmitReview}
       >

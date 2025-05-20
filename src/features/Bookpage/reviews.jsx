@@ -290,9 +290,9 @@ function Reviews({ book }) {
         <div className="flex flex-col gap-[36px]">
           {allreviews.map((review) => (
             <div key={review.id} className="flex flex-col">
-              <div className=" flex flex-col gap-[22px] items-center px-[25px] py-[30px] shadow-md bg-blue-300 border-[2px] border-[#000000]/21 rounded-[25px]">
-                <div className="flex lg:flex-row flex-col gap-[25px]">
-                  <div className="flex flex-col items-center gap-[16px]">
+              <div className=" flex flex-col gap-[22px] lg:items-stretch items-center px-[25px] py-[30px] shadow-md bg-blue-300 border-[2px] border-[#000000]/21 rounded-[25px]">
+                <div className="flex lg:flex-row flex-col lg:gap-[25px]">
+                  <div className="flex flex-col items-center gap-2 lg:gap-[16px]">
                     <div className="w-[83px] h-[83px] rounded-full overflow-hidden">
                       <img
                         src={
@@ -364,13 +364,13 @@ function Reviews({ book }) {
                       )
                     ) : null}
                   </div>
-                  <div className=" w-full max-w-[1100px] min-h-[180px] p-6 rounded-[15px] border-black/20 border-[2px] shadow-sm shadow-black/21 bg-[#d9f0ff]">
-                    <div className="flex flex-col gap-[10px]">
-                      <div className="flex flex-col gap-5 lg:flex-row lg:gap-[500px]">
+                  <div className=" w-full max-w-[1100px] min-h-[180px] p-3 lg:p-6 rounded-[15px] border-black/20 border-[2px] shadow-sm shadow-black/21 bg-[#d9f0ff]">
+                    <div className="flex flex-col gap-5">
+                      <div className="flex flex-col gap-5 lg:flex-row lg:justify-between">
                         <h2 className="text-[15px] text-[#000000]/70">
                           {getTimeAgo(review.created)}
                         </h2>
-                        <h2>
+                        <h2 className="text-sm lg:text-base">
                           آخرین چپتر خوانده شده:
                           <span
                             className="font-bold text-blue-700 cursor-pointer"
@@ -383,8 +383,10 @@ function Reviews({ book }) {
                           </span>
                         </h2>
                       </div>
-                      <h1 className="font-bold text-xl">{review.title}</h1>
-                      <div className="text-[16px] font-[300] my-auto">
+                      <h1 className="font-bold text-base lg:text-xl">
+                        {review.title}
+                      </h1>
+                      <div className="text-sm lg:text-[16px] my-auto">
                         {parse(review.body)}
                       </div>
                     </div>
