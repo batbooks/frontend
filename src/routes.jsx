@@ -20,6 +20,7 @@ import Threads from "./features/Threads/threads.jsx";
 import ShowAllBooks from "./features/ShowAllBooks/ShowAllBooks.jsx";
 import Comments from "./features/Comments/Comment.jsx";
 import ChatPage from "./common/Chat/Chat.jsx";
+import ThreadPosts from "./features/Thread Posts/threadpost.jsx";
 function AppRoutes() {
   return (
     <Router>
@@ -33,7 +34,7 @@ function AppRoutes() {
           path="/userprofile"
           element={
             <Middleware>
-              <Profile/>
+              <Profile />
             </Middleware>
           }
         ></Route>
@@ -93,7 +94,11 @@ function AppRoutes() {
           }
         />
         <Route path="/threads/:forumId" element={<Threads forumId={3} />} />
-         <Route path="chat" element={<ChatPage/>} />
+        <Route
+          path="/forums/threads/:forumId/threadposts/:threadId"
+          element={<ThreadPosts />}
+        />
+        <Route path="chat" element={<ChatPage />} />
       </Routes>
     </Router>
   );

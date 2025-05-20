@@ -400,7 +400,7 @@ const BookPage = () => {
         </button>
       ) : null}
       <form
-        className={`w-auto bg-[#d9f0ff] text-gray-800 p-3 lg:p-6 rounded-lg shadow-lg border mt-8 mb-8 md:mx-20 ${isClicked ? "visible" : "hidden"}`}
+        className={`w-auto bg-[#d9f0ff] text-gray-800 p-3 lg:p-6 rounded-lg shadow-lg border mt-8 mb-8 mx-3 md:mx-20 ${isClicked ? "visible" : "hidden"}`}
         dir="rtl"
         onSubmit={handleSubmitReview}
       >

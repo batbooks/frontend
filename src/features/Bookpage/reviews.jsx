@@ -12,6 +12,7 @@ import { useNavigate, useParams } from "react-router";
 import { Rating } from "@mui/material";
 import Swal from "sweetalert2";
 import parse from "html-react-parser";
+import { Editor } from "primereact/editor";
 
 function Reviews({ book }) {
   const { bookId } = useParams();
@@ -22,9 +23,11 @@ function Reviews({ book }) {
   const [loading, setLoading] = useState(true);
   const [ratingArray, setRatingArray] = useState([]);
   const [reviewsCount, setReviewsCount] = useState(0);
-  const [following, setFollowing] = useState(false);
   const [loading1, setLoading1] = useState(false);
   const [followingMap, setFollowingMap] = useState({});
+  const [editingReview, setEditingReview] = useState(null);
+  const [editedContent, setEditedContent] = useState("");
+  const [editedTitle, setEditedTitle] = useState("");
 
   const token = localStorage.getItem("access_token");
   const { isAuthenticated, user } = useSelector((state) => state.auth);
@@ -212,6 +215,62 @@ function Reviews({ book }) {
     }
   };
 
+  const handleEditReview = (review) => {
+    setEditingReview(review.id);
+    setEditedContent(review.body);
+    setEditedTitle(review.title);
+  };
+
+  const handleSaveEdit = async (reviewId) => {
+    try {
+      const response = await fetch(
+        `/api/comments/book/${bookId}/reviews/my-review/`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            title: editedTitle,
+            body: editedContent,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        setAllreviews((prev) =>
+          prev.map((review) =>
+            review.id === reviewId
+              ? { ...review, body: editedContent, title: editedTitle }
+              : review
+          )
+        );
+        setEditingReview(null);
+        Swal.fire({
+          title: "موفق",
+          text: "نقد با موفقیت ویرایش شد",
+          icon: "success",
+          confirmButtonText: "باشه",
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      Swal.fire({
+        title: "خطا",
+        text: "ویرایش نقد انجام نشد",
+        icon: "error",
+        confirmButtonText: "باشه",
+      });
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingReview(null);
+    setEditedContent("");
+    setEditedTitle("");
+  };
+
   const getTimeAgo = (dateString) => {
     const now = new Date();
     const then = new Date(dateString);
@@ -233,7 +292,7 @@ function Reviews({ book }) {
   return (
     <main
       dir="rtl"
-      className=" mb-[60px] md:mx-[100px] flex flex-col bg-white p-4"
+      className=" mb-[60px] md:mx-[100px] flex flex-col bg-white p-3"
     >
       <div
         dir="ltr"
@@ -290,7 +349,7 @@ function Reviews({ book }) {
         <div className="flex flex-col gap-[36px]">
           {allreviews.map((review) => (
             <div key={review.id} className="flex flex-col">
-              <div className=" flex flex-col gap-[22px] lg:items-stretch items-center px-[25px] py-[30px] shadow-md bg-blue-300 border-[2px] border-[#000000]/21 rounded-[25px]">
+              <div className=" flex flex-col gap-[22px] md:items-stretch items-center px-2 lg:px-6 py-[30px] shadow-md bg-blue-300 border-[2px] border-[#000000]/21 rounded-[25px]">
                 <div className="flex lg:flex-row flex-col lg:gap-[25px]">
                   <div className="flex flex-col items-center gap-2 lg:gap-[16px]">
                     <div className="w-[83px] h-[83px] rounded-full overflow-hidden">
@@ -340,7 +399,10 @@ function Reviews({ book }) {
                           >
                             <span className="span-btn">حذف نقد</span>
                           </button>
-                          <button className="btn  !py-[5px] !px-[38px] !text-[14px] !font-[400] !hidden">
+                          <button
+                            className="btn  !py-[5px] !px-[38px] !text-[14px] !font-[400]"
+                            onClick={() => handleEditReview(review)}
+                          >
                             <span className="span-btn">ویرایش نقد</span>
                           </button>
                         </div>
@@ -364,35 +426,66 @@ function Reviews({ book }) {
                       )
                     ) : null}
                   </div>
-                  <div className=" w-full max-w-[1100px] min-h-[180px] p-3 lg:p-6 rounded-[15px] border-black/20 border-[2px] shadow-sm shadow-black/21 bg-[#d9f0ff]">
-                    <div className="flex flex-col gap-5">
-                      <div className="flex flex-col gap-5 lg:flex-row lg:justify-between">
-                        <h2 className="text-[15px] text-[#000000]/70">
-                          {getTimeAgo(review.created)}
-                        </h2>
-                        <h2 className="text-sm lg:text-base">
-                          آخرین چپتر خوانده شده:
-                          <span
-                            className="font-bold text-blue-700 cursor-pointer"
-                            onClick={() =>
-                              navigate(`/chapter/${review.chapter}`)
-                            }
+                  <div className=" w-full max-w-[1100px] min-h-[180px] p-2 lg:p-6 rounded-[15px] border-black/20 border-[2px] shadow-sm shadow-black/21 bg-[#d9f0ff]">
+                    {editingReview === review.id ? (
+                      <div className="flex flex-col gap-4">
+                        <input
+                          type="text"
+                          value={editedTitle}
+                          onChange={(e) => setEditedTitle(e.target.value)}
+                          className="p-2 border rounded"
+                          placeholder="عنوان نقد"
+                        />
+                        <Editor
+                          value={editedContent}
+                          onTextChange={(e) => setEditedContent(e.htmlValue)}
+                          style={{ height: "200px" }}
+                        />
+                        <div className="flex gap-2">
+                          <button
+                            className="btn !py-[5px] !px-[38px] !text-[14px]"
+                            onClick={() => handleSaveEdit(review.id)}
                           >
-                            {" "}
-                            {review.chapter_name}
-                          </span>
-                        </h2>
+                            <span className="span-btn">ذخیره</span>
+                          </button>
+                          <button
+                            className="btn !py-[5px] !px-[38px] !text-[14px] before:!bg-gray-500 !bg-gray-400"
+                            onClick={handleCancelEdit}
+                          >
+                            <span className="span-btn">انصراف</span>
+                          </button>
+                        </div>
                       </div>
-                      <h1 className="font-bold text-base lg:text-xl">
-                        {review.title}
-                      </h1>
-                      <div className="text-sm lg:text-[16px] my-auto">
-                        {parse(review.body)}
+                    ) : (
+                      <div className="flex flex-col gap-[10px]">
+                        <div className="flex flex-col justify-between lg:flex-row gap-3">
+                          <h2 className="text-sm lg:text-base text-[#000000]/70">
+                            {getTimeAgo(review.created)}
+                          </h2>
+                          <h2 className="text-sm lg:text-base">
+                            آخرین چپتر خوانده شده:
+                            <span
+                              className="font-bold text-blue-700 cursor-pointer"
+                              onClick={() =>
+                                navigate(`/chapter/${review.chapter}`)
+                              }
+                            >
+                              {" "}
+                              {review.chapter_name}
+                            </span>
+                          </h2>
+                        </div>
+                        <h1 className="font-bold text-base lg:text-xl">
+                          {review.title}
+                        </h1>
+                        <div className="text-sm leading-8 lg:text-[16px]">
+                          {parse(review.body)}
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 </div>
-                <div className="flex justify-between px-42">
+                <div className="flex justify-center lg:justify-between px-42">
                   <div className="flex gap-[25px]">
                     <div className="flex items-center gap-[2px] cursor-pointer">
                       <span className="inline-block min-w-[15px] text-center">
@@ -466,4 +559,5 @@ function Reviews({ book }) {
     </main>
   );
 }
+
 export default Reviews;
