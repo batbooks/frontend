@@ -13,7 +13,7 @@ export default function UserDashboard() {
 
   return (
     <div className="flex gap-[40px]">
-      <div className="sticky flex flex-col h-fit bg-[#a4c0ed] grow-2 pt-[15px] pb-[18px] px-[12px] gap-[12px] outline-[2px] outline-[#000]/21 rounded-[5px] shadow-md">
+      <div className="w-full sticky flex flex-col h-fit bg-[#a4c0ed] grow-2 pt-[15px] pb-[18px] px-[12px] gap-[12px] outline-[2px] outline-[#000]/21 rounded-[5px] shadow-md">
         {isAuthenticated && user.user_info.image != null ? (
           <img
             className="w-[100px] h-[100px] rounded-full mx-auto mb-[15px]"
