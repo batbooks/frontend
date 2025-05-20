@@ -13,10 +13,10 @@ export default function UserDashboard() {
 
   return (
     <div className="flex gap-[40px]">
-      <div className="sticky flex flex-col h-fit bg-[#a4c0ed] grow-2 pt-[15px] pb-[18px] px-[12px] gap-[12px] outline-[2px] outline-[#000]/21 rounded-[5px] shadow-md">
+      <div className="sticky flex flex-col h-fit bg-[#a4c0ed] min-w-[250px] max-w-[250px] pt-[15px] pb-[18px] px-[12px] gap-[12px] outline-[2px] outline-[#000]/21 rounded-[5px] shadow-md">
         {isAuthenticated && user.user_info.image != null ? (
           <img
-            className="w-[100px] h-[100px] rounded-full mx-auto mb-[15px]"
+            className="w-[90px] h-[90px] rounded-full mx-auto mb-[15px]"
             src={`/api${user.user_info.image}`}
             alt="User Image 2"
           />
@@ -67,7 +67,7 @@ export default function UserDashboard() {
           </span>
         </button>
       </div>
-      <div className="grow-100 flex flex-col gap-[35px]">
+      <div className="flex flex-col gap-[35px]">
         {menuNum === 1 ? [1, 2].map((_, i) => <Review key={i} />) : null}
         {menuNum === 2
           ? [1, 2].map((_, i) => <Comment isClickedReplies={_ === 1} key={i} />)
@@ -106,7 +106,7 @@ function Review() {
               <span className="span-btn">مشاهده در صفحه</span>
             </button>
           </div>
-          <div className=" w-full max-w-[895px] min-h-[180px] p-6 rounded-[15px] border-black/20 border-[2px] shadow-sm shadow-black/21 bg-[#d9f0ff]">
+          <div className="min-h-[180px] p-6 rounded-[15px] border-black/20 border-[2px] shadow-sm shadow-black/21 bg-[#d9f0ff]">
             <div className="flex flex-col gap-[10px]">
               <div className="flex flex-row gap-[500px]">
                 <h2 className="text-[15px] text-[#000000]/70">2 سال پیش</h2>
@@ -179,7 +179,7 @@ function Comment({ isClickedReplies }) {
               </button>
             ) : null}
           </div>
-          <div className="flex flex-col gap-[22px] w-[920px]">
+          <div className="flex flex-col gap-[22px]">
             <div
               className={`p-6 ${!isClickedReplies ? "min-h-[200px]" : ""} rounded-[15px] border-black/20 border-[2px] shadow-sm shadow-black/21 bg-[#E0F2F1]`}
             >
@@ -226,7 +226,7 @@ function Reply() {
             <span className="span-btn">مشاهده در صفحه</span>
           </button>
         </div>
-        <div className="p-6 min-h-[120px] w-[715px] rounded-[15px] border-black/20 border-[2px] shadow-sm shadow-black/21 bg-[#E0F2F1]">
+        <div className="p-6 min-h-[120px] rounded-[15px] border-black/20 border-[2px] shadow-sm shadow-black/21 bg-[#E0F2F1]">
           <h2 className="text-[15px] text-[#000000]/70 font-[300] mb-[15px]">
             2 سال پیش
           </h2>
