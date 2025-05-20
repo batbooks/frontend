@@ -94,7 +94,7 @@ export default function Comments({ chapterId }) {
         <VoteAndReview chapter={chapterId} commentsCount={commentsCount} />
       ) : null}
       <main dir="rtl" className="mt-[20px] mb-[60px] mx-[71px] flex flex-col">
-        <h1 className="text-[22px] font-[400] mb-[30px]">نظرات کاربران:</h1>
+        <h1 className="text-[22px] mb-[30px]">نظرات کاربران:</h1>
         <div className="flex flex-col gap-[36px]">
           {showingComments.map((comment) => (
             <Comment
@@ -104,9 +104,7 @@ export default function Comments({ chapterId }) {
               userImage={comment.image}
               userName={comment.user.name}
               dateTime={comment.created}
-              content={
-                <p className="text-[16px] font-[300] my-auto">{comment.body}</p>
-              }
+              content={<p className="text-[16px] my-auto">{comment.body}</p>}
               likeNum={comment.like.length}
               dislikeNum={comment.dislike.length}
               key={comment.id}
@@ -115,8 +113,8 @@ export default function Comments({ chapterId }) {
                   ? comment.like.includes(user.id)
                     ? 1
                     : comment.dislike.includes(user.id)
-                    ? 0
-                    : -1
+                      ? 0
+                      : -1
                   : -1
               }
             />
@@ -418,8 +416,8 @@ function Comment({
                     ? reply.like.includes(user.id)
                       ? 1
                       : reply.dislike.includes(user.id)
-                      ? 0
-                      : -1
+                        ? 0
+                        : -1
                     : -1
                 }
               />
@@ -445,8 +443,8 @@ function Comment({
                     ? reply.like.includes(user.id)
                       ? 1
                       : reply.dislike.includes(user.id)
-                      ? 0
-                      : -1
+                        ? 0
+                        : -1
                     : -1
                 }
               />
@@ -814,8 +812,8 @@ function LikeAndDislike({ likeNum, dislikeNum, likeState, commentorreplyId }) {
             loading
               ? "cursor-progress"
               : isAuthenticated
-              ? "cursor-pointer"
-              : "cursor-auto"
+                ? "cursor-pointer"
+                : "cursor-auto"
           }`}
         >
           {isDislikedVisible ? (
@@ -908,12 +906,16 @@ function LikeAndDislike({ likeNum, dislikeNum, likeState, commentorreplyId }) {
             loading
               ? "cursor-progress"
               : isAuthenticated
-              ? "cursor-pointer"
-              : "cursor-auto"
+                ? "cursor-pointer"
+                : "cursor-auto"
           }`}
         >
           {isLikedVisible ? (
-            <AiFillLike color="blue" size={25} className="pointer-events-none" />
+            <AiFillLike
+              color="blue"
+              size={25}
+              className="pointer-events-none"
+            />
           ) : (
             <AiOutlineLike
               color="blue"

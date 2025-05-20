@@ -290,12 +290,15 @@ function Reviews({ book }) {
   };
 
   return (
-    <main dir="rtl" className=" mb-[60px] mx-[100px] flex flex-col bg-white p-4">
+    <main
+      dir="rtl"
+      className=" mb-[60px] md:mx-[100px] flex flex-col bg-white p-3"
+    >
       <div
         dir="ltr"
-        className="  bg-blue-300 flex flex-col rounded-[15px] border-[2px] border-[#000000]/21 md:flex-row md:items-center md:justify-between mb-6 p-[48px]"
+        className="  bg-blue-300 flex flex-col rounded-[15px] border-[2px] border-[#000000]/21 md:flex-row md:items-center md:justify-between mb-6 p-6 lg:p-[48px]"
       >
-        <div className="flex flex-col items-center mb-6 md:mb-0 bg-[#d9f0ff] p-6 rounded-[10px] shadow-[0_0_5px_#000]">
+        <div className="flex flex-col items-center mb-6 md:mb-0 bg-[#d9f0ff] py-6 rounded-[10px] shadow-[0_0_5px_#000]">
           <span className="text-4xl font-bold">
             {Math.round(book.rating * 10) / 10}
           </span>
@@ -346,9 +349,9 @@ function Reviews({ book }) {
         <div className="flex flex-col gap-[36px]">
           {allreviews.map((review) => (
             <div key={review.id} className="flex flex-col">
-              <div className=" flex flex-col gap-[22px] px-[25px] py-[30px] shadow-md bg-blue-300 border-[2px] border-[#000000]/21 rounded-[25px]">
-                <div className="flex gap-[25px]">
-                  <div className="flex flex-col items-center gap-[16px]">
+              <div className=" flex flex-col gap-[22px] md:items-stretch items-center px-2 lg:px-6 py-[30px] shadow-md bg-blue-300 border-[2px] border-[#000000]/21 rounded-[25px]">
+                <div className="flex lg:flex-row flex-col lg:gap-[25px]">
+                  <div className="flex flex-col items-center gap-2 lg:gap-[16px]">
                     <div className="w-[83px] h-[83px] rounded-full overflow-hidden">
                       <img
                         src={
@@ -366,14 +369,14 @@ function Reviews({ book }) {
                                 );
                               }
                             : user.id !== review.user.id
-                            ? () => {
-                                navigate(
-                                  `/anotheruserprofile/${review.user.id}`
-                                );
-                              }
-                            : () => {
-                                navigate(`/userprofile`);
-                              }
+                              ? () => {
+                                  navigate(
+                                    `/anotheruserprofile/${review.user.id}`
+                                  );
+                                }
+                              : () => {
+                                  navigate(`/userprofile`);
+                                }
                         }
                       />
                     </div>
@@ -423,7 +426,7 @@ function Reviews({ book }) {
                       )
                     ) : null}
                   </div>
-                  <div className=" w-full max-w-[1100px] min-h-[180px] p-6 rounded-[15px] border-black/20 border-[2px] shadow-sm shadow-black/21 bg-[#d9f0ff]">
+                  <div className=" w-full max-w-[1100px] min-h-[180px] p-2 lg:p-6 rounded-[15px] border-black/20 border-[2px] shadow-sm shadow-black/21 bg-[#d9f0ff]">
                     {editingReview === review.id ? (
                       <div className="flex flex-col gap-4">
                         <input
@@ -455,11 +458,11 @@ function Reviews({ book }) {
                       </div>
                     ) : (
                       <div className="flex flex-col gap-[10px]">
-                        <div className="flex flex-row gap-[500px]">
-                          <h2 className="text-[15px] text-[#000000]/70">
+                        <div className="flex flex-col justify-between lg:flex-row gap-3">
+                          <h2 className="text-sm lg:text-base text-[#000000]/70">
                             {getTimeAgo(review.created)}
                           </h2>
-                          <h2>
+                          <h2 className="text-sm lg:text-base">
                             آخرین چپتر خوانده شده:
                             <span
                               className="font-bold text-blue-700 cursor-pointer"
@@ -472,15 +475,17 @@ function Reviews({ book }) {
                             </span>
                           </h2>
                         </div>
-                        <h1 className="font-bold text-xl">{review.title}</h1>
-                        <div className="text-[16px] font-[300] my-auto">
+                        <h1 className="font-bold text-base lg:text-xl">
+                          {review.title}
+                        </h1>
+                        <div className="text-sm leading-8 lg:text-[16px]">
                           {parse(review.body)}
                         </div>
                       </div>
                     )}
                   </div>
                 </div>
-                <div className="flex justify-between px-42">
+                <div className="flex justify-center lg:justify-between px-42">
                   <div className="flex gap-[25px]">
                     <div className="flex items-center gap-[2px] cursor-pointer">
                       <span className="inline-block min-w-[15px] text-center">

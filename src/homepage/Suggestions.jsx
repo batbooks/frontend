@@ -54,10 +54,11 @@ export default function Suggestions() {
     false,
     false,
   ]);
+  const cardIds = [1, 2, 3, 4, 0];
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState([]);
   const [error, setError] = useState("");
-  const cardIds = [1, 2, 3, 4, 0];
+
   useEffect(() => {
     const fetchSuggestions = async () => {
       setLoading(true);
@@ -85,20 +86,24 @@ export default function Suggestions() {
   }, []);
   return (
     <div dir="rtl">
-      <div className="w-full h-[90vh] m-auto bg-[#D9F0FF]/80 py-[50px] pb-[50px] relative overflow-hidden">
+      <div className="w-full lg:h-[90vh] m-auto  py-[30px] md:pb-[40px] lg:py-[50px]  relative overflow-hidden">
         {/* عنوان بخش با استایل بهبود یافته */}
         <motion.h1
-          className="flex flex-row justify-between mb-15 text-3xl md:text-3xl font-extrabold text-right pr-[5vw] relative  text-gray-800"
+          className="flex flex-col gap-3 justify-between mb-7 lg:mb-15 text-3xl  md:text-3xl font-extrabold text-right pr-[4vw] relative  text-gray-800"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
-          <span className=" absolute -bottom-3 right-21 ">پیشنهادی</span>
-          <span className="absolute  -bottom-8 right-21 w-28  h-2 bg-gradient-to-l from-[#6f6fff] to-[#2828db] rounded-full z-0"></span>
+          <span className=" m-auto lg:absolute -bottom-3 right-12 ">
+            {" "}
+            پیشنهادی 
+          </span>
+          <span className="m-auto lg:absolute  -bottom-8 right-12 w-28  h-2 bg-gradient-to-l from-[#6f6fff] to-[#2828db] rounded-full z-0"></span>
         </motion.h1>
 
         {/* کارت‌ها با انیمیشن ورود از چپ */}
-        <div className="flex flex-row justify-start gap-[4vw]  p-20 pt-0 pb-0 items-center">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-x-4 gap-y-10 px-4">
+          {" "}
           {cardIds.map((id, index) => {
             const [ref, inView] = useInView({
               triggerOnce: true,
@@ -107,6 +112,7 @@ export default function Suggestions() {
 
             return (
               <motion.div
+                className="flex flex-col items-center"
                 key={id}
                 ref={ref}
                 initial={{ opacity: 0, x: -50 }}
