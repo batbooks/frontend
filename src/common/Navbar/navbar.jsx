@@ -351,7 +351,6 @@ function Navbar() {
       </button>
       {mobileMenuOpen && (
         <div className="lg:hidden fixed inset-0 z-50">
-          {/* پس‌زمینه نیمه‌شفاف با blur ملایم */}
           <div
             className={`absolute inset-0 backdrop-blur-sm bg-blue-950/40 transition-opacity duration-300 ${
               menuVisible ? "opacity-100" : "opacity-0"
@@ -359,12 +358,10 @@ function Navbar() {
             onClick={closeMenu}
           />
 
-          {/* پنل منو با انیمیشن و طراحی بهبود یافته */}
           <div
-            className={`absolute top-0 right-0 w-[80%] max-w-xs h-full bg-gradient-to-b from-blue-50 to-white shadow-2xl rounded-l-3xl transform transition-all duration-300 ease-in-out 
+            className={`absolute top-0 right-0 w-[50%] max-w-xs h-full text-nowrap bg-gradient-to-b from-blue-50 to-white shadow-2xl rounded-l-3xl transform transition-all duration-300 ease-in-out 
       ${menuVisible ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"}`}
           >
-            {/* هدر منو */}
             <div className="flex justify-between items-center p-5 border-b border-blue-200">
               <h2 className="text-xl font-bold text-blue-800">منو</h2>
               <button
@@ -374,72 +371,16 @@ function Navbar() {
                 &times;
               </button>
             </div>
-            {/* آیتم‌های منو */}
 
-            <ul className="flex flex-col items-start px-4 py-6 space-y-3 text-blue-800">
-              <li>
-                <MenuItem
-                  icon={<FiHome />}
-                  label="صفحه اصلی"
-                  onClick={() => handleNav("/", 1)}
-                />
-              </li>
-              <li>
-                <MenuItem
-                  icon={<FiBook />}
-                  label="کتاب‌های من"
-                  onClick={() => handleNav("/mybooks", 2)}
-                />
-              </li>
-              <li>
-                <MenuItem
-                  icon={<FiSearch />}
-                  label="جستجوی کتاب"
-                  onClick={() => handleNav("/advancedsearchbook", 3)}
-                />
-              </li>
-
-              {/* پنل ارتباطی */}
-              <li className="w-full transition-all duration-300">
-                <button
-                  onClick={toggleCommunications}
-                  className="w-full flex items-center justify-between px-4 py-2 rounded-xl hover:bg-blue-50 transition-all duration-200"
-                >
-                  <div className="flex items-center gap-3">
-                    <FiMail className="text-blue-600 text-lg" />
-                    <span className="text-sm ">پنل ارتباطی</span>
-                  </div>
-                  {openCommunications ? <FiChevronUp /> : <FiChevronDown />}
-                </button>
-
-                <ul
-                  className={`overflow-hidden transition-all duration-400 ease-in-out flex flex-col mt-2 space-y-2 bg-gray-100 rounded-lg m-4 mb-0 
-      ${openCommunications ? "max-h-40 opacity-100" : "max-h-0 opacity-0"}
-    `}
-                >
-                  <li className="transition-all duration-200 ">
-                    <MenuItem
-                      icon={<FiUsers />}
-                      label="افراد"
-                      onClick={() => handleNav("/people")}
-                    />
-                  </li>
-                  <li className="transition-all duration-200">
-                    <MenuItem
-                      icon={<FiMessageSquare />}
-                      label="تالار گفتگو"
-                      onClick={() => handleNav("/forums")}
-                    />
-                  </li>
-                </ul>
-              </li>
-
-              <hr className="w-full border-t border-blue-200 my-2" />
-
+            <ul className="flex flex-col items-start px-4  py-6 space-y-3 text-blue-800">
               {isAuthenticated ? (
                 <>
                   <li className="w-full px-3 flex items-center gap-3">
-                    <img className="w-10 h-10  rounded-full" src={`/api${user.user_info.image}`} alt="asd" />
+                    <img
+                      className="w-10 h-10  rounded-full"
+                      src={`/api${user.user_info.image}`}
+                      alt="asd"
+                    />
                     <h3>{user.name} </h3>
                   </li>
                   <li>
@@ -486,6 +427,64 @@ function Navbar() {
                   </li>
                 </>
               )}
+              <hr className="w-full border-t border-blue-200 my-2" />
+
+              <li>
+                <MenuItem
+                  icon={<FiHome />}
+                  label="صفحه اصلی"
+                  onClick={() => handleNav("/", 1)}
+                />
+              </li>
+              <li>
+                <MenuItem
+                  icon={<FiBook />}
+                  label="کتاب‌های من"
+                  onClick={() => handleNav("/mybooks", 2)}
+                />
+              </li>
+              <li>
+                <MenuItem
+                  icon={<FiSearch />}
+                  label="جستجوی کتاب"
+                  onClick={() => handleNav("/advancedsearchbook", 3)}
+                />
+              </li>
+
+              {/* پنل ارتباطی */}
+              <li className="w-full transition-all duration-300">
+                <button
+                  onClick={toggleCommunications}
+                  className="w-full flex items-center justify-between px-4 py-2 rounded-xl hover:bg-blue-50 transition-all duration-200"
+                >
+                  <div className="flex items-center gap-3">
+                    <FiMail className="text-blue-600 text-lg" />
+                    <span className="text-xs sm:text-sm ">پنل ارتباطی</span>
+                  </div>
+                  {openCommunications ? <FiChevronUp /> : <FiChevronDown />}
+                </button>
+
+                <ul
+                  className={`overflow-hidden transition-all duration-400 ease-in-out flex flex-col mt-2 space-y-2 bg-gray-100 rounded-lg m-4 mb-0 
+      ${openCommunications ? "max-h-40 opacity-100" : "max-h-0 opacity-0"}
+    `}
+                >
+                  <li className="transition-all duration-200 ">
+                    <MenuItem
+                      icon={<FiUsers />}
+                      label="افراد"
+                      onClick={() => handleNav("/people")}
+                    />
+                  </li>
+                  <li className="transition-all duration-200">
+                    <MenuItem
+                      icon={<FiMessageSquare />}
+                      label="تالار گفتگو"
+                      onClick={() => handleNav("/forums")}
+                    />
+                  </li>
+                </ul>
+              </li>
             </ul>
           </div>
         </div>
@@ -504,7 +503,7 @@ const MenuItem = ({ icon, label, onClick, isAuthenticated = false }) => (
     >
       {icon}
     </span>
-    <span className="text-sm font-medium">{label}</span>
+    <span className="text-xs sm:text-sm font-medium">{label}</span>
   </button>
 );
 export default Navbar;
