@@ -6,7 +6,7 @@ import Loading from "../Loading/Loading";
 export default function UserCard({ user }) {
   const [isFollowing, setIsFollowing] = useState(false);
   const [loading, setLoading] = useState(false);
- 
+
   useEffect(() => {
     setLoading(true);
 
@@ -45,7 +45,7 @@ export default function UserCard({ user }) {
     }
   };
   const navigate = useNavigate();
-   if (loading) {
+  if (loading) {
     return (
       <div className="h-[100vh] grid place-items-center">
         <Loading />
@@ -80,7 +80,13 @@ export default function UserCard({ user }) {
           </p>
         </div>
       </div>
-      <button onClick={()=>{handleFollow();setIsFollowing(!isFollowing)}} className=" text-nowrap px-2 lg:px-4 py-2 bg-[#2663CD] text-white text-[13px] md:text-sm lg:text-md rounded-md hover:bg-blue-700 transition cursor-pointer h-fit">
+      <button
+        onClick={() => {
+          handleFollow();
+          setIsFollowing(!isFollowing);
+        }}
+        className=" text-nowrap px-2 lg:px-4 py-2 bg-[#2663CD] text-white text-[13px] md:text-sm lg:text-md rounded-md hover:bg-blue-700 transition cursor-pointer h-fit"
+      >
         {isFollowing ? " دنبال نکردن " : " دنبال کردن "}
       </button>
     </div>

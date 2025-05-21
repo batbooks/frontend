@@ -48,7 +48,9 @@ const ReadingPage = () => {
           setAuthor(data.Author);
           setSeason(data.title);
           setRating(data.rating);
-          const shamsiDate = moment(data.created_at).locale('fa').format('jYYYY/jMM/jDD');
+          const shamsiDate = moment(data.created_at)
+            .locale("fa")
+            .format("jYYYY/jMM/jDD");
           setPublished(shamsiDate);
 
           // setPublished(format(new Date(data.created_at), "yyyy/MM/dd"));

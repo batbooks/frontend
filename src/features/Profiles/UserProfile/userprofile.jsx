@@ -219,19 +219,6 @@ export default function Profile() {
                 onClick={() => {
                   navigate("/mybooks");
                 }}
-                className=" btn !m-0 !mt-[10px] !min-h-[60px] !flex !flex-col !bg-[#ffffff]  !rounded-[10px]"
-              >
-                <h4 className="span-btn !text-[24px] !font-[600] !text-[#265073]">
-                  {userInfo.favorite_count}
-                </h4>
-                <h4 className="span-btn !font-[400] !text-[#000000]/70 !text-[14px]">
-                  کتاب مورد علاقه
-                </h4>
-              </button>
-              <button
-                onClick={() => {
-                  navigate("/mybooks");
-                }}
                 className="btn !m-0 !mt-[10px] !min-h-[60px] !flex !flex-col !bg-[#ffffff]  !rounded-[10px]"
               >
                 <h4 className=" span-btn !text-[24px] !font-[600] !text-[#265073]">

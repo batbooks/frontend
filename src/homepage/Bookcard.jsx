@@ -25,7 +25,6 @@ export default function Bookcard({ id, suggestions, isHovered, setIsHovered }) {
       <div className="relative cursor-pointer ">
         {isHovered[id] ? (
           <img
-            
             className="w-[220px] rounded-t-2xl blur-[4px] transition-all duration-100"
             src={
               suggestions[id]?.image != null
