@@ -96,7 +96,7 @@ export default function Suggestions() {
         >
           <span className=" m-auto lg:absolute -bottom-3 right-12 ">
             {" "}
-            پیشنهادی 
+            پیشنهادی
           </span>
           <span className="m-auto lg:absolute  -bottom-8 right-12 w-28  h-2 bg-gradient-to-l from-[#6f6fff] to-[#2828db] rounded-full z-0"></span>
         </motion.h1>
