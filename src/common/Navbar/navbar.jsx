@@ -5,13 +5,42 @@ import { useLocation } from "react-router-dom";
 import { logout } from "../../redux/infoSlice";
 import menuIcon from "../../assets/images/menu.svg";
 
+import {
+  FiHome,
+  FiBook,
+  FiSearch,
+  FiMail,
+  FiUser,
+  FiEdit,
+  FiLogOut,
+  FiLogIn,
+  FiUserPlus,
+  FiUsers,
+  FiMessageSquare,
+  FiChevronDown,
+  FiChevronUp,
+} from "react-icons/fi";
+
 function Navbar() {
+  const [openCommunications, setOpenCommunications] = useState(false);
+  const toggleCommunications = () => setOpenCommunications(!openCommunications);
   const [isVisiblePanel, setIsVisiblePanel] = useState(false);
   const [isClickedPanel, setIsClickedPanel] = useState(false);
   const [selectedItem, setSelectedItem] = useState(0);
   const [isVisibleUser, setIsVisibleUser] = useState(false);
   const [isClickedUser, setIsClickedUser] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [menuVisible, setMenuVisible] = useState(false);
 
+  const openMenu = () => {
+    setMobileMenuOpen(true);
+    setTimeout(() => setMenuVisible(true), 10); // برای شروع transition بعد از render
+  };
+  const closeMenu = () => {
+    setMenuVisible(false);
+    setTimeout(() => setMobileMenuOpen(false), 300); // همزمان با مدت انیمیشن
+  };
   let navigate = useNavigate();
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   const handleLogout = () => {
@@ -19,7 +48,11 @@ function Navbar() {
     localStorage.removeItem("refresh_token");
     navigate("/auth/login");
   };
-
+  const handleNav = (path, itemId = null) => {
+    if (itemId) setSelectedItem(itemId);
+    navigate(path);
+    closeMenu();
+  };
   const location = useLocation();
 
   useEffect(() => {
@@ -44,9 +77,9 @@ function Navbar() {
   return (
     <header
       dir="rtl"
-      className={`${isVisiblePanel || isVisibleUser ? "relative" : ""} sticky top-0 z-50  lg:${isScrolled ? "h-[70px] shadow-md transition-all duration-300" : ""} h-[100px] max-w-screen m-auto flex bg-[#a3d5ff] justify-between py-[1px] pl-[50px] pr-[30px]`}
+      className={`${isVisiblePanel || isVisibleUser ? "relative" : ""} p-7  sticky top-0 z-50  lg:${isScrolled ? "h-[70px] shadow-md transition-all duration-300" : ""} h-[100px] md:max-w-screen lg:m-auto flex bg-[#a3d5ff] justify-between py-[1px] lg:pl-[50px]  lg:pr-[30px]`}
     >
-      <nav className="flex items-center gap-[60px]">
+      <nav className="hidden lg:flex items-center gap-[60px]">
         <div
           onMouseLeave={() => {
             if (!isClickedUser) {
@@ -95,6 +128,7 @@ function Navbar() {
             <ul
               className={`w-[155px] h-[76px] divide-y divide-[#2F4F4F]/50 shadow-lg shadow-[#000000]/25 rounded-[10px] transition-opacity duration-1000 ease-in-out ${isVisibleUser ? "opacity-100 pointer-events-auto relative" : "opacity-0 pointer-events-none absolute mt-[60px]"}`}
             >
+              <li></li>
               <li className="w-[155px] h-[38px] bg-[#ffffff] rounded-t-[10px]">
                 <button
                   onClick={() => {
@@ -304,12 +338,172 @@ function Navbar() {
           </li>
         </ul>
       </nav>
-      <div className="flex my-auto">
+      {/* <div className="hidden md:w-full md:flex flex-row-reverse justify-between "> */}
+      <div className="flex my-auto ">
         <h1 className="text-[40px] font-[700] text-[#2663CD]">Books</h1>
         <h1 className="text-[40px] font-[700] text-[#002d54]">Bat</h1>
       </div>
+      <button
+        onClick={openMenu}
+        className="lg:hidden p-2 text-blue-700 hover:text-blue-900 text-3xl"
+      >
+        ☰
+      </button>
+      {mobileMenuOpen && (
+        <div className="lg:hidden fixed inset-0 z-50">
+          <div
+            className={`absolute inset-0 backdrop-blur-sm bg-blue-950/40 transition-opacity duration-300 ${
+              menuVisible ? "opacity-100" : "opacity-0"
+            }`}
+            onClick={closeMenu}
+          />
+
+          <div
+            className={`absolute top-0 right-0 w-[50%] max-w-xs h-full text-nowrap bg-gradient-to-b from-blue-50 to-white shadow-2xl rounded-l-3xl transform transition-all duration-300 ease-in-out 
+      ${menuVisible ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"}`}
+          >
+            <div className="flex justify-between items-center p-5 border-b border-blue-200">
+              <h2 className="text-xl font-bold text-blue-800">منو</h2>
+              <button
+                onClick={closeMenu}
+                className="text-blue-800 text-2xl hover:text-red-500 transition"
+              >
+                &times;
+              </button>
+            </div>
+
+            <ul className="flex flex-col items-start px-4  py-6 space-y-3 text-blue-800">
+              {isAuthenticated ? (
+                <>
+                  <li className="w-full px-3 flex items-center gap-3">
+                    <img
+                      className="w-10 h-10  rounded-full"
+                      src={`/api${user.user_info.image}`}
+                      alt="asd"
+                    />
+                    <h3>{user.name} </h3>
+                  </li>
+                  <li>
+                    <MenuItem
+                      icon={<FiUser />}
+                      label="پروفایل کاربری"
+                      onClick={() => handleNav("/userprofile")}
+                    />
+                  </li>
+                  <li>
+                    <MenuItem
+                      icon={<FiEdit />}
+                      label="نوشتن کتاب جدید"
+                      onClick={() => handleNav("/mybooks/createbook")}
+                    />
+                  </li>
+                  <li>
+                    <MenuItem
+                      icon={<FiLogOut />}
+                      label="خروج از حساب کاربری"
+                      onClick={() => {
+                        handleLogout();
+                        closeMenu();
+                      }}
+                      isAuthenticated
+                    />
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li>
+                    <MenuItem
+                      icon={<FiUserPlus />}
+                      label="ثبت‌نام"
+                      onClick={() => handleNav("/auth/signup")}
+                    />
+                  </li>
+                  <li>
+                    <MenuItem
+                      icon={<FiLogIn />}
+                      label="ورود"
+                      onClick={() => handleNav("/auth/login")}
+                    />
+                  </li>
+                </>
+              )}
+              <hr className="w-full border-t border-blue-200 my-2" />
+
+              <li>
+                <MenuItem
+                  icon={<FiHome />}
+                  label="صفحه اصلی"
+                  onClick={() => handleNav("/", 1)}
+                />
+              </li>
+              <li>
+                <MenuItem
+                  icon={<FiBook />}
+                  label="کتاب‌های من"
+                  onClick={() => handleNav("/mybooks", 2)}
+                />
+              </li>
+              <li>
+                <MenuItem
+                  icon={<FiSearch />}
+                  label="جستجوی کتاب"
+                  onClick={() => handleNav("/advancedsearchbook", 3)}
+                />
+              </li>
+
+              {/* پنل ارتباطی */}
+              <li className="w-full transition-all duration-300">
+                <button
+                  onClick={toggleCommunications}
+                  className="w-full flex items-center justify-between px-4 py-2 rounded-xl hover:bg-blue-50 transition-all duration-200"
+                >
+                  <div className="flex items-center gap-3">
+                    <FiMail className="text-blue-600 text-lg" />
+                    <span className="text-xs sm:text-sm ">پنل ارتباطی</span>
+                  </div>
+                  {openCommunications ? <FiChevronUp /> : <FiChevronDown />}
+                </button>
+
+                <ul
+                  className={`overflow-hidden transition-all duration-400 ease-in-out flex flex-col mt-2 space-y-2 bg-gray-100 rounded-lg m-4 mb-0 
+      ${openCommunications ? "max-h-40 opacity-100" : "max-h-0 opacity-0"}
+    `}
+                >
+                  <li className="transition-all duration-200 ">
+                    <MenuItem
+                      icon={<FiUsers />}
+                      label="افراد"
+                      onClick={() => handleNav("/people")}
+                    />
+                  </li>
+                  <li className="transition-all duration-200">
+                    <MenuItem
+                      icon={<FiMessageSquare />}
+                      label="تالار گفتگو"
+                      onClick={() => handleNav("/forums")}
+                    />
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      )}
     </header>
   );
 }
-
+const MenuItem = ({ icon, label, onClick, isAuthenticated = false }) => (
+  <button
+    onClick={onClick}
+    className={`w-full flex items-center gap-3 px-4 py-2 rounded-xl transition-all
+      ${isAuthenticated ? "text-red-600 hover:bg-red-50 hover:text-red-700" : "hover:bg-blue-50"}`}
+  >
+    <span
+      className={`text-lg ${isAuthenticated ? "text-red-500" : "text-blue-600"}`}
+    >
+      {icon}
+    </span>
+    <span className="text-xs sm:text-sm font-medium">{label}</span>
+  </button>
+);
 export default Navbar;
