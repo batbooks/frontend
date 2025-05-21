@@ -93,7 +93,7 @@ export default function Comments({ chapterId }) {
       {isAuthenticated ? (
         <VoteAndReview chapter={chapterId} commentsCount={commentsCount} />
       ) : null}
-      <main dir="rtl" className="mt-[20px] mb-[60px] mx-[71px] flex flex-col">
+      <main dir="rtl" className="mt-[20px] mb-[60px] mx-[20px] md:mx-[71px] flex flex-col">
         <h1 className="text-[22px] mb-[30px]">نظرات کاربران:</h1>
         <div className="flex flex-col gap-[36px]">
           {showingComments.map((comment) => (
@@ -104,7 +104,7 @@ export default function Comments({ chapterId }) {
               userImage={comment.image}
               userName={comment.user.name}
               dateTime={comment.created}
-              content={<p className="text-[16px] my-auto">{comment.body}</p>}
+              content={<p className="text-xs sm:text-sm md:text-[16px] my-auto">{comment.body}</p>}
               likeNum={comment.like.length}
               dislikeNum={comment.dislike.length}
               key={comment.id}
@@ -262,11 +262,11 @@ function Comment({
   return (
     <div className="flex flex-col">
       <div
-        className={`flex flex-col gap-[22px] px-[25px] py-[30px] bg-[#A4C0ED] border-[2px] border-[#000000]/21 rounded-[25px] ${
+        className={`flex flex-col gap-[22px] px-3 md:px-[25px]  py-[30px] pb-4 bg-[#A4C0ED] border-[2px] border-[#000000]/21 rounded-[25px] ${
           isClickedReplies || isClickedReply ? "rounded-bl-[0px]" : ""
         }`}
       >
-        <div className="gap-[25px] flex">
+        <div className="gap-[25px] flex flex-col md:flex-row">
           <div
             className={`flex flex-col items-center gap-[16px] ${
               isAuthenticated && userId === user.id ? "mx-[40px]" : ""
@@ -285,11 +285,11 @@ function Comment({
                 alt="commentimage"
               />
             )}
-            <span className="text-[16px] font-[400]">{userName}</span>
+            <span className="text-xs sm:text-sm md:text-[16px] font-[400]">{userName}</span>
             {(isAuthenticated && userId !== user.id) || !isAuthenticated ? (
               <button
                 onClick={() => navigate(`/anotheruserprofile/${userId}`)}
-                className="btn !w-full !h-fit !mb-0 !mr-0 !ml-0 py-[6px] px-[38px] text-nowrap"
+                className="btn !w-[50vw] md:!w-full !h-fit !mb-0 !mr-0 !ml-0 py-[6px] !px-[10px] md:!px-[38px] text-nowrap"
               >
                 <span className="span-btn !text-[14px] !font-[400]">
                   مشاهده پروفایل
@@ -299,7 +299,7 @@ function Comment({
           </div>
           <div className="flex flex-col gap-[22px] w-[100%]">
             <div
-              className={`p-6 ${
+              className={`p-2 md:p-6 ${
                 (isAuthenticated && userId !== user.id) || !isAuthenticated
                   ? "min-h-[170px]"
                   : "min-h-[120px]"
@@ -312,7 +312,7 @@ function Comment({
             </div>
           </div>
         </div>
-        <div className="flex justify-between px-48">
+        <div className="flex  md:justify-between md:px-48">
           <div className="flex flex-col gap-[25px]">
             <LikeAndDislike
               dislikeNum={dislikeNum}
@@ -330,7 +330,7 @@ function Comment({
                 }}
                 className="relative flex gap-[5px] items-center cursor-pointer group focus:outline-none"
               >
-                <span className="text-[16px] text-[#2563EB] font-[600]">
+                <span className="text-xs md:text-[16px] text-[#2563EB] font-[600]">
                   {`نمایش پاسخ ها(${replyCount})`}
                 </span>
                 <FaArrowLeft size={15} color="#2563EB" />
@@ -341,7 +341,7 @@ function Comment({
                 onClick={() => setIsClickedReplies(false)}
                 className="relative flex gap-[5px] items-center cursor-pointer group focus:outline-none"
               >
-                <span className="text-[16px] text-[#2563EB] font-[600]">
+                <span className="text-xs sm:text-sm md:text-[16px] text-[#2563EB] font-[600]">
                   {`عدم نمایش پاسخ ها(${replyCount})`}
                 </span>
                 <FaArrowRight size={15} color="#2563EB" />
@@ -360,7 +360,7 @@ function Comment({
                   color="#2563EB"
                   className="scale-x-[-1] mb-[5px]"
                 />
-                <span className="text-[16px] text-[#2563EB] font-[600]">
+                <span className="text-xs sm:text-sm md:text-[16px]  text-[#2563EB] font-[600]">
                   ارسال پاسخ
                 </span>
                 <div className="h-[1px] w-full absolute bg-[#2563EB] bottom-2 collapse group-hover:visible group-active:collapse"></div>
@@ -371,7 +371,7 @@ function Comment({
                 className="relative h-fit flex gap-[2px] items-center cursor-pointer group focus:outline-none"
               >
                 <RiReplyFill size={25} color="#2563EB" className="mb-[5px]" />
-                <span className="text-[16px] text-[#2563EB] font-[600]">
+                <span className="text-xs sm:text-sm md:text-[16px] text-[#2563EB] font-[600]">
                   عدم ارسال پاسخ
                 </span>
                 <div className="h-[1px] w-full absolute bg-[#2563EB] bottom-2 collapse group-hover:visible group-active:collapse"></div>
@@ -381,10 +381,10 @@ function Comment({
         </div>
       </div>
       {isClickedReplies ? (
-        <div className="relative flex flex-col mr-[200px] mt-[-2px] border-[2px] border-t-0 border-[#000000]/21 rounded-b-[25px] bg-[#A4C0ED]">
+        <div className="relative flex flex-col mr-10 sm:mr-20 lg:mr-[200px] mt-[-2px] border-[2px] border-t-0 border-[#000000]/21 rounded-b-[25px] bg-[#A4C0ED]">
           {isClickedReplies || isClickedReply ? (
-            <div className="bg-[#A4C0ED] h-[25px] w-[25px] absolute right-[-25px]">
-              <div className="bg-[#D9F0FF] rounded-tl-[25px] w-[25px] h-[25px] border-[2px] border-b-0 border-r-0 border-[#000000]/42"></div>
+            <div className=" bg-[#A4C0ED] h-[25px] w-[25px] absolute right-[-25px]">
+              <div className=" bg-white  rounded-tl-[25px] w-[25px] h-[25px] border-[2px] border-b-0 border-r-0 border-[#000000]/42"></div>
             </div>
           ) : null}
           {isClickedReply ? (
@@ -407,7 +407,7 @@ function Comment({
                 dateTime={reply.created}
                 getTimeAgo={getTimeAgo}
                 content={
-                  <p className="text-[16px] font-[300] my-auto">{reply.body}</p>
+                  <p className="text-[13px] sm:text-sm lg:text-[16px] font-[300] my-auto">{reply.body}</p>
                 }
                 likeNum={reply.like.length}
                 dislikeNum={reply.dislike.length}
@@ -434,7 +434,7 @@ function Comment({
                 dateTime={reply.created}
                 getTimeAgo={getTimeAgo}
                 content={
-                  <p className="text-[16px] font-[300] my-auto">{reply.body}</p>
+                  <p className="text-xs sm:text-sm md:text-[16px] font-[300] my-auto">{reply.body}</p>
                 }
                 likeNum={reply.like.length}
                 dislikeNum={reply.dislike.length}
@@ -510,25 +510,25 @@ function Reply({
 
   return (
     <div
-      className={`flex flex-col gap-[25px] px-[20px] py-[25px] bg-[#A4C0ED] ${
+      className={`flex flex-col gap-[25px] px-[20px] py-2 md:py-[25px] bg-[#A4C0ED] ${
         isLast ? "rounded-b-[23px]" : ""
       }`}
     >
-      <div className="gap-[25px] flex">
+      <div className="gap-[25px] flex flex-col lg:flex-row">
         <div
-          className={`flex flex-col items-center gap-[9px] ${
+          className={`flex flex-col items-center  gap-[9px] ${
             isAuthenticated && userId === user.id ? "mx-[40px]" : ""
           } relative`}
         >
           {userImage === null ? (
             <img
-              className="min-w-[83px] max-w-[83px] max-h-[83px] min-h-[83px] rounded-full"
+              className="w-15 md:min-w-[83px] md:max-w-[83px] md:max-h-[83px] md:min-h-[83px] rounded-full"
               src="/images/user_none.png"
               alt="commentimage"
             />
           ) : (
             <img
-              className="min-w-[83px] max-w-[83px] max-h-[83px] min-h-[83px] rounded-full"
+              className="w-15 md:min-w-[83px] md:max-w-[83px] md:max-h-[83px] md:min-h-[83px] rounded-full"
               src={`/api${userImage}`}
               alt="commentimage"
             />
@@ -537,16 +537,16 @@ function Reply({
           {(isAuthenticated && userId !== user.id) || !isAuthenticated ? (
             <button
               onClick={() => navigate(`/anotheruserprofile/${userId}`)}
-              className="btn !w-full !h-fit !mb-0 !mr-0 !ml-0 py-[6px] px-[38px] text-nowrap"
+              className="btn !w-[40vw] lg:!w-full !h-fit !mb-0 !mr-0 !ml-0 py-[6px] md:px-[38px] text-nowrap"
             >
-              <span className="span-btn !text-[14px] !font-[400]">
+              <span className="span-btn !text-[14px] !font-[400] ">
                 مشاهده پروفایل
               </span>
             </button>
           ) : null}
         </div>
         <div
-          className={`p-6 ${
+          className={`p-2 md:p-6 ${
             (isAuthenticated && userId !== user.id) || !isAuthenticated
               ? "min-h-[170px]"
               : "min-h-[120px]"
@@ -562,7 +562,7 @@ function Reply({
               }}
               className="relative flex gap-[5px] items-center cursor-pointer group focus:outline-none"
             >
-              <span className="text-[16px] text-[#2563EB] font-[600]">
+              <span className="text-xs sm:text-sm md:text-[16px] text-[#2563EB] font-[600]">
                 {`@${tag}`}
               </span>
               <div className="h-[1px] w-full absolute bg-[#2563EB] bottom-1.25 collapse group-hover:visible group-active:collapse"></div>
@@ -571,7 +571,7 @@ function Reply({
           {content}
         </div>
       </div>
-      <div className="mr-[190px]">
+      <div className="lg:mr-[190px]">
         <LikeAndDislike
           dislikeNum={dislikeNum}
           likeNum={likeNum}
@@ -631,7 +631,7 @@ function ReplyBox({ isLast, commentId, setHidden }) {
 
   return (
     <div
-      className={`flex px-[20px] py-[25px] bg-[#A4C0ED] gap-[25px] ${
+      className={`flex flex-col lg:flex-row px-[20px] py-[25px] bg-[#A4C0ED] gap-[25px] ${
         isLast ? "rounded-b-[23px]" : ""
       }`}
     >
