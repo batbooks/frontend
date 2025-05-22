@@ -88,7 +88,7 @@ export default function Homepage() {
                 با BatBooks، دسترسی به هزاران کتاب در یک مکان. مطالعه،
                 اشتراک‌گذاری و کشف دنیای جدید کتاب‌ها.
               </p>
-              <Link to="/searchresults">
+              <Link to="/advancedsearchbook">
                 <button className="md:h-10 lg:h-14 px-8 bg-gradient-to-r from-blue-600 to-indigo-600 text-lg text-white rounded-md hover:cursor-pointer hover:scale-110 transition-all duration-200">
                   شروع کنید
                 </button>
