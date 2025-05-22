@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { createContext, useContext } from "react";
 import Navbar from "../../common/Navbar/navbar";
 import Footer from "../../common/Footer/Footer";
@@ -8,6 +8,18 @@ import DatePicker from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import Swal from "sweetalert2";
+import jalaali from "jalaali-js";
+
+const persianToEnglishDigits = (str) => {
+  return str.replace(/[۰-۹]/g, (d) => "۰۱۲۳۴۵۶۷۸۹".indexOf(d));
+};
+
+const convertShamsiToGregorian = (shamsiDateStr) => {
+  const normalized = persianToEnglishDigits(shamsiDateStr); // convert digits
+  const [jy, jm, jd] = normalized.split("/").map(Number); // convert to numbers
+  const { gy, gm, gd } = jalaali.toGregorian(jy, jm, jd); // convert to Gregorian
+  return `${gy}-${String(gm).padStart(2, "0")}-${String(gd).padStart(2, "0")}`;
+};
 
 const SharedStateContext = createContext();
 
@@ -49,7 +61,6 @@ export default function AdvancedSearchBook() {
           });
         }, 100);
       } finally {
-        setLoading(false);
         setFlag(false);
       }
     };
@@ -79,8 +90,12 @@ export default function AdvancedSearchBook() {
           جستجوی کتاب
         </h1>
         <SearchFilters
-          setLoading={setLoading}
           setShowingBooks={setShowingBooks}
+          setAllBooks={setAllBooks}
+          setcurrentpage={setcurrentpage}
+          setTotalPages={setTotalPages}
+          setLoading2={setLoading}
+          itemsPerPage={itemsPerPage}
         />
         <div className="flex flex-col w-[100%]">
           {loading ? (
@@ -269,7 +284,14 @@ function useSharedState() {
   return useContext(SharedStateContext);
 }
 
-function SearchFilters({ setLoading2, setShowingBooks }) {
+function SearchFilters({
+  setLoading2,
+  setShowingBooks,
+  setAllBooks,
+  setTotalPages,
+  setcurrentpage,
+  itemsPerPage,
+}) {
   const [isVisibleFilters, setIsVisibleFilters] = useState(false);
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState([]);
@@ -288,78 +310,329 @@ function SearchFilters({ setLoading2, setShowingBooks }) {
   const [fromValueScorer, setFromValueScorer] = useState("1");
   const [toValueScorer, setToValueScorer] = useState("99999");
   const [searchKey, setSearchKey] = useState("");
+  const [searchWord, setSearchWord] = useState("");
+  const [showingBooksSearchWord, setShowingBooksSearchWord] = useState("");
+  const [isBlankSearchWord, setIsBlankSearchWord] = useState(false);
   const filterNum = (filters || []).length;
+  const genreIds = useRef([]);
+  const tagIds = useRef([]);
 
   function handleAdvancedSearch() {
-    const fetchSearchBook = async () => {
-      setLoading2(true);
-      const token = localStorage.getItem("access_token");
+    const Query = filters.reduce((acc, filter, i) => {
+      if (filter.includes("ژانر: ")) {
+        genreIds.current = [
+          ...genreIds.current,
+          String(
+            selectedGenres.find(
+              (genre) => genre.title === filter.replace("ژانر: ", "")
+            ).id
+          ),
+        ];
+      }
+      if (filter.includes("تگ: ")) {
+        tagIds.current = [
+          ...tagIds.current,
+          String(
+            allSelectedTags.find(
+              (tag) => tag.title === filter.replace("تگ: ", "")
+            ).id
+          ),
+        ];
+      }
+      if (filter.includes("تعداد فصل ها: از")) {
+        if (filters.length === i + 1 && genreIds.current.length !== 0) {
+          acc = acc + "&genre_or=" + genreIds.current.join(",");
+        }
+        if (filters.length === i + 1 && tagIds.current.length !== 0) {
+          acc = acc + "&tag_or=" + tagIds.current.join(",");
+        }
+        return (
+          acc +
+          "&chapter_count_min=" +
+          filter.replace("تعداد فصل ها: از ", "").replace(" فصل", "")
+        );
+      } else if (filter.includes("تعداد فصل ها: تا")) {
+        if (filters.length === i + 1 && genreIds.current.length !== 0) {
+          acc = acc + "&genre_or=" + genreIds.current.join(",");
+        }
+        if (filters.length === i + 1 && tagIds.current.length !== 0) {
+          acc = acc + "&tag_or=" + tagIds.current.join(",");
+        }
+        return (
+          acc +
+          "&chapter_count_max=" +
+          filter.replace("تعداد فصل ها: تا ", "").replace(" فصل", "")
+        );
+      } else if (filter.includes("تعداد فصل ها: ")) {
+        if (filters.length === i + 1 && genreIds.current.length !== 0) {
+          acc = acc + "&genre_or=" + genreIds.current.join(",");
+        }
+        if (filters.length === i + 1 && tagIds.current.length !== 0) {
+          acc = acc + "&tag_or=" + tagIds.current.join(",");
+        }
+        return (
+          acc +
+          "&chapter_count_min=" +
+          filter.replace("تعداد فصل ها: ", "").replace(" فصل", "") +
+          "&chapter_count_max=" +
+          filter.replace("تعداد فصل ها: ", "").replace(" فصل", "")
+        );
+      }
+      if (filter.includes("تعداد پسندیده ها: از")) {
+        if (filters.length === i + 1 && genreIds.current.length !== 0) {
+          acc = acc + "&genre_or=" + genreIds.current.join(",");
+        }
+        if (filters.length === i + 1 && tagIds.current.length !== 0) {
+          acc = acc + "&tag_or=" + tagIds.current.join(",");
+        }
+        return (
+          acc +
+          "&favorite_count_min=" +
+          filter.replace("تعداد پسندیده ها: از ", "").replace(" نفر", "")
+        );
+      } else if (filter.includes("تعداد پسندیده ها: تا")) {
+        if (filters.length === i + 1 && genreIds.current.length !== 0) {
+          acc = acc + "&genre_or=" + genreIds.current.join(",");
+        }
+        if (filters.length === i + 1 && tagIds.current.length !== 0) {
+          acc = acc + "&tag_or=" + tagIds.current.join(",");
+        }
+        return (
+          acc +
+          "&favorite_count_max=" +
+          filter.replace("تعداد پسندیده ها: تا ", "").replace(" نفر", "")
+        );
+      } else if (filter.includes("تعداد پسندیده ها: ")) {
+        if (filters.length === i + 1 && genreIds.current.length !== 0) {
+          acc = acc + "&genre_or=" + genreIds.current.join(",");
+        }
+        if (filters.length === i + 1 && tagIds.current.length !== 0) {
+          acc = acc + "&tag_or=" + tagIds.current.join(",");
+        }
+        return (
+          acc +
+          "&favorite_count_min=" +
+          filter.replace("تعداد پسندیده ها: ", "").replace(" نفر", "") +
+          "&favorite_count_max=" +
+          filter.replace("تعداد پسندیده ها: ", "").replace(" نفر", "")
+        );
+      }
+      if (filter.includes("تعداد امتیازدهندگان: از")) {
+        if (filters.length === i + 1 && genreIds.current.length !== 0) {
+          acc = acc + "&genre_or=" + genreIds.current.join(",");
+        }
+        if (filters.length === i + 1 && tagIds.current.length !== 0) {
+          acc = acc + "&tag_or=" + tagIds.current.join(",");
+        }
+        return (
+          acc +
+          "&number_rating_min=" +
+          filter.replace("تعداد امتیازدهندگان: از ", "").replace(" نفر", "")
+        );
+      } else if (filter.includes("تعداد امتیازدهندگان: تا")) {
+        if (filters.length === i + 1 && genreIds.current.length !== 0) {
+          acc = acc + "&genre_or=" + genreIds.current.join(",");
+        }
+        if (filters.length === i + 1 && tagIds.current.length !== 0) {
+          acc = acc + "&tag_or=" + tagIds.current.join(",");
+        }
+        return (
+          acc +
+          "&number_rating_max=" +
+          filter.replace("تعداد امتیازدهندگان: تا ", "").replace(" نفر", "")
+        );
+      } else if (filter.includes("تعداد امتیازدهندگان: ")) {
+        if (filters.length === i + 1 && genreIds.current.length !== 0) {
+          acc = acc + "&genre_or=" + genreIds.current.join(",");
+        }
+        if (filters.length === i + 1 && tagIds.current.length !== 0) {
+          acc = acc + "&tag_or=" + tagIds.current.join(",");
+        }
+        return (
+          acc +
+          "&number_rating_min=" +
+          filter.replace("تعداد امتیازدهندگان: ", "").replace(" نفر", "") +
+          "&number_rating_max=" +
+          filter.replace("تعداد امتیازدهندگان: ", "").replace(" نفر", "")
+        );
+      }
+      if (filter.includes("میانگین امتیاز: از")) {
+        if (filters.length === i + 1 && genreIds.current.length !== 0) {
+          acc = acc + "&genre_or=" + genreIds.current.join(",");
+        }
+        if (filters.length === i + 1 && tagIds.current.length !== 0) {
+          acc = acc + "&tag_or=" + tagIds.current.join(",");
+        }
+        return acc + "&rating_min=" + filter.replace("میانگین امتیاز: از ", "");
+      } else if (filter.includes("میانگین امتیاز: تا")) {
+        if (filters.length === i + 1 && genreIds.current.length !== 0) {
+          acc = acc + "&genre_or=" + genreIds.current.join(",");
+        }
+        if (filters.length === i + 1 && tagIds.current.length !== 0) {
+          acc = acc + "&tag_or=" + tagIds.current.join(",");
+        }
+        return acc + "&rating_max=" + filter.replace("میانگین امتیاز: تا ", "");
+      } else if (filter.includes("میانگین امتیاز: ")) {
+        if (filters.length === i + 1 && genreIds.current.length !== 0) {
+          acc = acc + "&genre_or=" + genreIds.current.join(",");
+        }
+        if (filters.length === i + 1 && tagIds.current.length !== 0) {
+          acc = acc + "&tag_or=" + tagIds.current.join(",");
+        }
+        return (
+          acc +
+          "&rating_min=" +
+          filter.replace("میانگین امتیاز: ", "") +
+          "&rating_max=" +
+          filter.replace("میانگین امتیاز: ", "")
+        );
+      }
+      if (filter.includes("وضعیت: ")) {
+        const newStr = filter.replace("وضعیت: ", "");
+        const status =
+          newStr === "متوقف شده"
+            ? "H"
+            : newStr === "به اتمام رسیده"
+              ? "C"
+              : newStr === "در حال تالیف"
+                ? "O"
+                : null;
+        if (filters.length === i + 1 && genreIds.current.length !== 0) {
+          acc = acc + "&genre_or=" + genreIds.current.join(",");
+        }
+        if (filters.length === i + 1 && tagIds.current.length !== 0) {
+          acc = acc + "&tag_or=" + tagIds.current.join(",");
+        }
+        return acc + "&status=" + status;
+      }
+      if (filter.includes("نویسنده: ")) {
+        if (filters.length === i + 1 && genreIds.current.length !== 0) {
+          acc = acc + "&genre_or=" + genreIds.current.join(",");
+        }
+        if (filters.length === i + 1 && tagIds.current.length !== 0) {
+          acc = acc + "&tag_or=" + tagIds.current.join(",");
+        }
+        return acc + "&user=" + filter.replace("نویسنده: ", "");
+      }
+      if (filter.includes("کلید: ")) {
+        if (filters.length === i + 1 && genreIds.current.length !== 0) {
+          acc = acc + "&genre_or=" + genreIds.current.join(",");
+        }
+        if (filters.length === i + 1 && tagIds.current.length !== 0) {
+          acc = acc + "&tag_or=" + tagIds.current.join(",");
+        }
+        return acc + "&description=" + filter.replace("کلید: ", "");
+      }
+      if (filter.includes("تاریخ ایجاد: از")) {
+        const miladi = convertShamsiToGregorian(
+          filter.replace("تاریخ ایجاد: از ", "")
+        );
+        if (filters.length === i + 1 && genreIds.current.length !== 0) {
+          acc = acc + "&genre_or=" + genreIds.current.join(",");
+        }
+        if (filters.length === i + 1 && tagIds.current.length !== 0) {
+          acc = acc + "&tag_or=" + tagIds.current.join(",");
+        }
+        return acc + "&date_after=" + miladi;
+      } else if (filter.includes("تاریخ ایجاد: تا")) {
+        const miladi = convertShamsiToGregorian(
+          filter.replace("تاریخ ایجاد: تا ", "")
+        );
+        if (filters.length === i + 1 && genreIds.current.length !== 0) {
+          acc = acc + "&genre_or=" + genreIds.current.join(",");
+        }
+        if (filters.length === i + 1 && tagIds.current.length !== 0) {
+          acc = acc + "&tag_or=" + tagIds.current.join(",");
+        }
+        return acc + "&date_before=" + miladi;
+      } else if (filter.includes("تاریخ ایجاد: ")) {
+        const miladi = convertShamsiToGregorian(
+          filter.replace("تاریخ ایجاد: ", "")
+        );
+        if (filters.length === i + 1 && genreIds.current.length !== 0) {
+          acc = acc + "&genre_or=" + genreIds.current.join(",");
+        }
+        if (filters.length === i + 1 && tagIds.current.length !== 0) {
+          acc = acc + "&tag_or=" + tagIds.current.join(",");
+        }
+        return acc + "&date_after=" + miladi + "&date_before=" + miladi;
+      }
+      if (filters.length === i + 1 && genreIds.current.length !== 0) {
+        acc = acc + "&genre_or=" + genreIds.current.join(",");
+      }
+      if (filters.length === i + 1 && tagIds.current.length !== 0) {
+        acc = acc + "&tag_or=" + tagIds.current.join(",");
+      }
+      return acc;
+    }, `?search=${showingBooksSearchWord}`);
+
+    const fetchAdvancedSearchBook = async () => {
       try {
-        const Query = filters.reduce((acc, filter) => {
-          if (filter.includes("ژانر: ")) {
-          }
-          if (filter.includes("تگ: ")) {
-          }
-          if (filter.includes("تعداد فصل ها: از")) {
-            if (acc === "?") {
-              return acc + "chapter_count_";
-            }
-          } else if (filter.includes("تعداد فصل ها: تا")) {
-          } else if (filter.includes("تعداد فصل ها: ")) {
-          }
-          if (filter.includes("تعداد پسندیده ها: از")) {
-          } else if (filter.includes("تعداد پسندیده ها: تا")) {
-          }
-          if (filter.includes("تعداد پسندیده ها: ")) {
-          }
-          if (filter.includes("تعداد امتیازدهندگان: از")) {
-          } else if (filter.includes("تعداد امتیازدهندگان: تا")) {
-          } else if (filter.includes("تعداد امتیازدهندگان: ")) {
-          }
-          if (filter.includes("میانگین امتیاز: از")) {
-          } else if (filter.includes("میانگین امتیاز: تا")) {
-          } else if (filter.includes("میانگین امتیاز: ")) {
-          }
-          if (filter.includes("وضعیت: ")) {
-          }
-          if (filter.includes("نویسنده: ")) {
-          }
-          if (filter.includes("کلید: ")) {
-          }
-          if (filter.includes("تاریخ ایجاد: از")) {
-          } else if (filter.includes("تاریخ ایجاد: تا")) {
-          } else if (filter.includes("تاریخ ایجاد: ")) {
-          }
-        }, "?");
-        const response = await fetch(`/api/advance/`, {
+        setLoading2(true);
+        console.log(Query);
+        const response = await fetch(`/api/advance/${Query}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
           },
         });
         if (!response.ok) {
+          setLoading2(false);
           throw new Error("مشکلی پیش اومد...دوباره تلاش کنید");
+        } else {
+          const data = await response.json();
+          setAllBooks(data);
+          setcurrentpage(1);
+          setTotalPages(Math.ceil(data.length / itemsPerPage));
+          setShowingBooks(data.filter((_, i) => i < 10));
         }
-        const data = await response.json();
-        setShowingBooks(data);
       } catch (err) {
         setTimeout(() => {
           Swal.fire({
             title: `${err.message}`,
             icon: "error",
-            confirmButtonText: "تلاش مجدد",
-          }).then((result) => {
-            if (result.isConfirmed) {
-              window.location.reload();
-            }
+            confirmButtonText: "باشه",
           });
         }, 100);
-      } finally {
-        setLoading2(false);
       }
     };
-    fetchSearchBook();
+    fetchAdvancedSearchBook();
+  }
+
+  function handleSimpleSearch() {
+    const fetchSimpleSearchBook = async () => {
+      try {
+        if (searchWord !== "") {
+          setLoading2(true);
+          const response = await fetch(`/api/advance/?search=${searchWord}`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          if (!response.ok) {
+            setLoading2(false);
+            throw new Error("مشکلی پیش اومد...دوباره تلاش کنید");
+          } else {
+            const data = await response.json();
+            setShowingBooksSearchWord(searchWord);
+            setAllBooks(data);
+            setcurrentpage(1);
+            setTotalPages(Math.ceil(data.length / itemsPerPage));
+            setShowingBooks(data.filter((_, i) => i < 10));
+          }
+        } else setIsBlankSearchWord(true);
+      } catch (err) {
+        setTimeout(() => {
+          Swal.fire({
+            title: `${err.message}`,
+            icon: "error",
+            confirmButtonText: "باشه",
+          });
+        }, 100);
+      }
+    };
+    fetchSimpleSearchBook();
   }
 
   useEffect(() => {
@@ -463,9 +736,16 @@ function SearchFilters({ setLoading2, setShowingBooks }) {
           </button>
           <div className="relative flex">
             <input
+              value={searchWord}
+              onChange={(e) => {
+                setSearchWord(e.target.value);
+                setIsBlankSearchWord(false);
+              }}
+              onBlur={() => setIsBlankSearchWord(false)}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
-                  handleAdvancedSearch();
+                  e.preventDefault();
+                  handleSimpleSearch();
                 }
               }}
               className="w-[693px] h-[49px] py-[12.5px] pr-[26px] pl-[50px] bg-white rounded-[20px] outline-[2px] outline-[#000000]/21 shadow-lg shadow-[#000000]/25 focus:shadow-none focus:outline-[3px] focus:outline-[#2663cd] placeholder:text-[16px] placeholder:font-[300] placeholder:text-[#265073]"
@@ -476,6 +756,11 @@ function SearchFilters({ setLoading2, setShowingBooks }) {
               alt="search"
               className="absolute left-[14px] top-[12px]"
             />
+            {isBlankSearchWord ? (
+              <p className="text-red-500 absolute mt-[55px] mr-[25px]">
+                این فیلد خالی است.لطفا چیزی بنویسید...
+              </p>
+            ) : null}
           </div>
         </div>
       </form>
@@ -722,7 +1007,14 @@ function SearchFilters({ setLoading2, setShowingBooks }) {
             <KeyWord filters={filters} setFilters={setFilters} />
             <CreationDate setFilters={setFilters} />
           </div>
-          <button className="btn !w-fit !h-fit !mb-0 px-[26px] py-[12px] !rounded-[20px] border-[2px] border-[#000000]/21 active:border-0">
+          <button
+            onClick={() => {
+              handleAdvancedSearch();
+              tagIds.current = [];
+              genreIds.current = [];
+            }}
+            className="btn !w-fit !h-fit !mb-0 px-[26px] py-[12px] !rounded-[20px] border-[2px] border-[#000000]/21 active:border-0"
+          >
             <span className="span-btn !text-[16px] !font-[400]">
               اعمال تمامی فیلترها
             </span>
@@ -763,7 +1055,7 @@ function Filter({
   return (
     <div className="overflow-hidden relative items-center shadow-lg flex justify-between text-nowrap rounded-full bg-white pr-[11px] pl-[30px] py-[6px] w-full mx-0 grow-1">
       <span className="z-1 text-[15px] font-[100]">{filterName}</span>
-      <div className="bg-white h-full w-[28px] rounded-l-full z-100 absolute left-0 grid">
+      <div className="bg-white h-full w-[28px] rounded-l-full z-2 absolute left-0 grid">
         <button
           onClick={() => {
             if (filterName.includes("ژانر: ")) {
@@ -1921,7 +2213,7 @@ function Book({ coverImage, bookName, authorName, star, bookDescription }) {
           />
         ) : (
           <img
-            src={`/api${coverImage}`}
+            src={`http://127.0.0.1:8000${coverImage}`}
             alt="book"
             className="rounded-[20px] w-[130px] h-[150px]"
           />
