@@ -12,7 +12,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const [userinfo, setuserinfo] = useState({});
   const [loading, setLoading] = useState(false);
-  const [error,seterror]=useState("")
+  const [error, seterror] = useState("");
   // const token = localStorage.getItem("access_token");
   let navigate = useNavigate();
   const fetchuserinfo = async (token) => {
@@ -39,11 +39,10 @@ function Login() {
     setLoading(true);
 
     try {
-      const response = await fetch("http://45.158.169.198/auth/token/", {
+      const response = await fetch("https://www.batbooks.ir/auth/token/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          
         },
         body: JSON.stringify({
           email,
@@ -54,8 +53,8 @@ function Login() {
       // if (!response.ok) {
       //   throw new Error("Login failed");
       // }
-      if (response.status==401){
-        seterror(" اطلاعات خود را درست وارد کنید ")
+      if (response.status == 401) {
+        seterror(" اطلاعات خود را درست وارد کنید ");
       }
       if (response.ok) {
         const data = await response.json();
@@ -72,13 +71,12 @@ function Login() {
             user,
           })
         );
-      }
-      else{
-        seterror(" اطلاعات خود را درست وارد کنید ")
+      } else {
+        seterror(" اطلاعات خود را درست وارد کنید ");
       }
     } catch (err) {
-      seterror(" اطلاعات خود را درست وارد کنید ")
-      console.log(err.detail)
+      seterror(" اطلاعات خود را درست وارد کنید ");
+      console.log(err.detail);
       dispatch(logout());
     } finally {
       setLoading(false);
@@ -146,20 +144,23 @@ function Login() {
               />
             )}
           </div>
-         {error!=""?<div className="text-center text-red-600 mb-1">{error}</div>:<></>}
+          {error != "" ? (
+            <div className="text-center text-red-600 mb-1">{error}</div>
+          ) : (
+            <></>
+          )}
           <button type="submit" className="btn" disabled={loading}>
             <span className="span-btn">
               {loading ? "...در حال ورود" : "ورود"}
             </span>
           </button>
-          
+
           <Link
             className="mx-auto flex cursor-pointer justify-center hover:text-[#2663CD]"
             to={"/Forget_password"}
           >
             رمز عبور را فراموش کرده ام
           </Link>
-          
         </form>
         <img
           src="/src/assets/images/mid-left.png"
@@ -189,7 +190,6 @@ function Login() {
         alt="bottom-right"
         className=" absolute right-[0px] bottom-0 w-[33vw] ascept-auto"
       />
-      
     </div>
   );
 }

@@ -11,7 +11,7 @@ import Profile from "./features/Profiles/UserProfile/userprofile.jsx";
 import Homepage from "./homepage/Homepage.jsx";
 import MyBooks from "./features/MyBooks/myBooks.jsx";
 import Middleware from "./middleware.jsx";
-import SearchResults from "./features/SearchResults/searchResults.jsx";
+import AdvancedSearchBook from "./features/AdvancedSearchBook/advancedsearchbook.jsx";
 import EditChapter from "./features/EditChapter/editChapter.jsx";
 import ModifiedChapter from "./features/CreateChapter/modifiedChapter.jsx";
 import ReadingPage from "./features/ReadingChapter/chapterView.jsx";
@@ -20,6 +20,9 @@ import Threads from "./features/Threads/threads.jsx";
 import ShowAllBooks from "./features/ShowAllBooks/ShowAllBooks.jsx";
 import Comments from "./features/Comments/Comment.jsx";
 import ChatPage from "./common/Chat/Chat.jsx";
+import ThreadPosts from "./features/Thread Posts/threadpost.jsx";
+import People from "./features/People/people.jsx";
+import Forums from "./features/Forum/Forum.jsx";
 function AppRoutes() {
   return (
     <Router>
@@ -33,7 +36,7 @@ function AppRoutes() {
           path="/userprofile"
           element={
             <Middleware>
-              <Profile/>
+              <Profile />
             </Middleware>
           }
         ></Route>
@@ -52,11 +55,9 @@ function AppRoutes() {
           path="/anotheruserprofile/:userId"
           element={<Another_User_Profile />}
         ></Route>
-        <Route
-          path="/forums"
-          element={<SearchResults searchingItem="forum" />}
-        />
-        <Route path="/searchresults" element={<SearchResults />} />
+        <Route path="/forums" element={<Forums />} />
+        <Route path="/advancedsearchbook" element={<AdvancedSearchBook />} />
+        <Route path="/people" element={<People />} />
         <Route path="/readingchapter" element={<ReadingPage chapterId={1} />} />
         <Route
           path="/createAndEditChapter/:chapterId"
@@ -93,7 +94,11 @@ function AppRoutes() {
           }
         />
         <Route path="/threads/:forumId" element={<Threads forumId={3} />} />
-         <Route path="chat" element={<ChatPage/>} />
+        <Route
+          path="/forums/threads/:forumId/threadposts/:threadId"
+          element={<ThreadPosts />}
+        />
+        <Route path="chat" element={<ChatPage />} />
       </Routes>
     </Router>
   );

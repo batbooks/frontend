@@ -67,26 +67,26 @@ function CreateBook() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div>
       <Navbar />
-      <main className="px-4 md:px-[75px] bg-[#A4C0ED] rounded-[30px] pt-[35px] w-full md:w-[90%] lg:w-[1170px] pb-[50px] mx-auto mt-4 md:mt-20 border-[2px] border-[#000]/21 flex flex-col items-center flex-grow mb-8">
-        <h1 className="text-2xl md:text-[32px] font-bold text-center">
+      <main className="px-4 sm:px-6 md:px-[75px] bg-[#A4C0ED] rounded-[30px] pt-[35px] w-full max-w-[1170px] pb-[50px] mx-auto mt-4 sm:mt-8 md:mt-20 border-[2px] border-[#000]/21 flex flex-col items-center">
+        <h1 className="text-2xl sm:text-[28px] md:text-[32px] font-bold text-center">
           کتاب خود را بنویسید
         </h1>
 
         {/* Upload + Book Name */}
         <div className="flex flex-col md:flex-row gap-4 md:gap-[36px] mt-6 md:mt-[36px] w-full">
-          <div className="flex flex-col w-full md:w-1/2">
+          <div className="flex flex-col w-full">
             <h3 dir="rtl" className="text-lg md:text-[20px]">
               عکس جلد کتاب:
             </h3>
             <div
               dir="rtl"
-              className="bg-[#FFFFFF] mx-auto flex pl-14 px-4 items-center w-full md:w-[492px] h-[53px] rounded-[12px] gap-[4px]"
+              className="bg-[#FFFFFF] mx-auto flex pl-14 px-4 items-center w-full max-w-[492px] h-[53px] rounded-[12px] gap-[4px]"
             >
               <label
                 htmlFor="image-input"
-                className="bg-[#DDDDDD] rounded-[5px] py-[3px] px-[6px] border-[2px] border-[#000000]/31 cursor-pointer whitespace-nowrap"
+                className="bg-[#DDDDDD] rounded-[5px] py-[3px] px-[6px] border-[2px] border-[#000000]/31 cursor-pointer"
               >
                 انتخاب فایل
               </label>
@@ -98,7 +98,7 @@ function CreateBook() {
                 accept=".png,.jpg,.jpeg"
               />
               {selectedFile ? (
-                <span className="truncate max-w-[200px] md:max-w-none">
+                <span className="truncate max-w-[180px] sm:max-w-[250px]">
                   {selectedFile.name}
                 </span>
               ) : (
@@ -106,26 +106,25 @@ function CreateBook() {
               )}
             </div>
           </div>
-          <div className="w-full md:w-1/2">
+          <div className="w-full">
             <h3 dir="rtl" className="text-lg md:text-[20px]">
               نام کتاب:
             </h3>
             <input
               value={name}
               dir="rtl"
-              className="bg-[#FFFFFF] mx-auto flex justify-center pl-14 px-4 items-center w-full md:w-[492px] h-[53px] rounded-[12px] placeholder:text-right placeholder:mr-[72px]"
+              className="bg-[#FFFFFF] mx-auto flex justify-center pl-14 px-4 items-center w-full max-w-[492px] h-[53px] rounded-[12px] placeholder:text-right placeholder:mr-[72px]"
               onChange={(e) => setName(e.target.value)}
-              placeholder="نام کتاب را وارد کنید"
             />
           </div>
         </div>
 
         {/* Summary */}
-        <div className="mt-4 md:mt-[27px] flex flex-col gap-[10px] w-full">
+        <div className="mt-6 md:mt-[27px] flex flex-col gap-[10px] w-full">
           <h3 dir="rtl" className="text-lg md:text-[20px]">
             خلاصه داستان:
           </h3>
-          <div dir="rtl" className="w-full md:w-[1020px] h-[211px]">
+          <div dir="rtl" className="w-full max-w-[1020px] h-[211px]">
             <LongParagraphInput setinputValue={setDescription} />
           </div>
         </div>
@@ -142,7 +141,7 @@ function CreateBook() {
         <button
           onClick={(e) => handleSubmit(e)}
           disabled={loading}
-          className="btn !mt-8 md:!mt-[60px] !w-full md:!w-[213px] !h-[52px] !rounded-[12px]"
+          className="btn !mt-8 md:!mt-[60px] !w-full max-w-[213px] !h-[52px] !rounded-[12px]"
         >
           <span className="span-btn">
             {loading ? "...در حال ایجاد" : "ایجاد کتاب"}
