@@ -147,44 +147,15 @@ export default function Profile() {
       </div>
       <main
         style={{ direction: "rtl" }}
-        className={`z-1 flex flex-col max-w-screen m-auto px-4 md:px-[80px] pb-[90px] pt-[13px] shadow-2xl shadow-[#000000]-25 transition-all duration-500 ${editClicked ? "bg-slate-200/20 blur-sm" : "blur-none"}`}
+        className="flex flex-col gap-[20px] max-w-screen px-[80px] pb-[90px] pt-[13px] shadow-2xl shadow-[#000000]-25 items-center overflow-hidden"
       >
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4 md:gap-0">
-          <button
-            onMouseEnter={() => setIsHoveredEdit(true)}
-            onMouseLeave={() => setIsHoveredEdit(false)}
-            onClick={() => setEditClicked(true)}
-            className="btn flex !w-fit !h-fit !mb-[24px] mt-[15px] !ml-0 !mr-0 px-4 md:px-[32px] py-[8px] gap-[15px] order-2 md:order-1"
-          >
-            {!isHoveredEdit ? (
-              <img
-                className="w-[22px] h-[22px] relative"
-                src="/src/assets/images/edit_sign.png"
-                alt="edit"
-              />
-            ) : (
-              <img
-                className="w-[22px] h-[22px] relative"
-                src="/src/assets/images/edit_sign2.png"
-                alt="edit"
-              />
-            )}
-            <span className="span-btn font-[400]">ویرایش پروفایل</span>
-          </button>
-          <h1 className="text-[#265073] text-2xl md:text-[32px] font-[700] order-1 md:order-2">
-            پروفایل کاربری
-          </h1>
-          <button
-            onClick={handleLogout}
-            className="btn !bg-[#CD6326] before:!bg-[#FF8A4D] px-4 md:px-[32px] py-[8px] mt-[15px] !mb-[24px] !ml-0 !mr-0 !w-fit !h-fit order-3"
-          >
-            <span className="span-btn font-[400]">خروج از حساب کاربری</span>
-          </button>
-        </div>
+        <h1 className="text-[#265073] text-[32px] font-[700] mx-auto ">
+          پروفایل کاربری
+        </h1>
 
-        <div className="flex flex-col lg:flex-row bg-[#A4C0ED] rounded-[35px] shadow-lg shadow-[#000000]/25 mb-[40px] p-4 md:pl-[52px] md:pb-[52px] md:pr-[23px] md:pt-[20px] gap-[39px] border-[2px] border-[#000000]/8">
-          <div className="flex flex-col items-center lg:items-start min-w-[236px]">
-            <div className="w-[150px] lg:w-[236px] aspect-square rounded-full overflow-hidden">
+        <div className="flex min-w-[90vw] bg-[#A4C0ED] ml-auto rounded-[35px] shadow-lg shadow-[#000000]/25 mb-[40px] pl-[52px] pr-[23px] pt-[20px] gap-[39px] border-[2px] border-[#000000]/8 ">
+          <div className="min-w-[236px] flex flex-col gap-[15px]">
+            <div className="w-[236px] aspect-square rounded-full overflow-hidden">
               <img
                 className="w-full h-full shadow-lg shadow-[#000000]/25 object-cover"
                 src={
@@ -195,50 +166,54 @@ export default function Profile() {
                 alt="userimage"
               />
             </div>
-            <section className="w-full mt-4 lg:mt-0">
-              <strong className="text-[24px] text-[#000000] font-[400] mt-[8px] mb-[12px]">
-                جزئیات
-              </strong>
-              <div className="bg-white min-h-[45px] rounded-[10px] p-[13px] mt-[10px] shadow-lg shadow-[#000000]/25">
-                <p className="text-[16px] text-[#000000] font-[300]">
-                  {userInfo.gender === "female" ? "زن" : "مرد"}
-                </p>
-                <aside className="text-[16px] font-[300] mt-[12px]">
-                  تاریخ ثبت نام :{getPersianDate(user.joined_date)}
-                </aside>
-              </div>
-            </section>
-          </div>
-
-          <div className="w-[100%]">
-            <h3 className="text-[24px] font-[300] mt-[8px] mb-[15px]">
+            <h3 className="  text-[24px] font-bold text-center">
               {userInfo.user}
             </h3>
-
-            <div className="flex flex-wrap gap-[20px] mb-[19px]">
+            <div className=" flex flex-col  ">
               <button
-                onClick={() => {
-                  navigate("/mybooks");
-                }}
-                className="group flex flex-col bg-[#ffffff] px-4 md:px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:text-white focus:bg-[#2663cd]/90 hover:text-white hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:text-white active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none"
+                onMouseEnter={() => setIsHoveredEdit(true)}
+                onMouseLeave={() => setIsHoveredEdit(false)}
+                onClick={() => setEditClicked(true)}
+                className="btn !w-full"
               >
-                <h4 className="text-[24px] font-semibold text-[#265073] mb-[-5px] group-focus:text-white group-hover:text-white group-active:text-white">
-                  {userInfo.favorite_count}
-                </h4>
-                <h4 className="font-medium text-[#000000]/70 text-[14px] group-focus:text-white group-hover:text-white group-active:text-white">
-                  کتاب مورد علاقه
-                </h4>
+                {!isHoveredEdit ? (
+                  <img
+                    className="w-[22px] h-[22px] relative"
+                    src="/src/assets/images/edit_sign.png"
+                    alt="edit"
+                  />
+                ) : (
+                  <img
+                    className="w-[22px] h-[22px] relative"
+                    src="/src/assets/images/edit_sign2.png"
+                    alt="edit"
+                  />
+                )}
+                <span className="span-btn font-[400]">ویرایش پروفایل</span>
               </button>
               <button
+                onClick={handleLogout}
+                className=" btn  !bg-red-700 !w-full before:!bg-[#FF3B30] "
+              >
+                <span className="span-btn font-[400]">خروج از حساب کاربری</span>
+              </button>
+            </div>
+          </div>
+
+          <div className="w-full m-[32px] mt-0 ml-0 ">
+            <h1 className="text-[26px] font-bold">قفسه ها:</h1>
+
+            <div className="flex gap-[20px] mb-[19px]">
+              <button
                 onClick={() => {
                   navigate("/mybooks");
                 }}
-                className="group flex flex-col bg-[#ffffff] px-4 md:px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:bg-[#2663cd]/90 hover:bg-[#2663cd]/90 hover:cursor-pointer focus:text-white hover:text-white active:text-white transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none"
+                className="btn !m-0 !mt-[10px] !min-h-[60px] !flex !flex-col !bg-[#ffffff]  !rounded-[10px]"
               >
-                <h4 className="text-[24px] font-[600] text-[#265073] mb-[-5px] group-focus:text-white group-hover:text-white group-active:text-white">
+                <h4 className=" span-btn !text-[24px] !font-[600] !text-[#265073]">
                   {writtenBooks}
                 </h4>
-                <h4 className="font-medium text-[#000000]/70 text-[14px] group-focus:text-white group-hover:text-white group-active:text-white">
+                <h4 className="span-btn !font-[400] !text-[#000000]/70 !text-[14px]">
                   کتاب تالیف شده
                 </h4>
               </button>
@@ -254,18 +229,18 @@ export default function Profile() {
                       setIsFollowingOpened(false);
                     }, 250)
                   }
-                  className="group flex flex-col bg-[#ffffff] px-4 md:px-[36px] py-[5.5px] rounded-[10px] shadow-lg shadow-[#000000]/25 focus:shadow-none focus:bg-[#2663cd]/90 hover:bg-[#2663cd]/90 hover:cursor-pointer focus:text-white hover:text-white active:text-white transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto disabled:shadow-none"
+                  className="btn !m-0 !mt-[10px] !min-h-[60px] !flex !flex-col !bg-[#ffffff]  !rounded-[10px]"
                 >
-                  <h4 className="text-[24px] font-[600] text-[#265073] mb-[-5px] group-focus:text-white group-hover:text-white group-active:text-white">
+                  <h4 className=" span-btn !text-[24px] !font-[600] !text-[#265073]">
                     {userInfo.following_count}
                   </h4>
-                  <h4 className="font-medium text-[#000000]/70 text-[14px] group-focus:text-white group-hover:text-white group-active:text-white">
+                  <h4 className="span-btn !font-[400] !text-[#000000]/70 !text-[14px]">
                     نفر دنبال شده
                   </h4>
                 </button>
                 <ul
                   dir="ltr"
-                  className={`z-10 absolute w-full md:w-[487px] rounded-[5px] overflow-y-auto transition-opacity duration-400 ease-in-out ${isFollowingOpened ? "visible opacity-100" : "hidden opacity-0"} shadow-lg shadow-[#000000]/21 h-[304px] mt-[73px] bg-[#ffffff] divide-y divide-[#2F4F4F]/50`}
+                  className={`z-10 absolute w-[487px] rounded-[5px] overflow-y-auto transition-opacity duration-400 ease-in-out ${isFollowingOpened ? "visible opacity-100" : "hidden opacity-0"} shadow-lg shadow-[#000000]/21 h-[304px] mt-[73px] bg-[#ffffff] divide-y divide-[#2F4F4F]/50`}
                 >
                   {followings.map((user) => (
                     <UserFollowing user={user} />
@@ -274,12 +249,24 @@ export default function Profile() {
               </div>
             </div>
 
-            <div>
-              <h5 className="text-[16px] font-[300] mb-1">مشخصات:</h5>
-              <div className="min-h-[230px] bg-white px-[25.7px] py-[16.6px] rounded-[10px] shadow-lg shadow-[#000000]/25">
-                <h4 className="text-[#000000]/70 text-[14px] font-[300] text-lg tracking-wide pb-1 mb-3">
-                  {userInfo.bio}
-                </h4>
+            <h1 className="text-[26px] font-bold mb-1">مشخصات:</h1>
+            <div className="relative bg-white h-[230px] rounded-[10px] shadow-lg shadow-[#000000]/25">
+              <div className="pt-[11px] px-[20px] mt-[10px] ">
+                <p className="font-semibold text-[16px] mb-[5px]">بیوگرافی:</p>
+                <div className="min-w-175">
+                  <p className="text-[#000000] text-[14px] font-[300]">
+                    {userInfo.bio}
+                  </p>
+                </div>
+                <p className="text-[14px] absolute bottom-10">
+                  <span className="font-semibold">جنسیت:</span>{" "}
+                  {user.gender === "female" ? "زن" : "مرد"}
+                </p>
+                <p className="text-[14px] font-[300] absolute bottom-2">
+                  {/* {user.joined_date} */}
+                  <span className="font-semibold"> تاریخ ثبت نام: </span>
+                  {getPersianDate(user.joined_date)}
+                </p>
               </div>
             </div>
           </div>
@@ -289,8 +276,11 @@ export default function Profile() {
               onClick={() => {
                 navigate(`/book/${lastBook.id}`);
               }}
-              className="min-w-[242px] h-[368px] mt-[32px] mx-auto lg:mx-0"
+              className="min-w-[242px] h-[368px] m-[32px] mt-[5px]  ml-0 "
             >
+              <h1 className="text-[18px] font-bold mb-1">
+                آخرین کتاب نوشته شده:
+              </h1>
               {console.log(lastBook.id)}
               <BookCard
                 title={lastBook.name}
@@ -308,7 +298,7 @@ export default function Profile() {
             <button
               onMouseEnter={() => setIsHoveredFavBook(true)}
               onMouseLeave={() => setIsHoveredFavBook(false)}
-              className="relative bg-[#ffffff] rounded-[20px] px-[17px] pt-[41px] pb-[28px] mt-[32px] mx-auto lg:mr-auto lg:ml-0 shadow-lg shadow-[#000000]/25 min-w-[242px] cursor-pointer"
+              className="relative bg-[#ffffff] rounded-[20px] px-[17px] pt-[41px] pb-[28px] mt-[32px] mr-auto shadow-lg shadow-[#000000]/25 min-w-[242px] cursor-pointer"
             >
               <img
                 src="/src/assets/images/favorite_book.png"
