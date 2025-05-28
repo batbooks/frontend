@@ -76,12 +76,6 @@ const Threads = () => {
   const onSearch = () => {
     console.log("searched");
   };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Input 1:", input1);
-    //console.log("Input 2:", input2);
-    //console.log("Date:", date?.format());
-  };
   // Fetch forum data
   useEffect(() => {
     if (!forumId) return;
