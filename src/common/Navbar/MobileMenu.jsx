@@ -31,7 +31,9 @@ const MobileMenu = () => {
       <div
         ref={menuRef}
         className={`absolute right-0 top-[60px] w-52 bg-white shadow-xl rounded-xl overflow-hidden transform origin-top transition-all duration-300 ease-out ${
-          isMenuOpen ? "scale-100 opacity-100 pointer-events-auto" : "scale-95 opacity-0 pointer-events-none"
+          isMenuOpen
+            ? "scale-100 opacity-100 pointer-events-auto"
+            : "scale-95 opacity-0 pointer-events-none"
         }`}
       >
         <ul className="divide-y divide-gray-200 text-right text-gray-800">
