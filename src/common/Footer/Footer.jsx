@@ -5,6 +5,7 @@ import phoneIcon from "../../assets/images/phone.svg";
 import { useState } from "react";
 import Popup from "./PopUp";
 import parse from "html-react-parser";
+import { useNavigate } from "react-router";
 
 function Footer() {
   const [popupContent, setPopupContent] = useState(null);
@@ -15,6 +16,8 @@ function Footer() {
   const closePopup = () => {
     setPopupContent(null);
   };
+
+  const navigate = useNavigate();
 
   return (
     <footer
@@ -241,7 +244,12 @@ function Footer() {
                 </button>
               </li>
               <li>
-                <a className="text-sm" href="#contact_us">
+                <a
+                  className="text-sm cursor-pointer"
+                  onClick={() => {
+                    navigate("/contact");
+                  }}
+                >
                   ارتباط با ما
                 </a>
               </li>
