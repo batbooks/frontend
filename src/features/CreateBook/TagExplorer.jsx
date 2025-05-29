@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 
-const TagExplorer = ({ onSelectTags, onSelectGenre }) => {
+const TagExplorer = ({
+  onSelectTags,
+  onSelectGenre,
+  initialGenres = [],
+  initialTags = [],
+}) => {
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedTags, setSelectedTags] = useState([]);
@@ -10,19 +15,24 @@ const TagExplorer = ({ onSelectTags, onSelectGenre }) => {
   const [genres, setGenres] = useState([]);
   const [tagCategories, setTagCategories] = useState([]);
 
-  const handleGenreClick = (genre) => {
-    setSelectedGenres((prev) => {
-      if (prev.includes(genre.id)) {
-        return prev.filter((id) => id !== genre.id);
-      } else {
-        return [...prev, genre.id];
-      }
-    });
-  };
+  // مقداردهی اولیه
+  useEffect(() => {
+    if (initialGenres.length > 0) {
+      setSelectedGenres(initialGenres);
+    }
+    if (initialTags.length > 0) {
+      setSelectedTags(initialTags);
+    }
+  }, [initialGenres, initialTags]);
 
+  // sync با والد
   useEffect(() => {
     onSelectGenre && onSelectGenre(selectedGenres);
-  }, [selectedGenres, onSelectGenre]);
+  }, [selectedGenres]);
+
+  useEffect(() => {
+    onSelectTags && onSelectTags(selectedTags);
+  }, [selectedTags]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,6 +50,7 @@ const TagExplorer = ({ onSelectTags, onSelectGenre }) => {
             },
           }),
         ]);
+
         if (!genreResponse.ok || !tagResponse.ok) {
           throw new Error("Failed to fetch data");
         }
@@ -59,6 +70,14 @@ const TagExplorer = ({ onSelectTags, onSelectGenre }) => {
     fetchData();
   }, []);
 
+  const handleGenreClick = (genre) => {
+    setSelectedGenres((prev) =>
+      prev.includes(genre.id)
+        ? prev.filter((id) => id !== genre.id)
+        : [...prev, genre.id]
+    );
+  };
+
   const tags = tagCategories.flatMap((category) => category.tags || []);
   const filteredTags = searchTerm
     ? tags.filter((tag) => {
@@ -69,8 +88,8 @@ const TagExplorer = ({ onSelectTags, onSelectGenre }) => {
         );
       })
     : selectedCategory
-    ? tags.filter((tag) => tag.category_id === selectedCategory)
-    : [];
+      ? tags.filter((tag) => tag.category_id === selectedCategory)
+      : [];
 
   const toggleTag = (tag) => {
     const updated = selectedTags.some((t) => t.id === tag.id)
@@ -78,7 +97,6 @@ const TagExplorer = ({ onSelectTags, onSelectGenre }) => {
       : [...selectedTags, tag];
 
     setSelectedTags(updated);
-    onSelectTags && onSelectTags(updated);
   };
 
   if (loading) {
@@ -172,9 +190,7 @@ const TagExplorer = ({ onSelectTags, onSelectGenre }) => {
           تگ ها:
         </h2>
         <div
-          className={`grid ${
-            filteredTags.length === 0 ? "" : "grid-cols-1 md:grid-cols-2"
-          } gap-4`}
+          className={`grid ${filteredTags.length === 0 ? "" : "grid-cols-1 md:grid-cols-2"} gap-4`}
         >
           {filteredTags.length === 0 && (
             <p dir="rtl" className="text-gray-500 col-span-full">
