@@ -42,7 +42,7 @@ function CreateBook() {
         formData.append("tags", Number(tag.id));
       });
 
-      await fetch(`/api/book/create/`, {
+      await fetch(`https://www.batbooks.ir/book/create/`, {
         method: "POST",
         body: formData,
         headers: {

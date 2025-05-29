@@ -29,7 +29,7 @@ const ReadingPage = () => {
       setLoading(true);
 
       try {
-        const response = await fetch(`/api/book/chapter/${chapterId}/`, {
+        const response = await fetch(`https://www.batbooks.ir/book/chapter/${chapterId}/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -83,7 +83,7 @@ const ReadingPage = () => {
           {bookCover != null ? (
             <img
               className="w-[179px] h-[247px] rounded-[15px]"
-              src={`/api${bookCover}`}
+              src={`https://www.batbooks.ir${bookCover}`}
               alt="chapter"
             />
           ) : (

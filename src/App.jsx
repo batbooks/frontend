@@ -20,7 +20,7 @@ function AppContent() {
       setLoading(true);
       if (localStorage.getItem("refresh_token")) {
         try {
-          const response = await fetch(`/api/auth/token/refresh/`, {
+          const response = await fetch(`https://www.batbooks.ir/auth/token/refresh/`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -52,7 +52,7 @@ function AppContent() {
       setLoading(true);
 
       try {
-        const response = await fetch(`/api/auth/who/`, {
+        const response = await fetch(`https://www.batbooks.ir/auth/who/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -62,7 +62,7 @@ function AppContent() {
 
         if (response.ok) {
           const data = await response.json();
-
+          console.log(data)
           dispatch(
             loginSuccess({
               user: data,

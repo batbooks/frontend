@@ -13,7 +13,7 @@ const EditChapter = () => {
   useEffect(() => {
     const fetchBook = async () => {
       try {
-        const res = await fetch(`/api/book/${bookId}/`);
+        const res = await fetch(`https://www.batbooks.ir/book/${bookId}/`);
         const data = await res.json();
         setBookData(data);
       } catch (err) {

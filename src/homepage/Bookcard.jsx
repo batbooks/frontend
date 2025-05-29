@@ -25,7 +25,7 @@ export default function Bookcard({ id, suggestions, isHovered, setIsHovered }) {
             className="w-[220px] rounded-t-2xl blur-[4px] transition-all duration-150"
             src={
               suggestions[id]?.image != null
-                ? `/api/${suggestions[id]?.image}`
+                ? `https://www.batbooks.ir/${suggestions[id]?.image}`
                 : "20.jpg"
             }
             alt=""
@@ -35,7 +35,7 @@ export default function Bookcard({ id, suggestions, isHovered, setIsHovered }) {
             className="w-[220px] rounded-t-2xl transition-all duration-150 "
             src={
               suggestions[id]?.image != null
-                ? `/api/${suggestions[id]?.image}`
+                ? `https://www.batbooks.ir/${suggestions[id]?.image}`
                 : "20.jpg"
             }
             alt=""

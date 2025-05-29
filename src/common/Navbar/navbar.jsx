@@ -12,7 +12,7 @@ function Navbar() {
   const [isClickedUser, setIsClickedUser] = useState(false);
 
   let navigate = useNavigate();
-  const { user, isAuthenticated } = useSelector((state) => state.auth);
+  const { user, isAuthenticated } = useSelector((state) => (state.auth));
   const handleLogout = () => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
@@ -80,7 +80,7 @@ function Navbar() {
             {isAuthenticated && user.user_info.image != null ? (
               <img
                 className="w-[50px] h-[50px] rounded-[30px]"
-                src={`/api${user.user_info.image}`}
+                src={`https://www.batbooks.ir${user.user_info.image}`}
                 alt="User Image 2"
               />
             ) : (

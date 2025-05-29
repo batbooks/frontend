@@ -15,7 +15,7 @@ const CreateChapter = () => {
   const handlesubmit = async (e) => {
     e.prevent.default;
     try {
-      const response = await fetch(`/api/book/chapter/create/`, {
+      const response = await fetch(`https://www.batbooks.ir/book/chapter/create/`, {
         method: "POST",
         body: JSON.stringify({
           book: id,

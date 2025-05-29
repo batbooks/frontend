@@ -20,6 +20,7 @@ import Threads from "./features/Threads/threads.jsx";
 import ShowAllBooks from "./features/ShowAllBooks/ShowAllBooks.jsx";
 import Comments from "./features/Comments/Comment.jsx";
 import ChatPage from "./common/Chat/Chat.jsx";
+import Chat from "./common/newChat/chat.tsx"
 function AppRoutes() {
   return (
     <Router>
@@ -93,7 +94,7 @@ function AppRoutes() {
           }
         />
         <Route path="/threads/:forumId" element={<Threads forumId={3} />} />
-         <Route path="chat" element={<ChatPage/>} />
+         <Route path="chat" element={<Chat/>} />
       </Routes>
     </Router>
   );

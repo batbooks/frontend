@@ -26,7 +26,7 @@ export default function SearchResults({ searchingItem = "people" }) {
       const fetchForums = async () => {
         setLoading(true);
         try {
-          const response = await fetch(`/api/forum/?page=${currentpage}`);
+          const response = await fetch(`https://www.batbooks.ir/forum/?page=${currentpage}`);
           if (response.ok) {
             const data = await response.json();
             setForums(data.results);
@@ -44,7 +44,7 @@ export default function SearchResults({ searchingItem = "people" }) {
       const fetchPeople = async () => {
         setLoading(true);
         try {
-          const response = await fetch(`/api/user/users/all/?page=1`);
+          const response = await fetch(`https://www.batbooks.ir/user/users/all/?page=1`);
           if (response.ok) {
             const data = await response.json();
             setPeople(data.results);
@@ -66,7 +66,7 @@ export default function SearchResults({ searchingItem = "people" }) {
     console.log(page);
     try {
       const response = await fetch(
-        `/api/user/search/${searched}/?page=${page}`
+        `https://www.batbooks.ir/user/search/${searched}/?page=${page}`
       );
       if (response.ok) {
         const data = await response.json();
@@ -453,13 +453,13 @@ function SearchFilters({ searchingItem }) {
   useEffect(() => {
     const fetchGenresAndTags = async () => {
       setLoading(true);
-      const response = await fetch(`/api/tag/genres/`, {
+      const response = await fetch(`https://www.batbooks.ir/tag/genres/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
       });
-      const response2 = await fetch(`/api/tag/tag-categories/`, {
+      const response2 = await fetch(`https://www.batbooks.ir/tag/tag-categories/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -1010,7 +1010,7 @@ function Person({ person }) {
     setLoading(true);
     const fetchFollowing = async () => {
       try {
-        const response = await fetch(`/api/user/is/follow/${person.id}/`, {
+        const response = await fetch(`https://www.batbooks.ir/user/is/follow/${person.id}/`, {
           method: "GET",
 
           headers: {
@@ -1030,7 +1030,7 @@ function Person({ person }) {
   }, []);
   const handleFollow = async () => {
     try {
-      const response = await fetch(`/api/user/toggle/follow/${person.id}/`, {
+      const response = await fetch(`https://www.batbooks.ir/user/toggle/follow/${person.id}/`, {
         method: "GET",
 
         headers: {

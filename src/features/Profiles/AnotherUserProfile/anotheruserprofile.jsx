@@ -32,7 +32,7 @@ export default function Another_User_Profile() {
       setLoading(true);
       console.log("asda");
       try {
-        const response = await fetch(`/api/user/info/${userId}/`);
+        const response = await fetch(`https://www.batbooks.ir/user/info/${userId}/`);
         if (!response.ok) throw new Error("Failed to fetch book");
         const data = await response.json();
         setUser(data);
@@ -47,7 +47,7 @@ export default function Another_User_Profile() {
       setLoading3(true);
 
       try {
-        const response = await fetch(`/api/book/user/${userId}/`, {
+        const response = await fetch(`https://www.batbooks.ir/book/user/${userId}/`, {
           method: "GET",
         });
 
@@ -73,7 +73,7 @@ export default function Another_User_Profile() {
     const fetchFollowing = async () => {
       setLoading1(true);
       try {
-        const response = await fetch(`/api/user/is/follow/${userId}/`, {
+        const response = await fetch(`https://www.batbooks.ir/user/is/follow/${userId}/`, {
           method: "GET",
 
           headers: {
@@ -95,7 +95,7 @@ export default function Another_User_Profile() {
     const fetchBlocked = async () => {
       setLoading2(true);
       try {
-        const response = await fetch(`/api/user/is/Not_Interested/${userId}/`, {
+        const response = await fetch(`https://www.batbooks.ir/user/is/Not_Interested/${userId}/`, {
           method: "GET",
 
           headers: {
@@ -134,7 +134,7 @@ export default function Another_User_Profile() {
 
   const handleFollow = async () => {
     try {
-      const response = await fetch(`/api/user/toggle/follow/${userId}/`, {
+      const response = await fetch(`https://www.batbooks.ir/user/toggle/follow/${userId}/`, {
         method: "GET",
 
         headers: {
@@ -149,7 +149,7 @@ export default function Another_User_Profile() {
   const handleBlockd = async () => {
     try {
       const response = await fetch(
-        `/api/user/toggle/Not_Interested/${userId}/`,
+        `https://www.batbooks.ir/user/toggle/Not_Interested/${userId}/`,
         {
           method: "GET",
 
@@ -212,7 +212,7 @@ export default function Another_User_Profile() {
                 className="w-full h-full shadow-lg shadow-[#000000]/25 object-cover"
                 src={
                   user.image
-                    ? `/api${user.image}`
+                    ? `https://www.batbooks.ir${user.image}`
                     : `/src/assets/images/user_image.png`
                 }
                 alt="userimage"
@@ -317,7 +317,7 @@ export default function Another_User_Profile() {
                 author={lastBook.Author}
                 title={lastBook.name}
                 coverImage={
-                  lastBook.image != null ? `/api${lastBook.image}` : "/23.png"
+                  lastBook.image != null ? `https://www.batbooks.ir${lastBook.image}` : "/23.png"
                 }
                 chapters={80}
                 description={lastBook.description}
@@ -454,7 +454,7 @@ export function Book({ book, isLast = false, minw = 180, h = 254 }) {
         id={book.id}
         title={book.name}
         author={book.Author}
-        coverImage={book.image != null ? `/api/${book.image}` : "/20.jpg"}
+        coverImage={book.image != null ? `https://www.batbooks.ir/${book.image}` : "/20.jpg"}
         description={book.description}
         chapters={80}
       />

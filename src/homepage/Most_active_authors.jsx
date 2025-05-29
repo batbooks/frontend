@@ -59,7 +59,7 @@ export default function Most_active_authors() {
       setLoading(true);
 
       try {
-        const response = await fetch(`/api/active/author/`, {
+        const response = await fetch(`https://www.batbooks.ir/active/author/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

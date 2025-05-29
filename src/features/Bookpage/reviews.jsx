@@ -31,7 +31,7 @@ function Reviews({ book }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchPage(`/api/comments/book/${bookId}/reviews/`);
+    fetchPage(`https://www.batbooks.ir/comments/book/${bookId}/reviews/`);
   }, [bookId]);
 
   const fetchPage = async (url, append = false) => {
@@ -69,7 +69,7 @@ function Reviews({ book }) {
   const fetchFollowing = async (userId) => {
     setLoading1(true);
     try {
-      const response = await fetch(`/api/user/is/follow/${userId}/`, {
+      const response = await fetch(`https://www.batbooks.ir/user/is/follow/${userId}/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -98,7 +98,7 @@ function Reviews({ book }) {
   const handleDeleteReview = async () => {
     try {
       const response = await fetch(
-        `/api/comments/book/${bookId}/reviews/my-review/`,
+        `https://www.batbooks.ir/comments/book/${bookId}/reviews/my-review/`,
         {
           method: "DELETE",
           headers: {
@@ -160,7 +160,7 @@ function Reviews({ book }) {
       })
     );
 
-    await fetch(`/api/comments/review/like/${reviewId}/`, {
+    await fetch(`https://www.batbooks.ir/comments/review/like/${reviewId}/`, {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -185,7 +185,7 @@ function Reviews({ book }) {
       })
     );
 
-    await fetch(`/api/comments/review/dislike/${reviewId}/`, {
+    await fetch(`https://www.batbooks.ir/comments/review/dislike/${reviewId}/`, {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -193,7 +193,7 @@ function Reviews({ book }) {
 
   const handleFollow = async (reviewId) => {
     try {
-      const response = await fetch(`/api/user/toggle/follow/${reviewId}/`, {
+      const response = await fetch(`https://www.batbooks.ir/user/toggle/follow/${reviewId}/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -297,7 +297,7 @@ function Reviews({ book }) {
                       <img
                         src={
                           review.image
-                            ? `/api${review.image}`
+                            ? `https://www.batbooks.ir${review.image}`
                             : "/images/user_none.png"
                         }
                         alt="user"

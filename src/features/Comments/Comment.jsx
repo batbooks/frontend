@@ -27,7 +27,7 @@ export default function Comments({ chapterId }) {
     const fetchComments = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`/api/comments/chapter/${chapterId}/`, {
+        const response = await fetch(`https://www.batbooks.ir/comments/chapter/${chapterId}/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -225,7 +225,7 @@ function Comment({
   const fetchReplies = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/comments/comment/${commentId}/`, {
+      const response = await fetch(`https://www.batbooks.ir/comments/comment/${commentId}/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -335,7 +335,7 @@ function Comment({
             ) : (
               <img
                 className="min-w-[83px] max-w-[83px] max-h-[83px] min-h-[83px] rounded-full"
-                src={`/api${userImage}`}
+                src={`https://www.batbooks.ir${userImage}`}
                 alt="commentimage"
               />
             )}
@@ -575,7 +575,7 @@ function Reply({
           ) : (
             <img
               className="min-w-[83px] max-w-[83px] max-h-[83px] min-h-[83px] rounded-full"
-              src={`/api${userImage}`}
+              src={`https://www.batbooks.ir${userImage}`}
               alt="commentimage"
             />
           )}
@@ -635,7 +635,7 @@ function ReplyBox({ isLast, commentId, setHidden }) {
 
     try {
       const token = localStorage.getItem("access_token");
-      const response = await fetch(`/api/comments/reply_to/${commentId}/`, {
+      const response = await fetch(`https://www.batbooks.ir/comments/reply_to/${commentId}/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -677,7 +677,7 @@ function ReplyBox({ isLast, commentId, setHidden }) {
     >
       <div className="flex flex-col items-center gap-[9px] mx-[33px]">
         <img
-          src={`/api${user.user_info.image}`}
+          src={`https://www.batbooks.ir${user.user_info.image}`}
           alt="user"
           className="min-w-[83px] max-w-[83px] max-h-[83px] min-h-[83px] rounded-full"
         />
@@ -737,7 +737,7 @@ function LikeAndDislike({ likeNum, dislikeNum, likeState, commentorreplyId }) {
     try {
       setLoading(true);
       const token = localStorage.getItem("access_token");
-      const response = await fetch(`/api/comments/like/${commentorreplyId}/`, {
+      const response = await fetch(`https://www.batbooks.ir/comments/like/${commentorreplyId}/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -757,7 +757,7 @@ function LikeAndDislike({ likeNum, dislikeNum, likeState, commentorreplyId }) {
       setLoading(true);
       const token = localStorage.getItem("access_token");
       const response = await fetch(
-        `/api/comments/dislike/${commentorreplyId}/`,
+        `https://www.batbooks.ir/comments/dislike/${commentorreplyId}/`,
         {
           method: "GET",
           headers: {

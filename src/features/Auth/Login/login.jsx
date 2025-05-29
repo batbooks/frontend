@@ -17,7 +17,7 @@ function Login() {
   let navigate = useNavigate();
   const fetchuserinfo = async (token) => {
     try {
-      const response = await fetch(`/api/auth/who/`, {
+      const response = await fetch(`https://www.batbooks.ir/auth/who/`, {
         method: "GET",
 
         headers: {

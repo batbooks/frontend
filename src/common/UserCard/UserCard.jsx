@@ -10,7 +10,7 @@ export default function UserCard({ user }) {
           className="min-w-30 h-30 w-30 rounded-full object-cover border-2 border-white cursor-pointer"
           src={
             user.image != null
-              ? `/api/${user.image}`
+              ? `https://www.batbooks.ir/${user.image}`
               : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIm2CWzfiMbqIPMJ32QvKMkapvArB7NQDJVg&s"
           }
           alt={user.user}

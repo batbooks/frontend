@@ -17,7 +17,7 @@ function Signup() {
     setError("");
     setLoading(true);
     try {
-      const response = await fetch("/api/auth/register/", {
+      const response = await fetch("https://www.batbooks.ir/auth/register/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password, c_password: repeatPassword }),

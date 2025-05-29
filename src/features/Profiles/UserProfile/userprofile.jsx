@@ -24,7 +24,7 @@ export default function Profile() {
   const handleFollow = async (user) => {
     try {
       const response = await fetch(
-        `/api/user/toggle/follow/${user.following_user_id}/`,
+        `https://www.batbooks.ir/user/toggle/follow/${user.following_user_id}/`,
         {
           method: "GET",
 
@@ -46,7 +46,7 @@ export default function Profile() {
     const auth = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`/api/auth/who/`, {
+        const response = await fetch(`https://www.batbooks.ir/auth/who/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -71,7 +71,7 @@ export default function Profile() {
       setLoading2(true);
 
       try {
-        const response = await fetch(`/api/book/user/${userid}/`, {
+        const response = await fetch(`https://www.batbooks.ir/book/user/${userid}/`, {
           method: "GET",
         });
 
@@ -95,7 +95,7 @@ export default function Profile() {
     const fetchFollowings = async () => {
       setLoading1(true);
       try {
-        const response = await fetch(`/api/user/following/`, {
+        const response = await fetch(`https://www.batbooks.ir/user/following/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -190,7 +190,7 @@ export default function Profile() {
                 className="w-full h-full shadow-lg shadow-[#000000]/25 object-cover"
                 src={
                   userInfo.image
-                    ? `/api${userInfo.image}`
+                    ? `https://www.batbooks.ir${userInfo.image}`
                     : `/src/assets/images/user_image.png`
                 }
                 alt="userimage"

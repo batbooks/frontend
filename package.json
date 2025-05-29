@@ -42,13 +42,16 @@
     "react-router-dom": "^7.4.1",
     "react-select": "^5.10.1",
     "react-slick": "^0.30.3",
+    "react-use-websocket": "^3.0.0",
     "redux": "^5.0.1",
     "slick-carousel": "^1.8.1",
+    "socket.io-client": "^4.8.1",
     "styled-components": "^6.1.16",
     "sweetalert2": "^11.19.1",
     "tailwind-scrollbar-hide": "^2.0.0",
     "tailwindcss": "^4.1.4",
-    "universal-token": "^0.0.1-security"
+    "universal-token": "^0.0.1-security",
+    "ws": "^8.18.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",

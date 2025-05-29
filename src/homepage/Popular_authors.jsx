@@ -62,7 +62,7 @@ export default function Popular_authors() {
       setLoading(true);
 
       try {
-        const response = await fetch(`/api/popular/author/`, {
+        const response = await fetch(`https://www.batbooks.ir/popular/author/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

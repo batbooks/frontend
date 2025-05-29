@@ -64,7 +64,7 @@ export default function Suggestions() {
       setLoading(true);
 
       try {
-        const response = await fetch(`/api/newest/book/`, {
+        const response = await fetch(`https://www.batbooks.ir/newest/book/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
