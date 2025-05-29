@@ -120,7 +120,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ userId }) => {
             id: undefined, // or a temporary ID if needed
             from_user: undefined,
             to_user: undefined,
-            is_you: true,
+            is_you: temp_is_you,
             message: newMessage,
             date: new Date().toISOString(), // actual date string
           },
