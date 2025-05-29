@@ -21,8 +21,8 @@ export default function MyBooks() {
       setWindowWidth(window.innerWidth);
     };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   useEffect(() => {
@@ -110,13 +110,20 @@ export default function MyBooks() {
   return (
     <>
       <Navbar />
-      <main dir="rtl" className="pt-4 md:pt-[16px] pr-1 md:pr-[7px] pb-14 md:pb-[59px] text-center">
+      <main
+        dir="rtl"
+        className="pt-4 md:pt-[16px] pr-1 md:pr-[7px] pb-14 md:pb-[59px] text-center"
+      >
         <h1 className="text-2xl md:text-[32px] font-bold text-[#1A365D] mb-4 md:mb-[16px]">
           کتاب های من
         </h1>
-        <div className={`flex ${isMobile ? 'flex-col' : 'gap-[26px]'} relative`}>
+        <div
+          className={`flex ${isMobile ? "flex-col" : "gap-[26px]"} relative`}
+        >
           {!isMobile && (
-            <div className={`${isTablet ? 'w-[200px]' : 'w-[243px]'} h-[${isTablet ? '600px' : '764px'}]`}>
+            <div
+              className={`${isTablet ? "w-[200px]" : "w-[243px]"} h-[${isTablet ? "600px" : "764px"}]`}
+            >
               <ReadingGoalCard />
             </div>
           )}
@@ -128,13 +135,18 @@ export default function MyBooks() {
               ref={containerRef1}
               className="mb-4 md:mb-[22px] overflow-x-scroll scrollbar-opacity-0 w-full ml-auto py-4 md:py-[18px]"
             >
-              {favoriteBooks[1] && favoriteBooks.length > (isMobile ? 2 : isTablet ? 5 : 7) ? (
+              {favoriteBooks[1] &&
+              favoriteBooks.length > (isMobile ? 2 : isTablet ? 5 : 7) ? (
                 <>
                   <button
                     onClick={() => handleScroll1("left")}
                     className="absolute rounded-full bg-[#000000] z-10 mt-[107px] cursor-pointer left-0 ml-4 md:ml-[80px]"
                   >
-                    <img src="/src/assets/images/slider.svg" alt="slider" className="w-8 h-8" />
+                    <img
+                      src="/src/assets/images/slider.svg"
+                      alt="slider"
+                      className="w-8 h-8"
+                    />
                   </button>
                   <button
                     onClick={() => handleScroll1("right")}
@@ -179,14 +191,21 @@ export default function MyBooks() {
                     )
                   : null}
                 {!loading2 && !favoriteBooks[1] ? (
-                  <span className="text-sm md:text-base">موردی برای نمایش وجود ندارد...</span>
+                  <span className="text-sm md:text-base">
+                    موردی برای نمایش وجود ندارد...
+                  </span>
                 ) : null}
               </div>
             </div>
-            {favoriteBooks[1] && favoriteBooks.length > (isMobile ? 4 : isTablet ? 8 : 10) ? (
+            {favoriteBooks[1] &&
+            favoriteBooks.length > (isMobile ? 4 : isTablet ? 8 : 10) ? (
               <button className="mx-auto md:mx-[31%] mb-6 md:mb-[38px] w-[150px] md:w-[197px] h-[34px] md:h-[38px] flex items-center py-1 md:py-[7px] px-3 md:px-[23px] gap-2 md:gap-[10px] bg-[#2663CD] rounded-full text-sm md:text-[16px] text-white font-[400] text-nowrap shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
                 <span>مشاهده همه موارد</span>
-                <img src="/src/assets/images/arrow-right.png" alt="right" className="w-4 h-4" />
+                <img
+                  src="/src/assets/images/arrow-right.png"
+                  alt="right"
+                  className="w-4 h-4"
+                />
               </button>
             ) : null}
             {writtenBooks[1] ? (
@@ -200,7 +219,11 @@ export default function MyBooks() {
                     className="absolute left-4 md:left-[20px] flex items-center py-1 md:py-[7px] px-3 md:px-[23px] gap-2 md:gap-[10px] bg-[#2663CD] rounded-full text-sm md:text-[16px] text-white font-[400] text-nowrap shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
                   >
                     <span>نوشتن کتاب جدید</span>
-                    <img src="/src/assets/images/add_sign.svg" alt="add" className="w-4 h-4" />
+                    <img
+                      src="/src/assets/images/add_sign.svg"
+                      alt="add"
+                      className="w-4 h-4"
+                    />
                   </button>
                 )}
               </div>
@@ -214,13 +237,18 @@ export default function MyBooks() {
               ref={containerRef2}
               className="mb-4 md:mb-[22px] overflow-x-scroll scrollbar-opacity-0 w-full ml-auto py-4 md:py-[18px]"
             >
-              {writtenBooks[1] && writtenBooks.length > (isMobile ? 2 : isTablet ? 5 : 7) ? (
+              {writtenBooks[1] &&
+              writtenBooks.length > (isMobile ? 2 : isTablet ? 5 : 7) ? (
                 <>
                   <button
                     onClick={() => handleScroll2("left")}
                     className="absolute rounded-full bg-[#000000] z-10 mt-[107px] cursor-pointer left-0 ml-4 md:ml-[80px]"
                   >
-                    <img src="/src/assets/images/slider.svg" alt="slider" className="w-8 h-8" />
+                    <img
+                      src="/src/assets/images/slider.svg"
+                      alt="slider"
+                      className="w-8 h-8"
+                    />
                   </button>
                   <button
                     onClick={() => handleScroll2("right")}
@@ -251,7 +279,7 @@ export default function MyBooks() {
                               : `/src/assets/images/book_sample1.png`
                           }
                           minw={isMobile ? 150 : 180}
-                          h={isMobile ? 220 : 254}
+                          h={isMobile ? 220 : 300}
                         />
                       ) : (
                         <Book
@@ -266,22 +294,33 @@ export default function MyBooks() {
                   : null}
                 {!loading && !writtenBooks[1] ? (
                   <div className="flex gap-2 md:gap-[10px] items-center flex-col md:flex-row">
-                    <span className="text-sm md:text-base">موردی برای نمایش وجود ندارد...</span>
+                    <span className="text-sm md:text-base">
+                      موردی برای نمایش وجود ندارد...
+                    </span>
                     <button
                       onClick={() => navigate("./createbook")}
                       className="w-[150px] md:w-[193px] h-[34px] md:h-[38px] flex items-center py-1 md:py-[7px] px-3 md:px-[23px] gap-2 md:gap-[10px] bg-[#2663CD] rounded-full text-sm md:text-[16px] text-white font-[400] text-nowrap shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
                     >
                       <span>نوشتن کتاب جدید</span>
-                      <img src="/src/assets/images/add_sign.svg" alt="add" className="w-4 h-4" />
+                      <img
+                        src="/src/assets/images/add_sign.svg"
+                        alt="add"
+                        className="w-4 h-4"
+                      />
                     </button>
                   </div>
                 ) : null}
               </div>
             </div>
-            {writtenBooks[1] && writtenBooks.length > (isMobile ? 4 : isTablet ? 8 : 10) ? (
+            {writtenBooks[1] &&
+            writtenBooks.length > (isMobile ? 4 : isTablet ? 8 : 10) ? (
               <button className="mx-auto md:mx-[31%] w-[150px] md:w-[197px] h-[34px] md:h-[38px] flex items-center py-1 md:py-[7px] px-3 md:px-[23px] gap-2 md:gap-[10px] bg-[#2663CD] rounded-full text-sm md:text-[16px] text-white font-[400] text-nowrap shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
                 <span>مشاهده همه موارد</span>
-                <img src="/src/assets/images/arrow-right.png" alt="right" className="w-4 h-4" />
+                <img
+                  src="/src/assets/images/arrow-right.png"
+                  alt="right"
+                  className="w-4 h-4"
+                />
               </button>
             ) : null}
             {isMobile && writtenBooks[1] && (
@@ -290,7 +329,11 @@ export default function MyBooks() {
                 className="mt-4 mx-auto w-[150px] h-[34px] flex items-center py-1 px-3 gap-2 bg-[#2663CD] rounded-full text-sm text-white font-[400] text-nowrap shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
               >
                 <span>نوشتن کتاب جدید</span>
-                <img src="/src/assets/images/add_sign.svg" alt="add" className="w-4 h-4" />
+                <img
+                  src="/src/assets/images/add_sign.svg"
+                  alt="add"
+                  className="w-4 h-4"
+                />
               </button>
             )}
           </div>
@@ -315,6 +358,12 @@ export function Book({
   id,
 }) {
   let navigate = useNavigate();
+
+  const handleEditClick = (e) => {
+    e.stopPropagation();
+    navigate(`/editChapter/${id}`);
+  };
+
   return (
     <div
       onClick={() => navigate(`/book/${id}`)}
@@ -324,7 +373,7 @@ export function Book({
         paddingLeft: isLast ? "80px" : "0",
         opacity: isLast ? "0" : "100",
       }}
-      className="hover:scale-105 transition-transform duration-200 cursor-pointer"
+      className="hover:scale-105 transition-transform duration-200 cursor-pointer flex flex-col"
     >
       <BookCard
         title={title}
@@ -333,6 +382,11 @@ export function Book({
         description={description}
         chapters={chapters}
       />
+      {!isLast && (
+        <button onClick={handleEditClick} className="btn mt-2 md:mt-4">
+          <span className="span-btn">ویرایش کتاب</span>
+        </button>
+      )}
     </div>
   );
 }
