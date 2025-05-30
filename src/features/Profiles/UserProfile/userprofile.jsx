@@ -22,17 +22,6 @@ export default function Profile() {
   const [writtenBooks, setWrittenBooks] = useState(0);
   const handleFollow = async (user) => {
     try {
-      const response = await fetch(
-        `/api/user/toggle/follow/${user.following_user_id}/`,
-        {
-          method: "GET",
-
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
       setFollowing((prev) => ({
         ...prev,
         [user.following_user_id]: !prev[user.following_user_id],

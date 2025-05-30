@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import CommentIcon from "@mui/icons-material/Comment";
 import ReviewsIcon from "@mui/icons-material/Reviews";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";

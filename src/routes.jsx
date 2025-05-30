@@ -23,6 +23,8 @@ import ChatPage from "./common/Chat/Chat.jsx";
 import ThreadPosts from "./features/Thread Posts/threadpost.jsx";
 import People from "./features/People/people.jsx";
 import Forums from "./features/Forum/Forum.jsx";
+import EditBook from "./features/EditBook/editBook.jsx";
+import ContactUs from "./features/ContactUs/contactUs.jsx";
 function AppRoutes() {
   return (
     <Router>
@@ -41,6 +43,7 @@ function AppRoutes() {
           }
         ></Route>
         <Route path="/book/:bookId" element={<BookPage />}></Route>
+        <Route path="/book/edit/:bookId" element={<EditBook />}></Route>
         <Route
           path="/mybooks/createbook"
           element={
@@ -99,6 +102,7 @@ function AppRoutes() {
           element={<ThreadPosts />}
         />
         <Route path="chat" element={<ChatPage />} />
+        <Route path="/contact" element={<ContactUs />} />
       </Routes>
     </Router>
   );
