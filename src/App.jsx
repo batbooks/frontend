@@ -86,7 +86,6 @@ function AppContent() {
   }, []);
 
   const { user, isAuthenticated } = useSelector((state) => state.auth);
-
   return !loading ? (
     <AppRoutes />
   ) : (

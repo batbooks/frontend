@@ -1,25 +1,26 @@
 import React, { useEffect, useState, useRef } from "react";
-import ChatMessage from "./chatMessage";
+import GroupChatMessage from "./GroupChatsMessages";
 import LoadingSpinner from "./loadingSpinner";
 import EmptyChat from "./emptyChat";
 import MessageInput from "./SendingInput";
+import { useSelector } from "react-redux";
 
-interface Message {
+interface GroupMessage {
   id?: number;
-  from_user?: string;
-  to_user?: string;
-  is_you?: boolean;
+  sender: string;
+  sender_id: number;
+  sender_img?: string;
   message: string;
   date: string;
 }
 
 interface ChatWindowProps {
-  userId: number;
+  groupId: number;
 }
 
-const ChatWindow: React.FC<ChatWindowProps> = ({ userId }) => {
-  let temp_is_you: boolean = false;
-  const [messages, setMessages] = useState<Message[]>([]);
+const GroupChatWindow: React.FC<ChatWindowProps> = ({ groupId }) => {
+  //   let temp_is_you: boolean = false;
+  const [messages, setMessages] = useState<GroupMessage[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -27,15 +28,15 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ userId }) => {
 
   const socketRef = useRef<WebSocket | null>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
-
-  const WS_URL = `wss://www.batbooks.ir/ws/websocket/${userId}/?token=${localStorage.getItem("access_token")}`;
+  const { user } = useSelector((state: any) => state.auth);
+  const WS_URL = `wss://www.batbooks.ir/ws/group/${groupId}/?token=${localStorage.getItem("access_token")}`;
 
   useEffect(() => {
     const fetchMessages = async () => {
       setIsLoading(true);
       try {
         const response = await fetch(
-          `https://www.batbooks.ir/chat/show/${userId}/`,
+          `https://www.batbooks.ir/chat/group/message/${groupId}/`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -44,7 +45,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ userId }) => {
           }
         );
         if (!response.ok) throw new Error("خطا در دریافت پیام‌ها");
-        const data: Message[] = await response.json();
+        const data: GroupMessage[] = await response.json();
         const sorted = data.sort(
           (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
         );
@@ -56,11 +57,11 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ userId }) => {
       }
     };
 
-    if (userId) fetchMessages();
-  }, [userId]);
+    if (groupId) fetchMessages();
+  }, [groupId]);
 
   useEffect(() => {
-    if (!userId) return;
+    if (!groupId) return;
 
     const socket = new WebSocket(WS_URL);
     socketRef.current = socket;
@@ -71,18 +72,18 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ userId }) => {
     };
 
     socket.onmessage = (event) => {
-      console.log(event);
-      const received = JSON.parse(event.data);
-
-      if (received.type_of_data == "new_message") {
+        const received = JSON.parse(event.data);
+        console.log(JSON.parse(event.data));
+        
+      if (received.type == "group_message") {
         setMessages((prev) => [
           ...prev,
           {
-            id: undefined, // or a temporary ID if needed
-            from_user: undefined,
-            to_user: undefined,
-            is_you: temp_is_you,
-            message: received.data,
+            id: undefined,
+            sender: received.sender,
+            sender_id: received.user_id,
+            sender_img: received.image ? `www.batbooks.ir${received.image}` : undefined,
+            message: received.message,
             date: new Date().toISOString(), // actual date string
           },
         ]);
@@ -101,7 +102,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ userId }) => {
     return () => {
       socket.close();
     };
-  }, [userId]);
+  }, [groupId]);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -113,18 +114,19 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ userId }) => {
       socketConnected &&
       socketRef.current?.readyState === WebSocket.OPEN
     ) {
-      temp_is_you = true;
       setMessages((prev) => [
-          ...prev,
-          {
-            id: undefined, // or a temporary ID if needed
-            from_user: undefined,
-            to_user: undefined,
-            is_you: temp_is_you,
-            message: newMessage,
-            date: new Date().toISOString(), // actual date string
-          },
-        ])
+        ...prev,
+        {
+          id: undefined,
+          sender: "شما",
+          sender_id: user.id,
+          sender_img: user.user_info.image
+            ? `https://www.batbooks.ir/${user.user_info.image}`
+            : undefined,
+          message: newMessage,
+          date: new Date().toISOString(), // actual date string
+        },
+      ]);
       socketRef.current.send(
         JSON.stringify({ message: newMessage, type: "new_message" })
       );
@@ -139,7 +141,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ userId }) => {
     return (
       <ul className="space-y-4">
         {messages.map((msg) => (
-          <ChatMessage key={msg.id} message={msg} />
+          <GroupChatMessage key={msg.id} message={msg} />
         ))}
         <div ref={chatEndRef} />
       </ul>
@@ -171,4 +173,4 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ userId }) => {
   );
 };
 
-export default ChatWindow;
+export default GroupChatWindow;

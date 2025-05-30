@@ -100,7 +100,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
           {/* Emoji Picker Box */}
           <div
             ref={emojiPickerContainerRef}
-            className="absolute bottom-full right-0 md:left-0 mb-2 z-10"
+            className="absolute bottom-full left-0 md:left-0 mb-2 w-fit"
             dir="ltr"
           >
             <EmojiPicker
