@@ -128,7 +128,7 @@ const GroupChatWindow: React.FC<ChatWindowProps> = ({ groupId }) => {
         },
       ]);
       socketRef.current.send(
-        JSON.stringify({ message: newMessage, type: "new_message" })
+        JSON.stringify({ message: newMessage, type: "group_message" })
       );
       setNewMessage("");
     }
