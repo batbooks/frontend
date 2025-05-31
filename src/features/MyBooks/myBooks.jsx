@@ -13,7 +13,17 @@ export default function MyBooks() {
   const containerRef2 = useRef(null);
   const [writtenBooks, setWrittenBooks] = useState([1]);
   const [favoriteBooks, setFavoriteBooks] = useState([1]);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   let navigate = useNavigate();
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     const fetchWrittenBooks = async () => {
@@ -94,46 +104,63 @@ export default function MyBooks() {
     }
   };
 
+  const isMobile = windowWidth < 768;
+  const isTablet = windowWidth >= 768 && windowWidth < 1024;
+
   return (
     <>
       <Navbar />
-      <main dir="rtl" className="pt-[16px] pr-[7px] pb-[59px] text-center">
-        <h1 className="text-[32px] font-bold text-[#1A365D] mb-[16px]">
+      <main
+        dir="rtl"
+        className="pt-4 md:pt-[16px] pr-1 md:pr-[7px] pb-14 md:pb-[59px] text-center"
+      >
+        <h1 className="text-2xl md:text-[32px] font-bold text-[#1A365D] mb-4 md:mb-[16px]">
           کتاب های من
         </h1>
-        <div className="flex gap-[26px] relative">
-          <div className="h-[764px] w-[243px]">
-            <ReadingGoalCard />
-          </div>
-          <div className="flex flex-col w-[100%] text-right">
-            <h3 className="mr-[11px] text-[16px] font-[700] text-[#1A365D] mb-[22px]">
+        <div
+          className={`flex ${isMobile ? "flex-col" : "gap-[26px]"} relative`}
+        >
+          {!isMobile && (
+            <div
+              className={`${isTablet ? "w-[200px]" : "w-[243px]"} h-[${isTablet ? "600px" : "764px"}]`}
+            >
+              <ReadingGoalCard />
+            </div>
+          )}
+          <div className="flex flex-col w-full text-right">
+            <h3 className="mr-2 md:mr-[11px] text-base md:text-[16px] font-[700] text-[#1A365D] mb-4 md:mb-[22px]">
               کتاب های مورد علاقه من
             </h3>
             <div
               ref={containerRef1}
-              className="mb-[22px] overflow-x-scroll scrollbar-opacity-0 w-[100%] ml-auto py-[18px]"
+              className="mb-4 md:mb-[22px] overflow-x-scroll scrollbar-opacity-0 w-full ml-auto py-4 md:py-[18px]"
             >
-              {favoriteBooks[1] && favoriteBooks.length > 7 ? (
-                <button
-                  onClick={() => handleScroll1("left")}
-                  className="absolute rounded-full bg-[#000000] z-2 mt-[107px] cursor-pointer left-0 ml-[80px]"
-                >
-                  <img src="/src/assets/images/slider.svg" alt="slider"></img>
-                </button>
+              {favoriteBooks[1] &&
+              favoriteBooks.length > (isMobile ? 2 : isTablet ? 5 : 7) ? (
+                <>
+                  <button
+                    onClick={() => handleScroll1("left")}
+                    className="absolute rounded-full bg-[#000000] z-10 mt-[107px] cursor-pointer left-0 ml-4 md:ml-[80px]"
+                  >
+                    <img
+                      src="/src/assets/images/slider.svg"
+                      alt="slider"
+                      className="w-8 h-8"
+                    />
+                  </button>
+                  <button
+                    onClick={() => handleScroll1("right")}
+                    className="absolute rounded-full bg-[#000000] z-10 mt-[107px] cursor-pointer right-0 mr-4"
+                  >
+                    <img
+                      src="/src/assets/images/slider.svg"
+                      alt="slider"
+                      className="w-8 h-8 rotate-180"
+                    />
+                  </button>
+                </>
               ) : null}
-              {favoriteBooks[1] && favoriteBooks.length > 7 ? (
-                <button
-                  onClick={() => handleScroll1("right")}
-                  className="absolute rounded-full bg-[#000000] z-2 mt-[107px] cursor-pointer"
-                >
-                  <img
-                    src="/src/assets/images/slider.svg"
-                    alt="slider"
-                    className="rotate-180"
-                  />
-                </button>
-              ) : null}
-              <div className="flex z-1 gap-[25px]">
+              <div className="flex z-1 gap-4 md:gap-[25px]">
                 {loading2 ? <Loading /> : null}
                 {!loading2 && favoriteBooks[1]
                   ? favoriteBooks.map((book, i) =>
@@ -149,6 +176,8 @@ export default function MyBooks() {
                               ? `https://www.batbooks.ir/${book.image}`
                               : `/src/assets/images/book_sample1.png`
                           }
+                          minw={isMobile ? 150 : 180}
+                          h={isMobile ? 220 : 254}
                         />
                       ) : (
                         <Book
@@ -156,65 +185,84 @@ export default function MyBooks() {
                           key={i}
                           coverImage={`/src/assets/images/book_sample${i}.png`}
                           isLast={true}
+                          minw={isMobile ? 150 : 180}
                         />
                       )
                     )
                   : null}
                 {!loading2 && !favoriteBooks[1] ? (
-                  <span>موردی برای نمایش وجود ندارد...</span>
+                  <span className="text-sm md:text-base">
+                    موردی برای نمایش وجود ندارد...
+                  </span>
                 ) : null}
               </div>
             </div>
-            {favoriteBooks[1] && favoriteBooks.length > 10 ? (
-              <button className="mx-[31%] mb-[38px] w-[197px] h-[38px] flex items-center py-[7px] px-[23px] gap-[10px] bg-[#2663CD] rounded-full text-[16px] text-white font-[400] text-nowrap shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
+            {favoriteBooks[1] &&
+            favoriteBooks.length > (isMobile ? 4 : isTablet ? 8 : 10) ? (
+              <button className="mx-auto md:mx-[31%] mb-6 md:mb-[38px] w-[150px] md:w-[197px] h-[34px] md:h-[38px] flex items-center py-1 md:py-[7px] px-3 md:px-[23px] gap-2 md:gap-[10px] bg-[#2663CD] rounded-full text-sm md:text-[16px] text-white font-[400] text-nowrap shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
                 <span>مشاهده همه موارد</span>
-                <img src="/src/assets/images/arrow-right.png" alt="right" />
+                <img
+                  src="/src/assets/images/arrow-right.png"
+                  alt="right"
+                  className="w-4 h-4"
+                />
               </button>
             ) : null}
             {writtenBooks[1] ? (
-              <div className="flex items-center mr-[11px] mb-[22px] justify-between">
-                <h3 className="text-[16px] font-[700] text-[#1A365D]">
+              <div className="flex items-center mr-2 md:mr-[11px] mb-4 md:mb-[22px] justify-between">
+                <h3 className="text-base md:text-[16px] font-[700] text-[#1A365D]">
                   نوشته شده توسط من
                 </h3>
-                <button
-                  onClick={() => navigate("./createbook")}
-                  className="absolute left-[20px] flex items-center py-[7px] px-[23px] gap-[10px] bg-[#2663CD] rounded-full text-[16px] text-white font-[400] text-nowrap shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
-                >
-                  <span>نوشتن کتاب جدید</span>
-                  <img src="/src/assets/images/add_sign.svg" alt="add" />
-                </button>
+                {!isMobile && (
+                  <button
+                    onClick={() => navigate("./createbook")}
+                    className="absolute left-4 md:left-[20px] flex items-center py-1 md:py-[7px] px-3 md:px-[23px] gap-2 md:gap-[10px] bg-[#2663CD] rounded-full text-sm md:text-[16px] text-white font-[400] text-nowrap shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
+                  >
+                    <span>نوشتن کتاب جدید</span>
+                    <img
+                      src="/src/assets/images/add_sign.svg"
+                      alt="add"
+                      className="w-4 h-4"
+                    />
+                  </button>
+                )}
               </div>
             ) : (
-              <h3 className="text-[16px] font-[700] text-[#1A365D] mr-[11px] mb-[22px]">
+              <h3 className="text-base md:text-[16px] font-[700] text-[#1A365D] mr-2 md:mr-[11px] mb-4 md:mb-[22px]">
                 نوشته شده توسط من
               </h3>
             )}
 
             <div
               ref={containerRef2}
-              className="mb-[22px] overflow-x-scroll scrollbar-opacity-0 w-[100%] ml-auto py-[18px]"
+              className="mb-4 md:mb-[22px] overflow-x-scroll scrollbar-opacity-0 w-full ml-auto py-4 md:py-[18px]"
             >
-              {writtenBooks[1] && writtenBooks.length > 7 ? (
-                <button
-                  onClick={() => handleScroll2("left")}
-                  className="absolute rounded-full bg-[#000000] z-2 mt-[107px] cursor-pointer left-0 ml-[80px]"
-                >
-                  <img src="/src/assets/images/slider.svg" alt="slider"></img>
-                </button>
+              {writtenBooks[1] &&
+              writtenBooks.length > (isMobile ? 2 : isTablet ? 5 : 7) ? (
+                <>
+                  <button
+                    onClick={() => handleScroll2("left")}
+                    className="absolute rounded-full bg-[#000000] z-10 mt-[107px] cursor-pointer left-0 ml-4 md:ml-[80px]"
+                  >
+                    <img
+                      src="/src/assets/images/slider.svg"
+                      alt="slider"
+                      className="w-8 h-8"
+                    />
+                  </button>
+                  <button
+                    onClick={() => handleScroll2("right")}
+                    className="absolute rounded-full bg-[#000000] z-10 mt-[107px] cursor-pointer right-0 mr-4"
+                  >
+                    <img
+                      src="/src/assets/images/slider.svg"
+                      alt="slider"
+                      className="w-8 h-8 rotate-180"
+                    />
+                  </button>
+                </>
               ) : null}
-              {writtenBooks[1] && writtenBooks.length > 7 ? (
-                <button
-                  onClick={() => handleScroll2("right")}
-                  className="absolute rounded-full bg-[#000000] z-2 mt-[107px] cursor-pointer"
-                >
-                  <img
-                    src="/src/assets/images/slider.svg"
-                    alt="slider"
-                    className="rotate-180"
-                  ></img>
-                </button>
-              ) : null}
-              <div className="flex z-1 gap-[25px]">
+              <div className="flex z-1 gap-4 md:gap-[25px]">
                 {loading ? <Loading /> : null}
                 {!loading && writtenBooks[1]
                   ? writtenBooks.map((book, i) =>
@@ -230,6 +278,8 @@ export default function MyBooks() {
                               ? `${book.image}`
                               : `/src/assets/images/book_sample1.png`
                           }
+                          minw={isMobile ? 150 : 180}
+                          h={isMobile ? 220 : 300}
                         />
                       ) : (
                         <Book
@@ -237,30 +287,55 @@ export default function MyBooks() {
                           key={i}
                           coverImage={`/src/assets/images/book_sample${i}.png`}
                           isLast={true}
+                          minw={isMobile ? 150 : 180}
                         />
                       )
                     )
                   : null}
                 {!loading && !writtenBooks[1] ? (
-                  <div className="flex gap-[10px] items-center">
-                    <span>موردی برای نمایش وجود ندارد...</span>
+                  <div className="flex gap-2 md:gap-[10px] items-center flex-col md:flex-row">
+                    <span className="text-sm md:text-base">
+                      موردی برای نمایش وجود ندارد...
+                    </span>
                     <button
                       onClick={() => navigate("./createbook")}
-                      className="w-[193px] h-[38px] flex items-center py-[7px] px-[23px] gap-[10px] bg-[#2663CD] rounded-full text-[16px] text-white font-[400] text-nowrap shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
+                      className="w-[150px] md:w-[193px] h-[34px] md:h-[38px] flex items-center py-1 md:py-[7px] px-3 md:px-[23px] gap-2 md:gap-[10px] bg-[#2663CD] rounded-full text-sm md:text-[16px] text-white font-[400] text-nowrap shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
                     >
                       <span>نوشتن کتاب جدید</span>
-                      <img src="/src/assets/images/add_sign.svg" alt="add" />
+                      <img
+                        src="/src/assets/images/add_sign.svg"
+                        alt="add"
+                        className="w-4 h-4"
+                      />
                     </button>
                   </div>
                 ) : null}
               </div>
             </div>
-            {writtenBooks[1] && writtenBooks.length > 10 ? (
-              <button className="mx-[31%] w-[197px] h-[38px] flex items-center py-[7px] px-[23px] gap-[10px] bg-[#2663CD] rounded-full text-[16px] text-white font-[400] text-nowrap shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
+            {writtenBooks[1] &&
+            writtenBooks.length > (isMobile ? 4 : isTablet ? 8 : 10) ? (
+              <button className="mx-auto md:mx-[31%] w-[150px] md:w-[197px] h-[34px] md:h-[38px] flex items-center py-1 md:py-[7px] px-3 md:px-[23px] gap-2 md:gap-[10px] bg-[#2663CD] rounded-full text-sm md:text-[16px] text-white font-[400] text-nowrap shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
                 <span>مشاهده همه موارد</span>
-                <img src="/src/assets/images/arrow-right.png" alt="right" />
+                <img
+                  src="/src/assets/images/arrow-right.png"
+                  alt="right"
+                  className="w-4 h-4"
+                />
               </button>
             ) : null}
+            {isMobile && writtenBooks[1] && (
+              <button
+                onClick={() => navigate("./createbook")}
+                className="mt-4 mx-auto w-[150px] h-[34px] flex items-center py-1 px-3 gap-2 bg-[#2663CD] rounded-full text-sm text-white font-[400] text-nowrap shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
+              >
+                <span>نوشتن کتاب جدید</span>
+                <img
+                  src="/src/assets/images/add_sign.svg"
+                  alt="add"
+                  className="w-4 h-4"
+                />
+              </button>
+            )}
           </div>
         </div>
       </main>
@@ -283,6 +358,12 @@ export function Book({
   id,
 }) {
   let navigate = useNavigate();
+
+  const handleEditClick = (e) => {
+    e.stopPropagation();
+    navigate(`/editChapter/${id}`);
+  };
+
   return (
     <div
       onClick={() => navigate(`/book/${id}`)}
@@ -292,6 +373,7 @@ export function Book({
         paddingLeft: isLast ? "80px" : "0",
         opacity: isLast ? "0" : "100",
       }}
+      className="hover:scale-105 transition-transform duration-200 cursor-pointer flex flex-col"
     >
       <BookCard
         title={title}
@@ -300,6 +382,11 @@ export function Book({
         description={description}
         chapters={chapters}
       />
+      {!isLast && (
+        <button onClick={handleEditClick} className="btn mt-2 md:mt-4">
+          <span className="span-btn">ویرایش کتاب</span>
+        </button>
+      )}
     </div>
   );
 }

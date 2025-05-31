@@ -50,10 +50,10 @@ export default function VoteAndReview({ chapter, commentsCount }) {
   return (
     <div
       dir="rtl"
-      className="py-[41px] border-b-[2px] border-b-[#000000]/21 gap-[41px] mx-auto w-[1059px]"
+      className="py-[41px] border-b-[2px] border-b-[#000000]/21 md:gap-[41px] md:mx-auto lg:w-full xl:w-265"
     >
       <div
-        className={`flex justify-between items-center ${isClicked ? "mb-[41px]" : ""}`}
+        className={`flex flex-col md:justify-between md:flex-row gap-[15px] md:pl-5 items-center ${isClicked ? "mb-[41px]" : ""}`}
       >
         <div className="flex flex-col items-center">
           <img
@@ -94,10 +94,10 @@ export default function VoteAndReview({ chapter, commentsCount }) {
           )}
         </div>
       </div>
-      <div className={`flex flex-col ${isClicked ? "visible" : "hidden"}`}>
+      <div className={`flex flex-col ${isClicked ? "visible" : "hidden"} px-5`}>
         <span className="text-[20px] mb-[8px]">نوشتن نظر:</span>
-        <div className="flex items-end gap-[26px]">
-          <div className="w-[796px] h-[195px]">
+        <div className="flex flex-col md:flex-row items-center md:items-end gap-[26px]">
+          <div className="w-95/100 md:w-[796px] h-[195px]">
             <LongParagraphInput
               placeholder={"دیدگاهتان را درباره فصل اینجا بنویسید..."}
               setInputValue={setbody}
@@ -115,9 +115,12 @@ export default function VoteAndReview({ chapter, commentsCount }) {
                 setError("این فیلد خالی است.لطفا چیزی بنویسید...");
               }
             }}
-            className="btn !py-[12px] !px-[81px] !w-fit !h-fit !mb-0 !ml-0 !mr-0 !rounded-[15px]"
+            className="btn !px-[30px] py-[12px]  md:!py-[12px] md:!px-[81px] !w-fit !h-fit !mb-0 !ml-0 !mr-0 !rounded-[15px]"
           >
-            <span className="span-btn !text-[20px] !font-[400]"> ثبت نظر </span>
+            <span className="span-btn  md:!text-[20px] !font-[400] text-nowrap">
+              {" "}
+              ثبت نظر{" "}
+            </span>
           </button>
         </div>
       </div>

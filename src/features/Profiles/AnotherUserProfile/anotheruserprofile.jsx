@@ -57,8 +57,7 @@ export default function Another_User_Profile() {
           setLastBook(data.results[0]);
 
           setNumberOfWrittenBooks(data.count);
-        } else {
-        }
+        } else { /* empty */ }
       } catch (err) {
         console.error("Error:", err.message);
       } finally {
@@ -321,6 +320,8 @@ export default function Another_User_Profile() {
                 }
                 chapters={80}
                 description={lastBook.description}
+                id={lastBook.id}
+
               />
             </div>
           ) : (

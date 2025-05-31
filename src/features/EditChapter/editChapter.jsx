@@ -34,7 +34,7 @@ const EditChapter = () => {
     <>
       <Navbar />
       <div className="text-center bg-[#A4C0ED] m-auto px-[150px] my-[88px] mx-[180px] border-[2px] border-[#000000]/31 pt-[57px] rounded-[30px] shadow-lg shadow-[#000000]/25">
-        <div className="relative flex justify-center">
+        <div className="flex flex-row justify-between">
           <button
             onClick={() => {
               setChapterMode(1);
@@ -42,14 +42,25 @@ const EditChapter = () => {
                 state: { id: bookId },
               });
             }}
-            className="absolute right-0 flex gap-[10px] justify-center mx-auto bg-[#2663CD] py-[7px] px-[23px] rounded-full text-[16px] font-medium text-white mb-[54px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
+            className="flex gap-[10px] justify-center mx-auto bg-[#2663CD] py-[7px] px-[23px] rounded-full text-[16px] font-medium text-white mb-[54px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
           >
             <img src="/src/assets/images/add_sign.svg" alt="add" />
             اضافه کردن فصل جدید
           </button>
-          <span className="font-bold text-[27px] text-[#265073]">
+          <h1 className="font-bold text-[27px] text-[#265073]">
             نام کتاب : {bookData.name}
-          </span>
+          </h1>
+          <button
+            className="btn !px-4 !w-fit"
+            onClick={() => {
+              setChapterMode(1);
+              navigate(`/book/edit/${bookId}`, {
+                state: { id: bookId },
+              });
+            }}
+          >
+            <span className="span-btn">ویرایش اطلاعات کتاب</span>
+          </button>
         </div>
 
         <div className="py-[47px]">

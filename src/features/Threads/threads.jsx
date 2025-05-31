@@ -3,12 +3,65 @@ import Navbar from "../../common/Navbar/navbar";
 import Footer from "../../common/Footer/Footer";
 import Card from "../../common/forum/Card";
 import { useParams } from "react-router";
+import {
+  Button,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from "@material-tailwind/react";
+import CustomModal from "./modal";
+import Swal from "sweetalert2";
+// import DatePicker from "react-multi-date-picker";
+// import persian from "react-date-object/calendars/persian";
+// import persian_fa from "react-date-object/locales/persian_fa";
 
 const Threads = () => {
   const [forumData, setForumData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [input1, setInput1] = useState("");
+  const handleSubmitThread = async (e) => {
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem("access_token");
+      const response = await fetch("/api/forum/threads/create/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ name: input1, forum: forumId, status: "O" }),
+      });
+      if (!response.ok) {
+        throw new Error("!!!مشکلی پیش اومد");
+      }
+      setTimeout(() => {
+        Swal.fire({
+          title: "نظر شما با موفقیت ثبت شد",
+          icon: "success",
+          confirmButtonText: "باشه",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.reload();
+          }
+        });
+      }, 100);
+    } catch (err) {
+      setTimeout(() => {
+        Swal.fire({
+          title: `${err.message}`,
+          icon: "error",
+          showCloseButton: true,
+          showCancelButton: false,
+          showConfirmButton: false,
+        });
+      }, 100);
+    }
+  };
+  //const [input2] = useState("");
+  //const [date] = useState(null);
   const [paginationLinks, setPaginationLinks] = useState({
     next: null,
     previous: null,
@@ -20,7 +73,6 @@ const Threads = () => {
   const onSearch = () => {
     console.log("searched");
   };
-
   // Fetch forum data
   useEffect(() => {
     if (!forumId) return;
@@ -28,14 +80,14 @@ const Threads = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        let url = `http://45.158.169.198/forum/${forumId}/`;
+        let url = `https://www.batbooks.ir/forum/${forumId}/`;
         if (currentPage > 1) {
           url += `?page=${currentPage}`;
         }
 
         const res = await fetch(url);
         const data = await res.json();
-
+        console.log(data);
         if (data.results && Array.isArray(data.results)) {
           setForumData(data.results);
           setTotalItems(data.count);
@@ -72,6 +124,9 @@ const Threads = () => {
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => setOpen(!open);
 
   // Calculate total pages based on server-side count
   const totalPages = Math.ceil(totalItems / itemsPerPage);
@@ -104,15 +159,37 @@ const Threads = () => {
             </svg>
           </div>
         </div>
+        <div className=" flex justify-end">
+          <Button
+            className="flex items-center gap-2 mr-20  bg-[#2663CD] rounded-[10px] text-[#ffffff] text-[16px] font-[400] py-[9px] px-[32px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto "
+            onClick={handleOpen}
+            variant="gradient"
+          >
+            <img src="/src/assets/images/add_sign.svg" alt="add" />
+            <span>ایجاد ترد</span>
+          </Button>
+        </div>
 
         {/* Results Section */}
         <h1 dir="rtl" className="mr-21 my-3.5 font-semibold text-xl">
           نتایج جستجو:
         </h1>
-
+        <div className="bg-transparent">
+          <CustomModal
+            open={open}
+            setOpen={setOpen}
+            handleSubmit={handleSubmitThread}
+            input1={input1}
+            setInput1={setInput1}
+            // input2={input2}
+            //setInput2={setInput2}
+            //date={date}
+            //setDate={setDate}
+          />
+        </div>
         <div
           dir="rtl"
-          className="bg-[#a3d5ff] p-[20px] pl-[0px] pr-[30px] w-[90%] mx-auto rounded-2xl shadow-lg shadow-[#000000]/25 border-[2px] border-[#000000]/8"
+          className="bg-[#a3d5ff] p-[20px] w-[90%] mx-auto rounded-2xl"
         >
           {loading ? (
             <p className="text-center text-[#265073] text-lg">
@@ -120,10 +197,7 @@ const Threads = () => {
             </p>
           ) : (
             <>
-              <div
-                dir="rtl"
-                className="grid grid-cols-2 gap-x-4 gap-y-2 mr-[35px] "
-              >
+              <div className="grid grid-cols-2 gap-4 place-items-end ">
                 {forumData.length > 0 ? (
                   forumData.map((item) => <Card key={item.id} data={item} />)
                 ) : (
