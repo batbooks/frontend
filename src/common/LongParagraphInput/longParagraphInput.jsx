@@ -1,12 +1,17 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 const LongParagraphInput = ({
   placeholder,
-  heightLine,
+  heightLine = 20,
   setInputValue,
-  hideError = null,
+  inputValue = "",
+  hideError = () => {},
 }) => {
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(inputValue);
+
+  useEffect(() => {
+    setValue(inputValue);
+  }, [inputValue]);
 
   const handleChange = useCallback(
     (e) => {

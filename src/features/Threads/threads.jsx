@@ -23,46 +23,43 @@ const Threads = () => {
   const [loading, setLoading] = useState(false);
   const [input1, setInput1] = useState("");
   const handleSubmitThread = async (e) => {
-      e.preventDefault();
-      try {
-        const token = localStorage.getItem("access_token");
-        const response = await fetch("/api/forum/threads/create/", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ name:input1,
-            forum:forumId, 
-            status:"O"
-          }),
-        });
-        if (!response.ok) {
-          throw new Error("!!!مشکلی پیش اومد");
-        }
-        setTimeout(() => {
-          Swal.fire({
-            title: "نظر شما با موفقیت ثبت شد",
-            icon: "success",
-            confirmButtonText: "باشه",
-          }).then((result) => {
-            if (result.isConfirmed) {
-              window.location.reload();
-            }
-          });
-        }, 100);
-      } catch (err) {
-        setTimeout(() => {
-          Swal.fire({
-            title: `${err.message}`,
-            icon: "error",
-            showCloseButton: true,
-            showCancelButton: false,
-            showConfirmButton: false,
-          });
-        }, 100);
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem("access_token");
+      const response = await fetch("/api/forum/threads/create/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ name: input1, forum: forumId, status: "O" }),
+      });
+      if (!response.ok) {
+        throw new Error("!!!مشکلی پیش اومد");
       }
-    };
+      setTimeout(() => {
+        Swal.fire({
+          title: "نظر شما با موفقیت ثبت شد",
+          icon: "success",
+          confirmButtonText: "باشه",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.reload();
+          }
+        });
+      }, 100);
+    } catch (err) {
+      setTimeout(() => {
+        Swal.fire({
+          title: `${err.message}`,
+          icon: "error",
+          showCloseButton: true,
+          showCancelButton: false,
+          showConfirmButton: false,
+        });
+      }, 100);
+    }
+  };
   //const [input2] = useState("");
   //const [date] = useState(null);
   const [paginationLinks, setPaginationLinks] = useState({
@@ -83,14 +80,14 @@ const Threads = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        let url = `http://45.158.169.198/forum/${forumId}/`;
+        let url = `https://www.batbooks.ir/forum/${forumId}/`;
         if (currentPage > 1) {
           url += `?page=${currentPage}`;
         }
 
         const res = await fetch(url);
         const data = await res.json();
-        console.log(data)
+        console.log(data);
         if (data.results && Array.isArray(data.results)) {
           setForumData(data.results);
           setTotalItems(data.count);
@@ -184,7 +181,7 @@ const Threads = () => {
             handleSubmit={handleSubmitThread}
             input1={input1}
             setInput1={setInput1}
-           // input2={input2}
+            // input2={input2}
             //setInput2={setInput2}
             //date={date}
             //setDate={setDate}

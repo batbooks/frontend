@@ -19,6 +19,10 @@ import {
   FiMessageSquare,
   FiChevronDown,
   FiChevronUp,
+<<<<<<< HEAD
+=======
+  FiPhone,
+>>>>>>> 58ee5694235d125316f90ecfc51ccbb31bfa99a0
 } from "react-icons/fi";
 
 function Navbar() {
@@ -325,7 +329,10 @@ function Navbar() {
           </li>
           <li className="flex flex-col items-center">
             <button
-              onClick={() => setSelectedItem(4)}
+              onClick={() => {
+                setSelectedItem(4);
+                navigate("/contact");
+              }}
               className={`text-[16px] hover:animate-pulse ${selectedItem != 4 ? "cursor-pointer hover:text-[#2663CD]" : "text-[#265073] font-bold"}  active:text-[#2663CD]/50 active:no-underline active:transition-all active:duration-100 focus:outline-none focus:text-[#2663CD]`}
             >
               ارتباط با ما
@@ -443,16 +450,8 @@ function Navbar() {
                   onClick={() => handleNav("/mybooks", 2)}
                 />
               </li>
-              <li>
-                <MenuItem
-                  icon={<FiSearch />}
-                  label="جستجوی کتاب"
-                  onClick={() => handleNav("/advancedsearchbook", 3)}
-                />
-              </li>
-
               {/* پنل ارتباطی */}
-              <li className="w-full transition-all duration-300">
+              <li className="w-full transition-all duration-300 m-0">
                 <button
                   onClick={toggleCommunications}
                   className="w-full flex items-center justify-between px-4 py-2 rounded-xl hover:bg-blue-50 transition-all duration-200"
@@ -484,6 +483,20 @@ function Navbar() {
                     />
                   </li>
                 </ul>
+              </li>
+              <li>
+                <MenuItem
+                  icon={<FiSearch />}
+                  label="جستجوی کتاب"
+                  onClick={() => handleNav("/advancedsearchbook", 3)}
+                />
+              </li>
+              <li>
+                <MenuItem
+                  icon={<FiPhone />}
+                  label="ارتباط با ما"
+                  onClick={() => handleNav("/contact", 4)}
+                />
               </li>
             </ul>
           </div>
