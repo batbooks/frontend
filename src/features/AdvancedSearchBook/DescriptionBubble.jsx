@@ -5,7 +5,7 @@ export function DescriptionBubble({ Obj }) {
 
   return (
     <div
-      className={`flex flex-col items-center -mt-[71px] z-50 ${isVisibleDescription ? "visible" : "hidden"}`}
+      className={`flex flex-col items-center -mt-[71px] z-20 ${isVisibleDescription ? "visible" : "hidden"}`}
     >
       <div className="text-nowrap bg-white flex flex-col items-center rounded-[20px] shadow-[0_10px_6px_-5px_rgba(0,0,0,0.1),10px_0_4px_-8px_rgba(0,0,0,0.1)] py-[15px] px-[30px]">
         <p className="text-[14px] font-[300]">{Obj.description}</p>

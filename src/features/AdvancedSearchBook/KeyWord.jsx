@@ -1,6 +1,6 @@
 import { useSharedState } from "./SharedStateProvider";
 
-export function KeyWord({ filters, setFilters }) {
+export function KeyWord({ setFilters }) {
   const { keyword, setKeyword } = useSharedState();
 
   return (
@@ -13,15 +13,19 @@ export function KeyWord({ filters, setFilters }) {
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === "Enter" && keyword.length >= 3) {
-              setFilters([...(filters || []), "کلید: " + keyword]);
+            if (e.key === "Enter" && keyword.trim().length >= 3) {
+              setFilters((filters) =>
+                filters.filter((filter) => !filter.includes("کلید: "))
+              );
+              setFilters((filters) => [...(filters || []), "کلید: " + keyword]);
               setKeyword("");
               e.target.blur();
             }
           }}
         />
         <p className="text-[14px] mt-[10px] mr-[12px] text-green-700 absolute group-focus-within:block hidden">
-          جهت اعمال فیلتر Enter را بزنید
+          لطفا پس از وارد کردن عبارتی بیشتر از سه حرف،جهت اعمال فیلتر Enter را
+          بزنید
         </p>
       </div>
     </div>

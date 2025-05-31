@@ -5,7 +5,7 @@ import { Rating } from "@mui/material";
 import Loading from "../../common/Loading/Loading";
 import Swal from "sweetalert2";
 import { SearchFilters } from "./SearchFilters";
-import { SelectMenu } from "./SelectMenu";
+import { useNavigate } from "react-router";
 
 export default function AdvancedSearchBook() {
   const [allBooks, setAllBooks] = useState([]);
@@ -70,7 +70,7 @@ export default function AdvancedSearchBook() {
         if (pageDiff > 0) {
           let nextLink = nextPageLink;
           for (let i = 0; i < pageDiff; i++) {
-            const response = await fetch(`${nextLink}`, {
+            const response = await fetch(`/api${nextLink}`, {
               method: "GET",
               headers: {
                 "Content-Type": "application/json",
@@ -80,10 +80,14 @@ export default function AdvancedSearchBook() {
               throw new Error("مشکلی پیش اومد...دوباره تلاش کنید");
             }
             const data = await response.json();
-            nextLink = data.next;
+            nextLink = data.next?.replace("http://www.batbooks.ir/", "");
             if (i === pageDiff - 1) {
-              setNextPageLink(data.next);
-              setPrevPageLink(data.previous);
+              setNextPageLink(
+                data.next?.replace("http://www.batbooks.ir/", "")
+              );
+              setPrevPageLink(
+                data.previous?.replace("http://www.batbooks.ir/", "")
+              );
               setcurrentpage(page);
               setShowingBooks(data.results);
             }
@@ -91,7 +95,7 @@ export default function AdvancedSearchBook() {
         } else if (pageDiff < 0) {
           let prevLink = prevPageLink;
           for (let i = pageDiff; i < 0; i++) {
-            const response = await fetch(`${prevLink}`, {
+            const response = await fetch(`/api${prevLink}`, {
               method: "GET",
               headers: {
                 "Content-Type": "application/json",
@@ -101,10 +105,14 @@ export default function AdvancedSearchBook() {
               throw new Error("مشکلی پیش اومد...دوباره تلاش کنید");
             }
             const data = await response.json();
-            prevLink = data.next;
+            prevLink = data.previous?.replace("http://www.batbooks.ir/", "");
             if (i === -1) {
-              setNextPageLink(data.next);
-              setPrevPageLink(data.previous);
+              setNextPageLink(
+                data.next?.replace("http://www.batbooks.ir/", "")
+              );
+              setPrevPageLink(
+                data.previous?.replace("http://www.batbooks.ir/", "")
+              );
               setcurrentpage(page);
               setShowingBooks(data.results);
             }
@@ -140,10 +148,12 @@ export default function AdvancedSearchBook() {
           setShowingBooks={setShowingBooks}
           setcurrentpage={setcurrentpage}
           setTotalPages={setTotalPages}
+          loading2={loading}
           setLoading2={setLoading}
           itemsPerPage={itemsPerPage}
           setNextPageLink={setNextPageLink}
           setPrevPageLink={setPrevPageLink}
+          showingBooks={showingBooks}
         />
         <div className="flex flex-col w-[100%]">
           {loading ? (
@@ -168,7 +178,7 @@ export default function AdvancedSearchBook() {
                 className={`px-3 py-1 rounded-md ${
                   currentpage === 1
                     ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                    : "bg-blue-500 text-white hover:bg-blue-600"
+                    : "bg-blue-500 text-white hover:bg-blue-600 cursor-pointer"
                 }`}
               >
                 قبلی
@@ -183,7 +193,7 @@ export default function AdvancedSearchBook() {
                     className={`px-3 py-1 rounded-md ${
                       currentpage === 1
                         ? "bg-blue-700 text-white"
-                        : "bg-blue-500 text-white hover:bg-blue-600"
+                        : "bg-blue-500 text-white hover:bg-blue-600 cursor-pointer"
                     }`}
                   >
                     1
@@ -212,7 +222,7 @@ export default function AdvancedSearchBook() {
                     className={`px-3 py-1 rounded-md ${
                       currentpage === pageNum
                         ? "bg-blue-700 text-white"
-                        : "bg-blue-500 text-white hover:bg-blue-600"
+                        : "bg-blue-500 text-white hover:bg-blue-600 cursor-pointer"
                     }`}
                   >
                     {pageNum}
@@ -231,7 +241,7 @@ export default function AdvancedSearchBook() {
                     className={`px-3 py-1 rounded-md ${
                       currentpage === totalPages
                         ? "bg-blue-700 text-white"
-                        : "bg-blue-500 text-white hover:bg-blue-600"
+                        : "bg-blue-500 text-white hover:bg-blue-600 cursor-pointer"
                     }`}
                   >
                     {console.log(totalPages)}
@@ -247,7 +257,7 @@ export default function AdvancedSearchBook() {
                 className={`px-3 py-1 rounded-md ${
                   currentpage === totalPages
                     ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                    : "bg-blue-500 text-white hover:bg-blue-600"
+                    : "bg-blue-500 text-white hover:bg-blue-600 cursor-pointer"
                 }`}
               >
                 بعدی
@@ -271,10 +281,9 @@ function SearchBookResults({ books, loading }) {
   }
 
   return (
-    <div className="flex flex-col">
-      <div className="flex items-center justify-between mb-[21px]">
+    <div className="flex flex-col -mt-[30px]">
+      <div className="flex items-center justify-between mb-[30px]">
         <h2 className="text-[16px] font-[300]">نتایج جستجو</h2>
-        <SelectMenu />
       </div>
       <div className="grid grid-cols-2 gap-x-[37px] gap-y-[25px] mb-[30px]">
         {books.map((book, i) => (
@@ -285,6 +294,7 @@ function SearchBookResults({ books, loading }) {
             authorName={book.Author}
             star={book.rating}
             bookDescription={book.description}
+            bookId={book.id}
           />
         ))}
       </div>
@@ -292,7 +302,16 @@ function SearchBookResults({ books, loading }) {
   );
 }
 
-function Book({ coverImage, bookName, authorName, star, bookDescription }) {
+function Book({
+  coverImage,
+  bookName,
+  authorName,
+  star,
+  bookDescription,
+  bookId,
+}) {
+  let navigate = useNavigate();
+
   return (
     <div className="gap-[20px] py-[26px] pl-[30px] pr-[13px] bg-[#A4C0ED] rounded-[25px] outline-[2px] outline-[#000000]/21 flex items-center justify-between">
       <div className="flex gap-[16px] items-center">
@@ -321,10 +340,20 @@ function Book({ coverImage, bookName, authorName, star, bookDescription }) {
         </div>
       </div>
       <div className="flex flex-col gap-[13px]">
-        <button className="btn !py-[9px] !rounded-[10px] !min-w-[160px] !h-fit !mr-0 !ml-0 !mb-0">
+        <button
+          onClick={() => {
+            navigate("/chapter/1");
+          }}
+          className="btn !py-[9px] !rounded-[10px] !min-w-[160px] !h-fit !mr-0 !ml-0 !mb-0"
+        >
           <span className="span-btn">شروع مطالعه کتاب</span>
         </button>
-        <button className="btn !py-[9px] !rounded-[10px] !min-w-[160px] !h-fit !mr-0 !ml-0 !mb-0">
+        <button
+          onClick={() => {
+            navigate(`/book/${bookId}`);
+          }}
+          className="btn !py-[9px] !rounded-[10px] !min-w-[160px] !h-fit !mr-0 !ml-0 !mb-0"
+        >
           <span className="span-btn">مشاهده جزئیات کتاب</span>
         </button>
       </div>

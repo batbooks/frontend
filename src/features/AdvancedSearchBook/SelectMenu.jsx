@@ -1,11 +1,15 @@
 import { useState } from "react";
+import { useSharedState } from "./SharedStateProvider";
 
-export function SelectMenu() {
-  const [selectValue, setSelectValue] = useState("--انتخاب کنید--");
+export function SelectMenu({ setFilters, loading, showingBooks }) {
+  const { selectValue, setSelectValue } = useSharedState();
   const [isSelectOpened, setIsSelectOpened] = useState(false);
+  if (loading || showingBooks.length === 0) {
+    return null;
+  }
 
   return (
-    <div className="flex items-center gap-[10px]">
+    <div className="flex items-center gap-[10px] mr-auto">
       <h2 className="text-[16px] font-[300]">مرتب سازی براساس</h2>
       <div className="relative">
         <button
@@ -38,6 +42,11 @@ export function SelectMenu() {
               onClick={(e) => {
                 e.preventDefault();
                 setSelectValue("--انتخاب کنید--");
+                setFilters((filters) =>
+                  filters?.filter(
+                    (filter) => !filter.includes("مرتب سازی براساس: ")
+                  )
+                );
               }}
               className="z-11 flex text-[15px] text-[#000000]/70 w-full h-full cursor-pointer hover:bg-[#2663cd]/90 hover:cursor-pointer active:outline-none"
             >
@@ -46,19 +55,30 @@ export function SelectMenu() {
               </span>
             </button>
           </li>
-          {["تازه ترین", "محبوب ترین"].map((option, i) => (
-            <li className={`min-h-[45px] grow-1 w-full z-10`} key={i}>
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  setSelectValue(`${option}`);
-                }}
-                className="z-11 flex text-[15px] text-[#000000]/70 w-full h-full cursor-pointer hover:bg-[#2663cd]/90 hover:cursor-pointer active:outline-none"
-              >
-                <span className="m-auto font-bold z-12">{`${option}`}</span>
-              </button>
-            </li>
-          ))}
+          {["تازه ترین", "محبوب ترین", "حروف الفبا", "تعداد فصل ها"].map(
+            (option, i) => (
+              <li className={`min-h-[45px] grow-1 w-full z-10`} key={i}>
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setSelectValue(`${option}`);
+                    setFilters((filters) =>
+                      filters?.filter(
+                        (filter) => !filter.includes("مرتب سازی براساس: ")
+                      )
+                    );
+                    setFilters((filters) => [
+                      ...(filters || []),
+                      `مرتب سازی براساس: ${option}`,
+                    ]);
+                  }}
+                  className="z-11 flex text-[15px] text-[#000000]/70 w-full h-full cursor-pointer hover:bg-[#2663cd]/90 hover:cursor-pointer active:outline-none"
+                >
+                  <span className="m-auto font-bold z-12">{`${option}`}</span>
+                </button>
+              </li>
+            )
+          )}
         </ul>
       </div>
     </div>

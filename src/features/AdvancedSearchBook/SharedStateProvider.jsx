@@ -10,6 +10,7 @@ export function SharedStateProvider({ children }) {
   const [keyword, setKeyword] = useState("");
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
+  const [selectValue, setSelectValue] = useState("--انتخاب کنید--");
 
   return (
     <SharedStateContext.Provider
@@ -30,6 +31,8 @@ export function SharedStateProvider({ children }) {
         setDateFrom,
         dateTo,
         setDateTo,
+        selectValue,
+        setSelectValue,
       }}
     >
       {children}

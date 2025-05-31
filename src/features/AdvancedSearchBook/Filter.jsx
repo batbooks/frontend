@@ -25,6 +25,7 @@ export function Filter({
     setAvgScoreTo,
     setDateFrom,
     setDateTo,
+    setSelectValue,
   } = useSharedState();
 
   return (
@@ -100,6 +101,9 @@ export function Filter({
             } else if (filterName.includes("تاریخ ایجاد: ")) {
               setDateFrom("");
               setDateTo("");
+            }
+            if (filterName.includes("مرتب سازی براساس: ")) {
+              setSelectValue("--انتخاب کنید--");
             }
             deleteFilter(filters?.filter((filter) => filter != filterName));
           }}
