@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import chatContext from "./chat"
+import chatContext from "./chat";
 import { useContext } from "react";
-import context from './chat'
+import context from "./chat";
 interface ChatUser {
   id: number;
   name: string;
@@ -45,12 +45,13 @@ const truncateMessageByWords = (message: string, maxWords: number): string => {
 
 interface Props {
   onUserSelect: (id: number) => void;
-  chatContext:string
-  setChatContex:React.Dispatch<React.SetStateAction<string | null>>
+  
+  setChatContex: React.Dispatch<React.SetStateAction<string | null>>;
+  popUp:boolean
+  setPopUp:React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const ChatUserList: React.FC<Props> = ({ onUserSelect ,setChatContex }) => {
-  
+const ChatUserList: React.FC<Props> = ({ onUserSelect, setChatContex,popUp ,setPopUp}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [users, setUsers] = useState<ChatUser[]>([]);
@@ -97,9 +98,9 @@ const ChatUserList: React.FC<Props> = ({ onUserSelect ,setChatContex }) => {
       overflow-hidden                  
     "
     >
-      <button onClick={()=>setChatContex("group")}>asdadsasd </button>
+      <button onClick={() => setChatContex("group")}>asdadsasd </button>
       {/* Header Section */}
-      <div
+      {/* <div
         className="
         px-4 py-3 
         bg-slate-50 
@@ -107,7 +108,7 @@ const ChatUserList: React.FC<Props> = ({ onUserSelect ,setChatContex }) => {
       "
       >
         <h2 className="font-bold text-lg text-right text-slate-800">گفتگوها</h2>
-      </div>
+      </div> */}
 
       {/* Scrollable User List Section */}
       <ul
@@ -178,8 +179,26 @@ const ChatUserList: React.FC<Props> = ({ onUserSelect ,setChatContex }) => {
           );
         })}
       </ul>
+      {popUp && (
+        
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 bg-opacity-50">
+          <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-md text-right">
+            
+            <h2 className="text-lg font-bold mb-4">ایجاد چت جدید</h2>
+            <p>در اینجا می‌توانید یک چت جدید را شروع کنید.</p>
+            <button
+              onClick={() => setPopUp(false)}
+              className="mt-4 px-4 py-2 bg-sky-500 text-white rounded hover:bg-sky-600"
+            >
+              بستن
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="p-3 border-t border-slate-200 bg-slate-50 flex-shrink-0">
         <button
+          onClick={() => setPopUp(!popUp)}
           className=" w-full
               flex items-center justify-center
               py-2.5 px-4  

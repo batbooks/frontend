@@ -62,9 +62,9 @@ const GroupChatList: React.FC<Props> = ({ onGroupSelect, setChatContext }) => {
   return (
     <div dir="rtl" className="sticky top-0 max-h-[80%] flex flex-col bg-white rounded-xl shadow-md border overflow-hidden">
       <button onClick={() => setChatContext("direct")}>بازگشت به چت‌های خصوصی</button>
-      <div className="px-4 py-3 bg-slate-50">
+      {/* <div className="px-4 py-3 bg-slate-50">
         <h2 className="font-bold text-lg text-right text-slate-800">گفتگوهای گروهی</h2>
-      </div>
+      </div> */}
       <ul className="divide-y overflow-y-auto flex-grow">
         {isLoading && <li className="p-4 text-center text-slate-500">در حال بارگذاری گروه‌ها...</li>}
         {error && <li className="p-4 text-center text-red-500">{error}</li>}

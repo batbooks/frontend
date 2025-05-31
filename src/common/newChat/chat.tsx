@@ -5,14 +5,17 @@ import ChatGroupsList from "./chatGroupsList";
 import GroupChatWindow from "./GroupChatWindow";
 const Chat: React.FC = () => {
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
-  const [selectedGroupId, setSelectedGroupId] = useState<number >(0);
+  const [selectedGroupId, setSelectedGroupId] = useState<number>(0);
   const [chatContext, setChatContex] = useState<string | null>("direct");
+  const [popUp, setPopUp] = useState<boolean>(false);
+
   return (
     <div>
       {chatContext == "direct" && (
         <div className="min-h-screen bg-slate-100 flex p-4 " dir="rtl">
           <ChatUserList
-            chatContext={chatContext}
+            popUp={popUp}
+            setPopUp={setPopUp}
             setChatContex={setChatContex}
             onUserSelect={(id) => setSelectedUserId(id)}
           />
