@@ -19,10 +19,7 @@ import {
   FiMessageSquare,
   FiChevronDown,
   FiChevronUp,
-<<<<<<< HEAD
-=======
   FiPhone,
->>>>>>> 58ee5694235d125316f90ecfc51ccbb31bfa99a0
 } from "react-icons/fi";
 
 function Navbar() {
