@@ -45,16 +45,55 @@ const truncateMessageByWords = (message: string, maxWords: number): string => {
 
 interface Props {
   onUserSelect: (id: number) => void;
-  
+
   setChatContex: React.Dispatch<React.SetStateAction<string | null>>;
-  popUp:boolean
-  setPopUp:React.Dispatch<React.SetStateAction<boolean>>
+  popUp: boolean;
+  setPopUp: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ChatUserList: React.FC<Props> = ({ onUserSelect, setChatContex,popUp ,setPopUp}) => {
+const ChatUserList: React.FC<Props> = ({
+  onUserSelect,
+  setChatContex,
+  popUp,
+  setPopUp,
+}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [users, setUsers] = useState<ChatUser[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [people, setPeople] = useState([]);
+  const [nextUrl, setNextUrl] = useState("");
+  useEffect(() => {
+    fetchPage(`https://www.batbooks.ir/user/users/all/`);
+  }, []);
+  const fetchPage = async (url: string, append = false) => {
+    setLoading(true);
+
+    const token = localStorage.getItem("access_token");
+    try {
+      const auth = token ? `Bearer ${token}` : "";
+
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: auth,
+        },
+      });
+      const data = await response.json();
+
+      const newPeople = data.results.reviews;
+
+      setPeople((prevPeople) =>
+        append ? [...prevPeople, ...newPeople] : newPeople
+      );
+      setNextUrl(data.links.next);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -180,11 +219,63 @@ const ChatUserList: React.FC<Props> = ({ onUserSelect, setChatContex,popUp ,setP
         })}
       </ul>
       {popUp && (
-        
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 bg-opacity-50">
           <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-md text-right">
-            
-            <h2 className="text-lg font-bold mb-4">ایجاد چت جدید</h2>
+            whats the eroror in this mapping
+            {popUp && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 bg-opacity-50">
+                <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-md text-right">
+                  {people.map((person: any) => {
+                    
+                      
+                       
+                          const colorIndex = person.id % avatarColors.length;
+                          const avatarColor = avatarColors[colorIndex];
+                          // console.log(user) // Keep for debugging if needed
+                          return (
+                            <li
+                              key={person.id}
+                              onClick={() => onUserSelect(person.id)}
+                              className="flex items-center justify-between p-3 hover:bg-slate-100 cursor-pointer transition dir-rtl"
+                            >
+                              {/* Avatar/Initials */}
+                              <div className="flex-shrink-0">
+                                {person.user_info.image ? (
+                                  <img
+                                    className="w-10 h-10 rounded-full border-2 border-white shadow-sm"
+                                    src={`/api${person.user_info.image}`} // Assuming user.image is a path like /media/avatars/user.jpg
+                                    alt={person.user_info.image}
+                                  />
+                                ) : (
+                                  <div
+                                    className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm ${avatarColor}`}
+                                  >
+                                    {getInitials(person.name)}
+                                  </div>
+                                )}
+                              </div>
+
+                              {/* User name and last message */}
+                              
+
+                              {/* Unread count */}
+                              
+                            </li>
+                          );
+                        
+                      
+                    
+                  })}
+                  <p>در اینجا می‌توانید یک چت جدید را شروع کنید.</p>
+                  <button
+                    onClick={() => setPopUp(false)}
+                    className="mt-4 px-4 py-2 bg-sky-500 text-white rounded hover:bg-sky-600"
+                  >
+                    بستن
+                  </button>
+                </div>
+              </div>
+            )}
             <p>در اینجا می‌توانید یک چت جدید را شروع کنید.</p>
             <button
               onClick={() => setPopUp(false)}
