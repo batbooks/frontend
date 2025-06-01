@@ -33,6 +33,17 @@
 .container:hover .overlay {
   opacity: 1;
 }
+/* Example for a more custom underline (add to your global CSS or a CSS module) */
+.nav-item-active-underline::after {
+  content: '';
+  display: block;
+  width: 60%; /* Or a fixed width */
+  height: 3px;
+  background-color: blue; /* Or your theme color */
+  margin: 4px auto 0;
+  border-radius: 2px;
+  transition: width 0.3s ease-in-out; /* Animate the underline width too if you like */
+}
 /* #root {
   max-width: 1280px;
   margin: 0 auto;

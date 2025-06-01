@@ -14,6 +14,7 @@ const Chat: React.FC = () => {
       {chatContext == "direct" && (
         <div className="min-h-screen bg-slate-100 flex p-4 " dir="rtl">
           <ChatUserList
+            chatContext={chatContext}
             popUp={popUp}
             setPopUp={setPopUp}
             setChatContex={setChatContex}
@@ -32,7 +33,8 @@ const Chat: React.FC = () => {
       )}
       {chatContext == "group" && (
         <div className="min-h-screen bg-slate-100 flex p-4 " dir="rtl">
-          <ChatGroupsList
+          <ChatGroupsList 
+          chatContext={chatContext}
             setChatContext={setChatContex}
             onGroupSelect={(id) => setSelectedGroupId(id)}
           ></ChatGroupsList>

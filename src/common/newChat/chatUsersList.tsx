@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import chatContext from "./chat";
 import { useContext } from "react";
 import context from "./chat";
+import ChatNavbar from "./chatNavbar";
 interface ChatUser {
   id: number;
   name: string;
@@ -45,7 +46,7 @@ const truncateMessageByWords = (message: string, maxWords: number): string => {
 
 interface Props {
   onUserSelect: (id: number) => void;
-
+  chatContext:string
   setChatContex: React.Dispatch<React.SetStateAction<string | null>>;
   popUp: boolean;
   setPopUp: React.Dispatch<React.SetStateAction<boolean>>;
@@ -56,6 +57,7 @@ const ChatUserList: React.FC<Props> = ({
   setChatContex,
   popUp,
   setPopUp,
+  chatContext
 }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -82,7 +84,7 @@ const ChatUserList: React.FC<Props> = ({
       });
       const data = await response.json();
 
-      const newPeople = data.results.reviews;
+      const newPeople = data?.results ?? [];
 
       setPeople((prevPeople) =>
         append ? [...prevPeople, ...newPeople] : newPeople
@@ -137,7 +139,7 @@ const ChatUserList: React.FC<Props> = ({
       overflow-hidden                  
     "
     >
-      <button onClick={() => setChatContex("group")}>asdadsasd </button>
+      <ChatNavbar chatContext={chatContext} setChatContext={setChatContex}></ChatNavbar>
       {/* Header Section */}
       {/* <div
         className="
@@ -158,7 +160,7 @@ const ChatUserList: React.FC<Props> = ({
       "
       >
         {isLoading && (
-          <li className="p-4 text-center text-slate-500">
+          <li className="p-2 py-3 text-center text-slate-500">
             در حال بارگذاری کاربران...
           </li>
         )}
@@ -219,64 +221,52 @@ const ChatUserList: React.FC<Props> = ({
         })}
       </ul>
       {popUp && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 bg-opacity-50">
+        <div className="max-w-80% fixed inset-0 z-50 flex items-center justify-center bg-black/50 bg-opacity-50">
           <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-md text-right">
-            whats the eroror in this mapping
-            {popUp && (
-              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 bg-opacity-50">
-                <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-md text-right">
-                  {people.map((person: any) => {
-                    
-                      
-                       
-                          const colorIndex = person.id % avatarColors.length;
-                          const avatarColor = avatarColors[colorIndex];
-                          // console.log(user) // Keep for debugging if needed
-                          return (
-                            <li
-                              key={person.id}
-                              onClick={() => onUserSelect(person.id)}
-                              className="flex items-center justify-between p-3 hover:bg-slate-100 cursor-pointer transition dir-rtl"
-                            >
-                              {/* Avatar/Initials */}
-                              <div className="flex-shrink-0">
-                                {person.user_info.image ? (
-                                  <img
-                                    className="w-10 h-10 rounded-full border-2 border-white shadow-sm"
-                                    src={`/api${person.user_info.image}`} // Assuming user.image is a path like /media/avatars/user.jpg
-                                    alt={person.user_info.image}
-                                  />
-                                ) : (
-                                  <div
-                                    className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm ${avatarColor}`}
-                                  >
-                                    {getInitials(person.name)}
-                                  </div>
-                                )}
-                              </div>
+            <ul className="grid grid-cols-2">
+              {people.map((person: any) => {
+                const colorIndex = person.id % avatarColors.length;
+                const avatarColor = avatarColors[colorIndex];
 
-                              {/* User name and last message */}
-                              
-
-                              {/* Unread count */}
-                              
-                            </li>
-                          );
-                        
-                      
-                    
-                  })}
-                  <p>در اینجا می‌توانید یک چت جدید را شروع کنید.</p>
-                  <button
-                    onClick={() => setPopUp(false)}
-                    className="mt-4 px-4 py-2 bg-sky-500 text-white rounded hover:bg-sky-600"
+                return (
+                  <li
+                    key={person.id}
+                    onClick={() => onUserSelect(person.id)}
+                    className="flex gap-1.5 items-center  p-3 hover:bg-slate-100 cursor-pointer transition dir-rtl"
                   >
-                    بستن
-                  </button>
-                </div>
-              </div>
+                    {/* Avatar/Initials */}
+                    <div className="">
+                      {person.user_info.image ? (
+                        <img
+                          className="w-10 h-10 rounded-full border-2 border-white shadow-sm"
+                          src={`/api${person.user_info.image}`}
+                          alt={person.user_info.image}
+                        />
+                      ) : (
+                        <div
+                          className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm ${avatarColor}`}
+                        >
+                          {getInitials(person.name)}
+                        </div>
+                      )}
+                    </div>
+                    <p>{person.name}</p>
+                  </li>
+                );
+              })}
+            </ul>
+            {nextUrl && (
+              <p
+                onClick={() => {
+                  fetchPage(nextUrl,true);
+                }}
+                className="mt-4 text-sm text-blue-400 text-center hover:cursor-pointer hover:scale-105 duration-300 transition-all"
+              >
+                {" "}
+                افراد بیشتر{" "}
+              </p>
             )}
-            <p>در اینجا می‌توانید یک چت جدید را شروع کنید.</p>
+
             <button
               onClick={() => setPopUp(false)}
               className="mt-4 px-4 py-2 bg-sky-500 text-white rounded hover:bg-sky-600"

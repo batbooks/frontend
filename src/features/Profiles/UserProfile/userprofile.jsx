@@ -22,20 +22,6 @@ export default function Profile() {
   const [writtenBooks, setWrittenBooks] = useState(0);
   const handleFollow = async (user) => {
     try {
-<<<<<<< HEAD
-      const response = await fetch(
-        `https://www.batbooks.ir/user/toggle/follow/${user.following_user_id}/`,
-        {
-          method: "GET",
-
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-=======
->>>>>>> 4a675b6b32465fdc06461ba16e32de58b86443f2
       setFollowing((prev) => ({
         ...prev,
         [user.following_user_id]: !prev[user.following_user_id],
