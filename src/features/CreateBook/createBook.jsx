@@ -9,11 +9,10 @@ import { useNavigate } from "react-router";
 function CreateBook() {
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
-  const [error, setError] = useState("");
+  const [setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-
   const [selectedTags, setSelectedTags] = useState([]);
 
   let navigate = useNavigate();
@@ -70,20 +69,20 @@ function CreateBook() {
   return (
     <div>
       <Navbar />
-      <main className="px-[75px] bg-[#A4C0ED] rounded-[30px] pt-[35px] w-[1170px] pb-[50px] mx-auto mt-20 border-[2px] border-[#000]/21 flex flex-col items-center">
-        <h1 className="text-[32px] font-bold text-center">
+      <main className="px-4 sm:px-6 md:px-[75px] bg-[#A4C0ED] rounded-[30px] pt-[35px] w-full max-w-[1170px] pb-[50px] mx-auto mt-4 sm:mt-8 md:mt-20 border-[2px] border-[#000]/21 flex flex-col items-center">
+        <h1 className="text-2xl sm:text-[28px] md:text-[32px] font-bold text-center">
           کتاب خود را بنویسید
         </h1>
 
         {/* Upload + Book Name */}
-        <div className="flex gap-[36px] mt-[36px]">
-          <div className="flex flex-col">
-            <h3 dir="rtl" className="text-[20px]">
+        <div className="flex flex-col md:flex-row gap-4 md:gap-[36px] mt-6 md:mt-[36px] w-full">
+          <div className="flex flex-col w-full">
+            <h3 dir="rtl" className="text-lg md:text-[20px]">
               عکس جلد کتاب:
             </h3>
             <div
               dir="rtl"
-              className="bg-[#FFFFFF] mx-auto flex pl-14 px-4 items-center  w-[492px] h-[53px] rounded-[12px] gap-[4px]"
+              className="bg-[#FFFFFF] mx-auto flex pl-14 px-4 items-center w-full max-w-[492px] h-[53px] rounded-[12px] gap-[4px]"
             >
               <label
                 htmlFor="image-input"
@@ -99,37 +98,39 @@ function CreateBook() {
                 accept=".png,.jpg,.jpeg"
               />
               {selectedFile ? (
-                <span> {selectedFile.name}</span>
+                <span className="truncate max-w-[180px] sm:max-w-[250px]">
+                  {selectedFile.name}
+                </span>
               ) : (
                 <span>فایلی انتخاب نشده</span>
               )}
             </div>
           </div>
-          <div>
-            <h3 dir="rtl" className="text-[20px]">
+          <div className="w-full">
+            <h3 dir="rtl" className="text-lg md:text-[20px]">
               نام کتاب:
             </h3>
             <input
               value={name}
               dir="rtl"
-              className="bg-[#FFFFFF] mx-auto flex justify-center pl-14 px-4 items-center w-[492px] h-[53px] rounded-[12px] placeholder:text-right placeholder:mr-[72px]"
+              className="bg-[#FFFFFF] mx-auto flex justify-center pl-14 px-4 items-center w-full max-w-[492px] h-[53px] rounded-[12px] placeholder:text-right placeholder:mr-[72px]"
               onChange={(e) => setName(e.target.value)}
             />
           </div>
         </div>
 
         {/* Summary */}
-        <div className="mt-[27px] flex flex-col gap-[10px]">
-          <h3 dir="rtl" className="text-[20px]">
+        <div className="mt-6 md:mt-[27px] flex flex-col gap-[10px] w-full">
+          <h3 dir="rtl" className="text-lg md:text-[20px]">
             خلاصه داستان:
           </h3>
-          <div dir="rtl" className="w-[1020px] h-[211px]">
+          <div dir="rtl" className="w-full max-w-[1020px] h-[211px]">
             <LongParagraphInput setinputValue={setDescription} />
           </div>
         </div>
 
         {/* Tag Explorer */}
-        <div className="w-full mt-12">
+        <div className="w-full mt-6 md:mt-12">
           <TagExplorer
             onSelectTags={setSelectedTags}
             onSelectGenre={setSelectedGenres}
@@ -140,7 +141,7 @@ function CreateBook() {
         <button
           onClick={(e) => handleSubmit(e)}
           disabled={loading}
-          className="btn  !mt-[60px] !w-[213px] !h-[52px] !rounded-[12px]"
+          className="btn !mt-8 md:!mt-[60px] !w-full max-w-[213px] !h-[52px] !rounded-[12px]"
         >
           <span className="span-btn">
             {loading ? "...در حال ایجاد" : "ایجاد کتاب"}

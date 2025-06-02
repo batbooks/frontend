@@ -26,7 +26,7 @@ const GenreCard = ({ name, novels, color, Icon }) => (
     className={`${color} group rounded-2xl p-6 flex flex-col items-center shadow-lg  relative overflow-hidden cursor-pointer hover:shadow-[#000000]/20`}
   >
     <Icon className="text-black/70 w-10 h-10 mb-4 " />
-    <h2 className="text-black/70 text-xl font-bold">{name}</h2>
+    <h2 className="text-black/70 text-xl text-nowrap font-bold">{name}</h2>
     <p className="text-black/70 text-sm">{novels} Novels</p>
 
     {/* Bar container */}
@@ -125,7 +125,7 @@ const ExploreByGenre = () => {
       <div className="absolute inset-0 bg-[url('/pattern.svg')] opacity-10 bg-repeat pointer-events-none blur-sm scale-105"></div>
 
       <motion.h1
-        className="text-5xl lg:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 mb-6 relative z-10 drop-shadow-lg"
+        className="text-3xl lg:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 mb-6 relative z-10 drop-shadow-lg"
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
@@ -134,7 +134,7 @@ const ExploreByGenre = () => {
       </motion.h1>
 
       <motion.p
-        className="text-lg font-bold text-gray-700 max-w-4xl mx-auto mb-14 leading-relaxed relative z-10"
+        className="text-sm lg:text-lg font-bold text-gray-700 max-w-4xl mx-auto mb-14 leading-relaxed relative z-10"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
@@ -144,7 +144,7 @@ const ExploreByGenre = () => {
       </motion.p>
 
       <motion.div
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 relative z-10"
+        className="grid grid-cols-2 md:grid-cols-4 gap-8 relative z-10"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1.2, delay: 0.4 }}
