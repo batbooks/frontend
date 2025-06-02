@@ -1,10 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router";
+import { useNavigate, Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { logout } from "../../redux/infoSlice";
-import menuIcon from "../../assets/images/menu.svg";
-
+import { Menu, X } from "lucide-react";
 import {
   FiHome,
   FiBook,
@@ -19,7 +18,198 @@ import {
   FiMessageSquare,
   FiChevronDown,
   FiChevronUp,
+  FiX,
 } from "react-icons/fi";
+
+const MobileMenu = ({ isAuthenticated, user, handleLogout, handleNav }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [openCommunications, setOpenCommunications] = useState(false);
+  const menuRef = useRef(null);
+
+  const toggleCommunications = () => setOpenCommunications(!openCommunications);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsMenuOpen(false);
+      }
+    };
+    if (isMenuOpen) document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isMenuOpen]);
+
+  return (
+    <div className="md:hidden relative z-50">
+      <button
+        className="p-2 text-black hover:text-blue-600 transition"
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+      >
+        {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+      </button>
+
+      <div
+        ref={menuRef}
+        className={`absolute right-0 top-[60px] w-64 bg-white shadow-xl rounded-xl overflow-hidden transform origin-top transition-all duration-300 ease-out ${
+          isMenuOpen
+            ? "scale-100 opacity-100 pointer-events-auto"
+            : "scale-95 opacity-0 pointer-events-none"
+        }`}
+      >
+        <ul className="divide-y divide-gray-200 text-right text-gray-800">
+          {isAuthenticated ? (
+            <>
+              <li className="px-4 py-3 flex items-center gap-3">
+                <img
+                  className="w-10 h-10 rounded-full"
+                  src={
+                    user.user_info.image
+                      ? `/api${user.user_info.image}`
+                      : "/images/user_none.png"
+                  }
+                  alt="User"
+                />
+                <span>{user.name}</span>
+              </li>
+              <li>
+                <button
+                  onClick={() => handleNav("/userprofile")}
+                  className="w-full text-right px-5 py-3 hover:bg-blue-100 transition flex items-center gap-3"
+                >
+                  <FiUser className="text-blue-600" />
+                  پروفایل کاربری
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => handleNav("/mybooks/createbook")}
+                  className="w-full text-right px-5 py-3 hover:bg-blue-100 transition flex items-center gap-3"
+                >
+                  <FiEdit className="text-blue-600" />
+                  نوشتن کتاب جدید
+                </button>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <button
+                  onClick={() => handleNav("/auth/signup")}
+                  className="w-full text-right px-5 py-3 hover:bg-blue-100 transition flex items-center gap-3"
+                >
+                  <FiUserPlus className="text-blue-600" />
+                  ثبت‌نام
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => handleNav("/auth/login")}
+                  className="w-full text-right px-5 py-3 hover:bg-blue-100 transition flex items-center gap-3"
+                >
+                  <FiLogIn className="text-blue-600" />
+                  ورود
+                </button>
+              </li>
+            </>
+          )}
+
+          <li>
+            <button
+              onClick={() => handleNav("/", 1)}
+              className="w-full text-right px-5 py-3 hover:bg-blue-100 transition flex items-center gap-3"
+            >
+              <FiHome className="text-blue-600" />
+              صفحه اصلی
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={() => handleNav("/mybooks", 2)}
+              className="w-full text-right px-5 py-3 hover:bg-blue-100 transition flex items-center gap-3"
+            >
+              <FiBook className="text-blue-600" />
+              کتاب‌های من
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={() => handleNav("/search", 3)}
+              className="w-full text-right px-5 py-3 hover:bg-blue-100 transition flex items-center gap-3"
+            >
+              <FiSearch className="text-blue-600" />
+              جستجوی کتاب
+            </button>
+          </li>
+
+          {/* پنل ارتباطی */}
+          <li>
+            <button
+              onClick={toggleCommunications}
+              className="w-full text-right px-5 py-3 hover:bg-blue-100 transition flex items-center justify-between"
+            >
+              <div className="flex items-center gap-3">
+                <FiMail className="text-blue-600" />
+                پنل ارتباطی
+              </div>
+              {openCommunications ? <FiChevronUp /> : <FiChevronDown />}
+            </button>
+            <ul
+              className={`bg-gray-50 overflow-hidden transition-all duration-300 ${
+                openCommunications ? "max-h-40" : "max-h-0"
+              }`}
+            >
+              <li>
+                <button
+                  onClick={() =>
+                    handleNav("/searchresults", { searchingItem: "forum" })
+                  }
+                  className="w-full text-right px-8 py-3 hover:bg-blue-100 transition flex items-center gap-3 text-sm"
+                >
+                  <FiMessageSquare className="text-blue-600" />
+                  تالار گفتگو
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() =>
+                    handleNav("/searchresults", { searchingItem: "people" })
+                  }
+                  className="w-full text-right px-8 py-3 hover:bg-blue-100 transition flex items-center gap-3 text-sm"
+                >
+                  <FiUsers className="text-blue-600" />
+                  افراد
+                </button>
+              </li>
+            </ul>
+          </li>
+
+          <li>
+            <button
+              onClick={() => handleNav("/contact", 4)}
+              className="w-full text-right px-5 py-3 hover:bg-blue-100 transition flex items-center gap-3"
+            >
+              ارتباط با ما
+            </button>
+          </li>
+
+          {isAuthenticated && (
+            <li>
+              <button
+                onClick={() => {
+                  handleLogout();
+                  setIsMenuOpen(false);
+                }}
+                className="w-full text-right px-5 py-3 hover:bg-red-100 text-red-600 transition flex items-center gap-3"
+              >
+                <FiLogOut className="text-red-600" />
+                خروج از حساب
+              </button>
+            </li>
+          )}
+        </ul>
+      </div>
+    </div>
+  );
+};
 
 function Navbar() {
   const [openCommunications, setOpenCommunications] = useState(false);
@@ -29,31 +219,25 @@ function Navbar() {
   const [selectedItem, setSelectedItem] = useState(0);
   const [isVisibleUser, setIsVisibleUser] = useState(false);
   const [isClickedUser, setIsClickedUser] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [menuVisible, setMenuVisible] = useState(false);
+  const [showSampleSearch, setShowSampleSearch] = useState(false);
+  const [keepSearchOpen, setKeepSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isScrolled, setIsScrolled] = useState(false);
 
-  const openMenu = () => {
-    setMobileMenuOpen(true);
-    setTimeout(() => setMenuVisible(true), 10); // برای شروع transition بعد از render
-  };
-  const closeMenu = () => {
-    setMenuVisible(false);
-    setTimeout(() => setMobileMenuOpen(false), 300); // همزمان با مدت انیمیشن
-  };
   let navigate = useNavigate();
   const { user, isAuthenticated } = useSelector((state) => state.auth);
+  const location = useLocation();
+
   const handleLogout = () => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
     navigate("/auth/login");
   };
+
   const handleNav = (path, itemId = null) => {
     if (itemId) setSelectedItem(itemId);
     navigate(path);
-    closeMenu();
   };
-  const location = useLocation();
 
   useEffect(() => {
     if (location.pathname === "/") setSelectedItem(1);
@@ -62,8 +246,6 @@ function Navbar() {
     else if (location.pathname === "/contact") setSelectedItem(4);
     else setSelectedItem(0);
   }, [location.pathname]);
-
-  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -74,10 +256,22 @@ function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/searchresults?query=${encodeURIComponent(searchQuery)}`);
+      setSearchQuery("");
+      setShowSampleSearch(false);
+      setKeepSearchOpen(false);
+    }
+  };
+
   return (
     <header
       dir="rtl"
-      className={`${isVisiblePanel || isVisibleUser ? "relative" : ""} p-7  sticky top-0 z-50  lg:${isScrolled ? "h-[70px] shadow-md transition-all duration-300" : ""} h-[100px] md:max-w-screen lg:m-auto flex bg-[#a3d5ff] justify-between py-[1px] lg:pl-[50px]  lg:pr-[30px]`}
+      className={`${isVisiblePanel || isVisibleUser ? "relative" : ""} p-7 sticky top-0 z-50 lg:${
+        isScrolled ? "h-[70px] shadow-md transition-all duration-300" : ""
+      } h-[100px] md:max-w-screen lg:m-auto flex bg-[#a3d5ff] justify-between py-[1px] lg:pl-[50px] lg:pr-[30px]`}
     >
       <nav className="hidden lg:flex items-center gap-[60px]">
         <div
@@ -86,7 +280,9 @@ function Navbar() {
               setIsVisibleUser(false);
             }
           }}
-          className={`relative flex flex-col ${isVisibleUser ? "mt-[86px]" : ""} gap-[10px] rounded-full`}
+          className={`relative flex flex-col ${
+            isVisibleUser ? "mt-[86px]" : ""
+          } gap-[10px] rounded-full`}
         >
           <button
             className="rounded-full cursor-pointer hover:outline-none focus:outline-none"
@@ -114,19 +310,23 @@ function Navbar() {
               <img
                 className="w-[50px] h-[50px] rounded-[30px]"
                 src={`/api${user.user_info.image}`}
-                alt="User Image 2"
+                alt="User Image"
               />
             ) : (
               <img
                 className="w-[50px] h-[50px] rounded-[30px]"
                 src="/images/user_none.png"
-                alt="User Image 3"
+                alt="User Image"
               />
             )}
           </button>
           {isAuthenticated ? (
             <ul
-              className={`w-[155px] h-[76px] divide-y divide-[#2F4F4F]/50 shadow-lg shadow-[#000000]/25 rounded-[10px] transition-opacity duration-1000 ease-in-out ${isVisibleUser ? "opacity-100 pointer-events-auto relative" : "opacity-0 pointer-events-none absolute mt-[60px]"}`}
+              className={`w-[155px] h-[76px] divide-y divide-[#2F4F4F]/50 shadow-lg shadow-[#000000]/25 rounded-[10px] transition-opacity duration-1000 ease-in-out ${
+                isVisibleUser
+                  ? "opacity-100 pointer-events-auto relative"
+                  : "opacity-0 pointer-events-none absolute mt-[60px]"
+              }`}
             >
               <li></li>
               <li className="w-[155px] h-[38px] bg-[#ffffff] rounded-t-[10px]">
@@ -136,7 +336,7 @@ function Navbar() {
                     setIsVisibleUser(false);
                     navigate("/userprofile");
                   }}
-                  className="text-[#000000]/70 w-full h-full rounded-t-[10px] cursor-pointer pl-[68px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
+                  className="text-[#000000]/70 w-full h-full rounded-t-[10px] cursor-pointer pl-[68px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 transition-colors duration-200"
                 >
                   <span className="text-[13px] font-bold">پروفایل کاربری</span>
                 </button>
@@ -148,12 +348,9 @@ function Navbar() {
                     setIsVisibleUser(false);
                     navigate("/mybooks/createbook");
                   }}
-                  className="text-[#000000]/70 w-full h-full cursor-pointer pl-[53px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
+                  className="text-[#000000]/70 w-full h-full cursor-pointer pl-[53px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 transition-colors duration-200"
                 >
-                  <span className="text-[13px] font-bold">
-                    {" "}
-                    نوشتن کتاب جدید
-                  </span>
+                  <span className="text-[13px] font-bold">نوشتن کتاب جدید</span>
                 </button>
               </li>
               <li className="w-[155px] h-[38px] bg-[#ffffff] rounded-b-[10px]">
@@ -163,7 +360,7 @@ function Navbar() {
                     setIsVisibleUser(false);
                     handleLogout();
                   }}
-                  className="text-[#000000]/70 w-full h-full rounded-b-[10px] cursor-pointer pl-[28px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
+                  className="text-[#000000]/70 w-full h-full rounded-b-[10px] cursor-pointer pl-[28px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 transition-colors duration-200"
                 >
                   <span className="text-[13px] font-bold">
                     خروج از حساب کاربری
@@ -173,7 +370,11 @@ function Navbar() {
             </ul>
           ) : (
             <ul
-              className={`w-[155px] h-[76px] divide-y divide-[#2F4F4F]/50 shadow-lg shadow-[#000000]/25 rounded-[10px] transition-opacity duration-1000 ease-in-out ${isVisibleUser ? "opacity-100 pointer-events-auto relative" : "opacity-0 pointer-events-none absolute mt-[60px]"}`}
+              className={`w-[155px] h-[76px] divide-y divide-[#2F4F4F]/50 shadow-lg shadow-[#000000]/25 rounded-[10px] transition-opacity duration-1000 ease-in-out ${
+                isVisibleUser
+                  ? "opacity-100 pointer-events-auto relative"
+                  : "opacity-0 pointer-events-none absolute mt-[60px]"
+              }`}
             >
               <li className="w-[155px] h-[38px] bg-[#ffffff] rounded-t-[10px]">
                 <button
@@ -182,11 +383,9 @@ function Navbar() {
                     setIsVisibleUser(false);
                     navigate("/auth/signup");
                   }}
-                  className="text-[#000000]/70 w-full h-full rounded-t-[10px] cursor-pointer pl-[102px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
+                  className="text-[#000000]/70 w-full h-full rounded-t-[10px] cursor-pointer pl-[102px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 transition-colors duration-200"
                 >
-                  <span to={"/auth/signup"} className="text-[13px] font-bold">
-                    ثبت نام
-                  </span>
+                  <span className="text-[13px] font-bold">ثبت نام</span>
                 </button>
               </li>
               <li className="w-[155px] h-[38px] bg-[#ffffff] rounded-b-[10px]">
@@ -196,7 +395,7 @@ function Navbar() {
                     setIsVisibleUser(false);
                     navigate("/auth/login");
                   }}
-                  className="text-[#000000]/70 w-full h-full rounded-b-[10px] cursor-pointer pl-[119px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
+                  className="text-[#000000]/70 w-full h-full rounded-b-[10px] cursor-pointer pl-[119px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 transition-colors duration-200"
                 >
                   <span className="text-[13px] font-bold">ورود</span>
                 </button>
@@ -206,7 +405,9 @@ function Navbar() {
         </div>
 
         <ul
-          className={`flex items-center gap-[66px] ${isVisibleUser ? "-mr-[105px]" : ""}`}
+          className={`flex items-center gap-[66px] ${
+            isVisibleUser ? "-mr-[105px]" : ""
+          }`}
         >
           <li className="flex flex-col items-center">
             <button
@@ -214,14 +415,16 @@ function Navbar() {
                 setSelectedItem(1);
                 navigate("/");
               }}
-              className={`text-[16px] ${selectedItem != 1 ? "cursor-pointer hover:text-[#2663CD]" : "text-[#265073] font-bold"}  active:text-[#2663CD]/50 active:no-underline active:transition-all active:duration-100 focus:outline-none focus:text-[#2663CD]`}
+              className={`text-[16px] ${
+                selectedItem != 1
+                  ? "cursor-pointer hover:text-[#2663CD]"
+                  : "text-[#265073] font-bold"
+              } transition-colors`}
             >
               صفحه اصلی
             </button>
-            {selectedItem === 1 ? (
+            {selectedItem === 1 && (
               <div className="w-[40px] h-[2.5px] bg-[#1E40AF] mt-[3px] rounded-full"></div>
-            ) : (
-              <span></span>
             )}
           </li>
           <li className="flex flex-col items-center">
@@ -230,14 +433,16 @@ function Navbar() {
                 setSelectedItem(2);
                 navigate("/mybooks");
               }}
-              className={`text-[16px] ${selectedItem != 2 ? "cursor-pointer hover:text-[#2663CD]" : "text-[#265073] font-bold"}  active:text-[#2663CD]/50 active:no-underline active:transition-all active:duration-100 focus:outline-none focus:text-[#2663CD]`}
+              className={`text-[16px] ${
+                selectedItem != 2
+                  ? "cursor-pointer hover:text-[#2663CD]"
+                  : "text-[#265073] font-bold"
+              } transition-colors`}
             >
               کتاب‌های من
             </button>
-            {selectedItem === 2 ? (
+            {selectedItem === 2 && (
               <div className="w-[40px] h-[2.5px] bg-[#1E40AF] mt-[3px] rounded-full"></div>
-            ) : (
-              <span></span>
             )}
           </li>
           <li
@@ -246,7 +451,9 @@ function Navbar() {
                 setIsVisiblePanel(false);
               }
             }}
-            className={`relative gap-[10px] ${isVisiblePanel ? "mt-[85px]" : ""} flex flex-col w-[155px] items-center mr-[-29px] rounded-full`}
+            className={`relative gap-[10px] ${
+              isVisiblePanel ? "mt-[85px]" : ""
+            } flex flex-col w-[155px] items-center mr-[-29px] rounded-full`}
           >
             <button
               className="cursor-pointer flex focus:outline-none"
@@ -278,7 +485,11 @@ function Navbar() {
               <span>پنل ارتباطی</span>
             </button>
             <ul
-              className={`w-[155px] h-[76px] divide-y divide-[#2F4F4F]/50 shadow-lg shadow-[#000000]/25 rounded-[10px] transition-opacity duration-1000 ease-in-out ${isVisiblePanel ? "opacity-100 pointer-events-auto relative" : "opacity-0 pointer-events-none absolute mt-[34px]"}`}
+              className={`w-[155px] h-[76px] divide-y divide-[#2F4F4F]/50 shadow-lg shadow-[#000000]/25 rounded-[10px] transition-opacity duration-1000 ease-in-out ${
+                isVisiblePanel
+                  ? "opacity-100 pointer-events-auto relative"
+                  : "opacity-0 pointer-events-none absolute mt-[34px]"
+              }`}
             >
               <li className="w-[155px] h-[38px] bg-[#ffffff] rounded-t-[10px]">
                 <button
@@ -289,7 +500,7 @@ function Navbar() {
                       state: { searchingItem: "forum" },
                     });
                   }}
-                  className="text-[#000000]/70 w-full h-full rounded-t-[10px] cursor-pointer pl-[89px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
+                  className="text-[#000000]/70 w-full h-full rounded-t-[10px] cursor-pointer pl-[89px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 transition-colors duration-200"
                 >
                   <span className="text-[13px] font-bold">تالار گفتگو</span>
                 </button>
@@ -303,7 +514,7 @@ function Navbar() {
                       state: { searchingItem: "people" },
                     });
                   }}
-                  className="text-[#000000]/70 w-full h-full rounded-b-[10px] cursor-pointer pl-[118px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
+                  className="text-[#000000]/70 w-full h-full rounded-b-[10px] cursor-pointer pl-[118px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 transition-colors duration-200"
                 >
                   <span className="text-[13px] font-bold">افراد</span>
                 </button>
@@ -312,198 +523,135 @@ function Navbar() {
           </li>
           <li className="flex flex-col items-center mr-[-29px]">
             <button
-              onClick={() => setSelectedItem(3)}
-              className={`text-[16px]  ${selectedItem != 3 ? "cursor-pointer hover:text-[#2663CD]" : "text-[#265073] font-bold"} active:text-[#2663CD]/50 active:no-underline active:transition-all active:duration-100 focus:outline-none focus:text-[#2663CD]`}
+              onClick={() => {
+                setSelectedItem(3);
+                navigate("/search");
+              }}
+              className={`text-[16px] ${
+                selectedItem != 3
+                  ? "cursor-pointer hover:text-[#2663CD]"
+                  : "text-[#265073] font-bold"
+              } transition-colors`}
             >
               جستجوی کتاب
             </button>
-            {selectedItem === 3 ? (
+            {selectedItem === 3 && (
               <div className="w-[40px] h-[2.5px] bg-[#1E40AF] mt-[3px] rounded-full"></div>
-            ) : (
-              <span></span>
             )}
           </li>
           <li className="flex flex-col items-center">
             <button
-              onClick={() => setSelectedItem(4)}
-              className={`text-[16px] hover:animate-pulse ${selectedItem != 4 ? "cursor-pointer hover:text-[#2663CD]" : "text-[#265073] font-bold"}  active:text-[#2663CD]/50 active:no-underline active:transition-all active:duration-100 focus:outline-none focus:text-[#2663CD]`}
+              onClick={() => {
+                setSelectedItem(4);
+                navigate("/contact");
+              }}
+              className={`text-[16px] hover:animate-pulse ${
+                selectedItem != 4
+                  ? "cursor-pointer hover:text-[#2663CD]"
+                  : "text-[#265073] font-bold"
+              } transition-colors`}
             >
               ارتباط با ما
             </button>
-            {selectedItem === 4 ? (
+            {selectedItem === 4 && (
               <div className="w-[40px] h-[2.5px] bg-[#1E40AF] mt-[3px] rounded-full"></div>
-            ) : (
-              <span></span>
+            )}
+          </li>
+          <li className="flex flex-col items-center relative">
+            <button
+              onMouseEnter={() => setShowSampleSearch(true)}
+              onMouseLeave={() => {
+                if (!keepSearchOpen) {
+                  setShowSampleSearch(false);
+                }
+              }}
+              onClick={() => {
+                setKeepSearchOpen(!keepSearchOpen);
+                setShowSampleSearch(true);
+              }}
+              className={`text-[16px] hover:animate-pulse ${
+                selectedItem != 5
+                  ? "cursor-pointer hover:text-[#2663CD]"
+                  : "text-[#265073] font-bold"
+              } transition-colors`}
+            >
+              <img src="/src/assets/images/search.png" alt="add" />
+            </button>
+            {selectedItem === 5 && (
+              <div className="w-[40px] h-[2.5px] bg-[#1E40AF] mt-[3px] rounded-full"></div>
+            )}
+
+            {(showSampleSearch || keepSearchOpen) && (
+              <div
+                className="absolute top-full mt-2 right-0 w-64 bg-white rounded-lg shadow-lg p-4 z-50"
+                onMouseEnter={() => setShowSampleSearch(true)}
+                onMouseLeave={() => {
+                  if (!keepSearchOpen) {
+                    setShowSampleSearch(false);
+                  }
+                }}
+              >
+                <div className="flex justify-between items-center mb-2">
+                  <h3 className="text-sm font-bold text-gray-700">
+                    جستجوی پیشرفته
+                  </h3>
+                  <button
+                    onClick={() => {
+                      setKeepSearchOpen(false);
+                      setShowSampleSearch(false);
+                    }}
+                    className="text-gray-500 hover:text-gray-700"
+                  >
+                    <FiX />
+                  </button>
+                </div>
+                <form onSubmit={handleSearchSubmit} className="flex flex-col gap-2">
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="جستجو..."
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                  />
+                  <div className="flex gap-2">
+                    <button
+                      type="submit"
+                      className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md text-sm transition-colors"
+                    >
+                      جستجو
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSearchQuery("");
+                        setKeepSearchOpen(false);
+                        setShowSampleSearch(false);
+                      }}
+                      className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 px-4 rounded-md text-sm transition-colors"
+                    >
+                      انصراف
+                    </button>
+                  </div>
+                </form>
+              </div>
             )}
           </li>
         </ul>
       </nav>
-      {/* <div className="hidden md:w-full md:flex flex-row-reverse justify-between "> */}
-      <div className="flex my-auto ">
+
+      <div className="flex my-auto">
         <h1 className="text-[40px] font-[700] text-[#2663CD]">Books</h1>
         <h1 className="text-[40px] font-[700] text-[#002d54]">Bat</h1>
       </div>
-      <button
-        onClick={openMenu}
-        className="lg:hidden p-2 text-blue-700 hover:text-blue-900 text-3xl"
-      >
-        ☰
-      </button>
-      {mobileMenuOpen && (
-        <div className="lg:hidden fixed inset-0 z-50">
-          <div
-            className={`absolute inset-0 backdrop-blur-sm bg-blue-950/40 transition-opacity duration-300 ${
-              menuVisible ? "opacity-100" : "opacity-0"
-            }`}
-            onClick={closeMenu}
-          />
 
-          <div
-            className={`absolute top-0 right-0 w-[50%] max-w-xs h-full text-nowrap bg-gradient-to-b from-blue-50 to-white shadow-2xl rounded-l-3xl transform transition-all duration-300 ease-in-out 
-      ${menuVisible ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"}`}
-          >
-            <div className="flex justify-between items-center p-5 border-b border-blue-200">
-              <h2 className="text-xl font-bold text-blue-800">منو</h2>
-              <button
-                onClick={closeMenu}
-                className="text-blue-800 text-2xl hover:text-red-500 transition"
-              >
-                &times;
-              </button>
-            </div>
-
-            <ul className="flex flex-col items-start px-4  py-6 space-y-3 text-blue-800">
-              {isAuthenticated ? (
-                <>
-                  <li className="w-full px-3 flex items-center gap-3">
-                    <img
-                      className="w-10 h-10  rounded-full"
-                      src={`/api${user.user_info.image}`}
-                      alt="asd"
-                    />
-                    <h3>{user.name} </h3>
-                  </li>
-                  <li>
-                    <MenuItem
-                      icon={<FiUser />}
-                      label="پروفایل کاربری"
-                      onClick={() => handleNav("/userprofile")}
-                    />
-                  </li>
-                  <li>
-                    <MenuItem
-                      icon={<FiEdit />}
-                      label="نوشتن کتاب جدید"
-                      onClick={() => handleNav("/mybooks/createbook")}
-                    />
-                  </li>
-                  <li>
-                    <MenuItem
-                      icon={<FiLogOut />}
-                      label="خروج از حساب کاربری"
-                      onClick={() => {
-                        handleLogout();
-                        closeMenu();
-                      }}
-                      isAuthenticated
-                    />
-                  </li>
-                </>
-              ) : (
-                <>
-                  <li>
-                    <MenuItem
-                      icon={<FiUserPlus />}
-                      label="ثبت‌نام"
-                      onClick={() => handleNav("/auth/signup")}
-                    />
-                  </li>
-                  <li>
-                    <MenuItem
-                      icon={<FiLogIn />}
-                      label="ورود"
-                      onClick={() => handleNav("/auth/login")}
-                    />
-                  </li>
-                </>
-              )}
-              <hr className="w-full border-t border-blue-200 my-2" />
-
-              <li>
-                <MenuItem
-                  icon={<FiHome />}
-                  label="صفحه اصلی"
-                  onClick={() => handleNav("/", 1)}
-                />
-              </li>
-              <li>
-                <MenuItem
-                  icon={<FiBook />}
-                  label="کتاب‌های من"
-                  onClick={() => handleNav("/mybooks", 2)}
-                />
-              </li>
-              <li>
-                <MenuItem
-                  icon={<FiSearch />}
-                  label="جستجوی کتاب"
-                  onClick={() => handleNav("/advancedsearchbook", 3)}
-                />
-              </li>
-
-              {/* پنل ارتباطی */}
-              <li className="w-full transition-all duration-300">
-                <button
-                  onClick={toggleCommunications}
-                  className="w-full flex items-center justify-between px-4 py-2 rounded-xl hover:bg-blue-50 transition-all duration-200"
-                >
-                  <div className="flex items-center gap-3">
-                    <FiMail className="text-blue-600 text-lg" />
-                    <span className="text-xs sm:text-sm ">پنل ارتباطی</span>
-                  </div>
-                  {openCommunications ? <FiChevronUp /> : <FiChevronDown />}
-                </button>
-
-                <ul
-                  className={`overflow-hidden transition-all duration-400 ease-in-out flex flex-col mt-2 space-y-2 bg-gray-100 rounded-lg m-4 mb-0 
-      ${openCommunications ? "max-h-40 opacity-100" : "max-h-0 opacity-0"}
-    `}
-                >
-                  <li className="transition-all duration-200 ">
-                    <MenuItem
-                      icon={<FiUsers />}
-                      label="افراد"
-                      onClick={() => handleNav("/people")}
-                    />
-                  </li>
-                  <li className="transition-all duration-200">
-                    <MenuItem
-                      icon={<FiMessageSquare />}
-                      label="تالار گفتگو"
-                      onClick={() => handleNav("/forums")}
-                    />
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-        </div>
-      )}
+      <MobileMenu
+        isAuthenticated={isAuthenticated}
+        user={user}
+        handleLogout={handleLogout}
+        handleNav={handleNav}
+      />
     </header>
   );
-}
-const MenuItem = ({ icon, label, onClick, isAuthenticated = false }) => (
-  <button
-    onClick={onClick}
-    className={`w-full flex items-center gap-3 px-4 py-2 rounded-xl transition-all
-      ${isAuthenticated ? "text-red-600 hover:bg-red-50 hover:text-red-700" : "hover:bg-blue-50"}`}
-  >
-    <span
-      className={`text-lg ${isAuthenticated ? "text-red-500" : "text-blue-600"}`}
-    >
-      {icon}
-    </span>
-    <span className="text-xs sm:text-sm font-medium">{label}</span>
-  </button>
-);
+};
+
 export default Navbar;
