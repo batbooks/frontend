@@ -71,11 +71,11 @@ const MessageInput: React.FC<MessageInputProps> = ({
     <form
       onSubmit={handleFormSubmit}
       dir="rtl"
-      className="p-4 bg-white border-t border-gray-200"
+      className="p-4 bg-white border-t border-gray-200 "
     >
       <div className="flex items-center gap-3">
         {/* Main Input with Emoji Toggle */}
-        <div className="flex-grow relative">
+        <div className="flex-grow relative z-0">
           <input
             ref={inputRef}
             type="text"
@@ -84,7 +84,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
             onChange={(e) => setNewMessage(e.target.value)}
             placeholder="پیام خود را بنویسید..."
             disabled={isDisabled}
-            className="w-full p-3 pr-4 pl-12 border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400 transition disabled:bg-gray-100"
+            className=" w-full p-3 pr-4 pl-12 border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400 transition disabled:bg-gray-100"
           />
 
           {/* Emoji Toggle Button */}
@@ -100,7 +100,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
           {/* Emoji Picker Box */}
           <div
             ref={emojiPickerContainerRef}
-            className="absolute bottom-full left-0 md:left-0 mb-2 w-fit"
+            className="absolute z-10 bottom-full left-0 md:left-0 mb-2 w-fit"
             dir="ltr"
           >
             <EmojiPicker

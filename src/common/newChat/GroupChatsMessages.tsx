@@ -48,7 +48,7 @@ const GroupChatMessage: React.FC<GroupChatMessageProps> = ({ message }) => {
   const avatarColor = avatarColors[message.sender_id % avatarColors.length];
   const bubbleClasses = isSentByYou
     ? "bg-blue-500 text-white self-start ml-auto" // Your sent messages
-    : "bg-green-400 text-gray-800"; // Received messages - removed self-end and mr-auto here
+    : "bg-green-400 text-gray-900"; // Received messages - removed self-end and mr-auto here
 
   const motionLiClasses = isSentByYou
     ? "flex justify-end items-end gap-2 w-full" // Your sent messages
@@ -69,7 +69,7 @@ const GroupChatMessage: React.FC<GroupChatMessageProps> = ({ message }) => {
           <div className="flex flex-row items-center gap-3 mb-1">
             {message.sender_img ? (
               <img
-                src={message.sender_img}
+                src={`/api${message.sender_img}`}
                 alt={message.sender}
                 className="w-8 h-8 rounded-full self-end"
               />
@@ -92,7 +92,7 @@ const GroupChatMessage: React.FC<GroupChatMessageProps> = ({ message }) => {
             {message.message}
           </p>
           <span
-            className={`text-xs mt-2 self-end ${isSentByYou ? "text-blue-200" : "text-gray-400"}`}
+            className={`text-xs mt-2 self-end ${isSentByYou ? "text-blue-200" : "text-gray-600"}`}
           >
             {formatTime(message.date)}
           </span>

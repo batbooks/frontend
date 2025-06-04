@@ -32,7 +32,9 @@ export default function Another_User_Profile() {
       setLoading(true);
       console.log("asda");
       try {
-        const response = await fetch(`https://www.batbooks.ir/user/info/${userId}/`);
+        const response = await fetch(
+          `https://www.batbooks.ir/user/info/${userId}/`
+        );
         if (!response.ok) throw new Error("Failed to fetch book");
         const data = await response.json();
         setUser(data);
@@ -47,9 +49,12 @@ export default function Another_User_Profile() {
       setLoading3(true);
 
       try {
-        const response = await fetch(`https://www.batbooks.ir/book/user/${userId}/`, {
-          method: "GET",
-        });
+        const response = await fetch(
+          `https://www.batbooks.ir/book/user/${userId}/`,
+          {
+            method: "GET",
+          }
+        );
 
         if (response.ok) {
           const data = await response.json();
@@ -57,7 +62,9 @@ export default function Another_User_Profile() {
           setLastBook(data.results[0]);
 
           setNumberOfWrittenBooks(data.count);
-        } else { /* empty */ }
+        } else {
+          /* empty */
+        }
       } catch (err) {
         console.error("Error:", err.message);
       } finally {
@@ -72,14 +79,17 @@ export default function Another_User_Profile() {
     const fetchFollowing = async () => {
       setLoading1(true);
       try {
-        const response = await fetch(`https://www.batbooks.ir/user/is/follow/${userId}/`, {
-          method: "GET",
+        const response = await fetch(
+          `https://www.batbooks.ir/user/is/follow/${userId}/`,
+          {
+            method: "GET",
 
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         const data = await response.json();
         setFollowing(data.is_follow);
       } catch (err) {
@@ -94,14 +104,17 @@ export default function Another_User_Profile() {
     const fetchBlocked = async () => {
       setLoading2(true);
       try {
-        const response = await fetch(`https://www.batbooks.ir/user/is/Not_Interested/${userId}/`, {
-          method: "GET",
+        const response = await fetch(
+          `https://www.batbooks.ir/user/is/Not_Interested/${userId}/`,
+          {
+            method: "GET",
 
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         const data = await response.json();
 
         setBlocked(data.is_not_interested);
@@ -133,14 +146,17 @@ export default function Another_User_Profile() {
 
   const handleFollow = async () => {
     try {
-      const response = await fetch(`https://www.batbooks.ir/user/toggle/follow/${userId}/`, {
-        method: "GET",
+      const response = await fetch(
+        `https://www.batbooks.ir/user/toggle/follow/${userId}/`,
+        {
+          method: "GET",
 
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
     } catch (err) {
       console.error(err.message);
     }
@@ -217,7 +233,27 @@ export default function Another_User_Profile() {
                 alt="userimage"
               />
             </div>
-            <h3 className="  text-[24px] font-bold text-center">{user.user}</h3>
+            <div className="flex items-center justify-center gap-2">
+              <h3 className="  text-[24px] font-bold text-center">
+                {user.user}
+              </h3>
+              <svg
+              className="cursor-pointer"
+              onClick={()=>navigate("/chat",{state:{userId}})}
+                xmlns="http://www.w3.org/2000/svg"
+                width={30}
+                height={30}
+                viewBox="0 0 24 30"
+                fill="none"
+                stroke={"black"}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                
+              >
+                <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
+              </svg>
+            </div>
 
             <div className=" flex flex-col  ">
               <button
@@ -316,12 +352,13 @@ export default function Another_User_Profile() {
                 author={lastBook.Author}
                 title={lastBook.name}
                 coverImage={
-                  lastBook.image != null ? `https://www.batbooks.ir${lastBook.image}` : "/23.png"
+                  lastBook.image != null
+                    ? `https://www.batbooks.ir${lastBook.image}`
+                    : "/23.png"
                 }
                 chapters={80}
                 description={lastBook.description}
                 id={lastBook.id}
-
               />
             </div>
           ) : (
@@ -455,7 +492,11 @@ export function Book({ book, isLast = false, minw = 180, h = 254 }) {
         id={book.id}
         title={book.name}
         author={book.Author}
-        coverImage={book.image != null ? `https://www.batbooks.ir/${book.image}` : "/20.jpg"}
+        coverImage={
+          book.image != null
+            ? `https://www.batbooks.ir/${book.image}`
+            : "/20.jpg"
+        }
         description={book.description}
         chapters={80}
       />

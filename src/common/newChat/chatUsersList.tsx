@@ -3,6 +3,7 @@ import chatContext from "./chat";
 import { useContext } from "react";
 import context from "./chat";
 import ChatNavbar from "./chatNavbar";
+import { useSelector } from "react-redux";
 interface ChatUser {
   id: number;
   name: string;
@@ -46,7 +47,7 @@ const truncateMessageByWords = (message: string, maxWords: number): string => {
 
 interface Props {
   onUserSelect: (id: number) => void;
-  chatContext:string
+  chatContext: string;
   setChatContex: React.Dispatch<React.SetStateAction<string | null>>;
   popUp: boolean;
   setPopUp: React.Dispatch<React.SetStateAction<boolean>>;
@@ -57,7 +58,7 @@ const ChatUserList: React.FC<Props> = ({
   setChatContex,
   popUp,
   setPopUp,
-  chatContext
+  chatContext,
 }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -65,6 +66,8 @@ const ChatUserList: React.FC<Props> = ({
   const [loading, setLoading] = useState(true);
   const [people, setPeople] = useState([]);
   const [nextUrl, setNextUrl] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [read,setRead]=useState(false)
   useEffect(() => {
     fetchPage(`https://www.batbooks.ir/user/users/all/`);
   }, []);
@@ -96,7 +99,9 @@ const ChatUserList: React.FC<Props> = ({
       setLoading(false);
     }
   };
-
+  useEffect(() => {
+  if (!popUp) setSearchTerm("");
+}, [popUp]);
   useEffect(() => {
     const fetchMessages = async () => {
       setIsLoading(true);
@@ -112,6 +117,7 @@ const ChatUserList: React.FC<Props> = ({
         if (!response.ok) throw new Error("خطا در دریافت کاربران");
         const data: ChatUser[] = await response.json();
         setUsers(data);
+        
       } catch (err) {
         setError(
           err instanceof Error ? err.message : "یک خطای ناشناخته رخ داده است."
@@ -123,14 +129,18 @@ const ChatUserList: React.FC<Props> = ({
     };
     fetchMessages();
   }, []);
-
+    const { user:me } = useSelector((state:any) => state.auth);
+    
+  
   return (
     // Main container for the ChatUserList
     <div
       className="
-      sticky top-0                     
+      sticky top-0 
+      z-10                    
       h-fit              
-      max-h-[80%]          
+      max-h-[80%]    
+      max-w-[20vw]      
       flex flex-col                    
       bg-white 
       rounded-br-xl rounded-tr-xl      
@@ -139,7 +149,10 @@ const ChatUserList: React.FC<Props> = ({
       overflow-hidden                  
     "
     >
-      <ChatNavbar chatContext={chatContext} setChatContext={setChatContex}></ChatNavbar>
+      <ChatNavbar
+        chatContext={chatContext}
+        setChatContext={setChatContex}
+      ></ChatNavbar>
       {/* Header Section */}
       {/* <div
         className="
@@ -156,7 +169,8 @@ const ChatUserList: React.FC<Props> = ({
         className="
         divide-y                   
         overflow-y-auto            
-        flex-grow                  // This allows the list to take available space
+        flex-grow        
+                  // This allows the list to take available space
       "
       >
         {isLoading && (
@@ -177,7 +191,7 @@ const ChatUserList: React.FC<Props> = ({
           return (
             <li
               key={user.id}
-              onClick={() => onUserSelect(user.id)}
+              onClick={() => {onUserSelect(user.id);setRead(true)}}
               className="flex items-center justify-between p-3 hover:bg-slate-100 cursor-pointer transition dir-rtl"
             >
               {/* Avatar/Initials */}
@@ -202,8 +216,8 @@ const ChatUserList: React.FC<Props> = ({
                 <p className="text-sm font-semibold text-slate-800 truncate">
                   {user.name}
                 </p>
-                <p className="text-xs text-slate-500">
-                  {user.last_message?.slice(0, 20)}
+                <p className="text-xs text-slate-500 text-wrap">
+                  {user.last_message?.slice(0, 10)}
                   {user.last_message?.length > 10 ? "..." : ""}
                 </p>
               </div>
@@ -211,7 +225,7 @@ const ChatUserList: React.FC<Props> = ({
               {/* Unread count */}
               <div className="flex-shrink-0 w-8 text-center">
                 {user.unread_count > 0 && (
-                  <span className="inline-flex items-center justify-center bg-red-500 text-white text-xs font-semibold rounded-full h-5 w-5">
+                  <span className={`inline-flex items-center justify-center ${!read?"opacity-100":"opacity-0"} bg-red-500 text-white text-xs font-semibold rounded-full h-5 w-5`}>
                     {user.unread_count}
                   </span>
                 )}
@@ -221,44 +235,59 @@ const ChatUserList: React.FC<Props> = ({
         })}
       </ul>
       {popUp && (
-        <div className="max-w-80% fixed inset-0 z-50 flex items-center justify-center bg-black/50 bg-opacity-50">
-          <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-md text-right">
-            <ul className="grid grid-cols-2">
-              {people.map((person: any) => {
-                const colorIndex = person.id % avatarColors.length;
-                const avatarColor = avatarColors[colorIndex];
+        <div className="max-h-80% fixed mt-23 inset-0 z-50 flex items-center justify-center bg-black/50 bg-opacity-50 transition-all duration-300">
+          <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-md text-right transition-all duration-300">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="جستجو در افراد..."
+              className="w-full mb-4 p-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-400"
+            />
+            <ul className="max-h-[60vh] grid grid-cols-2 overflow-y-auto transition-all duration-300">
+              {people
+                .filter(
+                  (person: any) =>
+                    users.some((user) => user.id !=person.id ) &&
+                    person.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+                    person.id!=me.id
+                    
 
-                return (
-                  <li
-                    key={person.id}
-                    onClick={() => onUserSelect(person.id)}
-                    className="flex gap-1.5 items-center  p-3 hover:bg-slate-100 cursor-pointer transition dir-rtl"
-                  >
-                    {/* Avatar/Initials */}
-                    <div className="">
-                      {person.user_info.image ? (
-                        <img
-                          className="w-10 h-10 rounded-full border-2 border-white shadow-sm"
-                          src={`/api${person.user_info.image}`}
-                          alt={person.user_info.image}
-                        />
-                      ) : (
-                        <div
-                          className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm ${avatarColor}`}
-                        >
-                          {getInitials(person.name)}
-                        </div>
-                      )}
-                    </div>
-                    <p>{person.name}</p>
-                  </li>
-                );
-              })}
+                )
+                .map((person: any) => {
+                  const colorIndex = person.id % avatarColors.length;
+                  const avatarColor = avatarColors[colorIndex];
+
+                  return (
+                    <li
+                      key={person.id}
+                      onClick={() => {onUserSelect(person.id);setPopUp(false)}}
+                      className="flex gap-1.5 items-center  p-3 hover:bg-slate-100 cursor-pointer transition dir-rtl"
+                    >
+                      <div>
+                        {person.user_info.image ? (
+                          <img
+                            className="w-10 h-10 rounded-full border-2 border-white shadow-sm"
+                            src={`/api${person.user_info.image}`}
+                            alt={person.user_info.image}
+                          />
+                        ) : (
+                          <div
+                            className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm ${avatarColor}`}
+                          >
+                            {getInitials(person.name)}
+                          </div>
+                        )}
+                      </div>
+                      <p>{person.name}</p>
+                    </li>
+                  );
+                })}
             </ul>
             {nextUrl && (
               <p
                 onClick={() => {
-                  fetchPage(nextUrl,true);
+                  fetchPage(nextUrl, true);
                 }}
                 className="mt-4 text-sm text-blue-400 text-center hover:cursor-pointer hover:scale-105 duration-300 transition-all"
               >

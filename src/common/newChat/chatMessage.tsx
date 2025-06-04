@@ -31,7 +31,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
 
   const bubbleClasses = isSentByYou
     ? 'bg-blue-500 text-white self-start ml-auto' // Your messages on the right
-    : 'bg-green-400 text-gray-800 self-end mr-auto border'; // Others' messages on the left
+    : 'bg-green-400 text-gray-900 self-end mr-auto border'; // Others' messages on the left
 
   // To align the entire message bubble (including potential avatar space if you add one)
   const motionLiClasses = isSentByYou
@@ -60,7 +60,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
         <p className="text-base leading-relaxed break-words">{message.message}</p>
         <span
           className={`text-xs mt-2 self-end ${
-            isSentByYou ? 'text-blue-200' : 'text-gray-400'
+            isSentByYou ? 'text-blue-200' : 'text-gray-600'
           }`}
         >
           {formatTime(message.date)}
