@@ -109,8 +109,8 @@ export default function EditProfile({ setEditClicked }) {
         />
       </button>
       <div className="z-2">
-        <h1 className="text-[24px] font-[700] text-[#1A365D] mb-[43.4px] z-3">
-          ویرایش پروفایل
+        <h1 className="text-[40px] font-[700] text-[#cc1a85] mb-[43.4px] z-3">
+          پروفایل
         </h1>
 
         <form

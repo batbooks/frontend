@@ -174,7 +174,7 @@ export default function Profile() {
                 onMouseEnter={() => setIsHoveredEdit(true)}
                 onMouseLeave={() => setIsHoveredEdit(false)}
                 onClick={() => setEditClicked(true)}
-                className="btn !w-full lg:!w-auto"
+                className="btn !w-full lg:!w-auto lg:min-w-[200px]"
               >
                 {!isHoveredEdit ? (
                   <img
@@ -193,15 +193,19 @@ export default function Profile() {
               </button>
               <button
                 onClick={handleLogout}
-                className="btn !bg-red-700 !w-full lg:!w-auto before:!bg-[#FF3B30]"
+                className="btn !bg-red-700 !w-full lg:!w-auto lg:min-w-[200px] before:!bg-[#FF3B30]"
               >
-                <span className="span-btn font-normal">خروج از حساب کاربری</span>
+                <span className="span-btn font-normal">
+                  خروج از حساب کاربری
+                </span>
               </button>
             </div>
           </div>
 
           <div className="w-full m-0 lg:m-8 lg:mt-0 lg:ml-0">
-            <h1 className="text-xl md:text-2xl lg:text-[26px] font-bold">قفسه ها:</h1>
+            <h1 className="text-xl md:text-2xl lg:text-[26px] font-bold">
+              قفسه ها:
+            </h1>
 
             <div className="flex flex-wrap gap-4 md:gap-5 lg:gap-[20px] mb-4 md:mb-5 lg:mb-[19px]">
               <button
@@ -241,7 +245,9 @@ export default function Profile() {
                 <ul
                   dir="ltr"
                   className={`z-10 absolute w-[90vw] sm:w-[80vw] md:w-[487px] rounded-md overflow-y-auto transition-opacity duration-400 ease-in-out ${
-                    isFollowingOpened ? "visible opacity-100" : "hidden opacity-0"
+                    isFollowingOpened
+                      ? "visible opacity-100"
+                      : "hidden opacity-0"
                   } shadow-lg shadow-[#000000]/21 h-[304px] mt-[73px] bg-white divide-y divide-[#2F4F4F]/50`}
                 >
                   {followings.map((user) => (
@@ -251,7 +257,9 @@ export default function Profile() {
               </div>
             </div>
 
-            <h1 className="text-xl md:text-2xl lg:text-[26px] font-bold mb-1">مشخصات:</h1>
+            <h1 className="text-xl md:text-2xl lg:text-[26px] font-bold mb-1">
+              مشخصات:
+            </h1>
             <div className="relative bg-white h-48 md:h-52 lg:h-[230px] rounded-lg shadow-lg shadow-[#000000]/25">
               <div className="pt-3 px-5 lg:pt-[11px] lg:px-[20px] mt-2 lg:mt-[10px]">
                 <p className="font-semibold text-sm md:text-base lg:text-[16px] mb-1 lg:mb-[5px]">
@@ -279,7 +287,7 @@ export default function Profile() {
               onClick={() => {
                 navigate(`/book/${lastBook.id}`);
               }}
-              className="w-full lg:min-w-[242px] h-auto lg:h-[368px] m-0 lg:m-8 lg:mt-1 lg:ml-0"
+              className="hidden lg:block lg:min-w-[292px] w-[200px] h-auto lg:h-[368px] m-0 lg:m-8 lg:mt-1 lg:ml-0"
             >
               <h1 className="text-base md:text-lg lg:text-[18px] font-bold mb-1">
                 آخرین کتاب نوشته شده:
@@ -311,7 +319,9 @@ export default function Profile() {
               />
               <button
                 className={`transition-all duration-500 absolute mx-auto inset-x-0 max-h-10 max-w-[239px] my-auto inset-y-0 flex gap-3 md:gap-4 lg:gap-[15px] bg-[#2663cd] text-white text-sm md:text-base lg:text-[16px] whitespace-nowrap items-center rounded-full lg:rounded-[46px] py-2 lg:py-[8px] px-4 lg:px-[18px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-2 focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto ${
-                  isHoveredFavBook ? "visible opacity-100" : "invisible opacity-0"
+                  isHoveredFavBook
+                    ? "visible opacity-100"
+                    : "invisible opacity-0"
                 }`}
               >
                 <img
@@ -367,7 +377,9 @@ export default function Profile() {
             onMouseLeave={() => setIsHoveredInnerButton(false)}
             className="btn py-2 px-5 md:py-[7px] md:px-[21px] !rounded-lg !w-fit !h-fit !ml-0 !mr-0 !mb-2 md:!mb-0"
           >
-            <h4 className="span-btn text-sm md:text-[14px] font-light">دنبال کردن</h4>
+            <h4 className="span-btn text-sm md:text-[14px] font-light">
+              دنبال کردن
+            </h4>
           </button>
         ) : (
           <button
@@ -379,14 +391,21 @@ export default function Profile() {
             onMouseLeave={() => setIsHoveredInnerButton(false)}
             className="btn py-2 px-5 md:py-[7px] md:px-[21px] !rounded-lg !w-fit !h-fit !ml-0 !mr-0 !mb-2 md:!mb-0"
           >
-            <h4 className="span-btn text-sm md:text-[14px] font-light">دنبال نکردن</h4>
+            <h4 className="span-btn text-sm md:text-[14px] font-light">
+              دنبال نکردن
+            </h4>
           </button>
         )}
 
         <div className="relative flex items-center gap-4 md:gap-[18px] cursor-pointer rounded-full">
           <div className="flex flex-col gap-1 md:gap-[5px]">
-            <h4 className="ml-auto text-lg md:text-[20px] font-semibold">{user.following}</h4>
-            <h4 dir="rtl" className="text-xs md:text-[12px] font-normal text-[#265073]"></h4>
+            <h4 className="ml-auto text-lg md:text-[20px] font-semibold">
+              {user.following}
+            </h4>
+            <h4
+              dir="rtl"
+              className="text-xs md:text-[12px] font-normal text-[#265073]"
+            ></h4>
           </div>
 
           {user.following_image == null ? (
