@@ -25,12 +25,15 @@ export default function Comments({ chapterId }) {
     const fetchComments = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`/api/comments/chapter/${chapterId}/`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await fetch(
+          `https://www.batbooks.ir/comments/chapter/${chapterId}/`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error("مشکلی پیش اومد...دوباره تلاش کنید");
@@ -93,7 +96,10 @@ export default function Comments({ chapterId }) {
       {isAuthenticated ? (
         <VoteAndReview chapter={chapterId} commentsCount={commentsCount} />
       ) : null}
-      <main dir="rtl" className="mt-[20px] mb-[60px] mx-[20px] md:mx-[71px] flex flex-col">
+      <main
+        dir="rtl"
+        className="mt-[20px] mb-[60px] mx-[20px] md:mx-[71px] flex flex-col"
+      >
         <h1 className="text-[22px] mb-[30px]">نظرات کاربران:</h1>
         <div className="flex flex-col gap-[36px]">
           {showingComments.map((comment) => (
@@ -104,7 +110,11 @@ export default function Comments({ chapterId }) {
               userImage={comment.image}
               userName={comment.user.name}
               dateTime={comment.created}
-              content={<p className="text-xs sm:text-sm md:text-[16px] my-auto">{comment.body}</p>}
+              content={
+                <p className="text-xs sm:text-sm md:text-[16px] my-auto">
+                  {comment.body}
+                </p>
+              }
               likeNum={comment.like.length}
               dislikeNum={comment.dislike.length}
               key={comment.id}
@@ -167,12 +177,15 @@ function Comment({
   const fetchReplies = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/comments/comment/${commentId}/`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `https://www.batbooks.ir/comments/comment/${commentId}/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       if (!response.ok)
         throw new Error("ناموفق...لطفا اتصال اینترنت خود را بررسی کنید");
 
@@ -281,11 +294,13 @@ function Comment({
             ) : (
               <img
                 className="min-w-[83px] max-w-[83px] max-h-[83px] min-h-[83px] rounded-full"
-                src={`/api${userImage}`}
+                src={`https://www.batbooks.ir${userImage}`}
                 alt="commentimage"
               />
             )}
-            <span className="text-xs sm:text-sm md:text-[16px] font-[400]">{userName}</span>
+            <span className="text-xs sm:text-sm md:text-[16px] font-[400]">
+              {userName}
+            </span>
             {(isAuthenticated && userId !== user.id) || !isAuthenticated ? (
               <button
                 onClick={() => navigate(`/anotheruserprofile/${userId}`)}
@@ -407,7 +422,9 @@ function Comment({
                 dateTime={reply.created}
                 getTimeAgo={getTimeAgo}
                 content={
-                  <p className="text-[13px] sm:text-sm lg:text-[16px] font-[300] my-auto">{reply.body}</p>
+                  <p className="text-[13px] sm:text-sm lg:text-[16px] font-[300] my-auto">
+                    {reply.body}
+                  </p>
                 }
                 likeNum={reply.like.length}
                 dislikeNum={reply.dislike.length}
@@ -434,7 +451,9 @@ function Comment({
                 dateTime={reply.created}
                 getTimeAgo={getTimeAgo}
                 content={
-                  <p className="text-xs sm:text-sm md:text-[16px] font-[300] my-auto">{reply.body}</p>
+                  <p className="text-xs sm:text-sm md:text-[16px] font-[300] my-auto">
+                    {reply.body}
+                  </p>
                 }
                 likeNum={reply.like.length}
                 dislikeNum={reply.dislike.length}
@@ -529,7 +548,7 @@ function Reply({
           ) : (
             <img
               className="w-15 md:min-w-[83px] md:max-w-[83px] md:max-h-[83px] md:min-h-[83px] rounded-full"
-              src={`/api${userImage}`}
+              src={`https://www.batbooks.ir${userImage}`}
               alt="commentimage"
             />
           )}
@@ -593,14 +612,17 @@ function ReplyBox({ isLast, commentId, setHidden }) {
 
     try {
       const token = localStorage.getItem("access_token");
-      const response = await fetch(`/api/comments/reply_to/${commentId}/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ body }),
-      });
+      const response = await fetch(
+        `https://www.batbooks.ir/comments/reply_to/${commentId}/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ body }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("!!!مشکلی پیش اومد");
@@ -637,7 +659,7 @@ function ReplyBox({ isLast, commentId, setHidden }) {
     >
       <div className="flex flex-col items-center gap-[9px] mx-[33px]">
         <img
-          src={`/api${user.user_info.image}`}
+          src={`https://www.batbooks.ir${user.user_info.image}`}
           alt="user"
           className="min-w-[83px] max-w-[83px] max-h-[83px] min-h-[83px] rounded-full"
         />
@@ -699,13 +721,16 @@ function LikeAndDislike({ likeNum, dislikeNum, likeState, commentorreplyId }) {
     try {
       setLoading(true);
       const token = localStorage.getItem("access_token");
-      const response = await fetch(`/api/comments/like/${commentorreplyId}/`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `https://www.batbooks.ir/comments/like/${commentorreplyId}/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (!response.ok) throw new Error("Failed to fetch comments");
     } catch (err) {
       console.error(err);
@@ -719,7 +744,7 @@ function LikeAndDislike({ likeNum, dislikeNum, likeState, commentorreplyId }) {
       setLoading(true);
       const token = localStorage.getItem("access_token");
       const response = await fetch(
-        `/api/comments/dislike/${commentorreplyId}/`,
+        `https://www.batbooks.ir/comments/dislike/${commentorreplyId}/`,
         {
           method: "GET",
           headers: {

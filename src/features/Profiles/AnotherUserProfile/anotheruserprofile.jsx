@@ -32,7 +32,9 @@ export default function Another_User_Profile() {
       setLoading(true);
       console.log("asda");
       try {
-        const response = await fetch(`/api/user/info/${userId}/`);
+        const response = await fetch(
+          `https://www.batbooks.ir/user/info/${userId}/`
+        );
         if (!response.ok) throw new Error("Failed to fetch book");
         const data = await response.json();
         setUser(data);
@@ -47,9 +49,12 @@ export default function Another_User_Profile() {
       setLoading3(true);
 
       try {
-        const response = await fetch(`/api/book/user/${userId}/`, {
-          method: "GET",
-        });
+        const response = await fetch(
+          `https://www.batbooks.ir/book/user/${userId}/`,
+          {
+            method: "GET",
+          }
+        );
 
         if (response.ok) {
           const data = await response.json();
@@ -57,7 +62,9 @@ export default function Another_User_Profile() {
           setLastBook(data.results[0]);
 
           setNumberOfWrittenBooks(data.count);
-        } else { /* empty */ }
+        } else {
+          /* empty */
+        }
       } catch (err) {
         console.error("Error:", err.message);
       } finally {
@@ -72,14 +79,17 @@ export default function Another_User_Profile() {
     const fetchFollowing = async () => {
       setLoading1(true);
       try {
-        const response = await fetch(`/api/user/is/follow/${userId}/`, {
-          method: "GET",
+        const response = await fetch(
+          `https://www.batbooks.ir/user/is/follow/${userId}/`,
+          {
+            method: "GET",
 
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         const data = await response.json();
         setFollowing(data.is_follow);
       } catch (err) {
@@ -94,14 +104,17 @@ export default function Another_User_Profile() {
     const fetchBlocked = async () => {
       setLoading2(true);
       try {
-        const response = await fetch(`/api/user/is/Not_Interested/${userId}/`, {
-          method: "GET",
+        const response = await fetch(
+          `https://www.batbooks.ir/user/is/Not_Interested/${userId}/`,
+          {
+            method: "GET",
 
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         const data = await response.json();
 
         setBlocked(data.is_not_interested);
@@ -133,14 +146,17 @@ export default function Another_User_Profile() {
 
   const handleFollow = async () => {
     try {
-      const response = await fetch(`/api/user/toggle/follow/${userId}/`, {
-        method: "GET",
+      const response = await fetch(
+        `https://www.batbooks.ir/user/toggle/follow/${userId}/`,
+        {
+          method: "GET",
 
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
     } catch (err) {
       console.error(err.message);
     }
@@ -148,7 +164,7 @@ export default function Another_User_Profile() {
   const handleBlockd = async () => {
     try {
       const response = await fetch(
-        `/api/user/toggle/Not_Interested/${userId}/`,
+        `https://www.batbooks.ir/user/toggle/Not_Interested/${userId}/`,
         {
           method: "GET",
 
@@ -211,8 +227,8 @@ export default function Another_User_Profile() {
                 className="w-full h-full shadow-lg shadow-[#000000]/25 object-cover"
                 src={
                   user.image
-                    ? `/api${user.image}`
-                    : `/src/assets/images/user_image.png`
+                    ? `https://www.batbooks.ir${user.image}`
+                    : `/images/user_image.png`
                 }
                 alt="userimage"
               />
@@ -316,12 +332,13 @@ export default function Another_User_Profile() {
                 author={lastBook.Author}
                 title={lastBook.name}
                 coverImage={
-                  lastBook.image != null ? `/api${lastBook.image}` : "/23.png"
+                  lastBook.image != null
+                    ? `https://www.batbooks.ir${lastBook.image}`
+                    : "/23.png"
                 }
                 chapters={80}
                 description={lastBook.description}
                 id={lastBook.id}
-
               />
             </div>
           ) : (
@@ -351,7 +368,7 @@ export default function Another_User_Profile() {
               onClick={() => handleScroll1("left")}
               className="absolute rounded-full bg-[#000000] z-2 mt-[107px] cursor-pointer left-0 ml-[80px]"
             >
-              <img src="/src/assets/images/slider.svg" alt="slider"></img>
+              <img src="/images/slider.svg" alt="slider"></img>
             </button>
           ) : null}
           {FavoriteBooks[0] ? (
@@ -360,7 +377,7 @@ export default function Another_User_Profile() {
               className="absolute rounded-full bg-[#000000] z-2 mt-[107px] cursor-pointer"
             >
               <img
-                src="/src/assets/images/slider.svg"
+                src="/images/slider.svg"
                 alt="slider"
                 className="rotate-180"
               ></img>
@@ -372,12 +389,12 @@ export default function Another_User_Profile() {
                 i !== FavoriteBooks.length ? (
                   <Book
                     key={i}
-                    coverImage={`/src/assets/images/book_sample${i}.png`}
+                    coverImage={`/images/book_sample${i}.png`}
                   />
                 ) : (
                   <Book
                     key={i}
-                    coverImage={`/src/assets/images/book_sample${i}.png`}
+                    coverImage={`/images/book_sample${i}.png`}
                     isLast={true}
                   />
                 )
@@ -400,7 +417,7 @@ export default function Another_User_Profile() {
               onClick={() => handleScroll2("left")}
               className="absolute rounded-full bg-[#000000] z-2 mt-[107px] cursor-pointer left-0 ml-[80px]"
             >
-              <img src="/src/assets/images/slider.svg" alt="slider"></img>
+              <img src="/images/slider.svg" alt="slider"></img>
             </button>
           ) : null}
           {UserWritten[0] && UserWritten.length > 7 ? (
@@ -409,7 +426,7 @@ export default function Another_User_Profile() {
               className="absolute rounded-full bg-[#000000] z-2 mt-[107px] cursor-pointer"
             >
               <img
-                src="/src/assets/images/slider.svg"
+                src="/images/slider.svg"
                 alt="slider"
                 className="rotate-180"
               ></img>
@@ -455,7 +472,11 @@ export function Book({ book, isLast = false, minw = 180, h = 254 }) {
         id={book.id}
         title={book.name}
         author={book.Author}
-        coverImage={book.image != null ? `/api/${book.image}` : "/20.jpg"}
+        coverImage={
+          book.image != null
+            ? `https://www.batbooks.ir/${book.image}`
+            : "/20.jpg"
+        }
         description={book.description}
         chapters={80}
       />

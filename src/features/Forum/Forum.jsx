@@ -17,7 +17,9 @@ export default function Forums() {
     const fetchForums = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`/api/forum/?page=${currentpage}`);
+        const response = await fetch(
+          `https://www.batbooks.ir/forum/?page=${currentpage}`
+        );
         if (response.ok) {
           const data = await response.json();
           setForums(data.results);
@@ -215,7 +217,7 @@ const Forum = ({
     if (forumImage) {
       return `https://www.batbooks.ir${forumImage}`;
     }
-    return `/src/assets/images/book_sample${bookId % 10 || 1}.png`;
+    return `/images/book_sample${bookId % 10 || 1}.png`;
   };
 
   return (

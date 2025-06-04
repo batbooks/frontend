@@ -334,12 +334,15 @@ export function SearchFilters({
     const fetchAdvancedSearchBook = async () => {
       try {
         setLoading2(true);
-        const response = await fetch(`/api/advance/${Query}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await fetch(
+          `https://www.batbooks.ir/advance/${Query}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
         if (!response.ok) {
           setLoading2(false);
           throw new Error("مشکلی پیش اومد...دوباره تلاش کنید");
@@ -661,13 +664,13 @@ export function SearchFilters({
           setLoading2(true);
           console.log(Query);
           const response = isVisibleFilters
-            ? await fetch(`/api/advance/${Query}`, {
+            ? await fetch(`https://www.batbooks.ir/advance/${Query}`, {
                 method: "GET",
                 headers: {
                   "Content-Type": "application/json",
                 },
               })
-            : await fetch(`/api/advance/${Query2}`, {
+            : await fetch(`https://www.batbooks.ir/advance/${Query2}`, {
                 method: "GET",
                 headers: {
                   "Content-Type": "application/json",
@@ -709,18 +712,21 @@ export function SearchFilters({
   useEffect(() => {
     const fetchGenresAndTags = async () => {
       setLoading(true);
-      const response = await fetch(`/api/tag/genres/`, {
+      const response = await fetch(`https://www.batbooks.ir/tag/genres/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
       });
-      const response2 = await fetch(`/api/tag/tag-categories/`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response2 = await fetch(
+        `https://www.batbooks.ir/tag/tag-categories/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const data = await response.json();
       const data2 = await response2.json();
       setGenres(data.genres);
@@ -827,7 +833,7 @@ export function SearchFilters({
               placeholder="نام کتاب"
             />
             <img
-              src="/src/assets/images/search.png"
+              src="/images/search.png"
               alt="search"
               className="absolute left-[14px] top-[12px]"
             />
@@ -847,7 +853,7 @@ export function SearchFilters({
             <div className="flex justify-between items-center">
               <div className="flex gap-[3px] items-center">
                 <img
-                  src="/src/assets/images/filter.png"
+                  src="/images/filter.png"
                   alt="filter"
                   className="min-w-[30px] max-w-[30px] min-h-[30px] max-h-[30px]"
                 />

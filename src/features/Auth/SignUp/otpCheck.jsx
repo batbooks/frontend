@@ -31,7 +31,7 @@ function Otp() {
 
     setLoading(true);
     try {
-      const response = await fetch("/api/auth/otp/", {
+      const response = await fetch("https://www.batbooks.ir/auth/otp/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, code: otpCode }),
@@ -82,23 +82,23 @@ function Otp() {
           </button>
         </form>
         <img
-          src="/src/assets/images/mid-left.png"
+          src="/images/mid-left.png"
           alt="mid-left"
           className=" absolute left-[335px] top-[280px]"
         />
         <img
-          src="/src/assets/images/mid-right.png"
+          src="/images/mid-right.png"
           alt="mid-right"
           className="absolute right-[280px] top-[-15px]"
         />
       </main>
       <img
-        src="/src/assets/images/bottom-left.png"
+        src="/images/bottom-left.png"
         alt="bottom-left"
         className="absolute left-0 bottom-0 w-[25vw] aspect-auto"
       />
       <img
-        src="/src/assets/images/bottom-right.png"
+        src="/images/bottom-right.png"
         alt="bottom-right"
         className=" absolute right-[0px] bottom-0 w-[33vw] aspect-auto"
       />

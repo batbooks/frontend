@@ -114,7 +114,7 @@ function Navbar() {
             {isAuthenticated && user.user_info.image != null ? (
               <img
                 className="w-[50px] h-[50px] rounded-[30px]"
-                src={`/api${user.user_info.image}`}
+                src={`https://www.batbooks.ir${user.user_info.image}`}
                 alt="User Image 2"
               />
             ) : (
@@ -382,7 +382,7 @@ function Navbar() {
                   <li className="w-full px-3 flex items-center gap-3">
                     <img
                       className="w-10 h-10  rounded-full"
-                      src={`/api${user.user_info.image}`}
+                      src={`https://www.batbooks.ir${user.user_info.image}`}
                       alt="asd"
                     />
                     <h3>{user.name} </h3>

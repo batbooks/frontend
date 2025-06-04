@@ -1,13 +1,44 @@
 import CommentIcon from "@mui/icons-material/Comment";
 import ReviewsIcon from "@mui/icons-material/Reviews";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
-import LogoutIcon from "@mui/icons-material/Logout";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Rating } from "@mui/material";
 import { AiFillLike, AiFillDislike } from "react-icons/ai";
+import Swal from "sweetalert2";
 
 export default function UserDashboard() {
   const [menuNum, setMenuNum] = useState(1);
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await fetch(`https://www.batbooks.ir/book/all/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (!response.ok) {
+          throw new Error("مشکلی پیش اومد...دوباره تلاش کنید");
+        }
+        const data = await response.json();
+      } catch (err) {
+        setTimeout(() => {
+          Swal.fire({
+            title: `${err.message}`,
+            icon: "error",
+            confirmButtonText: "تلاش مجدد",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
+            }
+          });
+        }, 100);
+      } finally {
+      }
+    };
+    fetchReviews();
+  }, []);
 
   return (
     <div className="flex gap-[40px] w-full">
@@ -43,12 +74,6 @@ export default function UserDashboard() {
           <AutoStoriesIcon className="relative" />
           <span className="span-btn !text-[16px] !ml-auto">
             کتاب های در حال خواندن
-          </span>
-        </button>
-        <button className="btn !mx-0 !rounded-[5px] !mb-0 !w-full !h-fit gap-[5px] py-[10px] pr-[5px] pl-[5px] !shadow-none outline-[1px] outline-[#000]/21 !focus:outline-[1px] !focus:outline-[#000]/21 !bg-red-700 before:!bg-[#FF3B30]">
-          <LogoutIcon className="relative" />
-          <span className="span-btn !text-[16px] !ml-auto">
-            خروج از حساب کاربری
           </span>
         </button>
       </div>
@@ -257,7 +282,7 @@ function ReadingBook() {
         <div className="flex">
           <img
             className="shadow-lg shadow-[#000000]/25 rounded-[20px] w-[153px] h-[189px]"
-            src="/src/assets/images/book_sample1.png"
+            src="/images/book_sample1.png"
             alt="book"
           ></img>
           <div className="flex flex-col mr-[26px] mt-[27px]">

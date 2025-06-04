@@ -7,7 +7,7 @@ export default function MyBooksSearchbar() {
         placeholder="جستجوی کتاب های شما"
       />
       <img
-        src="/src/assets/images/search.png"
+        src="/images/search.png"
         alt="search"
         className="w-[24px] h-[24px] z-2 ml-[15px] absolute"
       />

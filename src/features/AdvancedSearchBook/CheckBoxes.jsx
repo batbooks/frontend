@@ -37,13 +37,13 @@ export function CheckBoxes({ addFilter, filters }) {
           >
             {checkedNum === 0 ? (
               <img
-                src="/src/assets/images/checked.png"
+                src="/images/checked.png"
                 alt="checked"
                 className="h-[18px] w-[18px] mx-auto"
               />
             ) : (
               <img
-                src="/src/assets/images/unchecked.png"
+                src="/images/unchecked.png"
                 alt="unchecked"
                 className="h-[18px] w-[18px] mx-auto"
               />
@@ -83,13 +83,13 @@ export function CheckBoxes({ addFilter, filters }) {
           >
             {checkedNum === 1 ? (
               <img
-                src="/src/assets/images/checked.png"
+                src="/images/checked.png"
                 alt="checked"
                 className="h-[18px] w-[18px] mx-auto"
               />
             ) : (
               <img
-                src="/src/assets/images/unchecked.png"
+                src="/images/unchecked.png"
                 alt="unchecked"
                 className="h-[18px] w-[18px] mx-auto"
               />
@@ -127,13 +127,13 @@ export function CheckBoxes({ addFilter, filters }) {
           >
             {checkedNum === 2 ? (
               <img
-                src="/src/assets/images/checked.png"
+                src="/images/checked.png"
                 alt="checked"
                 className="h-[18px] w-[18px] mx-auto"
               />
             ) : (
               <img
-                src="/src/assets/images/unchecked.png"
+                src="/images/unchecked.png"
                 alt="unchecked"
                 className="h-[18px] w-[18px] mx-auto"
               />

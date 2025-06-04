@@ -64,12 +64,15 @@ export default function Suggestions() {
       setLoading(true);
 
       try {
-        const response = await fetch(`/api/suggestion/book/`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await fetch(
+          `https://www.batbooks.ir/suggestion/book/`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
         console.log("asd");
         if (response.ok) {
           const data = await response.json();
