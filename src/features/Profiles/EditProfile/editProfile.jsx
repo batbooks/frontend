@@ -23,13 +23,16 @@ export default function EditProfile({ setEditClicked }) {
       if (selectedFile) formData.append("image", selectedFile);
       if (userName) formData2.append("username", userName);
       if (formData) {
-        const response = await fetch(`/api/user/info/change/update/`, {
-          method: "PUT",
-          body: formData,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          `https://www.batbooks.ir/user/info/change/update/`,
+          {
+            method: "PUT",
+            body: formData,
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         if (response.ok) {
           Swal.fire({
@@ -46,13 +49,16 @@ export default function EditProfile({ setEditClicked }) {
       }
 
       if (formData2) {
-        const response = await fetch(`/api/user/info/change/username/`, {
-          method: "PUT",
-          body: formData2,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          `https://www.batbooks.ir/user/info/change/username/`,
+          {
+            method: "PUT",
+            body: formData2,
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error("درخواست موفق نبود");
@@ -95,7 +101,7 @@ export default function EditProfile({ setEditClicked }) {
     >
       <img
         className="absolute w-[420px] h-[594px] bottom-0 left-0 ml-[10.2px] z-2"
-        src="/src/assets/images/mid_left.png"
+        src="/images/mid_left.png"
         alt="midleft"
       />
       <button
@@ -103,14 +109,14 @@ export default function EditProfile({ setEditClicked }) {
         className="absolute rounded-full cursor-pointer h-[44px] w-[44px] right-[15px] top-[15px] hover:bg-[#E5E5E5]/40 pl-[2px] transition-colors duration-400 active:bg-[#E5E5E5]/90 active:duration-100"
       >
         <img
-          src="/src/assets/images/X_sign.svg"
+          src="/images/X_sign.svg"
           alt="X"
           className="z-2 w-[22px] h-[22px] m-auto"
         />
       </button>
       <div className="z-2">
-        <h1 className="text-[24px] font-[700] text-[#1A365D] mb-[43.4px] z-3">
-          ویرایش پروفایل
+        <h1 className="text-[40px] font-[700] text-[#cc1a85] mb-[43.4px] z-3">
+          پروفایل
         </h1>
 
         <form

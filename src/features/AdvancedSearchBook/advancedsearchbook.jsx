@@ -21,7 +21,7 @@ export default function AdvancedSearchBook() {
   useEffect(() => {
     const fetchAllBooks = async () => {
       try {
-        const response = await fetch(`/api/book/all/`, {
+        const response = await fetch(`https://www.batbooks.ir/book/all/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -70,7 +70,7 @@ export default function AdvancedSearchBook() {
         if (pageDiff > 0) {
           let nextLink = nextPageLink;
           for (let i = 0; i < pageDiff; i++) {
-            const response = await fetch(`/api${nextLink}`, {
+            const response = await fetch(`https://www.batbooks.ir${nextLink}`, {
               method: "GET",
               headers: {
                 "Content-Type": "application/json",
@@ -95,7 +95,7 @@ export default function AdvancedSearchBook() {
         } else if (pageDiff < 0) {
           let prevLink = prevPageLink;
           for (let i = pageDiff; i < 0; i++) {
-            const response = await fetch(`/api${prevLink}`, {
+            const response = await fetch(`https://www.batbooks.ir${prevLink}`, {
               method: "GET",
               headers: {
                 "Content-Type": "application/json",
@@ -317,7 +317,7 @@ function Book({
       <div className="flex gap-[16px] items-center">
         {coverImage === null ? (
           <img
-            src="/src/assets/images/book_sample1.png"
+            src="/images/book_sample1.png"
             alt="book"
             className="rounded-[20px] w-[153px] h-[184px]"
           />

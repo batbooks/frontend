@@ -45,7 +45,7 @@ const ExploreByGenre = () => {
       setLoading(true);
 
       try {
-        const response = await fetch(`/api/category/`, {
+        const response = await fetch(`https://www.batbooks.ir/category/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
