@@ -98,8 +98,8 @@ function AppRoutes() {
         />
         <Route path="/threads/:forumId" element={<Threads forumId={3} />} />
         <Route
-          path="/forums/threads/:forumId/threadposts/:threadId"
-          element={<ThreadPosts />}
+          path="/threadposts/:threadId"
+          element={<ThreadPosts threadId={3} threadName={"تست"} />}
         />
         <Route path="chat" element={<ChatPage />} />
         <Route path="/contact" element={<ContactUs />} />

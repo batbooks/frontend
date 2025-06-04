@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Card({ data }) {
   const { name, author, created_at } = data;
-  console.log(data)
+  console.log(data);
   const formatDate = (isoDate) => {
     if (!isoDate) return "تاریخ نامعلوم";
 
@@ -30,7 +30,7 @@ export default function Card({ data }) {
 
         {/* اطلاعات نویسنده و تاریخ */}
         <div className="flex flex-row-reverse justify-between items-center w-full mt-2.5">
-        <h4 className="text-[#333333] text-sm">
+          <h4 className="text-[#333333] text-sm">
             ساخته شده در: {formatDate(created_at)}
           </h4>
           <h4 className="text-[#333333] text-sm">
