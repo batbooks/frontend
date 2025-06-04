@@ -25,6 +25,9 @@ import People from "./features/People/people.jsx";
 import Forums from "./features/Forum/Forum.jsx";
 import EditBook from "./features/EditBook/editBook.jsx";
 import ContactUs from "./features/ContactUs/contactUs.jsx";
+import PlaylistPage from "./features/playlist/playlist.jsx";
+import PlaylistDetailPage from "./features/playlist/PlaylistDetailPage.jsx";
+
 function AppRoutes() {
   return (
     <Router>
@@ -103,6 +106,8 @@ function AppRoutes() {
         />
         <Route path="chat" element={<ChatPage />} />
         <Route path="/contact" element={<ContactUs />} />
+        <Route path="/playlists" element={<PlaylistPage />} />
+        <Route path="/playlists/:id" element={<PlaylistDetailPage />} />
       </Routes>
     </Router>
   );
