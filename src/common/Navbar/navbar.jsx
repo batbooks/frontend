@@ -286,7 +286,7 @@ function Navbar() {
                   onClick={() => {
                     setSelectedItem(0);
                     setIsVisiblePanel(false);
-                    navigate("/searchresults", {
+                    navigate("/forums", {
                       state: { searchingItem: "forum" },
                     });
                   }}
@@ -300,7 +300,7 @@ function Navbar() {
                   onClick={() => {
                     setSelectedItem(0);
                     setIsVisiblePanel(false);
-                    navigate("/searchresults", {
+                    navigate("/people", {
                       state: { searchingItem: "people" },
                     });
                   }}

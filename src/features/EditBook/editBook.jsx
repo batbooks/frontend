@@ -1,4 +1,4 @@
-import Footer from "/src/common/Footer/footer";
+import Footer from "/src/common/Footer/Footer";
 import Navbar from "/src/common/Navbar/navbar";
 import TagExplorer from "../CreateBook/TagExplorer";
 import { useEffect, useState } from "react";
