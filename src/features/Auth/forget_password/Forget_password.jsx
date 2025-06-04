@@ -27,13 +27,16 @@ function Forget_password() {
 
     try {
       // Replace this with your actual API endpoint
-      const response = await fetch("https://www.batbooks.ir/auth/reset-password/send-otp/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      });
+      const response = await fetch(
+        "https://www.batbooks.ir/auth/reset-password/send-otp/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        }
+      );
 
       const data = await response.json();
 
@@ -105,7 +108,7 @@ function Forget_password() {
             />
             <div className="absolute inset-y-0 left-[27.5vw] flex items-center pl-[1vw] pointer-events-none ">
               <img
-                src="/src/assets/images/user.png"
+                src="/images/user.png"
                 alt="Email Icon"
                 className="h-4.5  w-[1.2vw] opacity-90"
               />
@@ -128,25 +131,25 @@ function Forget_password() {
           بازگشت به صفحه ورود
         </Link>
         <img
-          src="/src/assets/images/mid-left.png"
+          src="/images/mid-left.png"
           alt="mid-right"
           className="w-45 absolute top-64 left-[30vw] "
         />
         {/* <img src="batbooks.png" alt="mid-right" className="w-[5.2vw] absolute top-3 left-0 "/> */}
 
         <img
-          src="/src/assets/images/bottom-left.png"
+          src="/images/bottom-left.png"
           alt="bottom-left"
           className="absolute left-0 bottom-0 w-[25vw] aspect-auto"
         />
         <img
-          src="/src/assets/images/bottom-right.png"
+          src="/images/bottom-right.png"
           alt="bottom-right"
           className=" absolute right-[0px] bottom-0 w-[33vw] aspect-auto"
         />
 
         <img
-          src="/src/assets/images/mid-right.png"
+          src="/images/mid-right.png"
           alt="mid-right"
           className="w-[13vw]   absolute -top-1 left-[62.3vw] min-w-32"
         />

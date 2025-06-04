@@ -98,7 +98,7 @@ export default function Vf() {
             <div className="place-items-center lg:ml-[4.5vw]">
               <div className="relative flex  items-center w-[52vw] bg-white border border-gray-300 rounded-full mb-2 md:mb-4 md:h-12 lg:w-[26vw] lg:mb-0  ">
                 <img
-                  src="/src/assets/images/mid-left.png"
+                  src="/images/mid-left.png"
                   alt="mid-right"
                   className=" hidden absolute md:block md:top-32  md:-left-[15vw] md:w-70  lg:block lg:w-45 lg:absolute lg:top-26 lg:-left-[9.2vw] "
                 />
@@ -111,7 +111,7 @@ export default function Vf() {
                   className="w-full h-10 px-[6vw] text-right bg-transparent focus:outline-none rounded-full placeholder:opacity-40 placeholder:text-right focus:ring-2 focus:ring-blue-700 hover:ring-2 hover:ring-blue-700 lg:px-[3.1vw] "
                 />
                 <img
-                  src="/src/assets/images/lock.png"
+                  src="/images/lock.png"
                   alt="lock"
                   className="absolute left-[47vw] text-gray-500 lg:left-[23.3vw] "
                 />
@@ -132,7 +132,7 @@ export default function Vf() {
                   className="w-full h-10 px-[6vw] text-right bg-transparent focus:outline-none rounded-full placeholder:opacity-40 placeholder:text-right focus:ring-2 focus:ring-blue-700 hover:ring-2 hover:ring-blue-700 lg:px-[3.1vw]"
                 />
                 <img
-                  src="/src/assets/images/lock.png"
+                  src="/images/lock.png"
                   alt="lock"
                   className="absolute left-[47vw] text-gray-500 lg:left-[23.3vw]"
                 />
@@ -155,7 +155,7 @@ export default function Vf() {
                   className="w-full h-10 px-[6vw] text-right bg-transparent focus:outline-none rounded-full placeholder:opacity-40 placeholder:text-right focus:ring-2 focus:ring-blue-700 hover:ring-2 hover:ring-blue-700 lg:px-[3.1vw]"
                 />
                 <img
-                  src="/src/assets/images/lock.png"
+                  src="/images/lock.png"
                   alt="lock"
                   className="absolute left-[47vw] text-gray-500 lg:left-[23.3vw]"
                 />
@@ -178,7 +178,7 @@ export default function Vf() {
           </form>
         </div>
         <img
-          src="/src/assets/images/mid-right.png"
+          src="/images/mid-right.png"
           alt="mid-right"
           className="w-[13vw]   absolute top-30 left-[65.3vw] min-w-32 md:left-[67vw] md:w-[30vw] md:top-20  lg:left-[62.3vw] lg:-top-18 lg:w-[13vw]"
         />
@@ -192,12 +192,12 @@ export default function Vf() {
       </h1>
       {/* <img src="batbooks.png" alt="mid-right" className="w-[5.2vw] absolute top-3 left-0 "/> */}
       <img
-        src="/src/assets/images/bottom-left.png"
+        src="/images/bottom-left.png"
         alt="bottom-left"
         className="absolute left-0 bottom-0 w-[25vw] aspect-auto"
       />
       <img
-        src="/src/assets/images/bottom-right.png"
+        src="/images/bottom-right.png"
         alt="bottom-right"
         className=" absolute right-[0px] bottom-0 w-[33vw] aspect-auto"
       />

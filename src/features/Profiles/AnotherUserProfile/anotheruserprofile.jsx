@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import Footer from "/src/common/Footer/footer";
+import Footer from "/src/common/Footer/Footer";
 import Navbar from "/src/common/Navbar/navbar";
 import BookCard from "../../../common/BookCard/bookCard";
 import "./anotheruserprofile.css";
@@ -228,7 +228,7 @@ export default function Another_User_Profile() {
                 src={
                   user.image
                     ? `https://www.batbooks.ir${user.image}`
-                    : `/src/assets/images/user_image.png`
+                    : `/images/user_image.png`
                 }
                 alt="userimage"
               />
@@ -388,7 +388,7 @@ export default function Another_User_Profile() {
               onClick={() => handleScroll1("left")}
               className="absolute rounded-full bg-[#000000] z-2 mt-[107px] cursor-pointer left-0 ml-[80px]"
             >
-              <img src="/src/assets/images/slider.svg" alt="slider"></img>
+              <img src="/images/slider.svg" alt="slider"></img>
             </button>
           ) : null}
           {FavoriteBooks[0] ? (
@@ -397,7 +397,7 @@ export default function Another_User_Profile() {
               className="absolute rounded-full bg-[#000000] z-2 mt-[107px] cursor-pointer"
             >
               <img
-                src="/src/assets/images/slider.svg"
+                src="/images/slider.svg"
                 alt="slider"
                 className="rotate-180"
               ></img>
@@ -409,12 +409,12 @@ export default function Another_User_Profile() {
                 i !== FavoriteBooks.length ? (
                   <Book
                     key={i}
-                    coverImage={`/src/assets/images/book_sample${i}.png`}
+                    coverImage={`/images/book_sample${i}.png`}
                   />
                 ) : (
                   <Book
                     key={i}
-                    coverImage={`/src/assets/images/book_sample${i}.png`}
+                    coverImage={`/images/book_sample${i}.png`}
                     isLast={true}
                   />
                 )
@@ -437,7 +437,7 @@ export default function Another_User_Profile() {
               onClick={() => handleScroll2("left")}
               className="absolute rounded-full bg-[#000000] z-2 mt-[107px] cursor-pointer left-0 ml-[80px]"
             >
-              <img src="/src/assets/images/slider.svg" alt="slider"></img>
+              <img src="/images/slider.svg" alt="slider"></img>
             </button>
           ) : null}
           {UserWritten[0] && UserWritten.length > 7 ? (
@@ -446,7 +446,7 @@ export default function Another_User_Profile() {
               className="absolute rounded-full bg-[#000000] z-2 mt-[107px] cursor-pointer"
             >
               <img
-                src="/src/assets/images/slider.svg"
+                src="/images/slider.svg"
                 alt="slider"
                 className="rotate-180"
               ></img>

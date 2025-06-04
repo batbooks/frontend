@@ -19,7 +19,7 @@ export default function ReadingGoalCard() {
         </p>
         <div className="bg-[#A4C0ED] rounded-[15px] mb-[26px]">
           <img
-            src="/src/assets/images/reading_challenge.png"
+            src="/images/reading_challenge.png"
             alt="challenge"
             className="mx-auto"
           />
@@ -32,14 +32,14 @@ export default function ReadingGoalCard() {
             className="cursor-pointer rounded-full"
             onClick={() => (bookNum !== 1000 ? setBookNum(bookNum + 1) : null)}
           >
-            <img src="/src/assets/images/plus.png" alt="plus" />
+            <img src="/images/plus.png" alt="plus" />
           </button>
           <span>{bookNum}</span>
           <button
             className="cursor-pointer rounded-full"
             onClick={() => (bookNum !== 0 ? setBookNum(bookNum - 1) : null)}
           >
-            <img src="/src/assets/images/minus.png" alt="minus" />
+            <img src="/images/minus.png" alt="minus" />
           </button>
         </div>
         <p className="text-[12px] font-[300] text-[#DDDDDD] mb-[27px]">

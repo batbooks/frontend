@@ -12,14 +12,17 @@ export default function UserCard({ user }) {
 
     const fetchFollowing = async () => {
       try {
-        const response = await fetch(`/api/user/is/follow/${user.user_id}/`, {
-          method: "GET",
+        const response = await fetch(
+          `https://www.batbooks.ir/user/is/follow/${user.user_id}/`,
+          {
+            method: "GET",
 
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-          },
-        });
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          }
+        );
         const data = await response.json();
         setIsFollowing(data.is_follow);
       } catch (err) {
@@ -32,14 +35,17 @@ export default function UserCard({ user }) {
   }, []);
   const handleFollow = async () => {
     try {
-      const response = await fetch(`/api/user/toggle/follow/${user.user_id}/`, {
-        method: "GET",
+      const response = await fetch(
+        `https://www.batbooks.ir/user/toggle/follow/${user.user_id}/`,
+        {
+          method: "GET",
 
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        },
-      });
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
+      );
     } catch (err) {
       console.error(err.message);
     }

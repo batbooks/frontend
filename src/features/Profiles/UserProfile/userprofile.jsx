@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import EditProfile from "../EditProfile/editProfile";
-import Footer from "/src/common/Footer/footer";
+import Footer from "/src/common/Footer/Footer";
 import Navbar from "/src/common/Navbar/navbar";
 import { Rating } from "@mui/material";
 import BookCard from "../../../common/BookCard/bookCard";
@@ -59,9 +59,12 @@ export default function Profile() {
       setLoading2(true);
 
       try {
-        const response = await fetch(`https://www.batbooks.ir/book/user/${userid}/`, {
-          method: "GET",
-        });
+        const response = await fetch(
+          `https://www.batbooks.ir/book/user/${userid}/`,
+          {
+            method: "GET",
+          }
+        );
 
         if (response.ok) {
           const data = await response.json();
@@ -83,13 +86,16 @@ export default function Profile() {
     const fetchFollowings = async () => {
       setLoading1(true);
       try {
-        const response = await fetch(`https://www.batbooks.ir/user/following/`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          `https://www.batbooks.ir/user/following/`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         if (response.ok) {
           const data = await response.json();
           setFollowings(data.results);
@@ -133,7 +139,7 @@ export default function Profile() {
 
   if (loading || loading1 || loading2)
     return (
-      <div className="h-[100vh] grid place-items-center">
+      <div className="h-screen grid place-items-center">
         <Loading />
       </div>
     );
@@ -147,73 +153,77 @@ export default function Profile() {
       </div>
       <main
         style={{ direction: "rtl" }}
-        className="flex flex-col gap-[20px] max-w-screen px-[80px] pb-[90px] pt-[13px] shadow-2xl shadow-[#000000]-25 items-center overflow-hidden"
+        className="flex flex-col gap-5 md:gap-8 lg:gap-[20px] max-w-screen px-4 sm:px-6 md:px-8 lg:px-20 pb-16 md:pb-20 lg:pb-[90px] pt-3 md:pt-4 lg:pt-[13px] shadow-2xl shadow-[#000000]-25 items-center overflow-hidden"
       >
-        <h1 className="text-[#265073] text-[32px] font-[700] mx-auto ">
+        <h1 className="text-[#265073] text-2xl sm:text-3xl lg:text-[32px] font-bold mx-auto">
           پروفایل کاربری
         </h1>
 
-        <div className="flex min-w-[90vw] bg-[#A4C0ED] ml-auto rounded-[35px] shadow-lg shadow-[#000000]/25 mb-[40px] pl-[52px] pr-[23px] pt-[20px] gap-[39px] border-[2px] border-[#000000]/8 ">
-          <div className="min-w-[236px] flex flex-col gap-[15px]">
-            <div className="w-[236px] aspect-square rounded-full overflow-hidden">
+        <div className="flex flex-col lg:flex-row w-full max-w-[90vw] bg-[#A4C0ED] ml-auto rounded-2xl lg:rounded-[35px] shadow-lg shadow-[#000000]/25 mb-8 md:mb-10 lg:mb-[40px] p-4 md:p-6 lg:pl-12 lg:pr-6 lg:pt-5 gap-4 md:gap-6 lg:gap-[39px] border-2 border-[#000000]/8">
+          <div className="flex flex-col items-center lg:items-start lg:min-w-[236px] gap-3 md:gap-4 lg:gap-[15px]">
+            <div className="w-40 h-40 md:w-48 md:h-48 lg:w-[236px] lg:h-[236px] rounded-full overflow-hidden">
               <img
                 className="w-full h-full shadow-lg shadow-[#000000]/25 object-cover"
                 src={
                   userInfo.image
                     ? `https://www.batbooks.ir${userInfo.image}`
-                    : `/src/assets/images/user_image.png`
+                    : `/images/user_image.png`
                 }
                 alt="userimage"
               />
             </div>
-            <h3 className="  text-[24px] font-bold text-center">
+            <h3 className="text-xl md:text-2xl lg:text-[24px] font-bold text-center lg:text-right">
               {userInfo.user}
             </h3>
-            <div className=" flex flex-col  ">
+            <div className="w-full lg:w-auto flex flex-col gap-2">
               <button
                 onMouseEnter={() => setIsHoveredEdit(true)}
                 onMouseLeave={() => setIsHoveredEdit(false)}
                 onClick={() => setEditClicked(true)}
-                className="btn !w-full"
+                className="btn !w-full lg:!w-auto lg:min-w-[200px]"
               >
                 {!isHoveredEdit ? (
                   <img
-                    className="w-[22px] h-[22px] relative"
+                    className="w-5 h-5 lg:w-[22px] lg:h-[22px] relative"
                     src="/src/assets/images/edit_sign.png"
                     alt="edit"
                   />
                 ) : (
                   <img
-                    className="w-[22px] h-[22px] relative"
+                    className="w-5 h-5 lg:w-[22px] lg:h-[22px] relative"
                     src="/src/assets/images/edit_sign2.png"
                     alt="edit"
                   />
                 )}
-                <span className="span-btn font-[400]">ویرایش پروفایل</span>
+                <span className="span-btn font-normal">ویرایش پروفایل</span>
               </button>
               <button
                 onClick={handleLogout}
-                className=" btn  !bg-red-700 !w-full before:!bg-[#FF3B30] "
+                className="btn !bg-red-700 !w-full lg:!w-auto lg:min-w-[200px] before:!bg-[#FF3B30]"
               >
-                <span className="span-btn font-[400]">خروج از حساب کاربری</span>
+                <span className="span-btn font-normal">
+                  خروج از حساب کاربری
+                </span>
               </button>
             </div>
           </div>
 
-          <div className="w-full m-[32px] mt-0 ml-0 ">
-            <h1 className="text-[26px] font-bold">قفسه ها:</h1>
+          <div className="w-full m-0 lg:m-8 lg:mt-0 lg:ml-0">
+            <h1 className="text-xl md:text-2xl lg:text-[26px] font-bold">
+              قفسه ها:
+            </h1>
 
-            <div className="flex gap-[20px] mb-[19px]">
+            <div className="flex flex-wrap gap-4 md:gap-5 lg:gap-[20px] mb-4 md:mb-5 lg:mb-[19px]">
               <button
                 onClick={() => {
                   navigate("/mybooks");
                 }}
-                className="btn !m-0 !mt-[10px] !min-h-[60px] !flex !flex-col !bg-[#ffffff]  !rounded-[10px]"
+                className="btn !m-0 !mt-2 lg:!mt-[10px] !min-h-12 lg:!min-h-[60px] !flex !flex-col !bg-white !rounded-lg"
               >
-                <h4 className=" span-btn !text-[24px] !font-[600] !text-[#265073]">
+                <h4 className="span-btn !text-xl md:!text-2xl lg:!text-[24px] !font-semibold !text-[#265073]">
                   {writtenBooks}
                 </h4>
-                <h4 className="span-btn !font-[400] !text-[#000000]/70 !text-[14px]">
+                <h4 className="span-btn !font-normal !text-[#000000]/70 !text-xs md:!text-sm lg:!text-[14px]">
                   کتاب تالیف شده
                 </h4>
               </button>
@@ -229,18 +239,22 @@ export default function Profile() {
                       setIsFollowingOpened(false);
                     }, 250)
                   }
-                  className="btn !m-0 !mt-[10px] !min-h-[60px] !flex !flex-col !bg-[#ffffff]  !rounded-[10px]"
+                  className="btn !m-0 !mt-2 lg:!mt-[10px] !min-h-12 lg:!min-h-[60px] !flex !flex-col !bg-white !rounded-lg"
                 >
-                  <h4 className=" span-btn !text-[24px] !font-[600] !text-[#265073]">
+                  <h4 className="span-btn !text-xl md:!text-2xl lg:!text-[24px] !font-semibold !text-[#265073]">
                     {userInfo.following_count}
                   </h4>
-                  <h4 className="span-btn !font-[400] !text-[#000000]/70 !text-[14px]">
+                  <h4 className="span-btn !font-normal !text-[#000000]/70 !text-xs md:!text-sm lg:!text-[14px]">
                     نفر دنبال شده
                   </h4>
                 </button>
                 <ul
                   dir="ltr"
-                  className={`z-10 absolute w-[487px] rounded-[5px] overflow-y-auto transition-opacity duration-400 ease-in-out ${isFollowingOpened ? "visible opacity-100" : "hidden opacity-0"} shadow-lg shadow-[#000000]/21 h-[304px] mt-[73px] bg-[#ffffff] divide-y divide-[#2F4F4F]/50`}
+                  className={`z-10 absolute w-[90vw] sm:w-[80vw] md:w-[487px] rounded-md overflow-y-auto transition-opacity duration-400 ease-in-out ${
+                    isFollowingOpened
+                      ? "visible opacity-100"
+                      : "hidden opacity-0"
+                  } shadow-lg shadow-[#000000]/21 h-[304px] mt-[73px] bg-white divide-y divide-[#2F4F4F]/50`}
                 >
                   {followings.map((user) => (
                     <UserFollowing user={user} />
@@ -249,21 +263,24 @@ export default function Profile() {
               </div>
             </div>
 
-            <h1 className="text-[26px] font-bold mb-1">مشخصات:</h1>
-            <div className="relative bg-white h-[230px] rounded-[10px] shadow-lg shadow-[#000000]/25">
-              <div className="pt-[11px] px-[20px] mt-[10px] ">
-                <p className="font-semibold text-[16px] mb-[5px]">بیوگرافی:</p>
-                <div className="min-w-175">
-                  <p className="text-[#000000] text-[14px] font-[300]">
+            <h1 className="text-xl md:text-2xl lg:text-[26px] font-bold mb-1">
+              مشخصات:
+            </h1>
+            <div className="relative bg-white h-48 md:h-52 lg:h-[230px] rounded-lg shadow-lg shadow-[#000000]/25">
+              <div className="pt-3 px-5 lg:pt-[11px] lg:px-[20px] mt-2 lg:mt-[10px]">
+                <p className="font-semibold text-sm md:text-base lg:text-[16px] mb-1 lg:mb-[5px]">
+                  بیوگرافی:
+                </p>
+                <div className="min-w-[175px]">
+                  <p className="text-[#000000] text-xs md:text-sm lg:text-[14px] font-light">
                     {userInfo.bio}
                   </p>
                 </div>
-                <p className="text-[14px] absolute bottom-10">
+                <p className="text-xs md:text-sm lg:text-[14px] absolute bottom-10">
                   <span className="font-semibold">جنسیت:</span>{" "}
                   {user.gender === "female" ? "زن" : "مرد"}
                 </p>
-                <p className="text-[14px] font-[300] absolute bottom-2">
-                  {/* {user.joined_date} */}
+                <p className="text-xs md:text-sm lg:text-[14px] font-light absolute bottom-2">
                   <span className="font-semibold"> تاریخ ثبت نام: </span>
                   {getPersianDate(user.joined_date)}
                 </p>
@@ -276,19 +293,16 @@ export default function Profile() {
               onClick={() => {
                 navigate(`/book/${lastBook.id}`);
               }}
-              className="min-w-[242px] h-[368px] m-[32px] mt-[5px]  ml-0 "
+              className="hidden lg:block lg:min-w-[292px] w-[200px] h-auto lg:h-[368px] m-0 lg:m-8 lg:mt-1 lg:ml-0"
             >
-              <h1 className="text-[18px] font-bold mb-1">
+              <h1 className="text-base md:text-lg lg:text-[18px] font-bold mb-1">
                 آخرین کتاب نوشته شده:
               </h1>
-              {console.log(lastBook.id)}
               <BookCard
                 title={lastBook.name}
                 author={lastBook.Author}
                 coverImage={
-                  lastBook.image
-                    ? lastBook.image
-                    : "/src/assets/images/book_sample1.png"
+                  lastBook.image ? lastBook.image : "/images/book_sample1.png"
                 }
                 description={lastBook.description}
                 chapters={85}
@@ -298,27 +312,33 @@ export default function Profile() {
             <button
               onMouseEnter={() => setIsHoveredFavBook(true)}
               onMouseLeave={() => setIsHoveredFavBook(false)}
-              className="relative bg-[#ffffff] rounded-[20px] px-[17px] pt-[41px] pb-[28px] mt-[32px] mr-auto shadow-lg shadow-[#000000]/25 min-w-[242px] cursor-pointer"
+              className="relative bg-white rounded-xl lg:rounded-[20px] px-4 lg:px-[17px] pt-10 lg:pt-[41px] pb-7 lg:pb-[28px] mt-4 lg:mt-8 mr-auto shadow-lg shadow-[#000000]/25 w-full lg:min-w-[242px] cursor-pointer"
             >
               <img
-                src="/src/assets/images/favorite_book.png"
+                src="/images/favorite_book.png"
                 alt="favoritebook"
-                className={`transition-all duration-500 ${isHoveredFavBook ? "blur-sm" : "blur-none"}`}
+                className={`transition-all duration-500 mx-auto ${
+                  isHoveredFavBook ? "blur-sm" : "blur-none"
+                }`}
               />
               <button
-                className={`transition-all duration-500 absolute mx-auto inset-x-0 max-h-[40px] max-w-[239px] my-auto inset-y-0 flex gap-[15px] bg-[#2663cd] text-[#ffffff] text-[16px] text-nowrap items-center rounded-[46px] py-[8px] px-[18px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto ${isHoveredFavBook ? "visible opacity-100" : "invisible opacity-0"}`}
+                className={`transition-all duration-500 absolute mx-auto inset-x-0 max-h-10 max-w-[239px] my-auto inset-y-0 flex gap-3 md:gap-4 lg:gap-[15px] bg-[#2663cd] text-white text-sm md:text-base lg:text-[16px] whitespace-nowrap items-center rounded-full lg:rounded-[46px] py-2 lg:py-[8px] px-4 lg:px-[18px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-2 focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto ${
+                  isHoveredFavBook
+                    ? "visible opacity-100"
+                    : "invisible opacity-0"
+                }`}
               >
                 <img
-                  className="w-[22px] h-[22px]"
+                  className="w-5 h-5 lg:w-[22px] lg:h-[22px]"
                   src="/src/assets/images/edit_sign.png"
                   alt="edit"
                 />
-                <h4 className="font-[400]">کتاب جدید خود را بنویسید</h4>
+                <h4 className="font-normal">کتاب جدید خود را بنویسید</h4>
               </button>
             </button>
           )}
         </div>
-        <h2 className="text-[24px] font-[400] text-[#265073] ml-auto mb-[25px]">
+        <h2 className="text-xl md:text-2xl lg:text-[24px] font-normal text-[#265073] ml-auto mb-6 lg:mb-[25px]">
           داشبورد مدیریتی
         </h2>
         <UserDashboard />
@@ -329,7 +349,9 @@ export default function Profile() {
         <Footer />
       </div>
       <div
-        className={`fixed flex justify-center top-2 w-[100%] transition-all duration-500 ${editClicked ? "visible opacity-100" : "invisible opacity-0"} z-2`}
+        className={`fixed flex justify-center top-2 w-full transition-all duration-500 ${
+          editClicked ? "visible opacity-100" : "invisible opacity-0"
+        } z-20`}
       >
         <EditProfile setEditClicked={setEditClicked} />
       </div>
@@ -346,16 +368,22 @@ export default function Profile() {
             navigate(`/anotheruserprofile/${user.following_user_id}`);
           }
         }}
-        className={`flex items-center h-[152px] pr-[33px] pl-[21px] justify-between relative overflow-hidden p-[21px] bg-[#ffffff] outline-[2px] outline-[#000000]/21 rounded-[5px] cursor-pointer ${!isHoveredInnerButton ? "hover:ease-in-out hover:before:w-full hover:before:h-full hover:shadow-[#000000]/50 hover:shadow-lg hover:text-white" : ""} before:absolute before:w-0 before:h-0 before:bg-[#2663CD]/60 before:shadow-none before:inset-0 before:transition-all before:duration-[0.2s] transition-all active:before:bg-[#2663CD]/40 active:outline-none active:shadow-none active:ring-0 active:ring-offset-0`}
+        className={`flex flex-col md:flex-row items-center h-auto md:h-[152px] py-4 md:py-0 pr-4 md:pr-8 pl-4 md:pl-5 justify-between relative overflow-hidden p-5 md:p-[21px] bg-white outline-2 outline-[#000000]/21 rounded-md cursor-pointer ${
+          !isHoveredInnerButton
+            ? "hover:ease-in-out hover:before:w-full hover:before:h-full hover:shadow-[#000000]/50 hover:shadow-lg hover:text-white"
+            : ""
+        } before:absolute before:w-0 before:h-0 before:bg-[#2663CD]/60 before:shadow-none before:inset-0 before:transition-all before:duration-200 transition-all active:before:bg-[#2663CD]/40 active:outline-none active:shadow-none active:ring-0 active:ring-offset-0`}
       >
         {following[user.following_user_id] ? (
           <button
             onClick={() => handleFollow(user)}
             onMouseEnter={() => setIsHoveredInnerButton(true)}
             onMouseLeave={() => setIsHoveredInnerButton(false)}
-            className="btn py-[7px] px-[21px] !rounded-[10px] !w-fit !h-fit !ml-0 !mr-0 !mb-0"
+            className="btn py-2 px-5 md:py-[7px] md:px-[21px] !rounded-lg !w-fit !h-fit !ml-0 !mr-0 !mb-2 md:!mb-0"
           >
-            <h4 className="span-btn text-[14px] font-[300]">دنبال کردن</h4>
+            <h4 className="span-btn text-sm md:text-[14px] font-light">
+              دنبال کردن
+            </h4>
           </button>
         ) : (
           <button
@@ -365,32 +393,36 @@ export default function Profile() {
             }}
             onMouseEnter={() => setIsHoveredInnerButton(true)}
             onMouseLeave={() => setIsHoveredInnerButton(false)}
-            className="btn py-[7px] px-[21px] !rounded-[10px] !w-fit !h-fit !ml-0 !mr-0 !mb-0"
+            className="btn py-2 px-5 md:py-[7px] md:px-[21px] !rounded-lg !w-fit !h-fit !ml-0 !mr-0 !mb-2 md:!mb-0"
           >
-            <h4 className="span-btn text-[14px] font-[300]">دنبال نکردن</h4>
+            <h4 className="span-btn text-sm md:text-[14px] font-light">
+              دنبال نکردن
+            </h4>
           </button>
         )}
 
-        <div className="relative flex items-center gap-[18px] cursor-pointer rounded-full">
-          <div className="flex flex-col gap-[5px]">
-            <h4 className="ml-auto text-[20px] font-[600]">{user.following}</h4>
+        <div className="relative flex items-center gap-4 md:gap-[18px] cursor-pointer rounded-full">
+          <div className="flex flex-col gap-1 md:gap-[5px]">
+            <h4 className="ml-auto text-lg md:text-[20px] font-semibold">
+              {user.following}
+            </h4>
             <h4
               dir="rtl"
-              className="text-[12px] font-[400] text-[#265073]"
+              className="text-xs md:text-[12px] font-normal text-[#265073]"
             ></h4>
           </div>
 
           {user.following_image == null ? (
             <img
-              src={"/src/assets/images/following.png"}
+              src={"/images/following.png"}
               alt="following"
-              className="rounded-full w-[110px] h-[110px]"
+              className="rounded-full w-20 h-20 md:w-[110px] md:h-[110px]"
             />
           ) : (
             <img
               src={`https://www.batbooks.ir${user.following_image}`}
               alt="following"
-              className="rounded-full w-[110px] h-[110px]"
+              className="rounded-full w-20 h-20 md:w-[110px] md:h-[110px]"
             />
           )}
         </div>

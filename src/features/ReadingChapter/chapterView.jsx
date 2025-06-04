@@ -29,12 +29,15 @@ const ReadingPage = () => {
       setLoading(true);
 
       try {
-        const response = await fetch(`https://www.batbooks.ir/book/chapter/${chapterId}/`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await fetch(
+          `https://www.batbooks.ir/book/chapter/${chapterId}/`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         if (response.status == 404) {
           setChapterFound(false);
@@ -94,7 +97,7 @@ const ReadingPage = () => {
           ) : (
             <img
               className="w-[179px] h-[247px] rounded-[15px]"
-              src="/src/assets/images/book_sample2.png"
+              src="/images/book_sample2.png"
               alt="chapter"
             />
           )}

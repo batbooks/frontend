@@ -48,7 +48,7 @@ export function AvgScores({ setFilters }) {
                   className="rounded-full flex cursor-pointer z-2 w-[12.5px] h-[12.5px] mb-[-20px]"
                 ></button>
                 <img
-                  src="/src/assets/images/plus2.png"
+                  src="/images/plus2.png"
                   alt="plus"
                   className="w-[25px] h-[25px]"
                 />
@@ -93,7 +93,7 @@ export function AvgScores({ setFilters }) {
                   className="rounded-full flex cursor-pointer z-2 w-[12.5px] h-[12.5px] mb-[-20px]"
                 ></button>
                 <img
-                  src="/src/assets/images/minus2.png"
+                  src="/images/minus2.png"
                   alt="minus"
                   className="w-[25px] h-[25px]"
                 />
@@ -151,7 +151,7 @@ export function AvgScores({ setFilters }) {
                   className="rounded-full flex cursor-pointer z-2 w-[12.5px] h-[12.5px] mb-[-20px]"
                 ></button>
                 <img
-                  src="/src/assets/images/plus2.png"
+                  src="/images/plus2.png"
                   alt="plus"
                   className="w-[25px] h-[25px]"
                 />
@@ -192,7 +192,7 @@ export function AvgScores({ setFilters }) {
                   className="rounded-full flex cursor-pointer z-2 w-[12.5px] h-[12.5px] mb-[-20px]"
                 ></button>
                 <img
-                  src="/src/assets/images/minus2.png"
+                  src="/images/minus2.png"
                   alt="minus"
                   className="w-[25px] h-[25px]"
                 />

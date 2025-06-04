@@ -20,15 +20,18 @@ function AppContent() {
       setLoading(true);
       if (localStorage.getItem("refresh_token")) {
         try {
-          const response = await fetch(`https://www.batbooks.ir/auth/token/refresh/`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              refresh: localStorage.getItem("refresh_token"),
-            }),
-          });
+          const response = await fetch(
+            `https://www.batbooks.ir/auth/token/refresh/`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                refresh: localStorage.getItem("refresh_token"),
+              }),
+            }
+          );
 
           if (response.ok) {
             const data = await response.json();

@@ -91,9 +91,12 @@ const BookPage = () => {
         const [bookResponse, favoriteResponse, reveiewsResponse] =
           await Promise.all([
             fetch(`https://www.batbooks.ir/book/${bookId}/`),
-            fetch(`https://www.batbooks.ir/book-actions/is/favorite/${bookId}/`, {
-              headers: { Authorization: auth },
-            }),
+            fetch(
+              `https://www.batbooks.ir/book-actions/is/favorite/${bookId}/`,
+              {
+                headers: { Authorization: auth },
+              }
+            ),
             fetch(`https://www.batbooks.ir/comments/book/${bookId}/reviews/`),
           ]);
 

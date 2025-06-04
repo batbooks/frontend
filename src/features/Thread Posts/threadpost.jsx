@@ -34,7 +34,7 @@ function Post({ isMine, isReply }) {
       <div className="text-nowrap bg-[#f5f6f8] flex flex-col items-center rounded-[5px] gap-[10px] py-[10px] outline-[2px] outline-[#000]/21 mb-auto">
         <div className="flex w-full pb-[10px] border-b-[1px] border-[#000]/10">
           <img
-            src="/src/assets/images/user_none2.png"
+            src="/images/user_none2.png"
             alt="user"
             className="mx-auto cursor-pointer"
           />

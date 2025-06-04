@@ -64,12 +64,24 @@ export default function Popular_authors() {
       setLoading(true);
 
       try {
+<<<<<<< HEAD
         const response = await fetch(`https://www.batbooks.ir/popular/author/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
         });
+=======
+        const response = await fetch(
+          `https://www.batbooks.ir/popular/author/`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+>>>>>>> 3266c051b9b5647209bfe2a4ec4c289947d5594d
         console.log("asd");
         if (response.ok) {
           const data = await response.json();

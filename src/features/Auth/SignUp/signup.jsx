@@ -72,7 +72,7 @@ function Signup() {
               onChange={(e) => setEmail(e.target.value)}
             />
             <img
-              src="/src/assets/images/user.png"
+              src="/images/user.png"
               alt="user"
               className="absolute right-[150px] top-[50%] -translate-y-1/2"
             />
@@ -86,20 +86,20 @@ function Signup() {
               onChange={(e) => setPassword(e.target.value)}
             />
             <img
-              src="/src/assets/images/lock.png"
+              src="/images/lock.png"
               alt="lock-password"
               className="absolute right-38 top-[50%] -translate-y-1/2"
             />
             {!showPassword ? (
               <img
-                src="/src/assets/images/eye-on.png"
+                src="/images/eye-on.png"
                 alt="eye-on-password"
                 onClick={handleShowPassword}
                 className="absolute z-50 left-38 top-[50%] -translate-y-1/2"
               />
             ) : (
               <img
-                src="/src/assets/images/eye-off.png"
+                src="/images/eye-off.png"
                 alt="eye-off-password"
                 onClick={handleShowPassword}
                 className="absolute z-50 left-38 top-[50%] -translate-y-1/2"
@@ -115,20 +115,20 @@ function Signup() {
               onChange={(e) => setRepeatPassword(e.target.value)}
             />
             <img
-              src="/src/assets/images/lock.png"
+              src="/images/lock.png"
               alt="lock-repeat-password"
               className="absolute right-38 top-[50%] -translate-y-1/2"
             />
             {!showRepeatPassword ? (
               <img
-                src="/src/assets/images/eye-on.png"
+                src="/images/eye-on.png"
                 alt="eye-on-repeat-password"
                 onClick={handleShowRepeatPassword}
                 className="absolute z-50 left-38 top-[50%] -translate-y-1/2"
               />
             ) : (
               <img
-                src="/src/assets/images/eye-off.png"
+                src="/images/eye-off.png"
                 alt="eye-off-repeat-password"
                 onClick={handleShowRepeatPassword}
                 className="absolute z-50 left-38 top-[50%] -translate-y-1/2"
@@ -145,23 +145,23 @@ function Signup() {
           </button>
         </form>
         <img
-          src="/src/assets/images/mid-left.png"
+          src="/images/mid-left.png"
           alt="mid-left"
           className=" absolute left-[335px] top-[280px]  "
         />
         <img
-          src="/src/assets/images/mid-right.png"
+          src="/images/mid-right.png"
           alt="mid-right"
           className="absolute right-[280px] top-[-15px]"
         />
       </main>
       <img
-        src="/src/assets/images/bottom-left.png"
+        src="/images/bottom-left.png"
         alt="bottom-left"
         className="absolute left-0 bottom-0 w-[25vw] aspect-auto"
       />
       <img
-        src="/src/assets/images/bottom-right.png"
+        src="/images/bottom-right.png"
         alt="bottom-right"
         className=" absolute right-[0px] bottom-0 w-[33vw] aspect-auto"
       />

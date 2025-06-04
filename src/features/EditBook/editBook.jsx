@@ -1,4 +1,4 @@
-import Footer from "/src/common/Footer/footer";
+import Footer from "/src/common/Footer/Footer";
 import Navbar from "/src/common/Navbar/navbar";
 import TagExplorer from "../CreateBook/TagExplorer";
 import { useEffect, useState } from "react";
@@ -28,8 +28,8 @@ function EditBook() {
         const token = localStorage.getItem("access_token");
 
         const [genresRes, tagsRes] = await Promise.all([
-          fetch(`/api/tag/genres/`),
-          fetch(`/api/tag/tag-categories/`, {
+          fetch(`https://www.batbooks.ir/tag/genres/`),
+          fetch(`https://www.batbooks.ir/tag/tag-categories/`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
@@ -60,7 +60,7 @@ function EditBook() {
 
     const fetchBook = async () => {
       try {
-        const response = await fetch(`/api/book/${id}/`);
+        const response = await fetch(`https://www.batbooks.ir/book/${id}/`);
         const data = await response.json();
 
         setName(data.name);
@@ -123,7 +123,7 @@ function EditBook() {
         formData.append("tags", Number(tag.id));
       });
 
-      await fetch(`/api/book/${id}/`, {
+      await fetch(`https://www.batbooks.ir/book/${id}/`, {
         method: "PUT",
         body: formData,
         headers: {

@@ -72,13 +72,16 @@ function Reviews({ book }) {
   const fetchFollowing = async (userId) => {
     setLoading1(true);
     try {
-      const response = await fetch(`https://www.batbooks.ir/user/is/follow/${userId}/`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `https://www.batbooks.ir/user/is/follow/${userId}/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       const data = await response.json();
       setFollowingMap((prevMap) => ({
         ...prevMap,
@@ -188,21 +191,27 @@ function Reviews({ book }) {
       })
     );
 
-    await fetch(`https://www.batbooks.ir/comments/review/dislike/${reviewId}/`, {
-      method: "GET",
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    await fetch(
+      `https://www.batbooks.ir/comments/review/dislike/${reviewId}/`,
+      {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
   };
 
   const handleFollow = async (reviewId) => {
     try {
-      const response = await fetch(`https://www.batbooks.ir/user/toggle/follow/${reviewId}/`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `https://www.batbooks.ir/user/toggle/follow/${reviewId}/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
     } catch (err) {
       Swal.fire({
         title: "ارور ",
@@ -224,7 +233,7 @@ function Reviews({ book }) {
   const handleSaveEdit = async (reviewId) => {
     try {
       const response = await fetch(
-        `/api/comments/book/${bookId}/reviews/my-review/`,
+        `https://www.batbooks.ir/comments/book/${bookId}/reviews/my-review/`,
         {
           method: "PUT",
           headers: {
