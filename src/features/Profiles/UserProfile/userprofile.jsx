@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import EditProfile from "../EditProfile/editProfile";
-import Footer from "/src/common/Footer/footer";
+import Footer from "/src/common/Footer/Footer";
 import Navbar from "/src/common/Navbar/navbar";
 import { Rating } from "@mui/material";
 import BookCard from "../../../common/BookCard/bookCard";
@@ -34,7 +34,7 @@ export default function Profile() {
     const auth = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`/api/auth/who/`, {
+        const response = await fetch(`https://www.batbooks.ir/auth/who/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -59,9 +59,12 @@ export default function Profile() {
       setLoading2(true);
 
       try {
-        const response = await fetch(`/api/book/user/${userid}/`, {
-          method: "GET",
-        });
+        const response = await fetch(
+          `https://www.batbooks.ir/book/user/${userid}/`,
+          {
+            method: "GET",
+          }
+        );
 
         if (response.ok) {
           const data = await response.json();
@@ -83,13 +86,16 @@ export default function Profile() {
     const fetchFollowings = async () => {
       setLoading1(true);
       try {
-        const response = await fetch(`/api/user/following/`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          `https://www.batbooks.ir/user/following/`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         if (response.ok) {
           const data = await response.json();
           setFollowings(data.results);
@@ -160,8 +166,8 @@ export default function Profile() {
                 className="w-full h-full shadow-lg shadow-[#000000]/25 object-cover"
                 src={
                   userInfo.image
-                    ? `/api${userInfo.image}`
-                    : `/src/assets/images/user_image.png`
+                    ? `https://www.batbooks.ir${userInfo.image}`
+                    : `/images/user_image.png`
                 }
                 alt="userimage"
               />
@@ -296,9 +302,7 @@ export default function Profile() {
                 title={lastBook.name}
                 author={lastBook.Author}
                 coverImage={
-                  lastBook.image
-                    ? lastBook.image
-                    : "/src/assets/images/book_sample1.png"
+                  lastBook.image ? lastBook.image : "/images/book_sample1.png"
                 }
                 description={lastBook.description}
                 chapters={85}
@@ -311,7 +315,7 @@ export default function Profile() {
               className="relative bg-white rounded-xl lg:rounded-[20px] px-4 lg:px-[17px] pt-10 lg:pt-[41px] pb-7 lg:pb-[28px] mt-4 lg:mt-8 mr-auto shadow-lg shadow-[#000000]/25 w-full lg:min-w-[242px] cursor-pointer"
             >
               <img
-                src="/src/assets/images/favorite_book.png"
+                src="/images/favorite_book.png"
                 alt="favoritebook"
                 className={`transition-all duration-500 mx-auto ${
                   isHoveredFavBook ? "blur-sm" : "blur-none"
@@ -410,7 +414,7 @@ export default function Profile() {
 
           {user.following_image == null ? (
             <img
-              src={"/src/assets/images/following.png"}
+              src={"/images/following.png"}
               alt="following"
               className="rounded-full w-20 h-20 md:w-[110px] md:h-[110px]"
             />

@@ -20,7 +20,7 @@ export default function People() {
       setLoading(true);
       try {
         const response = await fetch(
-          `/api/user/users/all/?page=${currentpage}`
+          `https://www.batbooks.ir/user/users/all/?page=${currentpage}`
         );
         if (response.ok) {
           const data = await response.json();
@@ -48,7 +48,7 @@ export default function People() {
     }
     try {
       const response = await fetch(
-        `/api/user/search/${searched}/?page=${page}`
+        `https://www.batbooks.ir/user/search/${searched}/?page=${page}`
       );
       if (response.ok) {
         const data = await response.json();
@@ -332,14 +332,17 @@ function Person({ person }) {
     setLoading(true);
     const fetchFollowing = async () => {
       try {
-        const response = await fetch(`/api/user/is/follow/${person.id}/`, {
-          method: "GET",
+        const response = await fetch(
+          `https://www.batbooks.ir/user/is/follow/${person.id}/`,
+          {
+            method: "GET",
 
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-          },
-        });
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          }
+        );
         const data = await response.json();
         setIsFollowing(data.is_follow);
       } catch (err) {
@@ -352,14 +355,17 @@ function Person({ person }) {
   }, []);
   const handleFollow = async () => {
     try {
-      const response = await fetch(`/api/user/toggle/follow/${person.id}/`, {
-        method: "GET",
+      const response = await fetch(
+        `https://www.batbooks.ir/user/toggle/follow/${person.id}/`,
+        {
+          method: "GET",
 
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        },
-      });
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
+      );
     } catch (err) {
       console.error(err.message);
     }
@@ -382,7 +388,7 @@ function Person({ person }) {
     >
       <div className="flex items-center gap-[21px] relative">
         <img
-          src="/src/assets/images/following.png"
+          src="/images/following.png"
           alt="follow"
           className="rounded-full w-[110px] h-[110px]"
         />

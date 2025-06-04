@@ -26,14 +26,17 @@ const Threads = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("access_token");
-      const response = await fetch("/api/forum/threads/create/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ name: input1, forum: forumId, status: "O" }),
-      });
+      const response = await fetch(
+        "https://www.batbooks.ir/forum/threads/create/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ name: input1, forum: forumId, status: "O" }),
+        }
+      );
       if (!response.ok) {
         throw new Error("!!!مشکلی پیش اومد");
       }
@@ -165,7 +168,7 @@ const Threads = () => {
             onClick={handleOpen}
             variant="gradient"
           >
-            <img src="/src/assets/images/add_sign.svg" alt="add" />
+            <img src="/images/add_sign.svg" alt="add" />
             <span>ایجاد ترد</span>
           </Button>
         </div>

@@ -1,0 +1,8 @@
+{
+  "app": "batbooks-frontend",
+  "platform": "react",
+  "react": {
+    "mirror": true,
+    "sourceMap": false
+  }
+}

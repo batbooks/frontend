@@ -1,4 +1,4 @@
-import Footer from "/src/common/Footer/footer";
+import Footer from "/src/common/Footer/Footer";
 import Navbar from "/src/common/Navbar/navbar";
 import TagExplorer from "./TagExplorer";
 import { useState } from "react";
@@ -41,7 +41,7 @@ function CreateBook() {
         formData.append("tags", Number(tag.id));
       });
 
-      await fetch(`/api/book/create/`, {
+      await fetch(`https://www.batbooks.ir/book/create/`, {
         method: "POST",
         body: formData,
         headers: {
@@ -102,7 +102,9 @@ function CreateBook() {
                   {selectedFile.name}
                 </span>
               ) : (
-                <span className="text-sm xl:text-lg sm:text-base">فایلی انتخاب نشده</span>
+                <span className="text-sm xl:text-lg sm:text-base">
+                  فایلی انتخاب نشده
+                </span>
               )}
             </div>
           </div>

@@ -12,14 +12,17 @@ export default function UserCard({ user }) {
 
     const fetchFollowing = async () => {
       try {
-        const response = await fetch(`/api/user/is/follow/${user.user_id}/`, {
-          method: "GET",
+        const response = await fetch(
+          `https://www.batbooks.ir/user/is/follow/${user.user_id}/`,
+          {
+            method: "GET",
 
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-          },
-        });
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          }
+        );
         const data = await response.json();
         setIsFollowing(data.is_follow);
       } catch (err) {
@@ -32,14 +35,17 @@ export default function UserCard({ user }) {
   }, []);
   const handleFollow = async () => {
     try {
-      const response = await fetch(`/api/user/toggle/follow/${user.user_id}/`, {
-        method: "GET",
+      const response = await fetch(
+        `https://www.batbooks.ir/user/toggle/follow/${user.user_id}/`,
+        {
+          method: "GET",
 
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        },
-      });
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
+      );
     } catch (err) {
       console.error(err.message);
     }
@@ -63,7 +69,7 @@ export default function UserCard({ user }) {
           className="min-w-15 w-20 h-20 sm:min-w-15 sm:h-23 sm:w-23 lg:min-w-30 lg:h-30 lg:w-30 rounded-full object-cover border-2 border-white cursor-pointer"
           src={
             user.image != null
-              ? `/api/${user.image}`
+              ? `https://www.batbooks.ir/${user.image}`
               : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIm2CWzfiMbqIPMJ32QvKMkapvArB7NQDJVg&s"
           }
           alt={user.user}

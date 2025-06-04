@@ -1,13 +1,44 @@
 import CommentIcon from "@mui/icons-material/Comment";
 import ReviewsIcon from "@mui/icons-material/Reviews";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
-import LogoutIcon from "@mui/icons-material/Logout";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Rating } from "@mui/material";
 import { AiFillLike, AiFillDislike } from "react-icons/ai";
+import Swal from "sweetalert2";
 
 export default function UserDashboard() {
   const [menuNum, setMenuNum] = useState(1);
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await fetch(`https://www.batbooks.ir/book/all/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (!response.ok) {
+          throw new Error("مشکلی پیش اومد...دوباره تلاش کنید");
+        }
+        const data = await response.json();
+      } catch (err) {
+        setTimeout(() => {
+          Swal.fire({
+            title: `${err.message}`,
+            icon: "error",
+            confirmButtonText: "تلاش مجدد",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
+            }
+          });
+        }, 100);
+      } finally {
+      }
+    };
+    fetchReviews();
+  }, []);
 
   return (
     <div className="flex flex-col md:flex-row gap-6 lg:gap-[40px] w-full items-center md:items-start">
@@ -55,13 +86,6 @@ export default function UserDashboard() {
           <AutoStoriesIcon className="relative text-lg md:text-xl" />
           <span className="hidden group-hover:inline md:inline span-btn !text-sm md:!text-[15px] lg:!text-[16px] !ml-auto transition-opacity duration-200">
             کتاب های در حال خواندن
-          </span>
-        </button>
-
-        <button className="group btn !mx-0 !rounded-md !mb-0 !w-fit md:!w-full !h-fit gap-1 md:gap-[5px] py-2 md:py-[8px] lg:py-[10px] pr-1 md:pr-[5px] pl-1 md:pl-[5px] !shadow-none outline outline-[#000]/21 !focus:outline !focus:outline-[#000]/21 !bg-red-700 before:!bg-[#FF3B30]">
-          <LogoutIcon className="relative text-lg md:text-xl" />
-          <span className="hidden group-hover:inline md:inline span-btn !text-sm md:!text-[15px] lg:!text-[16px] !ml-auto transition-opacity duration-200">
-            خروج از حساب کاربری
           </span>
         </button>
       </div>
