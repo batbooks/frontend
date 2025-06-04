@@ -61,6 +61,7 @@ function Navbar() {
     else if (location.pathname === "/mybooks") setSelectedItem(2);
     else if (location.pathname === "/search") setSelectedItem(3);
     else if (location.pathname === "/contact") setSelectedItem(4);
+    else if (location.pathname === "/chat") setSelectedItem(5);
     else setSelectedItem(0);
   }, [location.pathname]);
 
@@ -286,11 +287,21 @@ function Navbar() {
                   onClick={() => {
                     setSelectedItem(0);
                     setIsVisiblePanel(false);
-                    navigate("/forums", {
-                      state: { searchingItem: "forum" },
-                    });
+                    navigate("/chat");
                   }}
-                  className="text-[#000000]/70 w-full h-full rounded-t-[10px] cursor-pointer pl-[89px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
+                  className="text-[#000000]/70 w-full h-full rounded-t-[10px] cursor-pointer text-right pr-2 hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
+                >
+                  <span className="text-[13px] font-bold"> چت </span>
+                </button>
+              </li>
+              <li className="w-[155px] h-[38px] bg-[#ffffff] rounded-t-[10px]">
+                <button
+                  onClick={() => {
+                    setSelectedItem(0);
+                    setIsVisiblePanel(false);
+                    navigate("/forum");
+                  }}
+                  className="text-[#000000]/70 w-full h-full rounded-t-[10px] cursor-pointer text-right pr-2 hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
                   <span className="text-[13px] font-bold">تالار گفتگو</span>
                 </button>
@@ -300,11 +311,9 @@ function Navbar() {
                   onClick={() => {
                     setSelectedItem(0);
                     setIsVisiblePanel(false);
-                    navigate("/people", {
-                      state: { searchingItem: "people" },
-                    });
+                    navigate("/people");
                   }}
-                  className="text-[#000000]/70 w-full h-full rounded-b-[10px] cursor-pointer pl-[118px] hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
+                  className="text-[#000000]/70 w-full h-full rounded-b-[10px] cursor-pointer text-right pr-2 hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
                   <span className="text-[13px] font-bold">افراد</span>
                 </button>
@@ -324,6 +333,7 @@ function Navbar() {
               <span></span>
             )}
           </li>
+
           <li className="flex flex-col items-center">
             <button
               onClick={() => {

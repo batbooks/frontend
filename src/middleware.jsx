@@ -5,7 +5,6 @@ import Swal from "sweetalert2";
 
 export default function Middleware({ children }) {
   const { isAuthenticated } = useSelector((state) => state.auth);
-  const [confirmed,setconfirmed]=useState(false)
   if (!isAuthenticated) {
     setTimeout(() => {
       Swal.fire({
