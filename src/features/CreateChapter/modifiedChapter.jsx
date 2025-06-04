@@ -18,14 +18,6 @@ const ModifiedChapter = () => {
     const fetchChapter = async () => {
       setLoading(true);
       try {
-<<<<<<< HEAD
-        const response = await fetch(`https://www.batbooks.ir/book/chapter/${chapterId}/`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-=======
         const response = await fetch(
           `https://www.batbooks.ir/book/chapter/${chapterId}/`,
           {
@@ -35,7 +27,6 @@ const ModifiedChapter = () => {
             },
           }
         );
->>>>>>> 3266c051b9b5647209bfe2a4ec4c289947d5594d
 
         if (!response.ok) {
           throw new Error("Failed to fetch chapter");
@@ -61,19 +52,6 @@ const ModifiedChapter = () => {
     setLoading(true);
     console.log("sfdf");
     try {
-<<<<<<< HEAD
-      const response = await fetch(`https://www.batbooks.ir/book/chapter/${chapterId}/`, {
-        method: "PUT",
-        body: JSON.stringify({
-          title: chapterName,
-          body: chapterContent,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-=======
       const response = await fetch(
         `https://www.batbooks.ir/book/chapter/${chapterId}/`,
         {
@@ -88,7 +66,6 @@ const ModifiedChapter = () => {
           },
         }
       );
->>>>>>> 3266c051b9b5647209bfe2a4ec4c289947d5594d
       const data = await response.json();
       console.log(response);
       console.log(data);
