@@ -363,7 +363,7 @@ function Navbar() {
           />
 
           <div
-            className={`absolute top-0 right-0 w-[50%] max-w-xs h-full text-nowrap bg-gradient-to-b from-blue-50 to-white shadow-2xl rounded-l-3xl transform transition-all duration-300 ease-in-out 
+            className={`absolute top-0 right-0 w-[60%] sm:w-[50%] max-w-xs h-full text-nowrap bg-gradient-to-b from-blue-50 to-white shadow-2xl rounded-l-3xl transform transition-all duration-300 ease-in-out 
       ${menuVisible ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"}`}
           >
             <div className="flex justify-between items-center p-5 border-b border-blue-200">
