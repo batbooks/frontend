@@ -113,7 +113,7 @@ function Navbar() {
           >
             {isAuthenticated && user.user_info.image != null ? (
               <img
-                className="w-[50px] h-[50px] rounded-[30px]"
+                className="w-[50px] h-[50px] rounded-[30px] object-cover"
                 src={`/api${user.user_info.image}`}
                 alt="User Image 2"
               />
