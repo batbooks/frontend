@@ -17,10 +17,10 @@ interface GroupMessage {
 
 interface ChatWindowProps {
   groupId: number;
-  groupName:string
+  groupName: string;
 }
 
-const GroupChatWindow: React.FC<ChatWindowProps> = ({ groupId,groupName }) => {
+const GroupChatWindow: React.FC<ChatWindowProps> = ({ groupId, groupName }) => {
   //   let temp_is_you: boolean = false;
   const [messages, setMessages] = useState<GroupMessage[]>([]);
   const [newMessage, setNewMessage] = useState("");
@@ -44,7 +44,7 @@ const GroupChatWindow: React.FC<ChatWindowProps> = ({ groupId,groupName }) => {
   const fetchFollowingUsers = async () => {
     setIsLoading2(true);
     try {
-      const response = await fetch(`/api/user/following/`, {
+      const response = await fetch(`https://www.batbooks.ir/user/following/`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
@@ -154,7 +154,7 @@ const GroupChatWindow: React.FC<ChatWindowProps> = ({ groupId,groupName }) => {
             sender: received.sender,
             sender_id: received.user_id,
             sender_img: received.image
-              ? `/api${received.image}`
+              ? `https://www.batbooks.ir${received.image}`
               : undefined,
             message: received.message,
             date: new Date().toISOString(), // actual date string
@@ -211,14 +211,17 @@ const GroupChatWindow: React.FC<ChatWindowProps> = ({ groupId,groupName }) => {
 
     const userIdsString = selectedUserIds.join(",");
     try {
-      const response = await fetch(`/api/chat/group/add/${groupId}/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        },
-        body: JSON.stringify({ members: userIdsString }),
-      });
+      const response = await fetch(
+        `https://www.batbooks.ir/chat/group/add/${groupId}/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+          body: JSON.stringify({ members: userIdsString }),
+        }
+      );
 
       if (!response.ok) throw new Error("خطا در افزودن کاربران");
 
@@ -284,7 +287,7 @@ const GroupChatWindow: React.FC<ChatWindowProps> = ({ groupId,groupName }) => {
       <div className="relative bg-gradient-to-br from-slate-50 via-gray-50 to-stone-100 text-gray-800 p-5 sm:p-6 rounded-xl  transition-all duration-300 w-full  mx-auto my-8">
         <div className="flex flex-col text-center sm:flex-row sm:items-start  justify-between mb-5 pb-4 border-b border-gray-300">
           <h2 className="text-md lg:text-xl font-semibold text-sky-700 mb-3 sm:mb-0">
-           گروه  {groupName}
+            گروه {groupName}
           </h2>
           <div className="flex items-center space-x-3 gap-3 space-x-reverse">
             {" "}
@@ -495,7 +498,7 @@ const GroupChatWindow: React.FC<ChatWindowProps> = ({ groupId,groupName }) => {
                   name={member.name}
                   image={
                     member.user_info?.image // Optional chaining for safety
-                      ? `/api${member.user_info.image}`
+                      ? `https://www.batbooks.ir${member.user_info.image}`
                       : undefined // Let GroupMember handle placeholder
                   }
                 />

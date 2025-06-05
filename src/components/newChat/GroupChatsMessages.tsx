@@ -44,7 +44,7 @@ const GroupChatMessage: React.FC<GroupChatMessageProps> = ({ message }) => {
     "bg-rose-500",
     "bg-violet-500",
   ];
-  
+
   const avatarColor = avatarColors[message.sender_id % avatarColors.length];
   const bubbleClasses = isSentByYou
     ? "bg-blue-500 text-white self-start ml-auto" // Your sent messages
@@ -53,7 +53,6 @@ const GroupChatMessage: React.FC<GroupChatMessageProps> = ({ message }) => {
   const motionLiClasses = isSentByYou
     ? "flex justify-end items-end gap-2 w-full" // Your sent messages
     : "flex justify-start items-start gap-2 w-full flex-row-reverse"; // Received messages - using flex-row-reverse to keep image on one side and text bubble + name on the other, or adjust as needed.
-
 
   return (
     <motion.li
@@ -69,12 +68,14 @@ const GroupChatMessage: React.FC<GroupChatMessageProps> = ({ message }) => {
           <div className="flex flex-row items-center gap-3 mb-1">
             {message.sender_img ? (
               <img
-                src={`/api${message.sender_img}`}
+                src={`https://www.batbooks.ir${message.sender_img}`}
                 alt={message.sender}
                 className="w-8 h-8 rounded-full self-end"
               />
             ) : (
-              <div className={`w-8 h-8 rounded-full ${avatarColor} text-gray-700 flex items-center justify-center text-sm font-bold`}>
+              <div
+                className={`w-8 h-8 rounded-full ${avatarColor} text-gray-700 flex items-center justify-center text-sm font-bold`}
+              >
                 {getInitials(message.sender)}
               </div>
             )}

@@ -13,8 +13,8 @@ interface GroupChat {
 }
 
 interface Props {
-  setGroupName:React.Dispatch<React.SetStateAction<string >>
-  onGroupSelect :React.Dispatch<React.SetStateAction<number >> 
+  setGroupName: React.Dispatch<React.SetStateAction<string>>;
+  onGroupSelect: React.Dispatch<React.SetStateAction<number>>;
   setChatContext: React.Dispatch<React.SetStateAction<string | null>>;
   chatContext: string;
   popUp2: boolean;
@@ -56,15 +56,19 @@ const GroupChatList: React.FC<Props> = ({
     const fetchGroups = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(`/api/chat/group/list/`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-          },
-        });
+        const response = await fetch(
+          `https://www.batbooks.ir/chat/group/list/`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          }
+        );
         if (!response.ok) throw new Error("خطا در دریافت گروه‌ها");
         const data: GroupChat[] = await response.json();
         console.log(data);
+        console.log(data[0]);
         setGroups(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : "خطای ناشناخته");
@@ -113,7 +117,9 @@ const GroupChatList: React.FC<Props> = ({
           return (
             <li
               key={group.id}
-              onClick={() => {onGroupSelect(group.id),setGroupName(group.name)}}
+              onClick={() => {
+                onGroupSelect(group.id), setGroupName(group.name);
+              }}
               className="flex items-center justify-between p-3 hover:bg-slate-100 cursor-pointer transition dir-rtl"
             >
               {/* Group Avatar */}
@@ -121,7 +127,7 @@ const GroupChatList: React.FC<Props> = ({
                 {group.image ? (
                   <img
                     className="w-10 h-10 rounded-full border-2 border-white shadow-sm"
-                    src={`/api${group.image}`}
+                    src={`${group.image}`}
                     alt={group.name}
                   />
                 ) : (
@@ -145,7 +151,6 @@ const GroupChatList: React.FC<Props> = ({
               </div>
 
               {/* If you sent the last message */}
-              
             </li>
           );
         })}

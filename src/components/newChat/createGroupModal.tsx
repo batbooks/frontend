@@ -46,7 +46,7 @@ const CreateGroupModal: React.FC<Props> = ({ onClose, onGroupCreated }) => {
       setLoadingUsers(true);
       setError(null);
       try {
-        const res = await fetch("/api/user/following/", {
+        const res = await fetch("https://www.batbooks.ir/user/following/", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },
@@ -143,10 +143,10 @@ const CreateGroupModal: React.FC<Props> = ({ onClose, onGroupCreated }) => {
     formData.append("name", name);
     if (image) formData.append("image", image);
     formData.append("members", selectedUserIds.join(","));
-    console.log(selectedUserIds.join(","))
+    console.log(selectedUserIds.join(","));
 
     try {
-      const res = await fetch("/api/chat/group/create/", {
+      const res = await fetch("https://www.batbooks.ir/chat/group/create/", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
@@ -343,9 +343,13 @@ const CreateGroupModal: React.FC<Props> = ({ onClose, onGroupCreated }) => {
                     <input
                       type="checkbox"
                       checked={selectedUserIds.includes(user.following_user_id)}
-                      onChange={() => toggleUserSelection(user.following_user_id)}
+                      onChange={() =>
+                        toggleUserSelection(user.following_user_id)
+                      }
                       disabled={creatingGroup}
-                      aria-checked={selectedUserIds.includes(user.following_user_id)}
+                      aria-checked={selectedUserIds.includes(
+                        user.following_user_id
+                      )}
                       className="h-5 w-5 accent-sky-600 border-gray-300 rounded focus:ring-sky-500 focus:ring-2 focus:ring-offset-1 mr-4 transition duration-150 ease-in-out"
                     />
                     {user.following_image ? (
