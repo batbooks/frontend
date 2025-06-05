@@ -17,7 +17,7 @@ const EditPlaylistModal = ({ playlist, onSave, onClose }) => {
     if (newTag.trim() && !editedPlaylist.tags.includes(newTag.trim())) {
       setEditedPlaylist({
         ...editedPlaylist,
-        tags: [...editedPlaylist.tags, newTag.trim()]
+        tags: [...editedPlaylist.tags, newTag.trim()],
       });
       setNewTag("");
     }
@@ -26,7 +26,7 @@ const EditPlaylistModal = ({ playlist, onSave, onClose }) => {
   const handleRemoveTag = (tagToRemove) => {
     setEditedPlaylist({
       ...editedPlaylist,
-      tags: editedPlaylist.tags.filter(tag => tag !== tagToRemove)
+      tags: editedPlaylist.tags.filter((tag) => tag !== tagToRemove),
     });
   };
 
@@ -36,20 +36,40 @@ const EditPlaylistModal = ({ playlist, onSave, onClose }) => {
   };
 
   return (
-    <div dir="rtl" className="fixed inset-0  bg-opacity-50 flex items-center backdrop-blur-xs justify-center z-50">
+    <div
+      dir="rtl"
+      className="fixed inset-0  bg-opacity-50 flex items-center backdrop-blur-xs justify-center z-50"
+    >
       <div className="bg-white rounded-lg p-6 w-full max-w-md">
-        <div  className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-center mb-4">
           <h3 className="text-xl font-bold text-gray-800">ویرایش پلی‌لیست</h3>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          <button
+            onClick={onClose}
+            className="text-gray-500 hover:text-gray-700"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
 
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="title">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="title"
+            >
               عنوان پلی‌لیست
             </label>
             <input
@@ -64,7 +84,10 @@ const EditPlaylistModal = ({ playlist, onSave, onClose }) => {
           </div>
 
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="description"
+            >
               توضیحات
             </label>
             <textarea
@@ -78,7 +101,10 @@ const EditPlaylistModal = ({ playlist, onSave, onClose }) => {
           </div>
 
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="genre">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="genre"
+            >
               ژانر
             </label>
             <select

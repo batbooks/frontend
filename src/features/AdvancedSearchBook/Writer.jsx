@@ -4,7 +4,7 @@ export function Writer({ setFilters }) {
   const { writerName, setWriterName } = useSharedState();
 
   return (
-    <div className="flex flex-col gap-[17px]">
+    <div className="flex flex-col gap-[17px] w-full lg:w-3/10">
       <h2 className="text-[20px] font-[300]">نام نویسنده:</h2>
       <div className="relative group">
         <input
@@ -24,7 +24,7 @@ export function Writer({ setFilters }) {
           }}
           value={writerName}
           placeholder="نام نویسنده"
-          className=" mr-[30px] px-[18px] bg-white w-[287px] h-[43px]  rounded-[6px] outline-[2px] outline-[#000000]/21 focus:outline-[3px] focus:outline-[#2663CD] placeholder:text-[16px] placeholder:font-[300] placeholder:text-[#265073]"
+          className="2xl:mr-[30px] px-[18px] bg-white w-full h-[43px] rounded-[6px] outline-[2px] outline-[#000000]/21 focus:outline-[3px] focus:outline-[#2663CD] placeholder:text-[16px] placeholder:font-[300] placeholder:text-[#265073]"
         />
         <p className="text-[14px] text-green-700 mr-[48px] absolute pt-[10px] group-focus-within:block hidden">
           لطفا پس از وارد کردن عبارتی بیشتر از سه حرف،جهت اعمال فیلتر Enter را

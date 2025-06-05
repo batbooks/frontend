@@ -20,14 +20,14 @@ import Threads from "./features/Threads/threads.jsx";
 import ShowAllBooks from "./features/ShowAllBooks/ShowAllBooks.jsx";
 import Comments from "./components/Comments/Comment.jsx";
 import ChatPage from "./common/Chat/Chat.jsx";
-import Chat from "./components/newChat/chat.js"
-import ThreadPosts from "./features/Thread Posts/threadpost.jsx";
+import Chat from "./components/newChat/chat.js";
 import People from "./features/People/people.jsx";
 import Forums from "./features/Forum/Forum.jsx";
 import EditBook from "./features/EditBook/editBook.jsx";
 import ContactUs from "./features/ContactUs/contactUs.jsx";
 import PlaylistPage from "./features/playlist/playlist.jsx";
 import PlaylistDetailPage from "./features/playlist/PlaylistDetailPage.jsx";
+import ThreadPostsWrapper from "./features/Thread Posts/threadpost.jsx";
 import PublicPlaylistsPage from "./features/playlist/PublicPlaylistsPage.jsx";
 import UserPlaylistsPage from "./features/playlist/AnotherUserPlaylistsPage.jsx";
 import OthersPlaylistDetailPage from "./features/playlist/othersPlaylistDetailPage.jsx";
@@ -104,11 +104,8 @@ function AppRoutes() {
           }
         />
         <Route path="/threads/:forumId" element={<Threads forumId={3} />} />
-         <Route path="chat" element={<Chat/>} />
-        <Route
-          path="/forums/threads/:forumId/threadposts/:threadId"
-          element={<ThreadPosts />}
-        />
+        <Route path="chat" element={<Chat />} />
+        <Route path="/threadposts/:threadId" element={<ThreadPostsWrapper />} />
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/playlists" element={<PlaylistPage />} />
         <Route path="/playlists/:id" element={<PlaylistDetailPage />} />

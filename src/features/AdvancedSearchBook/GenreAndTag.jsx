@@ -1,5 +1,3 @@
-import { useSharedState } from "./SharedStateProvider";
-
 export function GenreAndTag({
   Obj,
   addFilter = null,
@@ -13,12 +11,8 @@ export function GenreAndTag({
   allUnselected = null,
   deleteAllUnselected = null,
 }) {
-  const { setIsVisibleDescription } = useSharedState();
-
   return (
     <button
-      onMouseEnter={() => setIsVisibleDescription(true)}
-      onMouseLeave={() => setIsVisibleDescription(false)}
       onClick={() => {
         {
           Obj.category_id !== undefined

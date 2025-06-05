@@ -4,9 +4,9 @@ export function CheckBoxes({ addFilter, filters }) {
   const { checkedNum, setCheckedNum } = useSharedState();
 
   return (
-    <div className="flex flex-col gap-[17px]">
+    <div className="flex flex-col gap-[17px] w-full lg:w-4/10">
       <h2 className="text-[20px] font-[300] ">وضعیت کتاب:</h2>
-      <div className="flex mr-[30px] gap-[25px]">
+      <div className="flex lg:justify-between sm:justify-around justify-between 2xl:mr-[30px]">
         <div className="flex items-center gap-[5px]">
           <button
             onClick={() => {

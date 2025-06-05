@@ -7,6 +7,7 @@ import Loading from "../../common/Loading/Loading";
 import Swal from "sweetalert2";
 import { SearchFilters } from "./SearchFilters";
 import { useNavigate } from "react-router";
+import BookCard from "../../common/BookCard/bookCard";
 
 export default function AdvancedSearchBook() {
   const [allBooks, setAllBooks] = useState([]);
@@ -140,7 +141,7 @@ export default function AdvancedSearchBook() {
       <Navbar />
       <main
         dir="rtl"
-        className="flex flex-col items-center pt-[25px] pb-[60px] px-[50px] w-[100%]"
+        className="flex flex-col items-center pt-[25px] pb-[60px] px-[10px] sm:px-[50px] w-[100%]"
       >
         <h1 className="font-bold text-[#265073] text-[32px] mb-[30px]">
           جستجوی کتاب
@@ -163,7 +164,9 @@ export default function AdvancedSearchBook() {
             </div>
           ) : showingBooks.length === 0 && !loading ? (
             <>
-              <h2 className="text-[16px] right-0 font-[300]">نتایج جستجو</h2>
+              <h2 className="text-[16px] right-0 font-[300] hidden sm:block">
+                نتایج جستجو
+              </h2>
               <p className="text-[24px] mx-auto">موردی یافت نشد</p>
             </>
           ) : !loading ? (
@@ -283,10 +286,10 @@ function SearchBookResults({ books, loading }) {
 
   return (
     <div className="flex flex-col -mt-[30px]">
-      <div className="flex items-center justify-between mb-[30px]">
-        <h2 className="text-[16px] font-[300]">نتایج جستجو</h2>
+      <div className="flex items-center justify-between mb-[60px] sm:mb-[30px]">
+        <h2 className="text-[16px] font-[300] hidden sm:block">نتایج جستجو</h2>
       </div>
-      <div className="grid grid-cols-2 gap-x-[37px] gap-y-[25px] mb-[30px]">
+      <div className="grid xl:grid-cols-2 gap-x-[37px] gap-y-[25px] mb-[30px]">
         {books.map((book, i) => (
           <Book
             key={i}
@@ -314,50 +317,76 @@ function Book({
   let navigate = useNavigate();
 
   return (
-    <div className="gap-[20px] py-[26px] pl-[30px] pr-[13px] bg-[#A4C0ED] rounded-[25px] outline-[2px] outline-[#000000]/21 flex items-center justify-between">
-      <div className="flex gap-[16px] items-center">
-        {coverImage === null ? (
-          <img
-            src="/images/book_sample1.png"
-            alt="book"
-            className="rounded-[20px] w-[153px] h-[184px]"
-          />
-        ) : (
-          <img
-            src={`http://127.0.0.1:8000${coverImage}`}
-            alt="book"
-            className="rounded-[20px] w-[130px] h-[150px]"
-          />
-        )}
-        <div className="flex flex-col gap-[10px] overflow-hidden h-[184px] mx-h-[184px]">
-          <h3 className="text-[24px] font-[400] top-0">{bookName}</h3>
-          <div className="flex gap-[30px] top-0 -mt-[5px]">
-            <span className="text-[18px] font-[400]">مؤلف: {authorName}</span>
-            <Rating dir="ltr" readOnly precision={0.01} value={star} />
+    <>
+      <div
+        onClick={() => {
+          navigate(`/book/${bookId}`);
+        }}
+        className="w-[250px] sm:hidden h-[300px] mx-auto"
+      >
+        <BookCard
+          coverImage={
+            coverImage === null
+              ? "/images/book_sample1.png"
+              : `http://127.0.0.1:8000${coverImage}`
+          }
+          title={bookName}
+          author={authorName}
+          chapters={85}
+          description={bookDescription}
+        />
+      </div>
+      <div className="hidden sm:flex gap-[20px] py-[26px] pl-[30px] pr-[13px] bg-[#A4C0ED] rounded-[25px] outline-[2px] outline-[#000000]/21 items-center justify-between">
+        <div className="flex gap-[16px] items-center">
+          {coverImage === null ? (
+            <img
+              src="/images/book_sample1.png"
+              alt="book"
+              className="rounded-[20px] w-[153px] h-[184px]"
+            />
+          ) : (
+            <img
+              src={`http://127.0.0.1:8000${coverImage}`}
+              alt="book"
+              className="rounded-[20px] w-[130px] h-[150px]"
+            />
+          )}
+          <div className="flex flex-col gap-[10px] overflow-hidden h-[184px] mx-h-[184px]">
+            <h3 className="text-[24px] font-[400] top-0">{bookName}</h3>
+            <div className="flex flex-col md:flex-row gap-[5px] 2xl:gap-[30px] top-0 -mt-[5px]">
+              <span className="text-[18px] font-[400]">مؤلف: {authorName}</span>
+              <Rating
+                dir="ltr"
+                readOnly
+                precision={0.01}
+                value={star}
+                size="small"
+              />
+            </div>
+            <p className="text-[14px] font-[300] top-0">
+              خلاصه کتاب: {bookDescription}
+            </p>
           </div>
-          <p className="text-[14px] font-[300] top-0">
-            خلاصه کتاب: {bookDescription}
-          </p>
+        </div>
+        <div className="flex flex-col gap-[13px]">
+          <button
+            onClick={() => {
+              navigate("/chapter/1");
+            }}
+            className="btn !py-[9px] !rounded-[10px] !min-w-[160px] !h-fit !mr-0 !ml-0 !mb-0"
+          >
+            <span className="span-btn">شروع مطالعه کتاب</span>
+          </button>
+          <button
+            onClick={() => {
+              navigate(`/book/${bookId}`);
+            }}
+            className="btn !py-[9px] !rounded-[10px] !min-w-[160px] !h-fit !mr-0 !ml-0 !mb-0"
+          >
+            <span className="span-btn">مشاهده جزئیات کتاب</span>
+          </button>
         </div>
       </div>
-      <div className="flex flex-col gap-[13px]">
-        <button
-          onClick={() => {
-            navigate("/chapter/1");
-          }}
-          className="btn !py-[9px] !rounded-[10px] !min-w-[160px] !h-fit !mr-0 !ml-0 !mb-0"
-        >
-          <span className="span-btn">شروع مطالعه کتاب</span>
-        </button>
-        <button
-          onClick={() => {
-            navigate(`/book/${bookId}`);
-          }}
-          className="btn !py-[9px] !rounded-[10px] !min-w-[160px] !h-fit !mr-0 !ml-0 !mb-0"
-        >
-          <span className="span-btn">مشاهده جزئیات کتاب</span>
-        </button>
-      </div>
-    </div>
+    </>
   );
 }
