@@ -10,7 +10,7 @@ import { useLocation } from "react-router";
 const Chat: React.FC = () => {
   const location=useLocation()
   const User_id=location.state.userId
-  console.log(location.state)
+  console.log(location.state.userId)
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
   const [selectedGroupId, setSelectedGroupId] = useState<number>(0);
   const [chatContext, setChatContex] = useState<string | null>("direct");
@@ -18,7 +18,7 @@ const Chat: React.FC = () => {
   const [popUp2,setPopUp2]=useState<boolean >(false);
   const [groupName,setGroupName]=useState<string>("")
   useEffect(()=>{
-    setSelectedUserId(User_id);
+    if (User_id!=null){setSelectedUserId(User_id)};
   })
   return (
     <div>
@@ -37,7 +37,7 @@ const Chat: React.FC = () => {
               <ChatWindow userId={selectedUserId} />
             ) : (
               <p className="text-slate-500 text-right">
-                یک کاربر را برای نمایش گفتگو انتخاب کنید.
+                یک کاربر را برای نمایش گفتگو انتخاب کنید. 
               </p>
             )}
           </div>
