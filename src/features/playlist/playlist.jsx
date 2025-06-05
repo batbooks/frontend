@@ -13,7 +13,7 @@ const PlaylistPage = () => {
       description: "برترین آثار ادبیات جهان از نویسندگان مطرح",
       bookCount: 15,
       tags: ["ادبیات جهان", "کلاسیک", "برنده جایزه نوبل"],
-      genre: "ادبیات"
+      genre: "ادبیات",
     },
     {
       id: 2,
@@ -21,7 +21,7 @@ const PlaylistPage = () => {
       description: "پرفروش‌ترین کتاب‌های صوتی سال جاری",
       bookCount: 23,
       tags: ["پرفروش", "صوتی", "محبوب"],
-      genre: "عمومی"
+      genre: "عمومی",
     },
     {
       id: 3,
@@ -29,7 +29,7 @@ const PlaylistPage = () => {
       description: "راهکارهای عملی برای رشد شخصی و حرفه‌ای",
       bookCount: 18,
       tags: ["موفقیت", "رشد شخصی", "انگیزشی"],
-      genre: "توسعه فردی"
+      genre: "توسعه فردی",
     },
     {
       id: 4,
@@ -37,7 +37,7 @@ const PlaylistPage = () => {
       description: "شناخت تمدن کهن ایران زمین",
       bookCount: 12,
       tags: ["تاریخ", "ایران", "تمدن"],
-      genre: "تاریخ"
+      genre: "تاریخ",
     },
     {
       id: 5,
@@ -45,7 +45,7 @@ const PlaylistPage = () => {
       description: "جهان‌های موازی و آینده‌نگرانه",
       bookCount: 14,
       tags: ["تخیلی", "آینده", "فناوری"],
-      genre: "علمی-تخیلی"
+      genre: "علمی-تخیلی",
     },
     {
       id: 6,
@@ -53,7 +53,7 @@ const PlaylistPage = () => {
       description: "آثار فلسفی برای تفکر عمیق",
       bookCount: 9,
       tags: ["فلسفه", "اندیشه", "حکمت"],
-      genre: "فلسفه"
+      genre: "فلسفه",
     },
     {
       id: 7,
@@ -61,7 +61,7 @@ const PlaylistPage = () => {
       description: "درک رفتار انسان و روابط اجتماعی",
       bookCount: 11,
       tags: ["روانشناسی", "رفتار", "روابط"],
-      genre: "روانشناسی"
+      genre: "روانشناسی",
     },
     {
       id: 8,
@@ -69,7 +69,7 @@ const PlaylistPage = () => {
       description: "راهبردهای مدیریتی و کارآفرینی",
       bookCount: 16,
       tags: ["مدیریت", "کسب‌وکار", "اقتصاد"],
-      genre: "مدیریت"
+      genre: "مدیریت",
     },
     {
       id: 9,
@@ -77,7 +77,7 @@ const PlaylistPage = () => {
       description: "راهنمای جامع سلامت جسم و روان",
       bookCount: 8,
       tags: ["سلامت", "تغذیه", "ورزش"],
-      genre: "سلامت"
+      genre: "سلامت",
     },
     {
       id: 10,
@@ -85,7 +85,7 @@ const PlaylistPage = () => {
       description: "پرونده‌های جنایی و معمایی",
       bookCount: 13,
       tags: ["پلیسی", "جنایی", "معمایی"],
-      genre: "داستان"
+      genre: "داستان",
     },
     {
       id: 11,
@@ -93,7 +93,7 @@ const PlaylistPage = () => {
       description: "نکات کاربردی برای زندگی بهتر",
       bookCount: 7,
       tags: ["سبک زندگی", "خانه‌داری", "کاربردی"],
-      genre: "سبک زندگی"
+      genre: "سبک زندگی",
     },
     {
       id: 12,
@@ -101,7 +101,7 @@ const PlaylistPage = () => {
       description: "تحولات دیجیتال و فناوری‌های نوین",
       bookCount: 19,
       tags: ["تکنولوژی", "دیجیتال", "فناوری"],
-      genre: "تکنولوژی"
+      genre: "تکنولوژی",
     },
   ]);
 
@@ -128,12 +128,12 @@ const PlaylistPage = () => {
           </p>
         </div>
 
-        <div dir="rtl" className="mt-8 mb-8 text-left">
-          <button className="flex items-center gap-2   bg-[#2663CD] rounded-[10px] text-[#ffffff] text-[16px] font-[400] py-[9px] px-[32px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
+        <div dir="rtl" className="mt-6 mb-6 md:mt-8 md:mb-8 text-left">
+          <button className="flex items-center justify-center gap-2 bg-[#2663CD] rounded-[10px] text-white text-sm sm:text-[16px] font-medium py-2 px-4 sm:py-[9px] sm:px-[32px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-2 focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto w-full sm:w-auto">
             پلی‌لیست جدید
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 ml-1"
+              className="h-4 w-4 sm:h-5 sm:w-5 ml-1"
               viewBox="0 0 20 20"
               fill="currentColor"
             >
@@ -146,7 +146,10 @@ const PlaylistPage = () => {
           </button>
         </div>
 
-        <div dir="rtl" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div
+          dir="rtl"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
           {playlists.map((playlist) => (
             <PlaylistCard
               key={playlist.id}
