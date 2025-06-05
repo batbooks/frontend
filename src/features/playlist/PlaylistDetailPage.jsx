@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Navbar from "../../common/Navbar/navbar";
+import Navbar from "../../pages/Navbar";
 import Footer from "../../common/Footer/Footer";
 
 const PlaylistDetailPage = () => {

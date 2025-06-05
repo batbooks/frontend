@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Footer from "../../common/Footer/Footer";
-import Navbar from "../../common/Navbar/navbar";
+import Navbar from "../../pages/Navbar";
+
 import BookCard from "../../common/BookCard/bookCard";
 import ReadingGoalCard from "../../common/ReadingGoalCard/readingGoalCard";
 import Loading from "../../common/Loading/Loading";
