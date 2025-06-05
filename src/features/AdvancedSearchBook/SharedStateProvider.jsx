@@ -2,7 +2,6 @@ import { createContext, useState, useContext } from "react";
 
 const SharedStateContext = createContext();
 export function SharedStateProvider({ children }) {
-  const [isVisibleDescription, setIsVisibleDescription] = useState(false);
   const [checkedNum, setCheckedNum] = useState(-1);
   const [avgScoreFrom, setAvgScoreFrom] = useState(1.0);
   const [avgScoreTo, setAvgScoreTo] = useState(5.0);
@@ -15,8 +14,6 @@ export function SharedStateProvider({ children }) {
   return (
     <SharedStateContext.Provider
       value={{
-        isVisibleDescription,
-        setIsVisibleDescription,
         checkedNum,
         setCheckedNum,
         avgScoreFrom,

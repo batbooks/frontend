@@ -322,7 +322,10 @@ function Navbar() {
           </li>
           <li className="flex flex-col items-center mr-[-29px]">
             <button
-              onClick={() => setSelectedItem(3)}
+              onClick={() => {
+                setSelectedItem(3);
+                navigate("/advancedsearchbook");
+              }}
               className={`text-[16px]  ${selectedItem != 3 ? "cursor-pointer hover:text-[#2663CD]" : "text-[#265073] font-bold"} active:text-[#2663CD]/50 active:no-underline active:transition-all active:duration-100 focus:outline-none focus:text-[#2663CD]`}
             >
               جستجوی کتاب
