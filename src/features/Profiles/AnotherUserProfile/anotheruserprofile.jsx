@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Footer from "/src/common/Footer/Footer";
-import Navbar from "/src/common/Navbar/navbar";
+import Navbar from "../../../pages/Navbar";
 import BookCard from "../../../common/BookCard/bookCard";
 import "./anotheruserprofile.css";
 import { useNavigate, useParams } from "react-router";

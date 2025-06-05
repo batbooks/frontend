@@ -4,9 +4,9 @@ export function KeyWord({ setFilters }) {
   const { keyword, setKeyword } = useSharedState();
 
   return (
-    <div className="flex items-center gap-[9px] grow-1">
+    <div className="flex flex-col gap-[17px] w-full lg:w-4/10">
       <h2 className="text-[20px] font-[300]">عبارت کلیدی:</h2>
-      <div className="relative group grow-1">
+      <div className="relative group 2xl:mr-[30px]">
         <input
           className="p-[12px] w-[100%] bg-white text-[16px] font-[300] max-h-[40px] rounded-[6px] outline-[2px] outline-[#000000]/21 focus:outline-[3px] focus:outline-[#2663CD] placeholder:text-[16px] placeholder:font-[300] placeholder:text-[#265073]"
           placeholder="جستجوی داستان براساس عبارت کلیدی خلاصه آن..."

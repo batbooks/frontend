@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import EditProfile from "../EditProfile/editProfile";
 import Footer from "/src/common/Footer/Footer";
-import Navbar from "/src/common/Navbar/navbar";
+import Navbar from "../../../pages/Navbar";
 import { Rating } from "@mui/material";
 import BookCard from "../../../common/BookCard/bookCard";
 import { useDispatch, useSelector } from "react-redux";

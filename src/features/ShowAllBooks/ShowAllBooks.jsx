@@ -1,4 +1,5 @@
-import Navbar from "../../common/Navbar/navbar";
+import Navbar from "../../pages/Navbar";
+
 import Footer from "../../common/Footer/Footer";
 import ReadingGoalCard from "../../common/ReadingGoalCard/readingGoalCard";
 import BookCard from "../../common/BookCard/bookCard";

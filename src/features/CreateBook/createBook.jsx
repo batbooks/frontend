@@ -1,5 +1,7 @@
 import Footer from "/src/common/Footer/Footer";
 import Navbar from "../../common/Navbar/navbar.jsx";
+import Navbar from "../../pages/Navbar";
+
 import TagExplorer from "./TagExplorer";
 import { useState } from "react";
 import LongParagraphInput from "../../common/LongParagraphInput/longParagraphInput";
