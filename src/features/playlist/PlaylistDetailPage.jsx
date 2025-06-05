@@ -18,7 +18,6 @@ const PlaylistDetailPage = () => {
         id: 101,
         title: "جنگ و صلح",
         author: "لئو تولستوی",
-        cover: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
         rating: 4.9,
         rank: 1
       },
@@ -26,7 +25,6 @@ const PlaylistDetailPage = () => {
         id: 102,
         title: "بینوایان",
         author: "ویکتور هوگو",
-        cover: "https://images.unsplash.com/photo-1589998059171-988d887df646?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
         rating: 4.8,
         rank: 2
       },
@@ -34,7 +32,6 @@ const PlaylistDetailPage = () => {
         id: 103,
         title: "آنا کارنینا",
         author: "لئو تولستوی",
-        cover: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
         rating: 4.7,
         rank: 3
       },
@@ -42,11 +39,17 @@ const PlaylistDetailPage = () => {
         id: 104,
         title: "جنایت و مکافات",
         author: "فئودور داستایفسکی",
-        cover: "https://images.unsplash.com/photo-1589998059171-988d887df646?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
         rating: 4.6,
         rank: 4
       }
     ]
+  });
+
+  // حالت برای فرم اضافه کردن کتاب جدید
+  const [newBook, setNewBook] = useState({
+    title: "",
+    author: "",
+    rating: ""
   });
 
   const handleBack = () => {
@@ -60,24 +63,19 @@ const PlaylistDetailPage = () => {
     setPlaylist(prev => {
       const updatedBooks = [...prev.books];
       
-      // پیدا کردن کتاب فعلی و کتابی که رتبه‌اش تغییر می‌کند
       const currentBookIndex = updatedBooks.findIndex(b => b.id === bookId);
       const swappedBookIndex = updatedBooks.findIndex(b => b.rank === newRank);
       
       if (currentBookIndex === -1) return prev;
       
-      // ذخیره رتبه قبلی
       const oldRank = updatedBooks[currentBookIndex].rank;
       
-      // اگر کتابی با رتبه جدید وجود دارد، رتبه‌ها را عوض می‌کنیم
       if (swappedBookIndex !== -1) {
         updatedBooks[swappedBookIndex].rank = oldRank;
       }
       
-      // به‌روزرسانی رتبه کتاب فعلی
       updatedBooks[currentBookIndex].rank = newRank;
       
-      // مرتب‌سازی بر اساس رتبه جدید
       updatedBooks.sort((a, b) => a.rank - b.rank);
       
       return {
@@ -101,6 +99,58 @@ const PlaylistDetailPage = () => {
     if (book && book.rank < playlist.books.length) {
       updateRank(bookId, book.rank + 1);
     }
+  };
+
+  // تابع برای حذف کتاب
+  const handleDeleteBook = (bookId) => {
+    if (window.confirm("آیا مطمئن هستید که می‌خواهید این کتاب را حذف کنید؟")) {
+      setPlaylist(prev => {
+        const updatedBooks = prev.books
+          .filter(book => book.id !== bookId)
+          .map((book, index) => ({
+            ...book,
+            rank: index + 1
+          }));
+        
+        return {
+          ...prev,
+          books: updatedBooks
+        };
+      });
+    }
+  };
+
+  // تابع برای اضافه کردن کتاب جدید
+  const handleAddBook = () => {
+    if (!newBook.title || !newBook.author) return;
+
+    const newBookItem = {
+      id: Date.now(),
+      title: newBook.title,
+      author: newBook.author,
+      rating: parseFloat(newBook.rating) || 0,
+      rank: playlist.books.length + 1
+    };
+
+    setPlaylist(prev => ({
+      ...prev,
+      books: [...prev.books, newBookItem]
+    }));
+
+    setNewBook({
+      title: "",
+      author: "",
+      rating: ""
+    });
+  };
+
+  // تابع برای تغییر مقدار فیلدهای کتاب جدید
+  const handleNewBookChange = (e) => {
+    const { name, value } = e.target;
+    setNewBook(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
   return (
@@ -139,6 +189,57 @@ const PlaylistDetailPage = () => {
             </p>
           </div>
 
+          {/* فرم اضافه کردن کتاب جدید */}
+          <div className="bg-gray-100 p-4 rounded-lg mb-6">
+            <h3 className="text-lg font-semibold text-gray-800 mb-3">اضافه کردن کتاب جدید</h3>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">عنوان کتاب</label>
+                <input
+                  type="text"
+                  name="title"
+                  value={newBook.title}
+                  onChange={handleNewBookChange}
+                  className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="عنوان کتاب"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">نویسنده</label>
+                <input
+                  type="text"
+                  name="author"
+                  value={newBook.author}
+                  onChange={handleNewBookChange}
+                  className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="نویسنده"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">امتیاز (اختیاری)</label>
+                <input
+                  type="number"
+                  name="rating"
+                  value={newBook.rating}
+                  onChange={handleNewBookChange}
+                  min="0"
+                  max="5"
+                  step="0.1"
+                  className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="امتیاز (0-5)"
+                />
+              </div>
+              <div className="flex items-end">
+                <button
+                  onClick={handleAddBook}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md w-full transition-colors duration-200"
+                >
+                  اضافه کردن کتاب
+                </button>
+              </div>
+            </div>
+          </div>
+
           <div className="border-t pt-3 sm:pt-4">
             <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-3 sm:mb-4">
               کتاب‌های این پلی‌لیست (مرتب‌شده بر اساس رتبه)
@@ -149,11 +250,11 @@ const PlaylistDetailPage = () => {
                 <thead>
                   <tr className="bg-gray-100 text-gray-800">
                     <th className="py-2 sm:py-3 px-2 sm:px-4 text-right">رتبه</th>
-                    <th className="py-2 sm:py-3 px-2 sm:px-4 text-right">جلد کتاب</th>
                     <th className="py-2 sm:py-3 px-2 sm:px-4 text-right">عنوان</th>
                     <th className="py-2 sm:py-3 px-2 sm:px-4 text-right">نویسنده</th>
                     <th className="py-2 sm:py-3 px-2 sm:px-4 text-right">امتیاز</th>
                     <th className="py-2 sm:py-3 px-2 sm:px-4 text-right">تغییر رتبه</th>
+                    <th className="py-2 sm:py-3 px-2 sm:px-4 text-right">حذف</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
@@ -166,13 +267,6 @@ const PlaylistDetailPage = () => {
                             book.rank === 3 ? 'bg-amber-600 text-white' : 'bg-blue-100 text-blue-800'}`}>
                           {book.rank}
                         </span>
-                      </td>
-                      <td className="py-3 sm:py-4 px-2 sm:px-4">
-                        <img
-                          src={book.cover}
-                          alt={`جلد کتاب ${book.title}`}
-                          className="w-10 h-14 sm:w-12 sm:h-16 object-cover rounded shadow"
-                        />
                       </td>
                       <td className="py-3 sm:py-4 px-2 sm:px-4 font-medium text-gray-800 text-sm sm:text-base">
                         {book.title}
@@ -211,6 +305,17 @@ const PlaylistDetailPage = () => {
                             </svg>
                           </button>
                         </div>
+                      </td>
+                      <td className="py-3 sm:py-4 px-2 sm:px-4">
+                        <button
+                          onClick={() => handleDeleteBook(book.id)}
+                          className="text-red-600 hover:text-red-800 p-1 sm:p-2"
+                          title="حذف کتاب"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                          </svg>
+                        </button>
                       </td>
                     </tr>
                   ))}
