@@ -9,8 +9,15 @@ import { toJalaali } from "jalaali-js";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { useNavigate } from "react-router";
 import LongParagraphInput from "../../common/LongParagraphInput/longParagraphInput";
+import { useParams } from "react-router-dom";
 
-export default function ThreadPosts({ threadId, threadName }) {
+export default function ThreadPostsWrapper() {
+  const { threadId } = useParams();
+
+  return <ThreadPosts threadId={parseInt(threadId, 10)} />;
+}
+
+function ThreadPosts({ threadId, threadName = "تست" }) {
   const [posts, setPosts] = useState([]);
   const [showingPosts, setShowingPosts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -108,10 +115,12 @@ export default function ThreadPosts({ threadId, threadName }) {
             thread={threadId}
             ReplyPostId={null}
           />
-          <div className="flex gap-[7px] mx-auto items-center">
-            <h1 className="text-[25px] font-semibold">موضوع بحث:</h1>
-            <h1 className="text-[23px]">{threadName}</h1>
-          </div>
+          {threadName !== "تست" ? (
+            <div className="flex gap-[7px] mx-auto items-center">
+              <h1 className="text-[25px] font-semibold">موضوع بحث:</h1>
+              <h1 className="text-[23px]">{threadName}</h1>
+            </div>
+          ) : null}
           <Loading />
         </main>
         <div className="mt-[-60px]">
@@ -133,15 +142,19 @@ export default function ThreadPosts({ threadId, threadName }) {
           ReplyPostId={replyPostId}
         />
         <div className="flex relative">
-          <div className="flex gap-[7px] ml-auto items-center">
-            <h1 className="text-[25px] font-semibold">موضوع بحث:</h1>
-            <h1 className="text-[23px]">{threadName}</h1>
-          </div>
+          {threadName !== "تست" ? (
+            <div className="flex gap-[7px] ml-auto items-center">
+              <h1 className="text-[25px] font-semibold">موضوع بحث:</h1>
+              <h1 className="text-[23px]">{threadName}</h1>
+            </div>
+          ) : null}
           <div className="absolute w-full flex flex-col items-center">
             <h1 className="text-[25px] mx-auto font-semibold">بحث شروع شد</h1>
           </div>
         </div>
-        <div className="flex flex-col gap-[25px]">
+        <div
+          className={`flex flex-col gap-[25px] ${threadName === "تست" ? "mt-[20px]" : ""}`}
+        >
           {showingPosts.map((post) => (
             <Post
               key={post.id}
