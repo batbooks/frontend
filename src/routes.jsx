@@ -11,7 +11,7 @@ import Profile from "./features/Profiles/UserProfile/userprofile.jsx";
 import Homepage from "./homepage/Homepage.jsx";
 import MyBooks from "./features/MyBooks/myBooks.jsx";
 import Middleware from "./middleware.jsx";
-import AdvancedSearchBook from "./components/AdvancedSearchBook/advancedsearchbook.jsx";
+import AdvancedSearchBook from "./features/AdvancedSearchBook/advancedsearchbook.jsx";
 import EditChapter from "./features/EditChapter/editChapter.jsx";
 import ModifiedChapter from "./features/CreateChapter/modifiedChapter.jsx";
 import ReadingPage from "./features/ReadingChapter/chapterView.jsx";
@@ -20,7 +20,7 @@ import Threads from "./features/Threads/threads.jsx";
 import ShowAllBooks from "./features/ShowAllBooks/ShowAllBooks.jsx";
 import Comments from "./components/Comments/Comment.jsx";
 import ChatPage from "./common/Chat/Chat.jsx";
-import Chat from "./common/newChat/chat.tsx"
+import Chat from "./components/newChat/chat.js"
 import ThreadPosts from "./features/Thread Posts/threadpost.jsx";
 import People from "./features/People/people.jsx";
 import Forums from "./features/Forum/Forum.jsx";

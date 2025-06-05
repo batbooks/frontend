@@ -139,15 +139,13 @@ const GroupChatList: React.FC<Props> = ({
                   {group.name}
                 </p>
                 <p className="text-xs text-slate-500">
-                  {group.last_message?.slice(0, 20)}
+                  {group.last_message?.slice(0, 10)}
                   {group.last_message?.length > 10 ? "..." : ""}
                 </p>
               </div>
 
               {/* If you sent the last message */}
-              {group.is_last_you && (
-                <div className="text-xs text-sky-600 font-semibold">شما</div>
-              )}
+              
             </li>
           );
         })}
