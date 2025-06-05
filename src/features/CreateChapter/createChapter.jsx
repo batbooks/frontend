@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "/src/common/Navbar/navbar";
+import Navbar from "../../common/Navbar/navbar.jsx";
 import Footer from "../../common/Footer/Footer";
 import { Editor } from "primereact/editor";
 import { useLocation } from "react-router";

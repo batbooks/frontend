@@ -1,7 +1,7 @@
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { FaFlag, FaRegFlag } from "react-icons/fa";
-import Navbar from "/src/common/Navbar/Navbar";
-import Footer from "/src/common/Footer/Footer";
+import Navbar from "../../common/Navbar/navbar";
+import Footer from "../../common/Footer/Footer";
 import { useEffect, useState } from "react";
 
 export default function ThreadPosts() {
