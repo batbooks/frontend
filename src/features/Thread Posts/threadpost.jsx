@@ -1,5 +1,4 @@
 import { FaHeart, FaRegHeart } from "react-icons/fa";
-import Navbar from "../../common/Navbar/navbar";
 import Footer from "../../common/Footer/Footer";
 import Navbar from "../../pages/Navbar";
 import { useEffect, useRef, useState } from "react";
