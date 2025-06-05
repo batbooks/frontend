@@ -299,7 +299,7 @@ function Navbar() {
                   onClick={() => {
                     setSelectedItem(0);
                     setIsVisiblePanel(false);
-                    navigate("/forum");
+                    navigate("/forums");
                   }}
                   className="text-[#000000]/70 w-full h-full rounded-t-[10px] cursor-pointer text-right pr-2 hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
