@@ -1,6 +1,6 @@
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { FaFlag, FaRegFlag } from "react-icons/fa";
-import Navbar from "/src/common/Navbar/Navbar";
+import Navbar from "../../pages/Navbar";
 import Footer from "/src/common/Footer/Footer";
 import { useEffect, useState } from "react";
 
