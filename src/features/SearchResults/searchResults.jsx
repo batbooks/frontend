@@ -149,7 +149,7 @@ export default function SearchResults({ searchingItem = "people" }) {
                 }
               />
               <img
-                src="/src/assets/images/search.png"
+                src="/images/search.png"
                 alt="search"
                 className="w-[24px] h-[24px] z-2 ml-[15px] absolute left-0"
               />
@@ -197,7 +197,7 @@ export default function SearchResults({ searchingItem = "people" }) {
               {books.map((i) => (
                 <Book
                   key={i}
-                  coverImage={`/src/assets/images/book_sample${i}.png`}
+                  coverImage={`/images/book_sample${i}.png`}
                 />
               ))}
             </div>
@@ -487,7 +487,7 @@ function SearchFilters({ searchingItem }) {
         <div className="flex justify-between items-center">
           <div className="flex gap-[3px] items-center">
             <img
-              src="/src/assets/images/filter.png"
+              src="/images/filter.png"
               alt="filter"
               className="min-w-[30px] max-w-[30px] min-h-[30px] max-h-[30px]"
             />
@@ -799,13 +799,13 @@ function CheckBoxes(addFilter, filters) {
         >
           {checkedNum === 1 ? (
             <img
-              src="/src/assets/images/checked.png"
+              src="/images/checked.png"
               alt="checked"
               className="h-[18px] w-[18px] mx-auto"
             />
           ) : (
             <img
-              src="/src/assets/images/unchecked.png"
+              src="/images/unchecked.png"
               alt="unchecked"
               className="h-[18px] w-[18px] mx-auto"
             />
@@ -840,13 +840,13 @@ function CheckBoxes(addFilter, filters) {
         >
           {checkedNum === 0 ? (
             <img
-              src="/src/assets/images/checked.png"
+              src="/images/checked.png"
               alt="checked"
               className="h-[18px] w-[18px] mx-auto"
             />
           ) : (
             <img
-              src="/src/assets/images/unchecked.png"
+              src="/images/unchecked.png"
               alt="unchecked"
               className="h-[18px] w-[18px] mx-auto"
             />
@@ -974,7 +974,7 @@ const Forum = ({
     if (forumImage) {
       return `http://45.158.169.198${forumImage}`;
     }
-    return `/src/assets/images/book_sample${bookId % 10 || 1}.png`;
+    return `/images/book_sample${bookId % 10 || 1}.png`;
   };
 
   return (
@@ -1060,7 +1060,7 @@ function Person({ person }) {
     >
       <div className="flex items-center gap-[21px] relative">
         <img
-          src="/src/assets/images/following.png"
+          src="/images/following.png"
           alt="follow"
           className="rounded-full w-[110px] h-[110px]"
         />

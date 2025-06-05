@@ -320,7 +320,7 @@ function ReadingBook() {
         <div className="flex flex-col md:flex-row items-center">
           <img
             className="shadow-lg shadow-[#000000]/25 rounded-xl lg:rounded-[20px] w-32 md:w-36 lg:w-[153px] h-40 md:h-44 lg:h-[189px]"
-            src="/src/assets/images/book_sample1.png"
+            src="/images/book_sample1.png"
             alt="book"
           ></img>
           <div className="flex flex-col mr-4 md:mr-5 lg:mr-[26px] mt-4 md:mt-5 lg:mt-[27px] text-center md:text-right">
