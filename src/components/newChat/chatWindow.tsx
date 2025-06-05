@@ -14,7 +14,7 @@ interface Message {
 }
 
 interface ChatWindowProps {
-  userId: number;
+  userId: number|null;
 }
 
 const ChatWindow: React.FC<ChatWindowProps> = ({ userId }) => {

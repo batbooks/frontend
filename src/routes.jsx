@@ -18,9 +18,9 @@ import ReadingPage from "./features/ReadingChapter/chapterView.jsx";
 import CreateChapter from "./features/CreateChapter/createChapter.jsx";
 import Threads from "./features/Threads/threads.jsx";
 import ShowAllBooks from "./features/ShowAllBooks/ShowAllBooks.jsx";
-import Comments from "./features/Comments/Comment.jsx";
+import Comments from "./components/Comments/Comment.jsx";
 import ChatPage from "./common/Chat/Chat.jsx";
-import Chat from "./common/newChat/chat.tsx"
+import Chat from "./components/newChat/chat.js"
 import ThreadPosts from "./features/Thread Posts/threadpost.jsx";
 import People from "./features/People/people.jsx";
 import Forums from "./features/Forum/Forum.jsx";

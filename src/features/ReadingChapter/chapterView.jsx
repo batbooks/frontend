@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Footer from "../../common/Footer/Footer";
 import { Rating } from "@mui/material";
-import Navbar from "../../common/Navbar/navbar";
+import Navbar from "../../pages/Navbar";
+
 import { format } from "date-fns";
 import { useLocation, useParams } from "react-router";
-import Comments from "../../features/Comments/Comment";
+import Comments from "../../components/Comments/Comment";
 import Loading from "../../common/Loading/Loading";
 import parse from "html-react-parser";
 import ReactMarkdown from "react-markdown";
