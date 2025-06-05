@@ -371,7 +371,7 @@ function Post({
         <div className="flex w-full pb-[10px] border-b-[1px] border-[#000]/10">
           {userImage === null ? (
             <img
-              src="/src/assets/images/user_none2.png"
+              src="/images/user_none2.png"
               alt="user"
               className="mx-auto cursor-pointer rounded-full w-[90px] h-[90px]"
               onClick={() =>
