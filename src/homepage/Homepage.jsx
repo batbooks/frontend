@@ -6,7 +6,8 @@ import Most_active_authors from "./Most_active_authors";
 import Banner from "./Banner";
 import Right from "./right";
 import Left from "./left";
-import Navbar from "../common/Navbar/navbar";
+import Navbar from "../pages/Navbar";
+
 import Footer from "../common/Footer/Footer";
 import SearchBar from "../Searchbar";
 import { useSelector } from "react-redux";

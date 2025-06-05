@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import Navbar from "../../common/Navbar/navbar";
+import Navbar from "../../pages/Navbar";
+
 import Footer from "../../common/Footer/Footer";
 import { useNavigate } from "react-router";
 import Loading from "../../common/Loading/Loading";

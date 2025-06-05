@@ -5,7 +5,6 @@ import Loading from "../../common/Loading/Loading";
 import { AvgScores } from "./AvgScores";
 import { CheckBoxes } from "./CheckBoxes";
 import { CreationDate } from "./CreationDate";
-import { DescriptionBubble } from "./DescriptionBubble";
 import { Filter } from "./Filter";
 import { FromToInputs } from "./FromToInputs";
 import { GenreAndTag } from "./GenreAndTag";
@@ -37,6 +36,7 @@ export function SearchFilters({
   setPrevPageLink,
   showingBooks,
 }) {
+  const [isHovered, setIsHovered] = useState(false);
   const [isVisibleFilters, setIsVisibleFilters] = useState(false);
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState([]);
@@ -803,17 +803,35 @@ export function SearchFilters({
 
   return (
     <div className="flex flex-col items-center w-full">
-      <form className="mb-[37px]" onSubmit={(e) => e.preventDefault()}>
-        <div className={`flex gap-[26px]`}>
+      <form
+        className="mb-[37px] w-full lg:w-fit"
+        onSubmit={(e) => e.preventDefault()}
+      >
+        <div className="flex gap-[26px] w-full lg:w-fit">
           <button
             onClick={() => setIsVisibleFilters(!isVisibleFilters)}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
             className="!py-[12px] !px-[28px] !rounded-[20px] !w-fit !h-fit !mb-0 !ml-0 !mr-0 shadow-2xl btn"
           >
-            <span className="span-btn !text-[16px] !font-[400]">
+            <span className="span-btn hidden sm:block !text-[16px] !font-[400] text-nowrap">
               جستجوی پیشرفته
             </span>
+            {isHovered ? (
+              <img
+                src="/images/filter.png"
+                alt="filter"
+                className="min-w-[30px] max-w-[30px] min-h-[30px] max-h-[30px] sm:hidden"
+              />
+            ) : (
+              <img
+                src="/images/filter3.png"
+                alt="filter"
+                className="min-w-[30px] max-w-[30px] min-h-[30px] max-h-[30px] sm:hidden"
+              />
+            )}
           </button>
-          <div className="relative flex">
+          <div className="relative flex w-full lg:w-fit">
             <input
               value={searchWord}
               onChange={(e) => {
@@ -829,7 +847,7 @@ export function SearchFilters({
                   genreIds.current = [];
                 }
               }}
-              className="w-[693px] h-[49px] py-[12.5px] pr-[26px] pl-[50px] bg-white rounded-[20px] outline-[2px] outline-[#000000]/21 shadow-lg shadow-[#000000]/25 focus:shadow-none focus:outline-[3px] focus:outline-[#2663cd] placeholder:text-[16px] placeholder:font-[300] placeholder:text-[#265073]"
+              className="lg:w-[693px] w-full h-[49px] py-[12.5px] pr-[26px] pl-[50px] bg-white rounded-[20px] outline-[2px] outline-[#000000]/21 shadow-lg shadow-[#000000]/25 focus:shadow-none focus:outline-[3px] focus:outline-[#2663cd] placeholder:text-[16px] placeholder:font-[300] placeholder:text-[#265073]"
               placeholder="نام کتاب"
             />
             <img
@@ -847,7 +865,7 @@ export function SearchFilters({
       </form>
       <SharedStateProvider>
         <div
-          className={`flex flex-col w-full bg-[#A4C0ED] rounded-[20px] border-[2px] border-[#000000]/21 px-[55px] pt-[30px] pb-[50px] mb-[37px] ${isVisibleFilters ? "visible" : "hidden"}`}
+          className={`flex flex-col w-full bg-[#A4C0ED] rounded-[20px] border-[2px] border-[#000000]/21 px-[10px] sm:px-[55px] pt-[30px] pb-[50px] mb-[37px] ${isVisibleFilters ? "visible" : "hidden"}`}
         >
           <div className="flex flex-col gap-[17px] w-full">
             <div className="flex justify-between items-center">
@@ -862,7 +880,7 @@ export function SearchFilters({
                 </h2>
               </div>
             </div>
-            <div className="grid grid-cols-5 mx-0 gap-[11px] mb-[20px]">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 mx-0 gap-[11px] mb-[20px]">
               {filters?.map((filter, i) => (
                 <Filter
                   key={i}
@@ -891,7 +909,7 @@ export function SearchFilters({
             ژانرها:
           </h2>
           <div
-            className={`${!(selectedGenres.length === 0 && genres.length === 0) ? "grid grid-cols-5 gap-x-[25px] gap-y-[33px]" : "scrollbar-opacity-0"} mx-[30px] p-[20px] bg-[#FFF] rounded-[15px] border-[2px] border-[#000000]/21 mb-[50px]`}
+            className={`${!(selectedGenres.length === 0 && genres.length === 0) ? "grid sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-x-[25px] gap-y-[33px] overflow-y-scroll max-h-[155px]" : "scrollbar-opacity-0"} sm:mx-[30px] p-[20px] bg-[#FFF] rounded-[15px] border-[2px] border-[#000000]/21 mb-[50px]`}
           >
             {loading ? (
               <Loading />
@@ -899,7 +917,6 @@ export function SearchFilters({
               selectedGenres.map((genre) => (
                 <div key={genre.id} className="flex flex-col items-center">
                   <SharedStateProvider>
-                    <DescriptionBubble Obj={genre} />
                     <SelectedGenreAndTag
                       Obj={genre}
                       deleteFilter={setFilters}
@@ -918,7 +935,6 @@ export function SearchFilters({
               : genres.map((genre) => (
                   <div key={genre.id} className="flex flex-col items-center">
                     <SharedStateProvider>
-                      <DescriptionBubble Obj={genre} />
                       <GenreAndTag
                         Obj={genre}
                         addFilter={setFilters}
@@ -941,7 +957,7 @@ export function SearchFilters({
             دسته بندی تگ ها:
           </h2>
           <div
-            className={`${!(tagCategories.length === 0 && selectedTagCategories.length === 0) ? "grid grid-cols-5 gap-x-[25px] gap-y-[33px]" : "scrollbar-opacity-0"} mx-[30px] p-[20px] bg-[#FFF] rounded-[15px] border-[2px] border-[#000000]/21 mb-[17px]`}
+            className={`${!(tagCategories.length === 0 && selectedTagCategories.length === 0) ? "grid sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-x-[25px] gap-y-[33px] overflow-y-scroll max-h-[155px]" : "scrollbar-opacity-0"} sm:mx-[30px] p-[20px] bg-[#FFF] rounded-[15px] border-[2px] border-[#000000]/21 mb-[17px]`}
           >
             {loading
               ? null
@@ -976,15 +992,15 @@ export function SearchFilters({
               </p>
             ) : null}
           </div>
-          <h2 className="text-[20px] font-[300]  mb-[17px]">جستجوی تگ ها:</h2>
+          <h2 className="text-[20px] font-[300] mb-[17px]">جستجوی تگ ها:</h2>
           <input
             value={searchKey}
             onChange={(e) => setSearchKey(e.target.value)}
-            className="p-[12px] mb-[17px] w-[calc(100%-60px)] mx-auto bg-white text-[16px] font-[300] max-h-[40px] rounded-[6px] outline-[2px] outline-[#000000]/21 focus:outline-[3px] focus:outline-[#2663cd] placeholder:text-[16px] placeholder:font-[300] placeholder:text-[#265073]"
+            className="p-[12px] mb-[17px] w-full sm:w-[calc(100%-60px)] mx-auto bg-white text-[16px] font-[300] max-h-[40px] rounded-[6px] outline-[2px] outline-[#000000]/21 focus:outline-[3px] focus:outline-[#2663cd] placeholder:text-[16px] placeholder:font-[300] placeholder:text-[#265073]"
             placeholder="تگ مورد نظر خود را اینجا جستجو کنید..."
           ></input>
           <div
-            className={`${!(showingTags.length === 0 && showingSelectedTags.length === 0) ? "grid grid-cols-5 gap-x-[25px] gap-y-[33px] overflow-y-scroll max-h-[155px]" : "scrollbar-opacity-0"} mx-[30px] p-[20px] bg-[#FFF] rounded-[15px] border-[2px] border-[#000000]/21 mb-[50px]`}
+            className={`${!(showingTags.length === 0 && showingSelectedTags.length === 0) ? "grid sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-x-[25px] gap-y-[33px] overflow-y-scroll max-h-[155px]" : "scrollbar-opacity-0"} sm:mx-[30px] p-[20px] bg-[#FFF] rounded-[15px] border-[2px] border-[#000000]/21 mb-[50px]`}
           >
             {loading
               ? null
@@ -1030,9 +1046,9 @@ export function SearchFilters({
               </p>
             ) : null}
           </div>
-          <div className="flex justify-between w-[calc(100%-30px)] mb-[50px]">
-            <div className="flex flex-col gap-[17px]">
-              <h2 className="text-[20px] font-[300] ">تعداد فصل ها:</h2>
+          <div className="flex flex-col lg:flex-row justify-between gap-[50px] sm:w-[calc(100%-30px)] mb-[50px]">
+            <div className="flex flex-col gap-[17px] w-full lg:w-1/3">
+              <h2 className="text-[20px] font-[300]">تعداد فصل ها:</h2>
               <FromToInputs
                 maxValue={"9999"}
                 valueLength={4}
@@ -1044,10 +1060,8 @@ export function SearchFilters({
                 setToValue={setToValueChapter}
               />
             </div>
-            <div className="flex flex-col gap-[17px]">
-              <h2 className="text-[20px] font-[300] ">
-                تعداد افرادی که پسندیده اند:
-              </h2>
+            <div className="flex flex-col gap-[17px] w-full lg:w-1/3">
+              <h2 className="text-[20px] font-[300] ">تعداد پسندیدگان:</h2>
               <FromToInputs
                 maxValue={"99999"}
                 valueLength={5}
@@ -1059,7 +1073,7 @@ export function SearchFilters({
                 setToValue={setToValueFav}
               />
             </div>
-            <div className="flex flex-col gap-[17px]">
+            <div className="flex flex-col gap-[17px] w-full lg:w-1/3">
               <h2 className="text-[20px] font-[300] ">تعداد امتیازدهندگان:</h2>
               <FromToInputs
                 maxValue={"99999"}
@@ -1073,12 +1087,12 @@ export function SearchFilters({
               />
             </div>
           </div>
-          <div className="flex justify-between w-[calc(100%-30px)] items-center mb-[50px]">
+          <div className="flex gap-[50px] flex-col lg:flex-row justify-between sm:w-[calc(100%-30px)] 2xl:w-[calc(100%-60px)] items-center mb-[50px]">
             <AvgScores setFilters={setFilters} />
             <CheckBoxes addFilter={setFilters} filters={filters} />
             <Writer setFilters={setFilters} />
           </div>
-          <div className="flex items-center w-[calc(100%-30px)] gap-[39px] mt-[25px] mb-[60px]">
+          <div className="flex flex-col lg:flex-row items-center sm:w-[calc(100%-30px)] 2xl:w-[calc(100%-60px)] gap-[50px] mt-[25px] mb-[60px]">
             <KeyWord setFilters={setFilters} />
             <CreationDate setFilters={setFilters} />
           </div>
