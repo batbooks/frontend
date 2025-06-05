@@ -4,7 +4,7 @@ import { Rating } from "@mui/material";
 import Navbar from "../../pages/Navbar";
 
 import { format } from "date-fns";
-import { useLocation, useParams } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import Comments from "../../components/Comments/Comment";
 import Loading from "../../common/Loading/Loading";
 import parse from "html-react-parser";
@@ -16,8 +16,7 @@ const ReadingPage = () => {
   const [chapterBody, setChapterBody] = useState("");
   const [bookCover, setbookCover] = useState("");
   const location = useLocation();
-  const chapterNumber = location.state?.index + 1;
-  const bookId = location.state?.bookId;
+
   const [bookName, setbookName] = useState("");
   const [author, setAuthor] = useState("");
   const [season, setSeason] = useState("");
@@ -25,6 +24,10 @@ const ReadingPage = () => {
   const [loading, setLoading] = useState(true);
   const [rating, setRating] = useState(2.5);
   const [chapterFound, setChapterFound] = useState(false);
+  const [nextChapter, setNextChapter] = useState(0);
+  const [prevChapter, setPrevChapter] = useState(0);
+  const [bookId, setBookId] = useState(null);
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchChapter = async () => {
       setLoading(true);
@@ -52,6 +55,9 @@ const ReadingPage = () => {
           setAuthor(data.Author);
           setSeason(data.title);
           setRating(data.rating);
+          setNextChapter(data.next_chapter);
+          setPrevChapter(data.previous_chapter);
+          setBookId(data.book_id);
           const shamsiDate = moment(data.created_at)
             .locale("fa")
             .format("jYYYY/jMM/jDD");
@@ -91,13 +97,15 @@ const ReadingPage = () => {
         >
           {bookCover != null ? (
             <img
-              className="w-[179px] h-[247px] rounded-[15px]"
+              onClick={() => navigate(`/book/${bookId}`)}
+              className="w-[179px] h-[247px] rounded-[15px] cursor-pointer hover:scale-105 transition-all duration-200"
               src={`https://www.batbooks.ir${bookCover}`}
               alt="chapter"
             />
           ) : (
             <img
-              className="w-[179px] h-[247px] rounded-[15px]"
+              onClick={() => navigate(`/book/${bookId}`)}
+              className="w-[179px] h-[247px] rounded-[15px] cursor-pointer hover:scale-105 transition-all duration-200"
               src="/images/book_sample2.png"
               alt="chapter"
             />
@@ -133,10 +141,24 @@ const ReadingPage = () => {
         </div>
         <div className="bg-[#d9f0ff] flex flex-col ">
           <div className="flex justify-between py-[41px] w-95/100 mx-auto ">
-            <button className="btn !py-[5px] !px-[5px] !m-0 text-nowrap !rounded-[10px] !w-auto ">
+            <button
+              disabled={!nextChapter}
+              onClick={() => {
+                navigate(`/chapter/${nextChapter}`);
+                window.location.reload();
+              }}
+              className="btn !py-[5px] !px-[5px] !m-0 text-nowrap !rounded-[10px] !w-auto "
+            >
               <span className="span-btn">{"<<"} فصل بعد</span>
             </button>
-            <button className="btn !py-[5px] !px-[5px] !m-0 text-nowrap !rounded-[10px] !w-auto ">
+            <button
+              disabled={!prevChapter}
+              onClick={() => {
+                navigate(`/chapter/${prevChapter}`);
+                window.location.reload();
+              }}
+              className="btn !py-[5px] !px-[5px] !m-0 text-nowrap !rounded-[10px] !w-auto "
+            >
               <span className="span-btn">فصل قبل {">>"}</span>
             </button>
           </div>
@@ -148,10 +170,16 @@ const ReadingPage = () => {
           </div>
 
           <div className="flex justify-between py-[41px] w-95/100 mx-auto ">
-            <button className="btn !py-[5px] !px-[5px] !m-0 text-nowrap !rounded-[10px] !w-auto ">
+            <button
+              onClick={() => navigate(`/chapter/${nextChapter}`)}
+              className="btn !py-[5px] !px-[5px] !m-0 text-nowrap !rounded-[10px] !w-auto "
+            >
               <span className="span-btn">{"<<"} فصل بعد</span>
             </button>
-            <button className="btn !py-[5px] !px-[5px] !m-0 text-nowrap !rounded-[10px] !w-auto ">
+            <button
+              onClick={() => navigate(`/chapter/${prevChapter}`)}
+              className="btn !py-[5px] !px-[5px] !m-0 text-nowrap !rounded-[10px] !w-auto "
+            >
               <span className="span-btn">فصل قبل {">>"}</span>
             </button>
           </div>
