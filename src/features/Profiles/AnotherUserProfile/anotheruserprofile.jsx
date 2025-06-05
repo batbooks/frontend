@@ -233,7 +233,27 @@ export default function Another_User_Profile() {
                 alt="userimage"
               />
             </div>
-            <h3 className="  text-[24px] font-bold text-center">{user.user}</h3>
+            <div className="flex items-center justify-center gap-2">
+              <h3 className="  text-[24px] font-bold text-center">
+                {user.user}
+              </h3>
+              <svg
+              className="cursor-pointer"
+              onClick={()=>navigate("/chat",{state:{userId}})}
+                xmlns="http://www.w3.org/2000/svg"
+                width={30}
+                height={30}
+                viewBox="0 0 24 30"
+                fill="none"
+                stroke={"black"}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                
+              >
+                <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
+              </svg>
+            </div>
 
             <div className=" flex flex-col  ">
               <button
