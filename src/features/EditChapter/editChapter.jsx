@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../../common/Navbar/navbar";
+import Navbar from "../../pages/Navbar";
+
 import Footer from "../../common/Footer/Footer";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -13,7 +14,7 @@ const EditChapter = () => {
   useEffect(() => {
     const fetchBook = async () => {
       try {
-        const res = await fetch(`/api/book/${bookId}/`);
+        const res = await fetch(`https://www.batbooks.ir/book/${bookId}/`);
         const data = await res.json();
         setBookData(data);
       } catch (err) {
@@ -44,7 +45,7 @@ const EditChapter = () => {
             }}
             className="flex gap-[10px] justify-center mx-auto bg-[#2663CD] py-[7px] px-[23px] rounded-full text-[16px] font-medium text-white mb-[54px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
           >
-            <img src="/src/assets/images/add_sign.svg" alt="add" />
+            <img src="/images/add_sign.svg" alt="add" />
             اضافه کردن فصل جدید
           </button>
           <h1 className="font-bold text-[27px] text-[#265073]">

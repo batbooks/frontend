@@ -1,5 +1,5 @@
-import Footer from "/src/common/Footer/footer";
-import Navbar from "/src/common/Navbar/navbar";
+import Footer from "/src/common/Footer/Footer";
+import Navbar from "../../pages/Navbar";
 import { FiPhone, FiMail, FiMapPin } from "react-icons/fi";
 function ContactUs() {
   return (

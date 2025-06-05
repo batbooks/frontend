@@ -18,8 +18,9 @@ import ReadingPage from "./features/ReadingChapter/chapterView.jsx";
 import CreateChapter from "./features/CreateChapter/createChapter.jsx";
 import Threads from "./features/Threads/threads.jsx";
 import ShowAllBooks from "./features/ShowAllBooks/ShowAllBooks.jsx";
-import Comments from "./features/Comments/Comment.jsx";
+import Comments from "./components/Comments/Comment.jsx";
 import ChatPage from "./common/Chat/Chat.jsx";
+import Chat from "./components/newChat/chat.js"
 import ThreadPosts from "./features/Thread Posts/threadpost.jsx";
 import People from "./features/People/people.jsx";
 import Forums from "./features/Forum/Forum.jsx";
@@ -100,11 +101,11 @@ function AppRoutes() {
           }
         />
         <Route path="/threads/:forumId" element={<Threads forumId={3} />} />
+         <Route path="chat" element={<Chat/>} />
         <Route
           path="/threadposts/:threadId"
           element={<ThreadPosts threadId={3} threadName={"تست"} />}
         />
-        <Route path="chat" element={<ChatPage />} />
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/playlists" element={<PlaylistPage />} />
         <Route path="/playlists/:id" element={<PlaylistDetailPage />} />

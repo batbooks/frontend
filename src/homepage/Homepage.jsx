@@ -3,10 +3,11 @@ import Newest_books from "./Newest_books";
 import Suggestions from "./Suggestions";
 import Popular_authors from "./Popular_authors";
 import Most_active_authors from "./Most_active_authors";
-import Banner from "./banner";
+import Banner from "./Banner";
 import Right from "./right";
 import Left from "./left";
-import Navbar from "../common/Navbar/navbar";
+import Navbar from "../pages/Navbar";
+
 import Footer from "../common/Footer/Footer";
 import SearchBar from "../Searchbar";
 import { useSelector } from "react-redux";
@@ -104,7 +105,7 @@ export default function Homepage() {
               <motion.img
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 300 }}
-                src="\src\assets\images\mid-right11.png"
+                src="/images/mid-right11.png"
                 alt="Books illustration"
                 className="w-full h-auto scale-90"
               />

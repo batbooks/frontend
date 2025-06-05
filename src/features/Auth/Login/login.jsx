@@ -17,7 +17,7 @@ function Login() {
   let navigate = useNavigate();
   const fetchuserinfo = async (token) => {
     try {
-      const response = await fetch(`/api/auth/who/`, {
+      const response = await fetch(`https://www.batbooks.ir/auth/who/`, {
         method: "GET",
 
         headers: {
@@ -109,7 +109,7 @@ function Login() {
               onChange={(e) => setEmail(e.target.value)}
             />
             <img
-              src="/src/assets/images/user.png"
+              src="/images/user.png"
               alt="user"
               className="absolute right-38 top-[50%] -translate-y-1/2"
             />
@@ -124,20 +124,20 @@ function Login() {
               onChange={(e) => setPassword(e.target.value)}
             />
             <img
-              src="/src/assets/images/lock.png"
+              src="/images/lock.png"
               alt="lock-password"
               className="absolute right-38 top-[50%] -translate-y-1/2"
             />
             {!showPassword ? (
               <img
-                src="/src/assets/images/eye-on.png"
+                src="/images/eye-on.png"
                 alt="eye-on-password"
                 onClick={handleShowPassword}
                 className="absolute left-38 top-[50%] -translate-y-1/2"
               />
             ) : (
               <img
-                src="/src/assets/images/eye-off.png"
+                src="/images/eye-off.png"
                 alt="eye-off-password"
                 onClick={handleShowPassword}
                 className="absolute left-38 top-[50%] -translate-y-1/2"
@@ -163,12 +163,12 @@ function Login() {
           </Link>
         </form>
         <img
-          src="/src/assets/images/mid-left.png"
+          src="/images/mid-left.png"
           alt="mid-left"
           className=" absolute left-[335px] top-[280px]  "
         />
         <img
-          src="/src/assets/images/mid-right.png"
+          src="/images/mid-right.png"
           alt="mid-right"
           className="absolute right-[280px] top-[-15px] "
         />
@@ -181,12 +181,12 @@ function Login() {
         <p> هنوز ثبت نام نکرده اید؟</p>
       </div>
       <img
-        src="/src/assets/images/bottom-left.png"
+        src="/images/bottom-left.png"
         alt="bottom-left"
         className="absolute left-0 bottom-0 w-[25vw] aspect-auto"
       />
       <img
-        src="/src/assets/images/bottom-right.png"
+        src="/images/bottom-right.png"
         alt="bottom-right"
         className=" absolute right-[0px] bottom-0 w-[33vw] ascept-auto"
       />

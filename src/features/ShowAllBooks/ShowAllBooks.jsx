@@ -1,4 +1,5 @@
-import Navbar from "../../common/Navbar/navbar";
+import Navbar from "../../pages/Navbar";
+
 import Footer from "../../common/Footer/Footer";
 import ReadingGoalCard from "../../common/ReadingGoalCard/readingGoalCard";
 import BookCard from "../../common/BookCard/bookCard";
@@ -40,7 +41,7 @@ export default function ShowAllBooks({
               <div className="w-full grid grid-cols-2 gap-x-[42px] gap-y-[26px]">
                 {writtenBooks.map((i) => (
                   <WrittenBook
-                    coverImage={`/src/assets/images/book_sample${(i % 8) + 1}.png`}
+                    coverImage={`/images/book_sample${(i % 8) + 1}.png`}
                     bookName={"نام کتاب"}
                     chaptersNum={85}
                     key={i}
@@ -61,7 +62,7 @@ export default function ShowAllBooks({
                       description={
                         "این متن صرفا جهت تست میباشد...این متن صرفا جهت تست میباشد...این متن صرفا جهت تست میباشد...این متن صرفا جهت تست میباشد..."
                       }
-                      coverImage={`/src/assets/images/book_sample${(i % 8) + 1}.png`}
+                      coverImage={`/images/book_sample${(i % 8) + 1}.png`}
                       children={
                         bookModel === "fav" ? (
                           <button className="absolute rounded-full cursor-pointer grid h-[30px] w-[30px] left-[5px] top-[5px] hover:bg-[#E5E5E5]/40 transition-colors duration-400 active:bg-[#E5E5E5]/90 active:duration-100">

@@ -5,9 +5,9 @@ export function AvgScores({ setFilters }) {
     useSharedState();
 
   return (
-    <div className="flex flex-col gap-[17px]">
+    <div className="flex flex-col gap-[17px] w-full lg:w-3/10">
       <h2 className="text-[20px] font-[300] ">میانگین امتیازات کتاب:</h2>
-      <div className="flex justify-between mr-[30px] gap-[76px]">
+      <div className="flex lg:justify-between sm:justify-around justify-between 2xl:mr-[30px]">
         <div className="gap-[9px] flex items-center">
           <span className="text-[20px] font-[300] ">از:</span>
           <div className="flex items-center gap-[9px] relative group">
@@ -48,7 +48,7 @@ export function AvgScores({ setFilters }) {
                   className="rounded-full flex cursor-pointer z-2 w-[12.5px] h-[12.5px] mb-[-20px]"
                 ></button>
                 <img
-                  src="/src/assets/images/plus2.png"
+                  src="/images/plus2.png"
                   alt="plus"
                   className="w-[25px] h-[25px]"
                 />
@@ -93,7 +93,7 @@ export function AvgScores({ setFilters }) {
                   className="rounded-full flex cursor-pointer z-2 w-[12.5px] h-[12.5px] mb-[-20px]"
                 ></button>
                 <img
-                  src="/src/assets/images/minus2.png"
+                  src="/images/minus2.png"
                   alt="minus"
                   className="w-[25px] h-[25px]"
                 />
@@ -103,7 +103,7 @@ export function AvgScores({ setFilters }) {
               dir="ltr"
               value={avgScoreFrom.toFixed(1)}
               disabled
-              className="h-[40px] w-[80px] bg-white rounded-[5px] text-center outline-[2px] outline-[#000000]/21"
+              className="h-[40px] lg:w-[80px] md:w-[120px] w-[80px] bg-white rounded-[5px] text-center outline-[2px] outline-[#000000]/21"
             />
           </div>
         </div>
@@ -151,7 +151,7 @@ export function AvgScores({ setFilters }) {
                   className="rounded-full flex cursor-pointer z-2 w-[12.5px] h-[12.5px] mb-[-20px]"
                 ></button>
                 <img
-                  src="/src/assets/images/plus2.png"
+                  src="/images/plus2.png"
                   alt="plus"
                   className="w-[25px] h-[25px]"
                 />
@@ -192,7 +192,7 @@ export function AvgScores({ setFilters }) {
                   className="rounded-full flex cursor-pointer z-2 w-[12.5px] h-[12.5px] mb-[-20px]"
                 ></button>
                 <img
-                  src="/src/assets/images/minus2.png"
+                  src="/images/minus2.png"
                   alt="minus"
                   className="w-[25px] h-[25px]"
                 />
@@ -202,7 +202,7 @@ export function AvgScores({ setFilters }) {
               dir="ltr"
               value={avgScoreTo.toFixed(1)}
               disabled
-              className="h-[40px] w-[80px] bg-white rounded-[5px] text-center outline-[2px] outline-[#000000]/21"
+              className="h-[40px] lg:w-[80px] md:w-[120px] w-[80px] bg-white rounded-[5px] text-center outline-[2px] outline-[#000000]/21"
             />
           </div>
         </div>

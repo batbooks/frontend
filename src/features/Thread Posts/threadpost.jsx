@@ -1,5 +1,5 @@
 import { FaHeart, FaRegHeart } from "react-icons/fa";
-import Navbar from "/src/common/Navbar/Navbar";
+import Navbar from "../../pages/Navbar";
 import Footer from "/src/common/Footer/Footer";
 import { useEffect, useRef, useState } from "react";
 import Swal from "sweetalert2";

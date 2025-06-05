@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Footer from "../../common/Footer/Footer";
 import { Rating } from "@mui/material";
-import Navbar from "../../common/Navbar/navbar";
+import Navbar from "../../pages/Navbar";
+
 import { format } from "date-fns";
 import { useLocation, useParams } from "react-router";
-import Comments from "../../features/Comments/Comment";
+import Comments from "../../components/Comments/Comment";
 import Loading from "../../common/Loading/Loading";
 import parse from "html-react-parser";
 import ReactMarkdown from "react-markdown";
@@ -29,12 +30,15 @@ const ReadingPage = () => {
       setLoading(true);
 
       try {
-        const response = await fetch(`/api/book/chapter/${chapterId}/`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await fetch(
+          `https://www.batbooks.ir/book/chapter/${chapterId}/`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         if (response.status == 404) {
           setChapterFound(false);
@@ -88,13 +92,13 @@ const ReadingPage = () => {
           {bookCover != null ? (
             <img
               className="w-[179px] h-[247px] rounded-[15px]"
-              src={`/api${bookCover}`}
+              src={`https://www.batbooks.ir${bookCover}`}
               alt="chapter"
             />
           ) : (
             <img
               className="w-[179px] h-[247px] rounded-[15px]"
-              src="/src/assets/images/book_sample2.png"
+              src="/images/book_sample2.png"
               alt="chapter"
             />
           )}

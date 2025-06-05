@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "/src/common/Navbar/navbar";
+import Navbar from "../../pages/Navbar";
+
 import Footer from "../../common/Footer/Footer";
 import { Editor } from "primereact/editor";
 import { useParams } from "react-router";
@@ -18,12 +19,15 @@ const ModifiedChapter = () => {
     const fetchChapter = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`/api/book/chapter/${chapterId}/`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          `https://www.batbooks.ir/book/chapter/${chapterId}/`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Failed to fetch chapter");
@@ -49,17 +53,20 @@ const ModifiedChapter = () => {
     setLoading(true);
     console.log("sfdf");
     try {
-      const response = await fetch(`/api/book/chapter/${chapterId}/`, {
-        method: "PUT",
-        body: JSON.stringify({
-          title: chapterName,
-          body: chapterContent,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `https://www.batbooks.ir/book/chapter/${chapterId}/`,
+        {
+          method: "PUT",
+          body: JSON.stringify({
+            title: chapterName,
+            body: chapterContent,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       const data = await response.json();
       console.log(response);
       console.log(data);

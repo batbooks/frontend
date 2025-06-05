@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "/src/common/Navbar/navbar";
+import Navbar from "../../pages/Navbar";
 import Footer from "../../common/Footer/Footer";
 import { Editor } from "primereact/editor";
 import { useLocation } from "react-router";
@@ -25,7 +25,7 @@ const CreateChapter = () => {
         const token = localStorage.getItem("access_token");
         const auth = token ? `Bearer ${token}` : "";
 
-        const response = await fetch(`/api/book/${id}/`, {
+        const response = await fetch(`https://www.batbooks.ir/book/${id}/`, {
           method: "GET",
           headers: { "Content-Type": "application/json", Authorization: auth },
         });
@@ -55,7 +55,7 @@ const CreateChapter = () => {
       let response;
 
       if (inputType === "editor") {
-        response = await fetch(`/api/book/chapter/create/`, {
+        response = await fetch(`https://www.batbooks.ir/book/chapter/create/`, {
           method: "POST",
           body: JSON.stringify({
             book: id,
@@ -73,7 +73,7 @@ const CreateChapter = () => {
         formData.append("title", chapterName);
         formData.append("pdf", pdfFile);
 
-        response = await fetch(`/api/book/uploadfile/`, {
+        response = await fetch(`https://www.batbooks.ir/book/uploadfile/`, {
           method: "POST",
           body: formData,
           headers: {

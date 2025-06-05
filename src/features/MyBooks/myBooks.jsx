@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Footer from "../../common/Footer/Footer";
-import Navbar from "../../common/Navbar/navbar";
+import Navbar from "../../pages/Navbar";
+
 import BookCard from "../../common/BookCard/bookCard";
 import ReadingGoalCard from "../../common/ReadingGoalCard/readingGoalCard";
 import Loading from "../../common/Loading/Loading";
@@ -30,7 +31,7 @@ export default function MyBooks() {
       setLoading(true);
       const token = localStorage.getItem("access_token");
       try {
-        const response = await fetch(`/api/book/my/`, {
+        const response = await fetch(`https://www.batbooks.ir/book/my/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -55,13 +56,16 @@ export default function MyBooks() {
       setLoading2(true);
       const token = localStorage.getItem("access_token");
       try {
-        const response = await fetch(`/api/book-actions/get/favorite/`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          `https://www.batbooks.ir/book-actions/get/favorite/`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error("درخواست موفق نبود");
@@ -143,7 +147,7 @@ export default function MyBooks() {
                     className="absolute rounded-full bg-[#000000] z-10 mt-[107px] cursor-pointer left-0 ml-4 md:ml-[80px]"
                   >
                     <img
-                      src="/src/assets/images/slider.svg"
+                      src="/images/slider.svg"
                       alt="slider"
                       className="w-8 h-8"
                     />
@@ -153,7 +157,7 @@ export default function MyBooks() {
                     className="absolute rounded-full bg-[#000000] z-10 mt-[107px] cursor-pointer right-0 mr-4"
                   >
                     <img
-                      src="/src/assets/images/slider.svg"
+                      src="/images/slider.svg"
                       alt="slider"
                       className="w-8 h-8 rotate-180"
                     />
@@ -173,8 +177,8 @@ export default function MyBooks() {
                           description={book.description}
                           coverImage={
                             book.image
-                              ? `/api/${book.image}`
-                              : `/src/assets/images/book_sample1.png`
+                              ? `https://www.batbooks.ir/${book.image}`
+                              : `/images/book_sample1.png`
                           }
                           minw={isMobile ? 150 : 180}
                           h={isMobile ? 220 : 254}
@@ -183,7 +187,7 @@ export default function MyBooks() {
                         <Book
                           id={book.id}
                           key={i}
-                          coverImage={`/src/assets/images/book_sample${i}.png`}
+                          coverImage={`/images/book_sample${i}.png`}
                           isLast={true}
                           minw={isMobile ? 150 : 180}
                         />
@@ -202,7 +206,7 @@ export default function MyBooks() {
               <button className="mx-auto md:mx-[31%] mb-6 md:mb-[38px] w-[150px] md:w-[197px] h-[34px] md:h-[38px] flex items-center py-1 md:py-[7px] px-3 md:px-[23px] gap-2 md:gap-[10px] bg-[#2663CD] rounded-full text-sm md:text-[16px] text-white font-[400] text-nowrap shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
                 <span>مشاهده همه موارد</span>
                 <img
-                  src="/src/assets/images/arrow-right.png"
+                  src="/images/arrow-right.png"
                   alt="right"
                   className="w-4 h-4"
                 />
@@ -220,7 +224,7 @@ export default function MyBooks() {
                   >
                     <span>نوشتن کتاب جدید</span>
                     <img
-                      src="/src/assets/images/add_sign.svg"
+                      src="/images/add_sign.svg"
                       alt="add"
                       className="w-4 h-4"
                     />
@@ -245,7 +249,7 @@ export default function MyBooks() {
                     className="absolute rounded-full bg-[#000000] z-10 mt-[107px] cursor-pointer left-0 ml-4 md:ml-[80px]"
                   >
                     <img
-                      src="/src/assets/images/slider.svg"
+                      src="/images/slider.svg"
                       alt="slider"
                       className="w-8 h-8"
                     />
@@ -255,7 +259,7 @@ export default function MyBooks() {
                     className="absolute rounded-full bg-[#000000] z-10 mt-[107px] cursor-pointer right-0 mr-4"
                   >
                     <img
-                      src="/src/assets/images/slider.svg"
+                      src="/images/slider.svg"
                       alt="slider"
                       className="w-8 h-8 rotate-180"
                     />
@@ -276,7 +280,7 @@ export default function MyBooks() {
                           coverImage={
                             book.image
                               ? `${book.image}`
-                              : `/src/assets/images/book_sample1.png`
+                              : `/images/book_sample1.png`
                           }
                           minw={isMobile ? 150 : 180}
                           h={isMobile ? 220 : 300}
@@ -285,7 +289,7 @@ export default function MyBooks() {
                         <Book
                           id={book.id}
                           key={i}
-                          coverImage={`/src/assets/images/book_sample${i}.png`}
+                          coverImage={`/images/book_sample${i}.png`}
                           isLast={true}
                           minw={isMobile ? 150 : 180}
                         />
@@ -303,7 +307,7 @@ export default function MyBooks() {
                     >
                       <span>نوشتن کتاب جدید</span>
                       <img
-                        src="/src/assets/images/add_sign.svg"
+                        src="/images/add_sign.svg"
                         alt="add"
                         className="w-4 h-4"
                       />
@@ -317,7 +321,7 @@ export default function MyBooks() {
               <button className="mx-auto md:mx-[31%] w-[150px] md:w-[197px] h-[34px] md:h-[38px] flex items-center py-1 md:py-[7px] px-3 md:px-[23px] gap-2 md:gap-[10px] bg-[#2663CD] rounded-full text-sm md:text-[16px] text-white font-[400] text-nowrap shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
                 <span>مشاهده همه موارد</span>
                 <img
-                  src="/src/assets/images/arrow-right.png"
+                  src="/images/arrow-right.png"
                   alt="right"
                   className="w-4 h-4"
                 />
@@ -329,11 +333,7 @@ export default function MyBooks() {
                 className="mt-4 mx-auto w-[150px] h-[34px] flex items-center py-1 px-3 gap-2 bg-[#2663CD] rounded-full text-sm text-white font-[400] text-nowrap shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
               >
                 <span>نوشتن کتاب جدید</span>
-                <img
-                  src="/src/assets/images/add_sign.svg"
-                  alt="add"
-                  className="w-4 h-4"
-                />
+                <img src="/images/add_sign.svg" alt="add" className="w-4 h-4" />
               </button>
             )}
           </div>
