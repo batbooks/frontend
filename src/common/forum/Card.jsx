@@ -1,8 +1,10 @@
 import React from "react";
+import { useNavigate } from "react-router";
 
 export default function Card({ data }) {
-  const { name, author, created_at } = data;
-  console.log(data)
+  const { id, name, author, created_at } = data;
+  let navigate = useNavigate();
+  console.log(data);
   const formatDate = (isoDate) => {
     if (!isoDate) return "تاریخ نامعلوم";
 
@@ -21,7 +23,14 @@ export default function Card({ data }) {
   };
 
   return (
-    <div className="flex flex-row-reverse gap-1.5 shadow-2xl w-xl h-50 bg-white ml-auto mt-4 rounded-2xl border border-[#e0e0e0] hover:scale-105 transition-all duration-250 hover:shadow-3xl hover:cursor-pointer">
+    <div
+      onClick={() => {
+        navigate(`/threadposts/${id}`, {
+          state: { threadName: name, threadId: id },
+        });
+      }}
+      className="flex flex-row-reverse gap-1.5 shadow-2xl w-xl h-50 bg-white ml-auto mt-4 rounded-2xl border border-[#e0e0e0] hover:scale-105 transition-all duration-250 hover:shadow-3xl hover:cursor-pointer"
+    >
       <div className="flex flex-col gap-2 w-full px-4 py-3">
         {/* عنوان با راست‌چین کامل */}
         <h1 className="text-right font-bold text-[24px] text-blue-900">
@@ -30,7 +39,7 @@ export default function Card({ data }) {
 
         {/* اطلاعات نویسنده و تاریخ */}
         <div className="flex flex-row-reverse justify-between items-center w-full mt-2.5">
-        <h4 className="text-[#333333] text-sm">
+          <h4 className="text-[#333333] text-sm">
             ساخته شده در: {formatDate(created_at)}
           </h4>
           <h4 className="text-[#333333] text-sm">
