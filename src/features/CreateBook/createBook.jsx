@@ -10,7 +10,7 @@ import { useNavigate } from "react-router";
 function CreateBook() {
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
-  const [setError] = useState("");
+  const [error,setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -128,7 +128,13 @@ function CreateBook() {
             خلاصه داستان:
           </h3>
           <div dir="rtl" className="w-full max-w-[1020px] h-[211px]">
-            <LongParagraphInput setinputValue={setDescription} />
+            
+            <LongParagraphInput
+              placeholder="خلاصه داستان را بنویسید…"
+              inputValue={description}
+              setInputValue={setDescription}
+              hideError={setError}   
+            />
           </div>
         </div>
 
