@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 import { Editor } from "primereact/editor";
 import Footer from "../../common/Footer/Footer.jsx";
 import Navbar from "../../pages/Navbar";
-;
 import Reviews from "./reviews";
 import SearchBar from "../../Searchbar";
 import Loading from "../../common/Loading/Loading.jsx";
@@ -64,6 +63,7 @@ const BookPage = () => {
   const { bookId } = useParams();
   const [book, setBook] = useState(bookId);
   const [loading, setLoading] = useState(true);
+  const [loading2, setLoading2] = useState(false);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [reviewTitle, setReviewTitle] = useState("");
@@ -173,7 +173,7 @@ const BookPage = () => {
 
   if (loading)
     return (
-      <div className="h-[100vh] grid place-items-center">
+      <div className="w-fit mt-[600px] ml-[700px]">
         <Loading />
       </div>
     );
@@ -230,6 +230,94 @@ const BookPage = () => {
       setError(err.message || "try again");
     }
   };
+
+  const handleIsReadingBook = async (bookId, chapterId) => {
+    const token = localStorage.getItem("access_token");
+    setLoading2(true);
+    try {
+      const formData = new FormData();
+      formData.append("book", bookId);
+      formData.append("last_read_chapter", chapterId);
+      const response = await fetch(
+        `https://www.batbooks.ir/book/user-book-progress/`,
+        {
+          method: "POST",
+          body: formData,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("باید put کنی");
+      }
+    } catch (err) {
+      console.error(err.message);
+      try {
+        const response = await fetch(
+          `https://www.batbooks.ir/book/user-book-progress/`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error("مشکلی پیش اومد...دوباره تلاش کنید");
+        }
+        const data = await response.json();
+        const formData = new FormData();
+        formData.append("last_read_chapter", chapterId);
+        const id = data.find((book) => Number(book.book) === Number(bookId)).id;
+        try {
+          const response = await fetch(
+            `https://www.batbooks.ir/book/user-book-progress/${id}/`,
+            {
+              method: "PUT",
+              body: formData,
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error("مشکل در اتصال به اینترنت");
+          }
+        } catch (err) {
+          console.error(err.message);
+          Swal.fire({
+            title: `${err.message}`,
+            text: "دوباره امتحان کنید ",
+            icon: "error",
+            confirmButtonText: "باشه",
+          });
+        }
+      } catch (err) {
+        setTimeout(() => {
+          Swal.fire({
+            title: `${err.message}`,
+            icon: "error",
+            confirmButtonText: "باشه",
+          });
+        }, 100);
+      }
+    } finally {
+      setLoading2(false);
+    }
+  };
+
+  if (loading2) {
+    return (
+      <main className="w-full flex items-center">
+        <Loading />
+      </main>
+    );
+  }
+
   if (!chapterFound) {
     return (
       <div className="grid place-items-center h-[100vh]">
@@ -362,11 +450,18 @@ const BookPage = () => {
                     )
                     .map((chapter, index) => (
                       <tr
-                        onClick={() =>
-                          navigate(`/chapter/${chapter.id}`, {
-                            state: { index, bookId },
-                          })
-                        }
+                        onClick={async () => {
+                          if (isAuthenticated) {
+                            await handleIsReadingBook(bookId, chapter.id);
+                            navigate(`/chapter/${chapter.id}`, {
+                              state: { index, bookId },
+                            });
+                          } else {
+                            navigate(`/chapter/${chapter.id}`, {
+                              state: { index, bookId },
+                            });
+                          }
+                        }}
                         key={chapter.id || index}
                         className="border-b hover:bg-blue-100 cursor-pointer text-sm"
                       >

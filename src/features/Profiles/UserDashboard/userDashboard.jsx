@@ -22,20 +22,29 @@ export default function UserDashboard() {
   const [nextReviews, setNextReviews] = useState("");
   const [reviews, setReviews] = useState([]);
   const [totalPagesReview, setTotalPagesReview] = useState(1);
+  const [currentpageReview, setcurrentpageReview] = useState(1);
   const [prevComments, setPrevComments] = useState("");
   const [nextComments, setNextComments] = useState("");
   const [comments, setComments] = useState([]);
   const [totalPagesComment, setTotalPagesComment] = useState(1);
+  const [currentpageComment, setcurrentpageComment] = useState(1);
+  const [books, setBooks] = useState([]);
+  const [showingBooks, setShowingBooks] = useState([]);
+  const [totalPagesBooks, setTotalPagesBooks] = useState(1);
+  const [currentpageBooks, setcurrentpageBooks] = useState(1);
 
   useEffect(() => {
     if (menuNum === 1) {
       setTotalPages(totalPagesReview);
-      setcurrentpage(1);
+      setcurrentpage(currentpageReview);
     } else if (menuNum === 2) {
       setTotalPages(totalPagesComment);
-      setcurrentpage(1);
+      setcurrentpage(currentpageComment);
+    } else if (menuNum === 4) {
+      setTotalPages(totalPagesBooks);
+      setcurrentpage(currentpageBooks);
     }
-  }, [menuNum, totalPagesReview, totalPagesComment]);
+  }, [menuNum, totalPagesComment, totalPagesReview, totalPagesBooks]);
 
   const handlePageChange = async (page) => {
     setLoading(true);
@@ -61,6 +70,7 @@ export default function UserDashboard() {
             if (i === pageDiff - 1) {
               setNextReviews(data.links.next);
               setPrevReviews(data.links.previous);
+              setcurrentpageReview(page);
               setcurrentpage(page);
               setReviews(data.results);
               setLoading(false);
@@ -84,6 +94,7 @@ export default function UserDashboard() {
             if (i === -1) {
               setNextReviews(data.links.next);
               setPrevReviews(data.links.previous);
+              setcurrentpageReview(page);
               setcurrentpage(page);
               setReviews(data.results);
               setLoading(false);
@@ -124,6 +135,7 @@ export default function UserDashboard() {
             if (i === pageDiff - 1) {
               setNextComments(data.links.next);
               setPrevComments(data.links.previous);
+              setcurrentpageComment(page);
               setcurrentpage(page);
               setComments(data.results);
               setLoading(false);
@@ -147,6 +159,7 @@ export default function UserDashboard() {
             if (i === -1) {
               setNextComments(data.links.next);
               setPrevComments(data.links.previous);
+              setcurrentpageComment(page);
               setcurrentpage(page);
               setComments(data.results);
               setLoading(false);
@@ -166,12 +179,16 @@ export default function UserDashboard() {
           });
         }, 100);
       }
+    } else if (menuNum === 4) {
+      setShowingBooks(
+        books.filter((_, i) => i < page * 10 && i >= (page - 1) * 10)
+      );
+      setcurrentpageBooks(page);
     }
   };
 
   useEffect(() => {
     const fetchReviews = async () => {
-      setLoading(true);
       const token = localStorage.getItem("access_token");
       try {
         const response = await fetch(
@@ -204,12 +221,9 @@ export default function UserDashboard() {
             }
           });
         }, 100);
-      } finally {
-        setLoading(false);
       }
     };
     const fetchComments = async () => {
-      setLoading(true);
       const token = localStorage.getItem("access_token");
       try {
         const response = await fetch(
@@ -242,12 +256,50 @@ export default function UserDashboard() {
             }
           });
         }, 100);
-      } finally {
-        setLoading(false);
       }
     };
-    fetchReviews();
-    fetchComments();
+    const fetchBooks = async () => {
+      const token = localStorage.getItem("access_token");
+      try {
+        const response = await fetch(
+          `https://www.batbooks.ir/book/user-book-progress/`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error("مشکلی پیش اومد...دوباره تلاش کنید");
+        }
+        const data = await response.json();
+        setBooks(data);
+        setShowingBooks(data.filter((_, i) => i < 10));
+        setTotalPagesBooks(Math.ceil(data.count));
+      } catch (err) {
+        setTimeout(() => {
+          Swal.fire({
+            title: `${err.message}`,
+            icon: "error",
+            confirmButtonText: "تلاش مجدد",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
+            }
+          });
+        }, 100);
+      }
+    };
+    const loadData = async () => {
+      setLoading(true);
+      await fetchReviews();
+      await fetchComments();
+      await fetchBooks();
+      setLoading(false);
+    };
+    loadData();
   }, []);
 
   function getTimeAgo(dateString) {
@@ -286,7 +338,7 @@ export default function UserDashboard() {
   return (
     <div className="flex flex-col md:flex-row gap-6 lg:gap-[40px] w-full items-center md:items-start">
       {/* Sidebar - Adjusted for medium screens */}
-      <div className="sticky flex flex-row md:flex-col justify-center items-center overflow-x-auto md:overflow-x-visible h-fit bg-[#a4c0ed] min-w-full md:min-w-[200px] lg:min-w-[250px] p-3 md:pt-[15px] md:pb-[18px] md:px-3 gap-4 md:gap-[15px] lg:gap-[20px] outline-2 outline-[#000]/21 rounded-md shadow-md mx-auto">
+      <div className="z-50 sticky flex flex-row md:flex-col justify-center items-center overflow-x-auto md:overflow-x-visible h-fit bg-[#a4c0ed] min-w-full md:min-w-[200px] lg:min-w-[250px] p-3 md:pt-[15px] md:pb-[18px] md:px-3 gap-4 md:gap-[15px] lg:gap-[20px] outline-2 outline-[#000]/21 rounded-md shadow-md mx-auto">
         <button
           onClick={() => setMenuNum(1)}
           className={`group btn !mx-0 !rounded-md !mb-0 !w-fit md:!w-full !h-fit gap-1 md:gap-[5px] py-2 md:py-[8px] lg:py-[10px] pr-1 md:pr-[5px] pl-1 md:pl-[5px] !shadow-none outline outline-[#000]/21 !focus:outline !focus:outline-[#000]/21 ${
@@ -336,6 +388,11 @@ export default function UserDashboard() {
       {/* Main Content - Adjusted for medium screens */}
       <div className="flex flex-col gap-6 md:gap-6 lg:gap-[35px] w-full">
         {loading ? <Loading /> : null}
+        {((menuNum === 1 && !loading && reviews.length === 0) ||
+          (menuNum === 2 && !loading && comments.length === 0) ||
+          (menuNum === 4 && !loading && showingBooks.length === 0)) && (
+          <h1 className="text-[20px]">موردی برای نمایش وجود ندارد</h1>
+        )}
         {menuNum === 1 &&
           !loading &&
           reviews.map((review) => (
@@ -389,7 +446,16 @@ export default function UserDashboard() {
           ))}
         {menuNum === 4 &&
           !loading &&
-          [1, 2, 3, 4, 5].map((_, i) => <ReadingBook key={i} />)}
+          showingBooks.map((book) => (
+            <ReadingBook
+              key={book.id}
+              bookImage={book.book_image}
+              bookName={book.book_name}
+              bookId={book.book}
+              lastChapter={book.last_read_chapter}
+              historyId={book.id}
+            />
+          ))}
         {!loading && totalPages > 1 && (
           <div className="flex justify-center gap-2 my-6 items-center">
             {/* Previous Button */}
@@ -761,46 +827,182 @@ function LikeAndDislike({ likeStat, likeNum, dislikeNum }) {
   );
 }
 
-function ReadingBook() {
+function ReadingBook({ bookImage, bookName, bookId, lastChapter, historyId }) {
+  const [bookAuthor, setBookAuthor] = useState("");
+  const [allChapters, setAllChapters] = useState(0);
+  const [lastChapterIndex, setLastChapterIndex] = useState(0);
+  const [loading, setLoading] = useState(false);
+  let navigate = useNavigate();
+
+  const handleDeleteHistoryBook = async () => {
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await fetch(
+        `/api/book/user-book-progress/${historyId}/`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error("مشکلی پیش آمد...دوباره تلاش کنید");
+      }
+      Swal.fire({
+        title: "کتاب شما با موفقیت از لیست حذف شد",
+        icon: "success",
+        confirmButtonText: "باشه",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      });
+    } catch (err) {
+      setTimeout(() => {
+        Swal.fire({
+          title: `${err.message}`,
+          icon: "error",
+          confirmButtonText: "باشه",
+        });
+      }, 100);
+    }
+  };
+
+  useEffect(() => {
+    const fetchBookData = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(
+          `https://www.batbooks.ir/book/${bookId}/`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error("مشکلی پیش اومد...دوباره تلاش کنید");
+        }
+        const data = await response.json();
+        setBookAuthor(data.Author);
+        setAllChapters(data.chapters.length);
+        setLastChapterIndex(
+          data.chapters.find((chapter) => chapter.id === lastChapter)
+            .chapter_num
+        );
+      } catch (err) {
+        setTimeout(() => {
+          Swal.fire({
+            title: `${err.message}`,
+            icon: "error",
+            confirmButtonText: "تلاش مجدد",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
+            }
+          });
+        }, 100);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchBookData();
+  }, [bookId, lastChapter]);
+
   return (
-    <div className="grid grid-cols-1">
+    <div className={`grid grid-cols-1 ${loading ? "!cursor-progress" : ""}`}>
       <div className="flex flex-col md:flex-row py-4 md:py-5 lg:py-[26px] pr-4 md:pr-5 lg:pr-[26px] pl-6 md:pl-7 lg:pl-[41px] bg-[#a4c0ed] rounded-xl lg:rounded-[25px] items-center border-2 border-[#000000]/8 justify-between">
         <div className="flex flex-col md:flex-row items-center">
-          <img
-            className="shadow-lg shadow-[#000000]/25 rounded-xl lg:rounded-[20px] w-32 md:w-36 lg:w-[153px] h-40 md:h-44 lg:h-[189px]"
-            src="/src/assets/images/book_sample1.png"
-            alt="book"
-          ></img>
+          {bookImage === null ? (
+            <img
+              onClick={() => {
+                if (!loading) navigate(`/book/${bookId}`);
+              }}
+              className={`shadow-lg shadow-[#000000]/25 rounded-xl lg:rounded-[20px] w-32 md:w-36 lg:w-[153px] h-40 md:h-44 lg:h-[189px] ${!loading ? "cursor-pointer" : ""}`}
+              src="/src/assets/images/book_sample1.png"
+              alt="book"
+            ></img>
+          ) : (
+            <img
+              onClick={() => {
+                if (!loading) navigate(`/book/${bookId}`);
+              }}
+              className={`shadow-lg shadow-[#000000]/25 rounded-xl lg:rounded-[20px] w-32 md:w-36 lg:w-[153px] h-40 md:h-44 lg:h-[189px] ${!loading ? "cursor-pointer" : ""}`}
+              src={`https://www.batbooks.ir${bookImage}`}
+              alt="book"
+            ></img>
+          )}
           <div className="flex flex-col mr-4 md:mr-5 lg:mr-[26px] mt-4 md:mt-5 lg:mt-[27px] text-center md:text-right">
-            <h6 className="text-xl md:text-[22px] lg:text-[26px] font-normal mb-1 md:mb-1 lg:mb-[5px]">
-              نام کتاب
+            <h6
+              onClick={() => {
+                if (!loading) navigate(`/book/${bookId}`);
+              }}
+              className={`text-xl md:text-[22px] lg:text-[26px] font-normal mb-1 md:mb-1 lg:mb-[5px] ${!loading ? "hover:text-blue-700 cursor-pointer" : ""}`}
+            >
+              {bookName}
             </h6>
             <h4 className="mb-1 md:mb-1 lg:mb-[5px] text-base md:text-[17px] lg:text-[18px] font-normal">
-              نام نویسنده
+              {bookAuthor}
             </h4>
             <Rating
               size="medium"
               style={{ direction: "ltr" }}
               name="half-rating-read"
               defaultValue={4.5}
-              precision={0.5}
+              precision={0.1}
               readOnly
             />
           </div>
         </div>
         <div className="flex flex-col md:flex-row items-center mt-4 md:mt-0 w-full md:w-auto">
           <div className="w-64 md:w-80 lg:w-[480px] h-4 md:h-[18px] lg:h-[21px] bg-white rounded-full shadow-lg shadow-[#000000]/25">
-            <div className="w-[83%] h-full bg-[#26A541] rounded-full shadow-lg shadow-[#000000]/25"></div>
+            <div
+              style={{ width: `${(lastChapterIndex / allChapters) * 100}%` }}
+              className="h-full bg-[#26A541] rounded-full shadow-lg shadow-[#000000]/25"
+            ></div>
           </div>
           <h4 className="text-sm md:text-[15px] lg:text-[16px] font-normal mr-0 md:mr-2 lg:mr-3 mt-2 md:mt-0">
-            83%
+            {Math.ceil((lastChapterIndex / allChapters) * 100) || "تست"}%
           </h4>
         </div>
-        <button className="btn !rounded-lg lg:!rounded-[10px] !mx-0 !mb-0 !w-fit !h-fit py-2 md:py-[8px] lg:py-[9px] px-6 md:px-7 lg:px-[32px] mt-4 md:mt-0">
-          <span className="span-btn text-sm md:text-[15px] lg:text-[16px] font-normal">
-            ادامه دادن
-          </span>
-        </button>
+        <div className="flex flex-col gap-[15px]">
+          <button
+            onClick={() => navigate(`/chapter/${lastChapter}`)}
+            disabled={loading ? true : false}
+            className={`btn !rounded-lg lg:!rounded-[10px] !mx-0 !mb-0  !h-fit py-2 md:py-[8px] lg:py-[9px] px-6 md:px-7 lg:px-[32px] mt-4 md:mt-0 ${loading ? "!cursor-progress" : ""}`}
+          >
+            <span className="span-btn text-sm md:text-[15px] lg:text-[16px] font-normal">
+              ادامه دادن
+            </span>
+          </button>
+          <button
+            onClick={() => {
+              Swal.fire({
+                title: "آیا مطمئن هستید؟",
+                text: "!این عملیات قابل بازگشت نیست",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "!بله، حذف کن",
+                cancelButtonText: "لغو",
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  handleDeleteHistoryBook();
+                }
+              });
+            }}
+            disabled={loading ? true : false}
+            className={`btn !rounded-lg lg:!rounded-[10px] !mx-0 !mb-0 !h-fit py-2 md:py-[8px] lg:py-[9px] px-6 md:px-7 lg:px-[24px] mt-4 md:mt-0 ${loading ? "!cursor-progress" : ""}`}
+          >
+            <span className="span-btn text-sm md:text-[15px] lg:text-[16px] font-normal">
+              حذف از لیست
+            </span>
+          </button>
+        </div>
       </div>
     </div>
   );
