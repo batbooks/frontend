@@ -807,12 +807,12 @@ export function SearchFilters({
         className="mb-[37px] w-full lg:w-fit"
         onSubmit={(e) => e.preventDefault()}
       >
-        <div className="flex gap-[26px] w-full lg:w-fit">
+        <div className="flex sm:gap-[26px] gap-[5px] w-full lg:w-fit">
           <button
             onClick={() => setIsVisibleFilters(!isVisibleFilters)}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
-            className="!py-[12px] !px-[28px] !rounded-[20px] !w-fit !h-fit !mb-0 !ml-0 !mr-0 shadow-2xl btn"
+            className="!py-[12px] px-[15px] sm:!px-[28px] !rounded-[20px] !w-fit !h-fit !mb-0 !ml-0 !mr-0 shadow-2xl btn"
           >
             <span className="span-btn hidden sm:block !text-[16px] !font-[400] text-nowrap">
               جستجوی پیشرفته
