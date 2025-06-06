@@ -159,7 +159,7 @@ export default function Profile() {
           پروفایل کاربری
         </h1>
 
-        <div className="flex flex-col lg:flex-row w-full max-w-[90vw] bg-[#A4C0ED] ml-auto rounded-2xl lg:rounded-[35px] shadow-lg shadow-[#000000]/25 mb-8 md:mb-10 lg:mb-[40px] p-4 md:p-6 lg:pl-12 lg:pr-6 lg:pt-5 gap-4 md:gap-6 lg:gap-[39px] border-2 border-[#000000]/8">
+        <div className="flex flex-col  justify-center items-center xl:flex-row w-full max-w-[90vw] bg-[#A4C0ED] ml-auto rounded-2xl lg:rounded-[35px] shadow-lg shadow-[#000000]/25 mb-8 md:mb-10 lg:mb-[40px] p-4 md:p-6 lg:pl-12 lg:pr-6 lg:pt-5 gap-4 md:gap-6 lg:gap-[39px] border-2 border-[#000000]/8">
           <div className="flex flex-col items-center lg:items-start lg:min-w-[236px] gap-3 md:gap-4 lg:gap-[15px]">
             <div className="w-40 h-40 md:w-48 md:h-48 lg:w-[236px] lg:h-[236px] rounded-full overflow-hidden">
               <img
