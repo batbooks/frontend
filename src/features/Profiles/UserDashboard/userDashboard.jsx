@@ -399,7 +399,7 @@ export default function UserDashboard() {
             <Review
               key={review.id}
               bookId={review.book}
-              bookName={review.book}
+              bookName={review.book_name}
               userImage={review.image}
               rating={review.rating}
               userName={review.user.name}
@@ -426,7 +426,7 @@ export default function UserDashboard() {
               key={comment.id}
               isReply={comment.tag !== null}
               chapterId={comment.chapter}
-              chapterName={comment.chapter}
+              chapterName={comment.chapter_name}
               userName={comment.user.name}
               userImage={comment.image}
               created={getTimeAgo(comment.created)}
@@ -454,6 +454,11 @@ export default function UserDashboard() {
               bookId={book.book}
               lastChapter={book.last_read_chapter}
               historyId={book.id}
+              author={book.author_name}
+              lastChapterIndex={book.chapter_num}
+              allChapters={book.chapter_count}
+              star={book.rating}
+              chapterName={book.chapter_title}
             />
           ))}
         {!loading && totalPages > 1 && (
@@ -827,11 +832,18 @@ function LikeAndDislike({ likeStat, likeNum, dislikeNum }) {
   );
 }
 
-function ReadingBook({ bookImage, bookName, bookId, lastChapter, historyId }) {
-  const [bookAuthor, setBookAuthor] = useState("");
-  const [allChapters, setAllChapters] = useState(0);
-  const [lastChapterIndex, setLastChapterIndex] = useState(0);
-  const [loading, setLoading] = useState(false);
+function ReadingBook({
+  bookImage,
+  bookName,
+  bookId,
+  lastChapter,
+  historyId,
+  chapterName,
+  author,
+  allChapters,
+  lastChapterIndex,
+  star,
+}) {
   let navigate = useNavigate();
 
   const handleDeleteHistoryBook = async () => {
@@ -870,67 +882,25 @@ function ReadingBook({ bookImage, bookName, bookId, lastChapter, historyId }) {
     }
   };
 
-  useEffect(() => {
-    const fetchBookData = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch(
-          `https://www.batbooks.ir/book/${bookId}/`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        if (!response.ok) {
-          throw new Error("مشکلی پیش اومد...دوباره تلاش کنید");
-        }
-        const data = await response.json();
-        setBookAuthor(data.Author);
-        setAllChapters(data.chapters.length);
-        setLastChapterIndex(
-          data.chapters.find((chapter) => chapter.id === lastChapter)
-            .chapter_num
-        );
-      } catch (err) {
-        setTimeout(() => {
-          Swal.fire({
-            title: `${err.message}`,
-            icon: "error",
-            confirmButtonText: "تلاش مجدد",
-          }).then((result) => {
-            if (result.isConfirmed) {
-              window.location.reload();
-            }
-          });
-        }, 100);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchBookData();
-  }, [bookId, lastChapter]);
-
   return (
-    <div className={`grid grid-cols-1 ${loading ? "!cursor-progress" : ""}`}>
+    <div className={`grid grid-cols-1`}>
       <div className="flex flex-col md:flex-row py-4 md:py-5 lg:py-[26px] pr-4 md:pr-5 lg:pr-[26px] pl-6 md:pl-7 lg:pl-[41px] bg-[#a4c0ed] rounded-xl lg:rounded-[25px] items-center border-2 border-[#000000]/8 justify-between">
         <div className="flex flex-col md:flex-row items-center">
           {bookImage === null ? (
             <img
               onClick={() => {
-                if (!loading) navigate(`/book/${bookId}`);
+                navigate(`/book/${bookId}`);
               }}
-              className={`shadow-lg shadow-[#000000]/25 rounded-xl lg:rounded-[20px] w-32 md:w-36 lg:w-[153px] h-40 md:h-44 lg:h-[189px] ${!loading ? "cursor-pointer" : ""}`}
-              src="/src/assets/images/book_sample1.png"
+              className={`shadow-lg shadow-[#000000]/25 rounded-xl lg:rounded-[20px] w-32 md:w-36 lg:w-[153px] h-40 md:h-44 lg:h-[189px] cursor-pointer`}
+              src="/images/book_sample1.png"
               alt="book"
             ></img>
           ) : (
             <img
               onClick={() => {
-                if (!loading) navigate(`/book/${bookId}`);
+                navigate(`/book/${bookId}`);
               }}
-              className={`shadow-lg shadow-[#000000]/25 rounded-xl lg:rounded-[20px] w-32 md:w-36 lg:w-[153px] h-40 md:h-44 lg:h-[189px] ${!loading ? "cursor-pointer" : ""}`}
+              className={`shadow-lg shadow-[#000000]/25 rounded-xl lg:rounded-[20px] w-32 md:w-36 lg:w-[153px] h-40 md:h-44 lg:h-[189px] cursor-pointer`}
               src={`https://www.batbooks.ir${bookImage}`}
               alt="book"
             ></img>
@@ -938,20 +908,23 @@ function ReadingBook({ bookImage, bookName, bookId, lastChapter, historyId }) {
           <div className="flex flex-col mr-4 md:mr-5 lg:mr-[26px] mt-4 md:mt-5 lg:mt-[27px] text-center md:text-right">
             <h6
               onClick={() => {
-                if (!loading) navigate(`/book/${bookId}`);
+                navigate(`/book/${bookId}`);
               }}
-              className={`text-xl md:text-[22px] lg:text-[26px] font-normal mb-1 md:mb-1 lg:mb-[5px] ${!loading ? "hover:text-blue-700 cursor-pointer" : ""}`}
+              className={`text-xl md:text-[22px] lg:text-[26px] font-normal mb-1 md:mb-1.5 lg:mb-[5px] hover:text-blue-700 cursor-pointer`}
             >
               {bookName}
             </h6>
-            <h4 className="mb-1 md:mb-1 lg:mb-[5px] text-base md:text-[17px] lg:text-[18px] font-normal">
-              {bookAuthor}
+            <h4 className="mb-1.5 md:mb-1 lg:mb-[8px] text-base md:text-[17px] lg:text-[18px] font-normal">
+              آخرین فصل:{chapterName}
+            </h4>
+            <h4 className="mb-1.5 md:mb-1 lg:mb-[8px] text-base md:text-[17px] lg:text-[18px] font-normal">
+              نویسنده:{author}
             </h4>
             <Rating
               size="medium"
               style={{ direction: "ltr" }}
               name="half-rating-read"
-              defaultValue={4.5}
+              defaultValue={star}
               precision={0.1}
               readOnly
             />
@@ -971,8 +944,7 @@ function ReadingBook({ bookImage, bookName, bookId, lastChapter, historyId }) {
         <div className="flex flex-col gap-[15px]">
           <button
             onClick={() => navigate(`/chapter/${lastChapter}`)}
-            disabled={loading ? true : false}
-            className={`btn !rounded-lg lg:!rounded-[10px] !mx-0 !mb-0  !h-fit py-2 md:py-[8px] lg:py-[9px] px-6 md:px-7 lg:px-[32px] mt-4 md:mt-0 ${loading ? "!cursor-progress" : ""}`}
+            className={`btn !rounded-lg lg:!rounded-[10px] !mx-0 !mb-0  !h-fit py-2 md:py-[8px] lg:py-[9px] px-6 md:px-7 lg:px-[32px] mt-4 md:mt-0`}
           >
             <span className="span-btn text-sm md:text-[15px] lg:text-[16px] font-normal">
               ادامه دادن
@@ -995,8 +967,7 @@ function ReadingBook({ bookImage, bookName, bookId, lastChapter, historyId }) {
                 }
               });
             }}
-            disabled={loading ? true : false}
-            className={`btn !rounded-lg lg:!rounded-[10px] !mx-0 !mb-0 !h-fit py-2 md:py-[8px] lg:py-[9px] px-6 md:px-7 lg:px-[24px] mt-4 md:mt-0 ${loading ? "!cursor-progress" : ""}`}
+            className={`btn !rounded-lg lg:!rounded-[10px] !mx-0 !mb-0 !h-fit py-2 md:py-[8px] lg:py-[9px] px-6 md:px-7 lg:px-[24px] mt-4 md:mt-0`}
           >
             <span className="span-btn text-sm md:text-[15px] lg:text-[16px] font-normal">
               حذف از لیست
