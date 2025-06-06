@@ -28,6 +28,9 @@ import ContactUs from "./features/ContactUs/contactUs.jsx";
 import PlaylistPage from "./features/playlist/playlist.jsx";
 import PlaylistDetailPage from "./features/playlist/PlaylistDetailPage.jsx";
 import ThreadPostsWrapper from "./features/Thread Posts/threadpost.jsx";
+import PublicPlaylistsPage from "./features/playlist/PublicPlaylistsPage.jsx";
+import UserPlaylistsPage from "./features/playlist/AnotherUserPlaylistsPage.jsx";
+import OthersPlaylistDetailPage from "./features/playlist/othersPlaylistDetailPage.jsx";
 
 function AppRoutes() {
   return (
@@ -106,6 +109,9 @@ function AppRoutes() {
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/playlists" element={<PlaylistPage />} />
         <Route path="/playlists/:id" element={<PlaylistDetailPage />} />
+        <Route path="/public-playlists" element={<PublicPlaylistsPage />} />
+        <Route path="/anotherUserPlaylists" element={<UserPlaylistsPage />} />
+        <Route path="/othersPlaylists/:id" element={<OthersPlaylistDetailPage />} />
       </Routes>
     </Router>
   );

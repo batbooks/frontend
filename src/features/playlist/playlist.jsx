@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../../pages/Navbar";
 import Footer from "../../common/Footer/Footer";
 import PlaylistCard from "./PlaylistCard";
+import EditPlaylistModal from "./EditPlaylistModal";
 
 const PlaylistPage = () => {
   const navigate = useNavigate();
@@ -104,17 +105,29 @@ const PlaylistPage = () => {
       genre: "تکنولوژی",
     },
   ]);
+  const [editingPlaylist, setEditingPlaylist] = useState(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const handleDeletePlaylist = (id) => {
-    if (
-      window.confirm("آیا مطمئن هستید که می‌خواهید این پلی‌لیست را حذف کنید؟")
-    ) {
+    if (window.confirm("آیا مطمئن هستید که می‌خواهید این پلی‌لیست را حذف کنید؟")) {
       setPlaylists(playlists.filter((playlist) => playlist.id !== id));
     }
   };
 
   const handleViewPlaylist = (playlistId) => {
     navigate(`/playlists/${playlistId}`);
+  };
+
+  const handleEditPlaylist = (playlist) => {
+    setEditingPlaylist(playlist);
+    setIsEditModalOpen(true);
+  };
+
+  const handleSavePlaylist = (updatedPlaylist) => {
+    setPlaylists(playlists.map(playlist => 
+      playlist.id === updatedPlaylist.id ? updatedPlaylist : playlist
+    ));
+    setIsEditModalOpen(false);
   };
 
   return (
@@ -146,20 +159,28 @@ const PlaylistPage = () => {
           </button>
         </div>
 
-        <div
-          dir="rtl"
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
+        <div dir="rtl" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {playlists.map((playlist) => (
             <PlaylistCard
               key={playlist.id}
               playlist={playlist}
               onDelete={handleDeletePlaylist}
+              onEdit={handleEditPlaylist}
               onView={() => handleViewPlaylist(playlist.id)}
             />
           ))}
         </div>
       </div>
+
+      {/* مودال ویرایش پلی‌لیست */}
+      {isEditModalOpen && (
+        <EditPlaylistModal
+          playlist={editingPlaylist}
+          onSave={handleSavePlaylist}
+          onClose={() => setIsEditModalOpen(false)}
+        />
+      )}
+
       <Footer />
     </>
   );
