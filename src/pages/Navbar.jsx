@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { useLocation } from "react-router-dom";
-import { logout } from "../redux/infoSlice"; 
+import { logout } from "../redux/infoSlice";
 import menuIcon from "../assets/images/menu.svg";
 import HamburgerNavbar from "../sharedComponents/navbar/HamburgerNavbar";
 import {
@@ -37,7 +37,7 @@ function Navbar() {
   const openMenu = () => {
     setMobileMenuOpen(true);
     setTimeout(() => setMenuVisible(true), 10);
-    console.log("ad") // برای شروع transition بعد از render
+    console.log("ad"); // برای شروع transition بعد از render
   };
   const closeMenu = () => {
     setMenuVisible(false);
@@ -361,13 +361,23 @@ function Navbar() {
         <h1 className="text-[40px] font-[700] text-[#2663CD]">Books</h1>
         <h1 className="text-[40px] font-[700] text-[#002d54]">Bat</h1>
       </div>
-       <button
-            onClick={openMenu}
-            className="lg:hidden p-2 text-blue-700 hover:text-blue-900 text-3xl cursor-pointer"
-          >
-            ☰
-          </button>
-      <HamburgerNavbar openMenu={openMenu} closeMenu={closeMenu} handleLogout={handleLogout} handleNav={handleNav} menuVisible={menuVisible} mobileMenuOpen={mobileMenuOpen} openCommunications={openCommunications} toggleCommunications={toggleCommunications} setSelectedItem={setSelectedItem} />
+      <button
+        onClick={openMenu}
+        className="lg:hidden p-2 text-blue-700 hover:text-blue-900 text-3xl cursor-pointer"
+      >
+        ☰
+      </button>
+      <HamburgerNavbar
+        openMenu={openMenu}
+        closeMenu={closeMenu}
+        handleLogout={handleLogout}
+        handleNav={handleNav}
+        menuVisible={menuVisible}
+        mobileMenuOpen={mobileMenuOpen}
+        openCommunications={openCommunications}
+        toggleCommunications={toggleCommunications}
+        setSelectedItem={setSelectedItem}
+      />
     </header>
   );
 }
