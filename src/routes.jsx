@@ -29,7 +29,7 @@ import PlaylistPage from "./features/playlist/playlist.jsx";
 import PlaylistDetailPage from "./features/playlist/PlaylistDetailPage.jsx";
 import ThreadPostsWrapper from "./features/Thread Posts/threadpost.jsx";
 import PublicPlaylistsPage from "./features/playlist/PublicPlaylistsPage.jsx";
-import UserPlaylistsPage from "./features/playlist/AnotherUserPlaylistsPage.jsx";
+import UserPlaylistsPage from "./features/playlist/anotherUserPlaylistsPage.jsx";
 import OthersPlaylistDetailPage from "./features/playlist/othersPlaylistDetailPage.jsx";
 
 function AppRoutes() {
