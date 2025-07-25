@@ -31,7 +31,7 @@ export default function MyBooks() {
       setLoading(true);
       const token = localStorage.getItem("access_token");
       try {
-        const response = await fetch(`https://www.batbooks.ir/book/my/`, {
+        const response = await fetch(`http://127.0.0.1:8000/book/my/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -57,7 +57,7 @@ export default function MyBooks() {
       const token = localStorage.getItem("access_token");
       try {
         const response = await fetch(
-          `https://www.batbooks.ir/book-actions/get/favorite/`,
+          `http://127.0.0.1:8000/book-actions/get/favorite/`,
           {
             method: "GET",
             headers: {
@@ -177,7 +177,7 @@ export default function MyBooks() {
                           description={book.description}
                           coverImage={
                             book.image
-                              ? `https://www.batbooks.ir/${book.image}`
+                              ? `http://127.0.0.1:8000/${book.image}`
                               : `/images/book_sample1.png`
                           }
                           minw={isMobile ? 150 : 180}

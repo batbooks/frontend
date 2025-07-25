@@ -31,7 +31,7 @@ function Otp() {
 
     setLoading(true);
     try {
-      const response = await fetch("https://www.batbooks.ir/auth/otp/", {
+      const response = await fetch("http://127.0.0.1:8000/auth/otp/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, code: otpCode }),

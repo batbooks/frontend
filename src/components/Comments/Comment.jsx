@@ -26,7 +26,7 @@ export default function Comments({ chapterId }) {
       setLoading(true);
       try {
         const response = await fetch(
-          `https://www.batbooks.ir/comments/chapter/${chapterId}/`,
+          `http://127.0.0.1:8000/comments/chapter/${chapterId}/`,
           {
             method: "GET",
             headers: {
@@ -178,7 +178,7 @@ function Comment({
     try {
       setLoading(true);
       const response = await fetch(
-        `https://www.batbooks.ir/comments/comment/${commentId}/`,
+        `http://127.0.0.1:8000/comments/comment/${commentId}/`,
         {
           method: "GET",
           headers: {
@@ -294,7 +294,7 @@ function Comment({
             ) : (
               <img
                 className="min-w-[83px] max-w-[83px] max-h-[83px] min-h-[83px] rounded-full"
-                src={`https://www.batbooks.ir${userImage}`}
+                src={`http://127.0.0.1:8000${userImage}`}
                 alt="commentimage"
               />
             )}
@@ -548,7 +548,7 @@ function Reply({
           ) : (
             <img
               className="w-15 md:min-w-[83px] md:max-w-[83px] md:max-h-[83px] md:min-h-[83px] rounded-full"
-              src={`https://www.batbooks.ir${userImage}`}
+              src={`http://127.0.0.1:8000${userImage}`}
               alt="commentimage"
             />
           )}
@@ -613,7 +613,7 @@ function ReplyBox({ isLast, commentId, setHidden }) {
     try {
       const token = localStorage.getItem("access_token");
       const response = await fetch(
-        `https://www.batbooks.ir/comments/reply_to/${commentId}/`,
+        `http://127.0.0.1:8000/comments/reply_to/${commentId}/`,
         {
           method: "POST",
           headers: {
@@ -659,7 +659,7 @@ function ReplyBox({ isLast, commentId, setHidden }) {
     >
       <div className="flex flex-col items-center gap-[9px] mx-[33px]">
         <img
-          src={`https://www.batbooks.ir${user.user_info.image}`}
+          src={`http://127.0.0.1:8000${user.user_info.image}`}
           alt="user"
           className="min-w-[83px] max-w-[83px] max-h-[83px] min-h-[83px] rounded-full"
         />
@@ -722,7 +722,7 @@ function LikeAndDislike({ likeNum, dislikeNum, likeState, commentorreplyId }) {
       setLoading(true);
       const token = localStorage.getItem("access_token");
       const response = await fetch(
-        `https://www.batbooks.ir/comments/like/${commentorreplyId}/`,
+        `http://127.0.0.1:8000/comments/like/${commentorreplyId}/`,
         {
           method: "GET",
           headers: {
@@ -744,7 +744,7 @@ function LikeAndDislike({ likeNum, dislikeNum, likeState, commentorreplyId }) {
       setLoading(true);
       const token = localStorage.getItem("access_token");
       const response = await fetch(
-        `https://www.batbooks.ir/comments/dislike/${commentorreplyId}/`,
+        `http://127.0.0.1:8000/comments/dislike/${commentorreplyId}/`,
         {
           method: "GET",
           headers: {

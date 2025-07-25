@@ -65,7 +65,7 @@ export default function Suggestions() {
 
       try {
         const response = await fetch(
-          `https://www.batbooks.ir/suggestion/book/`,
+          `http://127.0.0.1:8000/suggestion/book/`,
           {
             method: "GET",
             headers: {

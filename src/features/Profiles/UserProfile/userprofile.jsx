@@ -34,7 +34,7 @@ export default function Profile() {
     const auth = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`https://www.batbooks.ir/auth/who/`, {
+        const response = await fetch(`http://127.0.0.1:8000/auth/who/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -60,7 +60,7 @@ export default function Profile() {
 
       try {
         const response = await fetch(
-          `https://www.batbooks.ir/book/user/${userid}/`,
+          `http://127.0.0.1:8000/book/user/${userid}/`,
           {
             method: "GET",
           }
@@ -87,7 +87,7 @@ export default function Profile() {
       setLoading1(true);
       try {
         const response = await fetch(
-          `https://www.batbooks.ir/user/following/`,
+          `http://127.0.0.1:8000/user/following/`,
           {
             method: "GET",
             headers: {
@@ -166,7 +166,7 @@ export default function Profile() {
                 className="w-full h-full shadow-lg shadow-[#000000]/25 object-cover"
                 src={
                   userInfo.image
-                    ? `https://www.batbooks.ir${userInfo.image}`
+                    ? `http://127.0.0.1:8000${userInfo.image}`
                     : `/images/user_image.png`
                 }
                 alt="userimage"
@@ -420,7 +420,7 @@ export default function Profile() {
             />
           ) : (
             <img
-              src={`https://www.batbooks.ir${user.following_image}`}
+              src={`http://127.0.0.1:8000${user.following_image}`}
               alt="following"
               className="rounded-full w-20 h-20 md:w-[110px] md:h-[110px]"
             />

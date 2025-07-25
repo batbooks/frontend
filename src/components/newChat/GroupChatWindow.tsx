@@ -82,7 +82,7 @@ const GroupChatWindow: React.FC<ChatWindowProps> = ({ groupId,groupName }) => {
       setIsLoading1(true);
       try {
         const response = await fetch(
-          `https://www.batbooks.ir/chat/group/members/${groupId}/`,
+          `http://127.0.0.1:8000/chat/group/members/${groupId}/`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -107,7 +107,7 @@ const GroupChatWindow: React.FC<ChatWindowProps> = ({ groupId,groupName }) => {
       setIsLoading(true);
       try {
         const response = await fetch(
-          `https://www.batbooks.ir/chat/group/message/${groupId}/`,
+          `http://127.0.0.1:8000/chat/group/message/${groupId}/`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -194,7 +194,7 @@ const GroupChatWindow: React.FC<ChatWindowProps> = ({ groupId,groupName }) => {
       //     sender: "شما",
       //     sender_id: user.id,
       //     sender_img: user.user_info.image
-      //       ? `https://www.batbooks.ir/${user.user_info.image}`
+      //       ? `http://127.0.0.1:8000/${user.user_info.image}`
       //       : undefined,
       //     message: newMessage,
       //     date: new Date().toISOString(), // actual date string
@@ -234,7 +234,7 @@ const GroupChatWindow: React.FC<ChatWindowProps> = ({ groupId,groupName }) => {
     setIsLoading1(true);
     try {
       const response = await fetch(
-        `https://www.batbooks.ir/chat/group/members/${groupId}/`,
+        `http://127.0.0.1:8000/chat/group/members/${groupId}/`,
         {
           headers: {
             "Content-Type": "application/json",

@@ -28,8 +28,8 @@ function EditBook() {
         const token = localStorage.getItem("access_token");
 
         const [genresRes, tagsRes] = await Promise.all([
-          fetch(`https://www.batbooks.ir/tag/genres/`),
-          fetch(`https://www.batbooks.ir/tag/tag-categories/`, {
+          fetch(`http://127.0.0.1:8000/tag/genres/`),
+          fetch(`http://127.0.0.1:8000/tag/tag-categories/`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
@@ -60,7 +60,7 @@ function EditBook() {
 
     const fetchBook = async () => {
       try {
-        const response = await fetch(`https://www.batbooks.ir/book/${id}/`);
+        const response = await fetch(`http://127.0.0.1:8000/book/${id}/`);
         const data = await response.json();
 
         setName(data.name);
@@ -123,7 +123,7 @@ function EditBook() {
         formData.append("tags", Number(tag.id));
       });
 
-      await fetch(`https://www.batbooks.ir/book/${id}/`, {
+      await fetch(`http://127.0.0.1:8000/book/${id}/`, {
         method: "PUT",
         body: formData,
         headers: {

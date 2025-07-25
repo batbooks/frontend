@@ -18,7 +18,7 @@ export default function Forums() {
       setLoading(true);
       try {
         const response = await fetch(
-          `https://www.batbooks.ir/forum/?page=${currentpage}`
+          `http://127.0.0.1:8000/forum/?page=${currentpage}`
         );
         if (response.ok) {
           const data = await response.json();
@@ -221,7 +221,7 @@ const Forum = ({
 
   const getImageSrc = () => {
     if (forumImage) {
-      return `https://www.batbooks.ir${forumImage}`;
+      return `http://127.0.0.1:8000${forumImage}`;
     }
     return `/images/book_sample${bookId % 10 || 1}.png`;
   };

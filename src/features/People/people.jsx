@@ -20,7 +20,7 @@ export default function People() {
       setLoading(true);
       try {
         const response = await fetch(
-          `https://www.batbooks.ir/user/users/all/?page=${currentpage}`
+          `http://127.0.0.1:8000/user/users/all/?page=${currentpage}`
         );
         if (response.ok) {
           const data = await response.json();
@@ -46,7 +46,7 @@ export default function People() {
     }
     try {
       const response = await fetch(
-        `https://www.batbooks.ir/user/search/${searched}/?page=${page}`
+        `http://127.0.0.1:8000/user/search/${searched}/?page=${page}`
       );
       if (response.ok) {
         const data = await response.json();
@@ -160,7 +160,7 @@ function Person({ person }) {
     const fetchFollowing = async () => {
       try {
         const response = await fetch(
-          `https://www.batbooks.ir/user/is/follow/${person.id}/`,
+          `http://127.0.0.1:8000/user/is/follow/${person.id}/`,
           {
             method: "GET",
             headers: {
@@ -183,7 +183,7 @@ function Person({ person }) {
   const handleFollow = async () => {
     try {
       const response = await fetch(
-        `https://www.batbooks.ir/user/toggle/follow/${person.id}/`,
+        `http://127.0.0.1:8000/user/toggle/follow/${person.id}/`,
         {
           method: "GET",
           headers: {

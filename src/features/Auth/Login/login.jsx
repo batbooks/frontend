@@ -17,7 +17,7 @@ function Login() {
   let navigate = useNavigate();
   const fetchuserinfo = async (token) => {
     try {
-      const response = await fetch(`https://www.batbooks.ir/auth/who/`, {
+      const response = await fetch(`http://127.0.0.1:8000/auth/who/`, {
         method: "GET",
 
         headers: {
@@ -39,7 +39,7 @@ function Login() {
     setLoading(true);
 
     try {
-      const response = await fetch("https://www.batbooks.ir/auth/token/", {
+      const response = await fetch("http://127.0.0.1:8000/auth/token/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

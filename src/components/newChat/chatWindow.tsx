@@ -35,7 +35,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ userId }) => {
       setIsLoading(true);
       try {
         const response = await fetch(
-          `https://www.batbooks.ir/chat/show/${userId}/`,
+          `http://127.0.0.1:8000/chat/show/${userId}/`,
           {
             headers: {
               "Content-Type": "application/json",

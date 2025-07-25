@@ -65,7 +65,7 @@ export default function Popular_authors() {
 
       try {
         const response = await fetch(
-          `https://www.batbooks.ir/popular/author/`,
+          `http://127.0.0.1:8000/popular/author/`,
           {
             method: "GET",
             headers: {

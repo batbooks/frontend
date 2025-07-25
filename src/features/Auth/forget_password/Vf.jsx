@@ -46,7 +46,7 @@ export default function Vf() {
 
     try {
       const response = await axios.post(
-        "https://www.batbooks.ir/auth/reset-password/verify-otp/",
+        "http://127.0.0.1:8000/auth/reset-password/verify-otp/",
         {
           email,
           code,

@@ -71,7 +71,7 @@ export default function HamburgerNavbar({
                   <li className="w-full px-3 flex items-center gap-3">
                     <img
                       className="w-10 h-10  rounded-full"
-                      src={`https://www.batbooks.ir${user.user_info.image}`}
+                      src={`http://127.0.0.1:8000${user.user_info.image}`}
                       alt="asd"
                     />
                     <h3>{user.name} </h3>
