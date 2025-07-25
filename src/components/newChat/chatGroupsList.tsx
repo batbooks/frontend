@@ -14,7 +14,7 @@ interface GroupChat {
 
 interface Props {
   setGroupName:React.Dispatch<React.SetStateAction<string >>
-  onGroupSelect :React.Dispatch<React.SetStateAction<number >> 
+  onGroupSelect :React.Dispatch<React.SetStateAction<number |null>> 
   setChatContext: React.Dispatch<React.SetStateAction<string | null>>;
   chatContext: string;
   popUp2: boolean;

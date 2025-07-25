@@ -12,7 +12,7 @@ export default function UserDashboard() {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await fetch(`https://www.batbooks.ir/book/all/`, {
+        const response = await fetch(`http://127.0.0.1:8000/book/all/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

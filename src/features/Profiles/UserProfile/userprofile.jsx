@@ -9,6 +9,14 @@ import { logout } from "../../../redux/infoSlice";
 import Loading from "../../../common/Loading/Loading";
 import { useNavigate } from "react-router";
 import UserDashboard from "../UserDashboard/userDashboard";
+import { FiArchive, FiBookmark, FiCreditCard, FiEdit3, FiGrid, FiInfo, FiLayers, FiLogOut, FiUser } from "react-icons/fi";
+import {
+  FaIdCard,
+  FaInfoCircle,
+  FaUser,
+  FaUserAlt,
+  FaUserAltSlash,
+} from "react-icons/fa";
 
 const token = localStorage.getItem("access_token");
 export default function Profile() {
@@ -34,7 +42,7 @@ export default function Profile() {
     const auth = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`https://www.batbooks.ir/auth/who/`, {
+        const response = await fetch(`http://127.0.0.1:8000/auth/who/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -60,7 +68,7 @@ export default function Profile() {
 
       try {
         const response = await fetch(
-          `https://www.batbooks.ir/book/user/${userid}/`,
+          `http://127.0.0.1:8000/book/user/${userid}/`,
           {
             method: "GET",
           }
@@ -87,7 +95,7 @@ export default function Profile() {
       setLoading1(true);
       try {
         const response = await fetch(
-          `https://www.batbooks.ir/user/following/`,
+          `http://127.0.0.1:8000/user/following/`,
           {
             method: "GET",
             headers: {
@@ -114,6 +122,8 @@ export default function Profile() {
 
   const [editClicked, setEditClicked] = useState(false);
   const [isHoveredEdit, setIsHoveredEdit] = useState(false);
+  const [isHoveredLogOut, setIsHoveredLogOut] = useState(false);
+
   const [isFollowingOpened, setIsFollowingOpened] = useState(false);
   const [isHoveredFavBook, setIsHoveredFavBook] = useState(false);
   const { user } = useSelector((state) => state.auth);
@@ -155,24 +165,27 @@ export default function Profile() {
         style={{ direction: "rtl" }}
         className="flex flex-col gap-5 md:gap-8 lg:gap-[20px] max-w-screen px-4 sm:px-6 md:px-8 lg:px-20 pb-16 md:pb-20 lg:pb-[90px] pt-3 md:pt-4 lg:pt-[13px] shadow-2xl shadow-[#000000]-25 items-center overflow-hidden"
       >
-        <h1 className="text-[#265073] text-2xl sm:text-3xl lg:text-[32px] font-bold mx-auto">
-          پروفایل کاربری
-        </h1>
+        <div className="flex items-center gap-2 md:gap-3 lg:gap-[10px] mb-4 md:mb-6 lg:mb-[20px]">
+          <FiUser className="text-[#265073]  text-2xl md:text-3xl " />
+          <h1 className="text-[#265073] text-2xl sm:text-3xl lg:text-[32px] font-bold mx-auto">
+            پروفایل کاربری
+          </h1>
+        </div>
 
         <div className="flex flex-col lg:flex-row w-full max-w-[90vw] bg-[#A4C0ED] ml-auto rounded-2xl lg:rounded-[35px] shadow-lg shadow-[#000000]/25 mb-8 md:mb-10 lg:mb-[40px] p-4 md:p-6 lg:pl-12 lg:pr-6 lg:pt-5 gap-4 md:gap-6 lg:gap-[39px] border-2 border-[#000000]/8">
-          <div className="flex flex-col items-center lg:items-start lg:min-w-[236px] gap-3 md:gap-4 lg:gap-[15px]">
+          <div className="flex flex-col items-center  lg:min-w-[236px] gap-3 md:gap-4 lg:gap-[15px]">
             <div className="w-40 h-40 md:w-48 md:h-48 lg:w-[236px] lg:h-[236px] rounded-full overflow-hidden">
               <img
                 className="w-full h-full shadow-lg shadow-[#000000]/25 object-cover"
                 src={
                   userInfo.image
-                    ? `https://www.batbooks.ir${userInfo.image}`
+                    ? `http://127.0.0.1:8000${userInfo.image}`
                     : `/images/user_image.png`
                 }
                 alt="userimage"
               />
             </div>
-            <h3 className="text-xl md:text-2xl lg:text-[24px] font-bold text-center lg:text-right">
+            <h3 className="w-full text-xl md:text-2xl lg:text-[24px] font-bold text-center ">
               {userInfo.user}
             </h3>
             <div className="w-full lg:w-auto flex flex-col gap-2">
@@ -180,7 +193,7 @@ export default function Profile() {
                 onMouseEnter={() => setIsHoveredEdit(true)}
                 onMouseLeave={() => setIsHoveredEdit(false)}
                 onClick={() => setEditClicked(true)}
-                className="btn !w-full lg:!w-auto lg:min-w-[200px]"
+                className="flex gap-2 btn !w-full lg:!w-auto lg:min-w-[200px]"
               >
                 {!isHoveredEdit ? (
                   <img
@@ -199,8 +212,16 @@ export default function Profile() {
               </button>
               <button
                 onClick={handleLogout}
-                className="btn !bg-red-700 !w-full lg:!w-auto lg:min-w-[200px] before:!bg-[#FF3B30]"
+                className="btn !bg-red-700 !w-full lg:!w-auto lg:min-w-[200px] before:!bg-[#FF3B30] !flex gap-1.5"
+                onMouseEnter={() => setIsHoveredLogOut(true)}
+                onMouseLeave={() => setIsHoveredLogOut(false)}
               >
+                {!isHoveredLogOut ? (
+                  <FiLogOut color="white" className="relative" />
+                ) : (
+                  <FiLogOut color="black" className="relative" />
+                )}
+
                 <span className="span-btn font-normal">
                   خروج از حساب کاربری
                 </span>
@@ -209,9 +230,12 @@ export default function Profile() {
           </div>
 
           <div className="w-full m-0 lg:m-8 lg:mt-0 lg:ml-0">
-            <h1 className="text-xl md:text-2xl lg:text-[26px] font-bold">
-              قفسه ها:
-            </h1>
+            <div className="flex items-center text-center gap-2 md:gap-3 lg:gap-[10px]  ">
+              <FiLayers className="opacity-70 text-xl md:text-2xl lg:text-3xl" />
+              <h1 className="text-xl md:text-2xl lg:text-[26px] font-bold">
+                قفسه ها:
+              </h1>
+            </div>
 
             <div className="flex flex-wrap gap-4 md:gap-5 lg:gap-[20px] mb-4 md:mb-5 lg:mb-[19px]">
               <button
@@ -262,15 +286,18 @@ export default function Profile() {
                 </ul>
               </div>
             </div>
-
-            <h1 className="text-xl md:text-2xl lg:text-[26px] font-bold mb-1">
-              مشخصات:
-            </h1>
-            <div className="relative bg-white h-48 md:h-52 lg:h-[230px] rounded-lg shadow-lg shadow-[#000000]/25">
+            <div className="mt-10 flex items-center text-center gap-2 md:gap-3 lg:gap-[10px] mb-4 md:mb-6 lg:mb-[20px]">
+              <FiInfo className="opacity-70 text-xl  lg:text-2xl" />
+              <h1 className="text-xl md:text-2xl lg:text-[26px] font-bold ">
+                مشخصات:
+              </h1>
+            </div>
+            <div className="relative bg-white h-48 md:h-52 lg:h-[210px] rounded-lg shadow-lg shadow-[#000000]/25">
               <div className="pt-3 px-5 lg:pt-[11px] lg:px-[20px] mt-2 lg:mt-[10px]">
                 <p className="font-semibold text-sm md:text-base lg:text-[16px] mb-1 lg:mb-[5px]">
                   بیوگرافی:
                 </p>
+
                 <div className="min-w-[175px]">
                   <p className="text-[#000000] text-xs md:text-sm lg:text-[14px] font-light">
                     {userInfo.bio}
@@ -295,9 +322,12 @@ export default function Profile() {
               }}
               className="hidden lg:block lg:min-w-[292px] w-[200px] h-auto lg:h-[368px] m-0 lg:m-8 lg:mt-1 lg:ml-0"
             >
-              <h1 className="text-base md:text-lg lg:text-[18px] font-bold mb-1">
-                آخرین کتاب نوشته شده:
-              </h1>
+              <div className="flex items-start text-center gap-2 md:gap-3 lg:gap-[10px] mb-2">
+                <FiBookmark className="opacity-70 text-xl md:text-2xl lg:text-3xl" />
+                <h1 className="text-base md:text-lg lg:text-[18px] font-bold">
+                  آخرین کتاب نوشته شده:
+                </h1>
+              </div>
               <BookCard
                 title={lastBook.name}
                 author={lastBook.Author}
@@ -420,7 +450,7 @@ export default function Profile() {
             />
           ) : (
             <img
-              src={`https://www.batbooks.ir${user.following_image}`}
+              src={`http://127.0.0.1:8000${user.following_image}`}
               alt="following"
               className="rounded-full w-20 h-20 md:w-[110px] md:h-[110px]"
             />

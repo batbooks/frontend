@@ -335,7 +335,7 @@ export function SearchFilters({
       try {
         setLoading2(true);
         const response = await fetch(
-          `https://www.batbooks.ir/advance/${Query}`,
+          `http://127.0.0.1:8000/advance/${Query}`,
           {
             method: "GET",
             headers: {
@@ -350,9 +350,9 @@ export function SearchFilters({
           const data = await response.json();
           setcurrentpage(1);
           setTotalPages(Math.ceil(data.count / itemsPerPage));
-          setNextPageLink(data.next?.replace("http://www.batbooks.ir/", ""));
+          setNextPageLink(data.next?.replace("http://127.0.0.1:8000/", ""));
           setPrevPageLink(
-            data.previous?.replace("http://www.batbooks.ir/", "")
+            data.previous?.replace("http://127.0.0.1:8000/", "")
           );
           setShowingBooks(data.results);
         }
@@ -664,13 +664,13 @@ export function SearchFilters({
           setLoading2(true);
           console.log(Query);
           const response = isVisibleFilters
-            ? await fetch(`https://www.batbooks.ir/advance/${Query}`, {
+            ? await fetch(`http://127.0.0.1:8000/advance/${Query}`, {
                 method: "GET",
                 headers: {
                   "Content-Type": "application/json",
                 },
               })
-            : await fetch(`https://www.batbooks.ir/advance/${Query2}`, {
+            : await fetch(`http://127.0.0.1:8000/advance/${Query2}`, {
                 method: "GET",
                 headers: {
                   "Content-Type": "application/json",
@@ -685,9 +685,9 @@ export function SearchFilters({
             setShowingBooksSearchWord(searchWord);
             setcurrentpage(1);
             setTotalPages(Math.ceil(data.count / itemsPerPage));
-            setNextPageLink(data.next?.replace("http://www.batbooks.ir/", ""));
+            setNextPageLink(data.next?.replace("http://127.0.0.1:8000/", ""));
             setPrevPageLink(
-              data.previous?.replace("http://www.batbooks.ir/", "")
+              data.previous?.replace("http://127.0.0.1:8000/", "")
             );
             setShowingBooks(data.results);
           }
@@ -712,14 +712,14 @@ export function SearchFilters({
   useEffect(() => {
     const fetchGenresAndTags = async () => {
       setLoading(true);
-      const response = await fetch(`https://www.batbooks.ir/tag/genres/`, {
+      const response = await fetch(`http://127.0.0.1:8000/tag/genres/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
       });
       const response2 = await fetch(
-        `https://www.batbooks.ir/tag/tag-categories/`,
+        `http://127.0.0.1:8000/tag/tag-categories/`,
         {
           method: "GET",
           headers: {

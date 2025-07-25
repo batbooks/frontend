@@ -28,7 +28,7 @@ function Forget_password() {
     try {
       // Replace this with your actual API endpoint
       const response = await fetch(
-        "https://www.batbooks.ir/auth/reset-password/send-otp/",
+        "http://127.0.0.1:8000/auth/reset-password/send-otp/",
         {
           method: "POST",
           headers: {

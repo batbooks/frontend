@@ -23,7 +23,7 @@ export default function AdvancedSearchBook() {
   useEffect(() => {
     const fetchAllBooks = async () => {
       try {
-        const response = await fetch(`https://www.batbooks.ir/book/all/`, {
+        const response = await fetch(`http://127.0.0.1:8000/book/all/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -72,7 +72,7 @@ export default function AdvancedSearchBook() {
         if (pageDiff > 0) {
           let nextLink = nextPageLink;
           for (let i = 0; i < pageDiff; i++) {
-            const response = await fetch(`https://www.batbooks.ir${nextLink}`, {
+            const response = await fetch(`http://127.0.0.1:8000${nextLink}`, {
               method: "GET",
               headers: {
                 "Content-Type": "application/json",
@@ -82,13 +82,13 @@ export default function AdvancedSearchBook() {
               throw new Error("مشکلی پیش اومد...دوباره تلاش کنید");
             }
             const data = await response.json();
-            nextLink = data.next?.replace("http://www.batbooks.ir/", "");
+            nextLink = data.next?.replace("http://127.0.0.1:8000/", "");
             if (i === pageDiff - 1) {
               setNextPageLink(
-                data.next?.replace("http://www.batbooks.ir/", "")
+                data.next?.replace("http://127.0.0.1:8000/", "")
               );
               setPrevPageLink(
-                data.previous?.replace("http://www.batbooks.ir/", "")
+                data.previous?.replace("http://127.0.0.1:8000/", "")
               );
               setcurrentpage(page);
               setShowingBooks(data.results);
@@ -97,7 +97,7 @@ export default function AdvancedSearchBook() {
         } else if (pageDiff < 0) {
           let prevLink = prevPageLink;
           for (let i = pageDiff; i < 0; i++) {
-            const response = await fetch(`https://www.batbooks.ir${prevLink}`, {
+            const response = await fetch(`http://127.0.0.1:8000${prevLink}`, {
               method: "GET",
               headers: {
                 "Content-Type": "application/json",
@@ -107,13 +107,13 @@ export default function AdvancedSearchBook() {
               throw new Error("مشکلی پیش اومد...دوباره تلاش کنید");
             }
             const data = await response.json();
-            prevLink = data.previous?.replace("http://www.batbooks.ir/", "");
+            prevLink = data.previous?.replace("http://127.0.0.1:8000/", "");
             if (i === -1) {
               setNextPageLink(
-                data.next?.replace("http://www.batbooks.ir/", "")
+                data.next?.replace("http://127.0.0.1:8000/", "")
               );
               setPrevPageLink(
-                data.previous?.replace("http://www.batbooks.ir/", "")
+                data.previous?.replace("http://127.0.0.1:8000/", "")
               );
               setcurrentpage(page);
               setShowingBooks(data.results);

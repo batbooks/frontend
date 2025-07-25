@@ -34,7 +34,7 @@ function Reviews({ book }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchPage(`https://www.batbooks.ir/comments/book/${bookId}/reviews/`);
+    fetchPage(`http://127.0.0.1:8000/comments/book/${bookId}/reviews/`);
   }, [bookId]);
 
   const fetchPage = async (url, append = false) => {
@@ -73,7 +73,7 @@ function Reviews({ book }) {
     setLoading1(true);
     try {
       const response = await fetch(
-        `https://www.batbooks.ir/user/is/follow/${userId}/`,
+        `http://127.0.0.1:8000/user/is/follow/${userId}/`,
         {
           method: "GET",
           headers: {
@@ -104,7 +104,7 @@ function Reviews({ book }) {
   const handleDeleteReview = async () => {
     try {
       const response = await fetch(
-        `https://www.batbooks.ir/comments/book/${bookId}/reviews/my-review/`,
+        `http://127.0.0.1:8000/comments/book/${bookId}/reviews/my-review/`,
         {
           method: "DELETE",
           headers: {
@@ -166,7 +166,7 @@ function Reviews({ book }) {
       })
     );
 
-    await fetch(`https://www.batbooks.ir/comments/review/like/${reviewId}/`, {
+    await fetch(`http://127.0.0.1:8000/comments/review/like/${reviewId}/`, {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -192,7 +192,7 @@ function Reviews({ book }) {
     );
 
     await fetch(
-      `https://www.batbooks.ir/comments/review/dislike/${reviewId}/`,
+      `http://127.0.0.1:8000/comments/review/dislike/${reviewId}/`,
       {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
@@ -203,7 +203,7 @@ function Reviews({ book }) {
   const handleFollow = async (reviewId) => {
     try {
       const response = await fetch(
-        `https://www.batbooks.ir/user/toggle/follow/${reviewId}/`,
+        `http://127.0.0.1:8000/user/toggle/follow/${reviewId}/`,
         {
           method: "GET",
           headers: {
@@ -233,7 +233,7 @@ function Reviews({ book }) {
   const handleSaveEdit = async (reviewId) => {
     try {
       const response = await fetch(
-        `https://www.batbooks.ir/comments/book/${bookId}/reviews/my-review/`,
+        `http://127.0.0.1:8000/comments/book/${bookId}/reviews/my-review/`,
         {
           method: "PUT",
           headers: {
@@ -365,7 +365,7 @@ function Reviews({ book }) {
                       <img
                         src={
                           review.image
-                            ? `https://www.batbooks.ir${review.image}`
+                            ? `http://127.0.0.1:8000${review.image}`
                             : "/images/user_none.png"
                         }
                         alt="user"
