@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 import { SearchFilters } from "./SearchFilters";
 import { useNavigate } from "react-router";
 import BookCard from "../../common/BookCard/bookCard";
+import { useSelector } from "react-redux";
 
 export default function AdvancedSearchBook() {
   const [allBooks, setAllBooks] = useState([]);
@@ -289,7 +290,7 @@ function SearchBookResults({ books, loading }) {
       <div className="flex items-center justify-between mb-[60px] sm:mb-[30px]">
         <h2 className="text-[16px] font-[300] hidden sm:block">نتایج جستجو</h2>
       </div>
-      <div className="grid xl:grid-cols-2 gap-x-[37px] gap-y-[25px] mb-[30px]">
+      <div className="grid grid-cols-2 sm:grid-cols-1 xl:grid-cols-2 gap-x-[15px] sm:gap-x-[37px] gap-y-[25px] mb-[30px]">
         {books.map((book, i) => (
           <Book
             key={i}
@@ -315,6 +316,79 @@ function Book({
   bookId,
 }) {
   let navigate = useNavigate();
+  const [isFav, setIsFav] = useState(false);
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const checkFav = async () => {
+      setLoading(true);
+      try {
+        const token = localStorage.getItem("access_token");
+        const response = await fetch(
+          `https://www.batbooks.ir/book-actions/is/favorite/${bookId}/`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error("مشکلی پیش اومد...دوباره تلاش کنید");
+        }
+        const data = await response.json();
+        setIsFav(data.is_favorite);
+      } catch (err) {
+        setTimeout(() => {
+          Swal.fire({
+            title: `${err.message}`,
+            icon: "error",
+            confirmButtonText: "تلاش مجدد",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
+            }
+          });
+        }, 100);
+      } finally {
+        setLoading(false);
+      }
+    };
+    if (isAuthenticated) checkFav();
+  }, []);
+
+  const handleAddFavorite = async () => {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("access_token");
+      const response = await fetch(
+        `https://www.batbooks.ir/book-actions/toggle/favorite/${bookId}/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error("مشکلی پیش اومد...دوباره تلاش کنید");
+      }
+      setIsFav(!isFav);
+    } catch (err) {
+      setTimeout(() => {
+        Swal.fire({
+          title: `${err.message}`,
+          icon: "error",
+          confirmButtonText: "باشه",
+        });
+      }, 100);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -322,7 +396,7 @@ function Book({
         onClick={() => {
           navigate(`/book/${bookId}`);
         }}
-        className="w-[250px] sm:hidden h-[300px] mx-auto"
+        className="w-[140px] sm:hidden h-[180px] mx-auto"
       >
         <BookCard
           coverImage={
@@ -336,23 +410,38 @@ function Book({
           description={bookDescription}
         />
       </div>
-      <div className="hidden sm:flex gap-[20px] py-[26px] pl-[30px] pr-[13px] bg-[#A4C0ED] rounded-[25px] outline-[2px] outline-[#000000]/21 items-center justify-between">
+      <div
+        className={`hidden sm:flex gap-[20px] py-[26px] pl-[30px] pr-[13px] bg-[#A4C0ED] rounded-[25px] outline-[2px] outline-[#000000]/21 items-center justify-between ${loading ? "cursor-progress" : ""}`}
+      >
         <div className="flex gap-[16px] items-center">
           {coverImage === null ? (
             <img
+              onClick={() => {
+                if (!loading) navigate(`/book/${bookId}`);
+              }}
               src="/images/book_sample1.png"
               alt="book"
-              className="rounded-[20px] w-[153px] h-[184px]"
+              className="rounded-[20px] w-[153px] h-[184px] cursor-pointer"
             />
           ) : (
             <img
+              onClick={() => {
+                if (!loading) navigate(`/book/${bookId}`);
+              }}
               src={`http://127.0.0.1:8000${coverImage}`}
               alt="book"
-              className="rounded-[20px] w-[130px] h-[150px]"
+              className="rounded-[20px] w-[130px] h-[150px] cursor-pointer"
             />
           )}
           <div className="flex flex-col gap-[10px] overflow-hidden h-[184px] mx-h-[184px]">
-            <h3 className="text-[24px] font-[400] top-0">{bookName}</h3>
+            <h3
+              onClick={() => {
+                if (!loading) navigate(`/book/${bookId}`);
+              }}
+              className="text-[24px] font-[400] top-0 hover:text-blue-700 cursor-pointer"
+            >
+              {bookName}
+            </h3>
             <div className="flex flex-col md:flex-row gap-[5px] 2xl:gap-[30px] top-0 -mt-[5px]">
               <span className="text-[18px] font-[400]">مؤلف: {authorName}</span>
               <Rating
@@ -369,19 +458,33 @@ function Book({
           </div>
         </div>
         <div className="flex flex-col gap-[13px]">
-          <button
-            onClick={() => {
-              navigate("/chapter/1");
-            }}
-            className="btn !py-[9px] !rounded-[10px] !min-w-[160px] !h-fit !mr-0 !ml-0 !mb-0"
-          >
-            <span className="span-btn">شروع مطالعه کتاب</span>
-          </button>
+          {!isFav && isAuthenticated ? (
+            <button
+              onClick={() => {
+                handleAddFavorite();
+              }}
+              disabled={loading ? true : false}
+              className={`btn !py-[9px] !rounded-[10px] !min-w-[160px] !h-fit !mr-0 !ml-0 !mb-0 ${loading ? "!cursor-progress" : ""}`}
+            >
+              <span className="span-btn">افزودن به موردعلاقه ها</span>
+            </button>
+          ) : isAuthenticated ? (
+            <button
+              onClick={() => {
+                handleAddFavorite();
+              }}
+              disabled={loading ? true : false}
+              className={`btn !py-[9px] !rounded-[10px] !min-w-[160px] !h-fit !mr-0 !ml-0 !mb-0 ${loading ? "!cursor-progress" : ""}`}
+            >
+              <span className="span-btn">حذف از موردعلاقه ها</span>
+            </button>
+          ) : null}
           <button
             onClick={() => {
               navigate(`/book/${bookId}`);
             }}
-            className="btn !py-[9px] !rounded-[10px] !min-w-[160px] !h-fit !mr-0 !ml-0 !mb-0"
+            disabled={loading ? true : false}
+            className={`btn !py-[9px] !rounded-[10px] !min-w-[160px] !h-fit !mr-0 !ml-0 !mb-0 ${loading ? "!cursor-progress" : ""}`}
           >
             <span className="span-btn">مشاهده جزئیات کتاب</span>
           </button>

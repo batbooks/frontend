@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Navbar from "../../pages/Navbar";
-
 import Footer from "../../common/Footer/Footer";
 import { useNavigate } from "react-router";
 import Loading from "../../common/Loading/Loading";
@@ -38,10 +37,8 @@ export default function People() {
   }, [currentpage]);
 
   const fetchPeople = async (page = 1) => {
-    console.log(currentpage1);
     setLoading(true);
     setAllOfThem(false);
-    console.log(page);
     if (searched.length < 3) {
       setError(" کلمه سرچ شده باید بزرگتر از سه حرف باشد ");
       setTotalPages(0);
@@ -60,7 +57,6 @@ export default function People() {
       if (searched.length < 3) {
         setError(" کلمه سرچ شده باید بزرگتر از سه حرف باشد ");
       }
-      console.log(error);
       setError(err.message);
       setTotalPages(0);
     } finally {
@@ -70,7 +66,6 @@ export default function People() {
 
   const handlePageChangeSearched = (page) => {
     setcurrentpage1(page);
-
     fetchPeople(page);
   };
 
@@ -90,18 +85,21 @@ export default function People() {
       <Navbar />
       <main
         dir="rtl"
-        className="flex flex-col items-center pt-[25px] pb-[60px] px-[98px] w-[100%]"
+        className="flex flex-col items-center pt-[25px] pb-[60px] px-4 md:px-[98px] w-[100%]"
       >
-        <h1 className="font-bold text-[#265073] text-[32px] mb-[30px]">
+        <h1 className="font-bold text-[#265073] text-2xl md:text-[32px] mb-6 md:mb-[30px]">
           افراد
         </h1>
-        <form className="mb-[37px]" onSubmit={(e) => e.preventDefault()}>
-          <div className={`flex gap-[26px]`}>
+        <form
+          className="mb-6 md:mb-[37px] w-full max-w-4xl"
+          onSubmit={(e) => e.preventDefault()}
+        >
+          <div className="flex flex-col md:flex-row gap-4 md:gap-[26px] w-full">
             <input
               onChange={(e) => {
                 setSearched(e.target.value);
               }}
-              className="w-[693px] h-[49px] py-[12.5px] pr-[26px] pl-[50px] bg-white rounded-[20px] outline-[2px] outline-[#000000]/21 shadow-lg shadow-[#000000]/25 focus:shadow-none focus:outline-[3px] focus:outline-[#2663cd] placeholder:text-[16px] placeholder:font-[300] placeholder:text-[#265073]"
+              className="w-full h-[49px] py-[12.5px] pr-[26px] pl-[50px] bg-white rounded-[20px] outline-[2px] outline-[#000000]/21 shadow-lg shadow-[#000000]/25 focus:shadow-none focus:outline-[3px] focus:outline-[#2663cd] placeholder:text-[16px] placeholder:font-[300] placeholder:text-[#265073]"
               placeholder="نام کاربری"
             />
             <button
@@ -110,211 +108,39 @@ export default function People() {
                 setcurrentpage1(1);
                 setTotalPages(0);
               }}
-              className="!py-[12px] !px-[28px] !rounded-[20px] !w-fit !h-fit !mb-0 !ml-0 !mr-0 shadow-2xl btn"
+              className="!py-[12px] !px-[28px] !rounded-[20px] !w-fit !h-fit !mb-0 !ml-0 !mr-0 shadow-2xl btn self-center md:self-auto lg:!min-w-[180px] lg:!px-[32px]"
             >
-              <span className="span-btn !text-[16px] !font-[400]">
+              <span className="span-btn !text-[16px] !font-[400] whitespace-nowrap">
                 جستجوی فرد
               </span>
             </button>
           </div>
         </form>
-        <div className="flex flex-col w-[100%]">
+        <div className="flex flex-col w-full">
           {error == "" ? <div>{error} asda </div> : null}
-          <h2 className="text-[16px] font-[300] mb-[31px]">نتایج جستجو</h2>
-          <div className="grid grid-cols-3 gap-[25px] mb-[30px]">
+          <h2 className="text-[16px] font-[300] mb-6 md:mb-[31px]">
+            نتایج جستجو
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-[25px] mb-6 md:mb-[30px]">
             {people.map((person) => (
               <Person person={person} key={person.id} />
             ))}
           </div>
           {/* Pagination */}
           {totalPages > 1 && allOfThem && (
-            <div className="flex justify-center gap-2 my-6 items-center">
-              {/* Previous Button */}
-              <button
-                onClick={() => handlePageChange(currentpage - 1)}
-                disabled={currentpage === 1}
-                className={`px-3 py-1 rounded-md ${
-                  currentpage === 1
-                    ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                    : "bg-blue-500 text-white hover:bg-blue-600"
-                }`}
-              >
-                قبلی
-              </button>
-
-              {/* First Page */}
-              {currentpage > 3 && totalPages > 5 && (
-                <>
-                  <button
-                    onClick={() => handlePageChange(1)}
-                    className={`px-3 py-1 rounded-md ${
-                      currentpage === 1
-                        ? "bg-blue-700 text-white"
-                        : "bg-blue-500 text-white hover:bg-blue-600"
-                    }`}
-                  >
-                    1
-                  </button>
-                  {currentpage > 4 && <span className="px-2">...</span>}
-                </>
-              )}
-
-              {/* Middle Pages */}
-              {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                let pageNum;
-                if (totalPages <= 5) {
-                  pageNum = i + 1;
-                } else if (currentpage <= 3) {
-                  pageNum = i + 1;
-                } else if (currentpage >= totalPages - 2) {
-                  pageNum = totalPages - 4 + i;
-                } else {
-                  pageNum = currentpage - 2 + i;
-                }
-
-                return (
-                  <button
-                    key={pageNum}
-                    onClick={() => handlePageChange(pageNum)}
-                    className={`px-3 py-1 rounded-md ${
-                      currentpage === pageNum
-                        ? "bg-blue-700 text-white"
-                        : "bg-blue-500 text-white hover:bg-blue-600"
-                    }`}
-                  >
-                    {pageNum}
-                  </button>
-                );
-              })}
-
-              {/* Last Page */}
-              {currentpage < totalPages - 2 && totalPages > 5 && (
-                <>
-                  {currentpage < totalPages - 3 && (
-                    <span className="px-2">...</span>
-                  )}
-                  <button
-                    onClick={() => handlePageChange(totalPages)}
-                    className={`px-3 py-1 rounded-md ${
-                      currentpage === totalPages
-                        ? "bg-blue-700 text-white"
-                        : "bg-blue-500 text-white hover:bg-blue-600"
-                    }`}
-                  >
-                    {totalPages}
-                  </button>
-                </>
-              )}
-
-              {/* Next Button */}
-              <button
-                onClick={() => handlePageChange(currentpage + 1)}
-                disabled={currentpage === totalPages}
-                className={`px-3 py-1 rounded-md ${
-                  currentpage === totalPages
-                    ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                    : "bg-blue-500 text-white hover:bg-blue-600"
-                }`}
-              >
-                بعدی
-              </button>
-            </div>
+            <Pagination
+              currentPage={currentpage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
           )}
           {/* Pagination */}
           {totalPages > 1 && !allOfThem && (
-            <div className="flex justify-center gap-2 my-6 items-center">
-              {/* Previous Button */}
-              <button
-                onClick={() => {
-                  handlePageChangeSearched(currentpage1 - 1);
-                }}
-                disabled={currentpage1 === 1}
-                className={`px-3 py-1 rounded-md ${
-                  currentpage1 === 1
-                    ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                    : "bg-blue-500 text-white hover:bg-blue-600"
-                }`}
-              >
-                قبلی
-              </button>
-
-              {/* First Page */}
-              {currentpage1 > 3 && totalPages > 5 && (
-                <>
-                  <button
-                    onClick={() => handlePageChangeSearched(1)}
-                    className={`px-3 py-1 rounded-md ${
-                      currentpage1 === 1
-                        ? "bg-blue-700 text-white"
-                        : "bg-blue-500 text-white hover:bg-blue-600"
-                    }`}
-                  >
-                    1
-                  </button>
-                  {currentpage1 > 4 && <span className="px-2">...</span>}
-                </>
-              )}
-
-              {/* Middle Pages */}
-              {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                let pageNum;
-                if (totalPages <= 5) {
-                  pageNum = i + 1;
-                } else if (currentpage1 <= 3) {
-                  pageNum = i + 1;
-                } else if (currentpage1 >= totalPages - 2) {
-                  pageNum = totalPages - 4 + i;
-                } else {
-                  pageNum = currentpage1 - 2 + i;
-                }
-
-                return (
-                  <button
-                    key={pageNum}
-                    onClick={() => handlePageChangeSearched(pageNum)}
-                    className={`px-3 py-1 rounded-md ${
-                      currentpage1 === pageNum
-                        ? "bg-blue-700 text-white"
-                        : "bg-blue-500 text-white hover:bg-blue-600"
-                    }`}
-                  >
-                    {pageNum}
-                  </button>
-                );
-              })}
-
-              {/* Last Page */}
-              {currentpage1 < totalPages - 2 && totalPages > 5 && (
-                <>
-                  {currentpage1 < totalPages - 3 && (
-                    <span className="px-2">...</span>
-                  )}
-                  <button
-                    onClick={() => handlePageChangeSearched(totalPages)}
-                    className={`px-3 py-1 rounded-md ${
-                      currentpage1 === totalPages
-                        ? "bg-blue-700 text-white"
-                        : "bg-blue-500 text-white hover:bg-blue-600"
-                    }`}
-                  >
-                    {totalPages}
-                  </button>
-                </>
-              )}
-
-              {/* Next Button */}
-              <button
-                onClick={() => handlePageChangeSearched(currentpage1 + 1)}
-                disabled={currentpage1 === totalPages}
-                className={`px-3 py-1 rounded-md ${
-                  currentpage1 === totalPages
-                    ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                    : "bg-blue-500 text-white hover:bg-blue-600"
-                }`}
-              >
-                بعدی
-              </button>
-            </div>
+            <Pagination
+              currentPage={currentpage1}
+              totalPages={totalPages}
+              onPageChange={handlePageChangeSearched}
+            />
           )}
         </div>
       </main>
@@ -328,7 +154,7 @@ function Person({ person }) {
   const [isHoveredInnerButton, setIsHoveredInnerButton] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  //useeffect for following |||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
   useEffect(() => {
     setLoading(true);
     const fetchFollowing = async () => {
@@ -337,7 +163,6 @@ function Person({ person }) {
           `http://127.0.0.1:8000/user/is/follow/${person.id}/`,
           {
             method: "GET",
-
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${localStorage.getItem("access_token")}`,
@@ -353,14 +178,14 @@ function Person({ person }) {
       }
     };
     fetchFollowing();
-  }, []);
+  }, [person.id]);
+
   const handleFollow = async () => {
     try {
       const response = await fetch(
         `http://127.0.0.1:8000/user/toggle/follow/${person.id}/`,
         {
           method: "GET",
-
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
@@ -371,6 +196,7 @@ function Person({ person }) {
       console.error(err.message);
     }
   };
+
   if (loading) {
     return (
       <div className="h-[100vh] grid place-items-center">
@@ -378,6 +204,7 @@ function Person({ person }) {
       </div>
     );
   }
+
   return (
     <button
       onClick={() => {
@@ -385,21 +212,45 @@ function Person({ person }) {
           navigate(`/anotheruserprofile/${person.id}`);
         }
       }}
-      className={`relative overflow-hidden p-[21px] bg-[#A4C0ED] outline-[2px] outline-[#000000]/21 rounded-[20px] flex items-center justify-between cursor-pointer ${!isHoveredInnerButton ? "hover:ease-in-out hover:before:w-full hover:before:h-full hover:shadow-[#000000]/50 hover:shadow-lg hover:text-white" : ""} before:absolute before:w-0 before:h-0 before:bg-[#2663CD]/60 before:shadow-none before:inset-0 before:transition-all before:duration-[0.2s] transition-all active:before:bg-[#2663CD]/40 active:outline-none active:shadow-none active:ring-0 active:ring-offset-0`}
+      className={`relative overflow-hidden 
+    p-3 sm:p-4 md:p-5 lg:p-5 xl:p-[21px] 
+    bg-[#A4C0ED] outline-[2px] outline-[#000000]/21 
+    rounded-[20px] flex items-center justify-between 
+    cursor-pointer w-full
+    ${!isHoveredInnerButton ? "hover:ease-in-out hover:before:w-full hover:before:h-full hover:shadow-[#000000]/50 hover:shadow-lg hover:text-white" : ""}
+    before:absolute before:w-0 before:h-0 before:bg-[#2663CD]/60 
+    before:shadow-none before:inset-0 before:transition-all 
+    before:duration-[0.2s] transition-all 
+    active:before:bg-[#2663CD]/40 active:outline-none 
+    active:shadow-none active:ring-0 active:ring-offset-0`}
     >
-      <div className="flex items-center gap-[21px] relative">
+      <div
+        className="flex items-center 
+    gap-2 sm:gap-3 md:gap-4 lg:gap-4 xl:gap-[21px] 
+    relative w-full"
+      >
         <img
           src="/images/following.png"
           alt="follow"
-          className="rounded-full w-[110px] h-[110px]"
+          className="rounded-full 
+        w-12 h-12 sm:w-14 sm:h-14 
+        md:w-16 md:h-16 
+        lg:w-20 lg:h-20 
+        xl:w-[100px] xl:h-[100px]"
         />
-        <div className="flex flex-col gap-[7px] items-start">
-          <h3>
-            {person.name.length > 12
-              ? person.name.slice(0, 12) + "..."
+        <div
+          className="flex flex-col 
+      gap-1 sm:gap-1 md:gap-2 lg:gap-2 xl:gap-[7px] 
+      items-start flex-grow min-w-0"
+        >
+          <h3 className="text-xs sm:text-sm md:text-[15px] lg:text-[15px] xl:text-[16px] truncate w-full">
+            {person.name.length > 15
+              ? person.name.slice(0, 15) + "..."
               : person.name}
           </h3>
-          <span>{person.user_info.following_count}</span>
+          <span className="text-[10px] sm:text-xs md:text-[13px] lg:text-[13px] xl:text-[14px]">
+            {person.user_info.following_count}
+          </span>
         </div>
       </div>
       <div
@@ -419,12 +270,118 @@ function Person({ person }) {
             handleFollow();
           }
         }}
-        className="btn py-[7px] px-[21px] !rounded-[10px] !w-fit !h-fit !ml-0 !mr-0 !mb-0 cursor-pointer"
+        className="btn 
+      py-1 px-2 sm:py-2 sm:px-3 
+      md:py-[6px] md:px-[14px] 
+      lg:py-[6px] lg:px-[16px] 
+      xl:py-[7px] xl:px-[21px] 
+      !rounded-[10px] !w-fit !h-fit 
+      !ml-0 !mr-0 !mb-0 cursor-pointer 
+      whitespace-nowrap"
       >
-        <span className="span-btn text-[14px] font-[300]">
+        <span
+          className="span-btn 
+      text-[10px] sm:text-xs 
+      md:text-[13px] lg:text-[13px] 
+      xl:text-[14px] font-[300]"
+        >
           {isFollowing ? "دنبال نکردن" : "دنبال کردن"}
         </span>
       </div>
     </button>
+  );
+}
+
+function Pagination({ currentPage, totalPages, onPageChange }) {
+  return (
+    <div className="flex justify-center gap-2 my-6 items-center flex-wrap">
+      {/* Previous Button */}
+      <button
+        onClick={() => onPageChange(currentPage - 1)}
+        disabled={currentPage === 1}
+        className={`px-3 py-1 rounded-md ${
+          currentPage === 1
+            ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+            : "bg-blue-500 text-white hover:bg-blue-600"
+        }`}
+      >
+        قبلی
+      </button>
+
+      {/* First Page */}
+      {currentPage > 3 && totalPages > 5 && (
+        <>
+          <button
+            onClick={() => onPageChange(1)}
+            className={`px-3 py-1 rounded-md ${
+              currentPage === 1
+                ? "bg-blue-700 text-white"
+                : "bg-blue-500 text-white hover:bg-blue-600"
+            }`}
+          >
+            1
+          </button>
+          {currentPage > 4 && <span className="px-2">...</span>}
+        </>
+      )}
+
+      {/* Middle Pages */}
+      {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+        let pageNum;
+        if (totalPages <= 5) {
+          pageNum = i + 1;
+        } else if (currentPage <= 3) {
+          pageNum = i + 1;
+        } else if (currentPage >= totalPages - 2) {
+          pageNum = totalPages - 4 + i;
+        } else {
+          pageNum = currentPage - 2 + i;
+        }
+
+        return (
+          <button
+            key={pageNum}
+            onClick={() => onPageChange(pageNum)}
+            className={`px-3 py-1 rounded-md ${
+              currentPage === pageNum
+                ? "bg-blue-700 text-white"
+                : "bg-blue-500 text-white hover:bg-blue-600"
+            }`}
+          >
+            {pageNum}
+          </button>
+        );
+      })}
+
+      {/* Last Page */}
+      {currentPage < totalPages - 2 && totalPages > 5 && (
+        <>
+          {currentPage < totalPages - 3 && <span className="px-2">...</span>}
+          <button
+            onClick={() => onPageChange(totalPages)}
+            className={`px-3 py-1 rounded-md ${
+              currentPage === totalPages
+                ? "bg-blue-700 text-white"
+                : "bg-blue-500 text-white hover:bg-blue-600"
+            }`}
+          >
+            {totalPages}
+          </button>
+        </>
+      )}
+
+      {/* Next Button */}
+      <button
+        onClick={() => onPageChange(currentPage + 1)}
+        disabled={currentPage === totalPages}
+        className={`px-3 py-1 rounded-md ${
+          currentPage === totalPages
+            ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+            : "bg-blue-500 text-white hover:bg-blue-600"
+        }`}
+      >
+        بعدی
+      </button>
+    </div>
   );
 }
