@@ -32,7 +32,7 @@ function ThreadPosts({ threadId, threadName = "تست" }) {
       setLoading(true);
       const token = localStorage.getItem("access_token");
       try {
-        const response2 = await fetch(`/api/user/following/`, {
+        const response2 = await fetch(`http://127.0.0.1:8000/user/following/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -40,7 +40,7 @@ function ThreadPosts({ threadId, threadName = "تست" }) {
           },
         });
         const response = await fetch(
-          `/api/comments/threads/${threadId}/posts/`,
+          `http://127.0.0.1:8000/comments/threads/${threadId}/posts/`,
           {
             method: "GET",
             headers: {
@@ -228,7 +228,7 @@ function Post({
     setLoading(true);
     const token = localStorage.getItem("access_token");
     try {
-      const response = await fetch(`/api/comments/posts/${postId}/`, {
+      const response = await fetch(`http://127.0.0.1:8000/comments/posts/${postId}/`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -264,7 +264,7 @@ function Post({
     setLoading(true);
     const token = localStorage.getItem("access_token");
     try {
-      const response = await fetch(`/api/comments/posts/${postId}/`, {
+      const response = await fetch(`http://127.0.0.1:8000/comments/posts/${postId}/`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -302,7 +302,7 @@ function Post({
     setIsFollowing(!isFollowing);
     const token = localStorage.getItem("access_token");
     try {
-      const response = await fetch(`/api/user/toggle/follow/${userId}/`, {
+      const response = await fetch(`http://127.0.0.1:8000/user/toggle/follow/${userId}/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -334,7 +334,7 @@ function Post({
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(
-        `/api/user/toggle/Not_Interested/${userId}/`,
+        `http://127.0.0.1:8000/user/toggle/Not_Interested/${userId}/`,
         {
           method: "GET",
           headers: {
@@ -382,7 +382,7 @@ function Post({
             />
           ) : (
             <img
-              src={`/api${userImage}`}
+              src={`http://127.0.0.1:8000${userImage}`}
               alt="user"
               className="mx-auto cursor-pointer rounded-full w-[90px] h-[90px]"
               onClick={() =>
@@ -674,7 +674,7 @@ const HeartButton = ({ setPostLikes, isLikedByMe, postId }) => {
     try {
       setLoading(true);
       const token = localStorage.getItem("access_token");
-      const response = await fetch(`/api/comments/posts/${postId}/like/`, {
+      const response = await fetch(`http://127.0.0.1:8000/comments/posts/${postId}/like/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -750,7 +750,7 @@ function SendPost({
     e.preventDefault();
     try {
       const token = localStorage.getItem("access_token");
-      const response = await fetch(`/api/comments/threads/${thread}/create/`, {
+      const response = await fetch(`http://127.0.0.1:8000/comments/threads/${thread}/create/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -789,7 +789,7 @@ function SendPost({
     e.preventDefault();
     try {
       const token = localStorage.getItem("access_token");
-      const response = await fetch(`/api/comments/post/reply/${ReplyPostId}/`, {
+      const response = await fetch(`http://127.0.0.1:8000/comments/post/reply/${ReplyPostId}/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -834,7 +834,7 @@ function SendPost({
           className={`flex flex-col justify-between gap-[15px] items-center ${isClicked ? "mb-[41px]" : ""}`}
         >
           <img
-            src={`/api${user.user_info.image}`}
+            src={`http://127.0.0.1:8000${user.user_info.image}`}
             className="min-w-[63px] max-w-[63px] max-h-[63px] min-h-[63px] rounded-full mb-[10px]"
           />
           <h1 className="text-[24px] font-[700] mb-[8px]">نظر شما چیست؟</h1>

@@ -77,7 +77,7 @@ function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
+  
   return (
     <header
       dir="rtl"
@@ -320,7 +320,7 @@ function Navbar() {
                   onClick={() => {
                     setSelectedItem(0);
                     setIsVisibleUser(false);
-                    navigate("/mybooks/createbook");
+                    navigate("/forums");
                   }}
                   className="flex p-2 gap-2 text-[#000000]/70 w-full h-full cursor-pointer items-center hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
@@ -336,7 +336,7 @@ function Navbar() {
                   onClick={() => {
                     setSelectedItem(0);
                     setIsVisibleUser(false);
-                    navigate("/mybooks/createbook");
+                    navigate("/people");
                   }}
                   className="flex p-2 gap-2 text-[#000000]/70 w-full h-full cursor-pointer items-center hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
@@ -391,9 +391,9 @@ function Navbar() {
       >
         ☰
       </button>
-      <div className="flex my-auto ">
-        <h1 className="text-[40px] font-[700] text-[#2663CD]">Books</h1>
-        <h1 className="text-[40px] font-[700] text-[#002d54]">Bat</h1>
+      <div onClick={()=>navigate("/")} className="flex my-auto ">
+        <h1 className="text-[30px] font-[700] text-[#2663CD]">Books</h1>
+        <h1 className="text-[30px] font-[700] text-[#002d54]">Bat</h1>
       </div>
       <HamburgerNavbar
         openMenu={openMenu}

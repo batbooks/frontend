@@ -56,22 +56,7 @@ export default function Forums() {
         <h1 className="font-bold text-[#265073] text-[1.5rem] md:text-[2rem] mb-[1.875rem] text-center">
           تالار گفتگو
         </h1>
-        <form
-          className="mb-[2.3125rem] w-full max-w-[50rem]"
-          onSubmit={(e) => e.preventDefault()}
-        >
-          <div className="flex flex-col md:flex-row gap-[1.625rem] w-full">
-            <input
-              className="w-full h-[3.0625rem] py-[0.781rem] px-[1.625rem] bg-white rounded-[1.25rem] outline-[0.125rem] outline-[#000000]/21 shadow-lg shadow-[#000000]/25 focus:shadow-none focus:outline-[0.1875rem] focus:outline-[#2663cd] placeholder:text-[1rem] placeholder:font-[300] placeholder:text-[#265073]"
-              placeholder="نام کتاب"
-            />
-            <button className="!py-[0.75rem] !px-[1.75rem] !rounded-[1.25rem] !w-full md:!w-fit lg:!w-auto !h-fit !mb-0 !ml-0 !mr-0 shadow-2xl btn">
-              <span className="span-btn !text-[1rem] !font-[400] whitespace-nowrap">
-                جستجوی گفتگو
-              </span>
-            </button>
-          </div>
-        </form>
+        
         <div className="flex flex-col w-full">
           {error == "" ? <div>{error} asda </div> : null}
           <h2 className="text-[1rem] font-[300] mb-[1.9375rem]">نتایج جستجو</h2>

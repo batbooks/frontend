@@ -9,11 +9,11 @@ import { useLocation } from "react-router";
 const Chat: React.FC = () => {
   const location = useLocation();
   
-  console.log(location.state.userId);
+  console.log(location.state?.userId);
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
   console.log(selectedUserId);
   
-  const User_id = location.state.userId;
+  const User_id = location.state?.userId ;
   const [selectedGroupId, setSelectedGroupId] = useState<number|null>(0);
   const [chatContext, setChatContex] = useState<string | null>("direct");
   const [popUp, setPopUp] = useState<boolean>(false);

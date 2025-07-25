@@ -30,7 +30,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ userId,setUserId }) => {
   /* -------------------------------- WebSocket ------------------------------- */
   const WS_URL =
     userId !== null
-      ? `wss://www.batbooks.ir/ws/websocket/${userId}/?token=${localStorage.getItem(
+      ? `ws://127.0.0.1:8000/ws/websocket/${userId}/?token=${localStorage.getItem(
           "access_token"
         )}`
       : null;

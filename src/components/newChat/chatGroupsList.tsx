@@ -56,7 +56,7 @@ const GroupChatList: React.FC<Props> = ({
     const fetchGroups = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(`/api/chat/group/list/`, {
+        const response = await fetch(`http://127.0.0.1:8000/chat/group/list/`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
@@ -121,7 +121,7 @@ const GroupChatList: React.FC<Props> = ({
                 {group.image ? (
                   <img
                     className="w-10 h-10 rounded-full border-2 border-white shadow-sm"
-                    src={`/api${group.image}`}
+                    src={`http://127.0.0.1:8000${group.image}`}
                     alt={group.name}
                   />
                 ) : (

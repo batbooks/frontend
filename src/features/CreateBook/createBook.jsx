@@ -34,7 +34,7 @@ function CreateBook() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+
     setLoading(true);
     const token = localStorage.getItem("access_token");
 
@@ -42,7 +42,10 @@ function CreateBook() {
       const formData = new FormData();
       formData.append("name", name);
       formData.append("description", description);
-      formData.append("image", selectedFile);
+      console.log(selectedFile);
+      if (selectedFile) {
+        formData.append("image", selectedFile);
+      }
       formData.append("status", "O");
       selectedGenres.forEach((genreId) => {
         formData.append("genres", Number(genreId));
@@ -50,29 +53,45 @@ function CreateBook() {
       selectedTags.forEach((tag) => {
         formData.append("tags", Number(tag.id));
       });
+      console.log(formData.get("description"));
 
-      await fetch(`http://127.0.0.1:8000/book/create/`, {
+      const res = await fetch(`http://127.0.0.1:8000/book/create/`, {
         method: "POST",
         body: formData,
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+      let errorMessage = "خطای ناشناخته‌ای رخ داده است";
+      if (res.ok) {
+        setTimeout(() => {
+          Swal.fire({
+            title: "کتاب شما با موفقیت ساخته شد",
+            icon: "success",
+            confirmButtonText: "باشه",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              navigate("/mybooks");
+            }
+          });
+        }, 100);
+      } else {
+        const errorText = await res.json();
+        setTimeout(() => {
+          Swal.fire({
+            title: "ساخت کتاب با مشکل روبرو شد ",
+            icon: "error",
+            confirmButtonText: "باشه",
+            text:JSON.stringify(errorText)
+            
+          });
+        }, 100);
+        
+      }
     } catch (err) {
-      console.error(err.message);
+      console.log(err.message);
     } finally {
       setLoading(false);
-      setTimeout(() => {
-        Swal.fire({
-          title: "کتاب شما با موفقیت ساخته شد",
-          icon: "success",
-          confirmButtonText: "باشه",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            navigate("/mybooks");
-          }
-        });
-      }, 100);
     }
   };
 
@@ -153,7 +172,10 @@ function CreateBook() {
             </h3>
           </div>
           <div dir="rtl" className="w-full max-w-[1020px] h-[211px]">
-            <LongParagraphInput setinputValue={setDescription} placeholder="خلاصه داستان را در اینجا بنویسید "/>
+            <LongParagraphInput
+              setInputValue={setDescription}
+              placeholder="خلاصه داستان را در اینجا بنویسید "
+            />
           </div>
         </div>
 

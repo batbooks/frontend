@@ -92,7 +92,7 @@ const ChatUserList: React.FC<Props> = ({
       setPeople((prevPeople) =>
         append ? [...prevPeople, ...newPeople] : newPeople
       );
-      setNextUrl(data.links.next);
+      setNextUrl(data.links?.next);
     } catch (err) {
       console.error(err);
     } finally {
@@ -107,7 +107,7 @@ const ChatUserList: React.FC<Props> = ({
       setIsLoading(true);
       setError(null);
       try {
-        const response = await fetch(`/api/chat/direct/`, {
+        const response = await fetch(`http://127.0.0.1:8000/chat/direct/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -199,7 +199,7 @@ const ChatUserList: React.FC<Props> = ({
                 {user.image ? (
                   <img
                     className="w-10 h-10 rounded-full border-2 border-white shadow-sm"
-                    src={`/api${user.image}`} // Assuming user.image is a path like /media/avatars/user.jpg
+                    src={`http://127.0.0.1:8000${user.image}`} // Assuming user.image is a path like /media/avatars/user.jpg
                     alt={user.name}
                   />
                 ) : (
@@ -268,7 +268,7 @@ const ChatUserList: React.FC<Props> = ({
                         {person.user_info.image ? (
                           <img
                             className="w-10 h-10 rounded-full border-2 border-white shadow-sm"
-                            src={`/api${person.user_info.image}`}
+                            src={`http://127.0.0.1:8000${person.user_info.image}`}
                             alt={person.user_info.image}
                           />
                         ) : (

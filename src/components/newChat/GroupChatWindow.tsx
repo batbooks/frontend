@@ -114,7 +114,7 @@ const GroupChatWindow: React.FC<GroupChatWindowProps> = ({ groupId, groupName,se
           id: undefined,
           sender: lastJsonMessage.sender,
           sender_id: lastJsonMessage.user_id,
-          sender_img: lastJsonMessage.image ? `/api${lastJsonMessage.image}` : undefined,
+          sender_img: lastJsonMessage.image ? `http://127.0.0.1:8000${lastJsonMessage.image}` : undefined,
           message: lastJsonMessage.message,
           date: new Date().toISOString(),
         },
@@ -142,7 +142,7 @@ const GroupChatWindow: React.FC<GroupChatWindowProps> = ({ groupId, groupName,se
   const fetchFollowingUsers = async () => {
     setIsLoadingFollowings(true);
     try {
-      const response = await fetch(`/api/user/following/`, {
+      const response = await fetch(`http://127.0.0.1:8000/user/following/`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
@@ -166,7 +166,7 @@ const GroupChatWindow: React.FC<GroupChatWindowProps> = ({ groupId, groupName,se
     if (selectedUserIds.length === 0) return;
     const userIdsString = selectedUserIds.join(",");
     try {
-      const response = await fetch(`/api/chat/group/add/${groupId}/`, {
+      const response = await fetch(`http://127.0.0.1:8000/chat/group/add/${groupId}/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -243,7 +243,7 @@ const GroupChatWindow: React.FC<GroupChatWindowProps> = ({ groupId, groupName,se
           ) : members.length > 0 ? (
             <div className="grid grid-cols-2 sm:grid-cols-5 md:grid-cols-10 gap-4 p-4 rounded-lg border border-gray-200 backdrop-blur-sm">
               {members.map((m) => (
-                <GroupMember key={m.id} id={m.id} name={m.name} image={m.user_info?.image ? `/api${m.user_info.image}` : undefined}/>
+                <GroupMember key={m.id} id={m.id} name={m.name} image={m.user_info?.image ? `http://127.0.0.1:8000${m.user_info.image}` : undefined}/>
               ))}
             </div>
           ) : (
