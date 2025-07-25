@@ -77,7 +77,7 @@ function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-  
+
   return (
     <header
       dir="rtl"
@@ -164,7 +164,9 @@ function Navbar() {
                   onClick={() => {
                     setSelectedItem(0);
                     setIsVisibleUser(false);
-                    navigate("/mybooks/createbook");
+                    navigate("/auth/login");
+                    localStorage.removeItem("access_token");
+                    localStorage.removeItem("refresh_token");
                   }}
                   className="flex p-2 gap-2 text-[#000000]/70 w-full h-full cursor-pointer items-center hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
@@ -215,48 +217,44 @@ function Navbar() {
         >
           <li className="flex gap-2 ">
             <section className="flex p-1">
-
-            <FiHome ></FiHome>
+              <FiHome></FiHome>
             </section>
             <div className="flex flex-col items-center">
-
-            <button
-              onClick={() => {
-                setSelectedItem(1);
-                navigate("/");
-              }}
-              className={`text-[16px] ${selectedItem != 1 ? "cursor-pointer hover:text-[#2663CD]" : "text-[#265073] font-bold"}  active:text-[#2663CD]/50 active:no-underline active:transition-all active:duration-100 focus:outline-none focus:text-[#2663CD]`}
+              <button
+                onClick={() => {
+                  setSelectedItem(1);
+                  navigate("/");
+                }}
+                className={`text-[16px] ${selectedItem != 1 ? "cursor-pointer hover:text-[#2663CD]" : "text-[#265073] font-bold"}  active:text-[#2663CD]/50 active:no-underline active:transition-all active:duration-100 focus:outline-none focus:text-[#2663CD]`}
               >
-              صفحه اصلی
-            </button>
-            {selectedItem === 1 ? (
-              <div className="w-[60px] h-[2.5px] bg-[#1E40AF] mt-[3px] rounded-full"></div>
-            ) : (
-              <span></span>
-            )}
+                صفحه اصلی
+              </button>
+              {selectedItem === 1 ? (
+                <div className="w-[60px] h-[2.5px] bg-[#1E40AF] mt-[3px] rounded-full"></div>
+              ) : (
+                <span></span>
+              )}
             </div>
           </li>
           <li className="flex gap-2 ">
             <section className="flex p-1">
-
-            <FiBook ></FiBook>
+              <FiBook></FiBook>
             </section>
             <div className="flex flex-col items-center">
-
-            <button
-              onClick={() => {
-                setSelectedItem(2);
-                navigate("/mybooks");
-              }}
-              className={`text-[16px] ${selectedItem != 2 ? "cursor-pointer hover:text-[#2663CD]" : "text-[#265073] font-bold"}  active:text-[#2663CD]/50 active:no-underline active:transition-all active:duration-100 focus:outline-none focus:text-[#2663CD]`}
+              <button
+                onClick={() => {
+                  setSelectedItem(2);
+                  navigate("/mybooks");
+                }}
+                className={`text-[16px] ${selectedItem != 2 ? "cursor-pointer hover:text-[#2663CD]" : "text-[#265073] font-bold"}  active:text-[#2663CD]/50 active:no-underline active:transition-all active:duration-100 focus:outline-none focus:text-[#2663CD]`}
               >
-             کتاب های من
-            </button>
-            {selectedItem === 2  ? (
-              <div className="w-[40px] h-[2.5px] bg-[#1E40AF] mt-[3px] rounded-full"></div>
-            ) : (
-              <span></span>
-            )}
+                کتاب های من
+              </button>
+              {selectedItem === 2 ? (
+                <div className="w-[40px] h-[2.5px] bg-[#1E40AF] mt-[3px] rounded-full"></div>
+              ) : (
+                <span></span>
+              )}
             </div>
           </li>
           <li
@@ -308,11 +306,8 @@ function Navbar() {
                   }}
                   className="flex p-2 gap-2 text-[#000000]/70 w-full h-full cursor-pointer items-center hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
-                  <FiMessageCircle className="text-black/50"/>
-                  <p className="text-[13px] font-bold">
-                    {" "}
-                   چت
-                  </p>
+                  <FiMessageCircle className="text-black/50" />
+                  <p className="text-[13px] font-bold"> چت</p>
                 </button>
               </li>
               <li className="w-full h-[38px] bg-[#ffffff]">
@@ -324,14 +319,11 @@ function Navbar() {
                   }}
                   className="flex p-2 gap-2 text-[#000000]/70 w-full h-full cursor-pointer items-center hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
-                  <FiMessageSquare className="text-black/50"/>
-                  <p className="text-[13px] font-bold">
-                    {" "}
-                  تالار گفتگو 
-                  </p>
+                  <FiMessageSquare className="text-black/50" />
+                  <p className="text-[13px] font-bold"> تالار گفتگو</p>
                 </button>
               </li>
-          <li className="w-full h-[38px] bg-[#ffffff]">
+              <li className="w-full h-[38px] bg-[#ffffff]">
                 <button
                   onClick={() => {
                     setSelectedItem(0);
@@ -340,11 +332,8 @@ function Navbar() {
                   }}
                   className="flex p-2 gap-2 text-[#000000]/70 w-full h-full cursor-pointer items-center hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
-                  <FiUsers className="text-black/50"/>
-                  <p className="text-[13px] font-bold">
-                    {" "}
-                  افراد
-                  </p>
+                  <FiUsers className="text-black/50" />
+                  <p className="text-[13px] font-bold"> افراد</p>
                 </button>
               </li>
             </ul>
@@ -391,7 +380,7 @@ function Navbar() {
       >
         ☰
       </button>
-      <div onClick={()=>navigate("/")} className="flex my-auto ">
+      <div onClick={() => navigate("/")} className="flex my-auto ">
         <h1 className="text-[30px] font-[700] text-[#2663CD]">Books</h1>
         <h1 className="text-[30px] font-[700] text-[#002d54]">Bat</h1>
       </div>

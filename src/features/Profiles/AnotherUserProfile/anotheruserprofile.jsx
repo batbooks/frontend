@@ -365,6 +365,7 @@ export default function Another_User_Profile() {
                 </h1>
               </div>
               <BookCard
+              id={lastBook.id}
                 author={lastBook.Author}
                 title={lastBook.name}
                 coverImage={
@@ -374,7 +375,7 @@ export default function Another_User_Profile() {
                 }
                 chapters={80}
                 description={lastBook.description}
-                id={lastBook.id}
+                
               />
             </div>
           ) : (

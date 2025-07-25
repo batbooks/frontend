@@ -41,26 +41,27 @@ export default function Bookcard({ id, suggestions, isHovered, setIsHovered }) {
         })
       }
       onClick={() => navigate(`/book/${suggestions[id].id}`)}
-      className="flex flex-col     w-full max-w-[160px] md:max-w-[180px] lg:max-w-[220px] sm:h-80 lg:h-[350px] shadow-2xl rounded-2xl bg-white text-black  hover:scale-105 transition-all duration-200 cursor-pointer items-center"
+      className="flex flex-col     w-full max-w-[160px] md:max-w-[180px] lg:max-w-[240px] sm:h-80 lg:h-[350px] shadow-2xl rounded-2xl bg-white text-black  hover:scale-105 transition-all duration-200 cursor-pointer items-center"
     >
       <div className="relative cursor-pointer ">
         {isHovered[id] ? (
           <img
-            className="w-[220px] rounded-t-2xl blur-[4px] transition-all duration-100"
+            className="w-[220px] h-[300px] rounded-t-2xl blur-[4px] transition-all duration-100"
             src={
               suggestions[id]?.image != null
-                ? `http://127.0.0.1:8000/${suggestions[id]?.image}`
+                ? `http://127.0.0.1:8000${suggestions[id]?.image}`
                 : "20.jpg"
             }
             alt=""
           />
         ) : (
+          
           <img
-            className="w-[220px] rounded-t-2xl transition-all duration-100 "
+            className="w-[250px] h-[300px]  rounded-t-2xl transition-all duration-100 "
             src={
               suggestions[id]?.image != null
-                ? `http://127.0.0.1:8000/${suggestions[id]?.image}`
-                : "20.jpg"
+                ? `http://127.0.0.1:8000${suggestions[id]?.image}`
+                : "/20.jpg"
             }
             alt=""
           />
