@@ -326,7 +326,7 @@ function Book({
       try {
         const token = localStorage.getItem("access_token");
         const response = await fetch(
-          `https://www.batbooks.ir/book-actions/is/favorite/${bookId}/`,
+          `http://127.0.0.1:8000/book-actions/is/favorite/${bookId}/`,
           {
             method: "GET",
             headers: {
@@ -364,7 +364,7 @@ function Book({
     try {
       const token = localStorage.getItem("access_token");
       const response = await fetch(
-        `https://www.batbooks.ir/book-actions/toggle/favorite/${bookId}/`,
+        `http://127.0.0.1:8000/book-actions/toggle/favorite/${bookId}/`,
         {
           method: "GET",
           headers: {

@@ -239,7 +239,7 @@ const BookPage = () => {
       formData.append("book", bookId);
       formData.append("last_read_chapter", chapterId);
       const response = await fetch(
-        `https://www.batbooks.ir/book/user-book-progress/`,
+        `http://127.0.0.1:8000/book/user-book-progress/`,
         {
           method: "POST",
           body: formData,
@@ -256,7 +256,7 @@ const BookPage = () => {
       console.error(err.message);
       try {
         const response = await fetch(
-          `https://www.batbooks.ir/book/user-book-progress/`,
+          `http://127.0.0.1:8000/book/user-book-progress/`,
           {
             method: "GET",
             headers: {
@@ -274,7 +274,7 @@ const BookPage = () => {
         const id = data.find((book) => Number(book.book) === Number(bookId)).id;
         try {
           const response = await fetch(
-            `https://www.batbooks.ir/book/user-book-progress/${id}/`,
+            `http://127.0.0.1:8000/book/user-book-progress/${id}/`,
             {
               method: "PUT",
               body: formData,
