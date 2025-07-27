@@ -6,6 +6,7 @@ import "./anotheruserprofile.css";
 import { useNavigate, useParams } from "react-router";
 import { useSelector } from "react-redux";
 import Loading from "../../../common/Loading/Loading";
+import { FiBookmark, FiInfo, FiLayers, FiUser } from "react-icons/fi";
 
 const WrittenBooks = [1, 2, 3, 4, 5, 6, 7, 8];
 const FavoriteBooks = [1, 2, 3, 4, 5, 6, 7, 8];
@@ -217,9 +218,12 @@ export default function Another_User_Profile() {
         dir="rtl"
         className="flex flex-col gap-[20px] max-w-screen m-auto pr-[50px] pb-[100px] pt-[13px] shadow-2xl shadow-[#000000]-25 items-center overflow-hidden"
       >
-        <h1 className="text-[#265073] text-[32px] font-[700] mx-auto ">
-          پروفایل کاربری
-        </h1>
+        <div className="flex items-center gap-2 md:gap-3 lg:gap-[10px] mb-4 ">
+          <FiUser className="text-[#265073]  text-2xl md:text-3xl " />
+          <h1 className="text-[#265073] text-2xl sm:text-3xl lg:text-[32px] font-bold mx-auto">
+            پروفایل کاربری
+          </h1>
+        </div>
         <div className="flex min-w-[90vw] bg-[#A4C0ED] ml-auto rounded-[35px] shadow-lg shadow-[#000000]/25 mb-[40px] pl-[52px] pr-[23px] pt-[20px] gap-[39px] border-[2px] border-[#000000]/8 ">
           <div className="min-w-[236px] flex flex-col gap-[15px]">
             <div className="w-[236px] aspect-square rounded-full overflow-hidden">
@@ -238,8 +242,8 @@ export default function Another_User_Profile() {
                 {user.user}
               </h3>
               <svg
-              className="cursor-pointer"
-              onClick={()=>navigate("/chat",{state:{userId}})}
+                className="cursor-pointer"
+                onClick={() => navigate("/chat", { state: { userId } })}
                 xmlns="http://www.w3.org/2000/svg"
                 width={30}
                 height={30}
@@ -249,7 +253,6 @@ export default function Another_User_Profile() {
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                
               >
                 <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
               </svg>
@@ -285,7 +288,12 @@ export default function Another_User_Profile() {
             </div>
           </div>
           <div className="w-full m-[32px] mt-0 ml-0 ">
-            <h1 className="text-[26px] font-bold">قفسه ها:</h1>
+            <div className="flex items-center text-center gap-2 md:gap-3 lg:gap-[10px]  ">
+              <FiLayers className="opacity-70 text-xl md:text-2xl lg:text-3xl" />
+              <h1 className="text-xl md:text-2xl lg:text-[26px] font-bold">
+                قفسه ها:
+              </h1>
+            </div>
             {console.log(user)}
             <div className="flex gap-[20px] mb-[19px] ">
               <button
@@ -311,7 +319,12 @@ export default function Another_User_Profile() {
                 </span>
               </button>
             </div>
-            <h1 className="text-[26px] font-bold mb-1">مشخصات:</h1>
+            <div className="mt-10 flex items-center text-center gap-2 md:gap-3 lg:gap-[10px] mb-4 md:mb-6 lg:mb-[20px]">
+              <FiInfo className="opacity-70 text-2xl  lg:text-3xl" />
+              <h1 className="text-xl md:text-2xl lg:text-[26px] font-bold ">
+                مشخصات:
+              </h1>
+            </div>
             <div className="relative bg-white h-[230px] rounded-[10px] shadow-lg shadow-[#000000]/25">
               <div className="pt-[11px] px-[20px] mt-[10px] ">
                 <p className="font-semibold text-[16px] mb-[5px]">بیوگرافی:</p>
@@ -344,11 +357,15 @@ export default function Another_User_Profile() {
           </div>
 
           {UserWritten[0] ? (
-            <div className="min-w-[242px] h-[375px] m-[32px] mt-[5px]  ml-0 ">
-              <h1 className="text-[18px] font-bold mb-1">
-                آخرین کتاب نوشته شده:
-              </h1>
+            <div className="min-w-[242px] h-[385px] m-[32px] mt-[5px]  ml-0 ">
+              <div className="flex items-start text-center gap-2 md:gap-3 lg:gap-[10px] mb-3">
+                <FiBookmark className="opacity-70 text-xl md:text-2xl lg:text-2xl" />
+                <h1 className="text-base md:text-lg lg:text-[18px] font-bold">
+                  آخرین کتاب نوشته شده:
+                </h1>
+              </div>
               <BookCard
+              id={lastBook.id}
                 author={lastBook.Author}
                 title={lastBook.name}
                 coverImage={
@@ -358,7 +375,7 @@ export default function Another_User_Profile() {
                 }
                 chapters={80}
                 description={lastBook.description}
-                id={lastBook.id}
+                
               />
             </div>
           ) : (

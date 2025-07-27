@@ -36,6 +36,7 @@ const LongParagraphInput = ({
         setValue(newValue);
         setInputValue(newValue);
         hideError("");
+        console.log(newValue)
       }
     },
     [heightLine, setInputValue, hideError]

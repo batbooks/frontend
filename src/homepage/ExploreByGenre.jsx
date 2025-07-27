@@ -26,8 +26,12 @@ const GenreCard = ({ name, novels, color, Icon }) => (
     className={`${color} group rounded-2xl p-6 flex flex-col items-center shadow-lg  relative overflow-hidden cursor-pointer hover:shadow-[#000000]/20`}
   >
     <Icon className="text-black/70 w-10 h-10 mb-4 " />
-    <h2 className="text-black/70 text-xl text-nowrap font-bold">{name}</h2>
-    <p className="text-black/70 text-sm">{novels} Novels</p>
+    <h2 className="text-black/70 text-xl text-nowrap font-extrabold">{name}</h2>
+
+    <div className="flex gap-1 text-sm font-bold">
+      <p className="text-black/70 "> کتاب </p>
+      <p className="text-black/70 "> {novels} </p>
+    </div>
 
     {/* Bar container */}
     <div className="w-full bg-white bg-opacity-20 h-1 mt-6 rounded-full  relative group-hover:after:left-0">

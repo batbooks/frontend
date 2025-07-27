@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-const CustomModal = ({ open, setOpen, handleSubmit, input1, setInput1 }) => {
+const CustomModal = ({ open, setOpen, handleSubmit, input1, setInput1,input2,setInput2 }) => {
   useEffect(() => {
     const closeOnEscape = (e) => {
       if (e.key === 'Escape') setOpen(false);
@@ -25,6 +25,12 @@ const CustomModal = ({ open, setOpen, handleSubmit, input1, setInput1 }) => {
               className="bg-white px-3 py-2 rounded-[10px] border border-gray-300 focus:border-blue-500 focus:outline-none h-20"
               value={input1}
               onChange={(e) => setInput1(e.target.value)}
+            />
+            <label className="mb-2">توضیحات ترد : </label>
+            <textarea
+              className="bg-white px-3 py-2 rounded-[10px] border border-gray-300 focus:border-blue-500 focus:outline-none h-20"
+              value={input2}
+              onChange={(e) => setInput2(e.target.value)}
             />
           </div>
           <div  className="flex flex-row gap-3">

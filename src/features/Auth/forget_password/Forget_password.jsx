@@ -55,39 +55,14 @@ function Forget_password() {
     }
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   setError('');
-  //   setMessage('');
 
-  //   if (!code) {
-  //     setError('Please enter the verification code');
-  //     return;
-  //   }
-
-  //   setIsSubmitting(true);
-
-  //   try {
-  //     if (code === generatedCode) {
-  //       setMessage('Verification successful!');
-  //       // navigate........
-  //       // Proceed with password recovery logic
-  //     } else {
-  //       setError('Invalid verification code');
-  //     }
-  //   } catch (err) {
-  //     setError('Verification failed. Please try again.');
-  //   } finally {
-  //     setIsSubmitting(false);
-  //   }
-  // };
 
   return (
     <div className="w-full h-[100vh] bg-[#D9F0FF]">
       <div className="flex gap-1 items-center ">
-        <h2 className="text-[24px] mt-1.5 ml-2 font-bold text-[#002D54]">
+        <button onClick={()=>{navigate("/")}} className="cursor-pointer text-[24px] mt-1.5 ml-2 font-[800] ">
           Bat<span className="text-[#2663CD]">Books</span>
-        </h2>
+        </button>
       </div>
       <main
         style={styles.container}

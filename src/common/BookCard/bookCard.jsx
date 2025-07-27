@@ -8,7 +8,7 @@ export default function BookCard({
   coverImage,
   chapters,
   description,
-
+  id,
   children = null,
 }) {
   const [isFlipped, setIsFlipped] = useState(false);
@@ -16,9 +16,9 @@ export default function BookCard({
 
   return (
     <div
-      // onClick={() => {
-      //   navigate(`/book/${id}`);
-      // }}
+      onClick={() => {
+        navigate(`/book/${id}`);
+      }}
       className="relative  border-0 hover:shadow-white rounded-2xl w-full h-full cursor-pointer hover: transition-all duration-500"
       onMouseEnter={() => setIsFlipped(!isFlipped)}
       onMouseLeave={() => setIsFlipped(!isFlipped)}
@@ -30,7 +30,7 @@ export default function BookCard({
         <img
           src={coverImage}
           alt={title}
-          className="w-full h-full rounded-[15px]"
+          className="w-full h-full rounded-[15px] "
         />
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2 text-xs rounded-[15px]">
           <h3 className="text-cyan-400 font-bold text-[16px] mb-2.5">

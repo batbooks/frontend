@@ -850,7 +850,7 @@ function ReadingBook({
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(
-        `/api/book/user-book-progress/${historyId}/`,
+        `http://127.0.0.1:8000/book/user-book-progress/${historyId}/`,
         {
           method: "DELETE",
           headers: {

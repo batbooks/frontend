@@ -9,7 +9,9 @@ import Reviews from "./reviews";
 import SearchBar from "../../Searchbar";
 import Loading from "../../common/Loading/Loading.jsx";
 import Swal from "sweetalert2";
-
+import { FiBook, FiBookOpen, FiEdit, FiFileText, FiHeart, FiMessageCircle, FiPenTool, FiPlus } from "react-icons/fi";
+import { FaBook, FaBookOpen, FaPenNib } from "react-icons/fa";
+import { RiBook2Fill, RiBook2Line, RiBook3Line, RiBookOpenLine, RiBookReadLine, RiBookShelfLine } from "react-icons/ri";
 const Pagination = ({ totalPages, currentPage, onPageChange }) => {
   const getPageNumbers = () => {
     const pages = [];
@@ -92,12 +94,9 @@ const BookPage = () => {
         const [bookResponse, favoriteResponse, reveiewsResponse] =
           await Promise.all([
             fetch(`http://127.0.0.1:8000/book/${bookId}/`),
-            fetch(
-              `http://127.0.0.1:8000/book-actions/is/favorite/${bookId}/`,
-              {
-                headers: { Authorization: auth },
-              }
-            ),
+            fetch(`http://127.0.0.1:8000/book-actions/is/favorite/${bookId}/`, {
+              headers: { Authorization: auth },
+            }),
             fetch(`http://127.0.0.1:8000/comments/book/${bookId}/reviews/`),
           ]);
 
@@ -350,9 +349,12 @@ const BookPage = () => {
                 }`}
               >
                 <span className="span-btn">
-                  {isFavorite
-                    ? "حذف از مورد علاقه ها"
-                    : "اضافه کردن به مورد علاقه ها"}
+                  <div className="flex gap-3 items-center">
+                    {isFavorite
+                      ? "حذف از مورد علاقه ها"
+                      : "اضافه کردن به مورد علاقه ها"}
+                      <FiHeart></FiHeart>
+                  </div>
                 </span>
               </button>
             </div>
@@ -365,16 +367,23 @@ const BookPage = () => {
 
           {/* Book Details */}
           <div className=" text-right p-5 pt-0 mb-5 z-10">
-            <h1 className=" text-4xl font-bold mb-4">{book.name}</h1>
+            <div className="flex flex-row-reverse gap-4 items-center mb-4" >
+            <RiBookShelfLine className="scale-200"></RiBookShelfLine>
+            <h1 className=" text-4xl font-bold ">{book.name}</h1>
+            </div>
             <h2 className="text-2xl text-gray-600">{book.Author}</h2>
 
             <div className="flex gap-[10px] items-center my-2 justify-end">
               <span className=" text-gray-700 mb-1 font-bold opacity-70">
                 نقد
               </span>
-              <span className=" mr-10 text-gray-700 mb-1 font-bold opacity-70">
+              <span className="  text-gray-700 mb-1 font-bold opacity-70">
                 {reviewsCount}
               </span>
+              <div className="mr-10 flex">
+
+            
+              </div>
 
               <span className=" text-gray-700 text-2xl mb-1">
                 {Math.round(book.rating * 10) / 10}
@@ -492,10 +501,15 @@ const BookPage = () => {
       {/* Review Section */}
       {isAuthenticated ? (
         <button
-          className="btn md:!mr-30  !rounded-[10px]"
+          className="btn md:!mr-30  !rounded-[10px] !px-25"
           onClick={() => setIsClicked(true)}
         >
-          <span className="span-btn">نقد خود را بنویسید</span>
+          <span className="span-btn ">
+            <div className="flex flex-row gap-2 items-center text-nowrap">
+              <p> نقد خود را بنویسید</p>
+              <FiPlus className="w-2 h-2 lg:w-[17px] lg:h-[17px]"></FiPlus>
+            </div>
+          </span>
         </button>
       ) : null}
       <form

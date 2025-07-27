@@ -46,7 +46,7 @@ const CreateGroupModal: React.FC<Props> = ({ onClose, onGroupCreated }) => {
       setLoadingUsers(true);
       setError(null);
       try {
-        const res = await fetch("/api/user/following/", {
+        const res = await fetch("http://127.0.0.1:8000/user/following/", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },
@@ -146,7 +146,7 @@ const CreateGroupModal: React.FC<Props> = ({ onClose, onGroupCreated }) => {
     console.log(selectedUserIds.join(","))
 
     try {
-      const res = await fetch("/api/chat/group/create/", {
+      const res = await fetch("http://127.0.0.1:8000/chat/group/create/", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,

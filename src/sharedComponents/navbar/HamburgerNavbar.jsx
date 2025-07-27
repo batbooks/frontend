@@ -16,6 +16,7 @@ import {
   FiChevronDown,
   FiChevronUp,
   FiPhone,
+  FiMessageCircle
 } from "react-icons/fi";
 import { useLocation, useNavigate } from "react-router-dom";
 export default function HamburgerNavbar({
@@ -156,7 +157,7 @@ export default function HamburgerNavbar({
                 >
                   <li className="transition-all duration-200 ">
                     <MenuItem
-                      icon={<FiUsers />}
+                      icon={<FiMessageCircle />}
                       label=" چت "
                       onClick={()=>{navigate("/chat",{state:{UserId:null}})}}
                     />

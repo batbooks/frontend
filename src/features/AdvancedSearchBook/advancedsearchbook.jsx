@@ -73,7 +73,7 @@ export default function AdvancedSearchBook() {
         if (pageDiff > 0) {
           let nextLink = nextPageLink;
           for (let i = 0; i < pageDiff; i++) {
-            const response = await fetch(`/api${nextLink}`, {
+            const response = await fetch(`http://127.0.0.1:8000${nextLink}`, {
               method: "GET",
               headers: {
                 "Content-Type": "application/json",
@@ -98,7 +98,7 @@ export default function AdvancedSearchBook() {
         } else if (pageDiff < 0) {
           let prevLink = prevPageLink;
           for (let i = pageDiff; i < 0; i++) {
-            const response = await fetch(`/api${prevLink}`, {
+            const response = await fetch(`http://127.0.0.1:8000${prevLink}`, {
               method: "GET",
               headers: {
                 "Content-Type": "application/json",
