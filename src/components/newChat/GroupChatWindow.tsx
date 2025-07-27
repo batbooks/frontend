@@ -43,7 +43,7 @@ const GroupChatWindow: React.FC<GroupChatWindowProps> = ({ groupId, groupName,se
   const { user } = useSelector((state: any) => state.auth);
 
   /* -------------------------------- Socket -------------------------------- */
-  const WS_URL = `wss://www.batbooks.ir/ws/group/${groupId}/?token=${localStorage.getItem("access_token")}`;
+  const WS_URL = `ws://127.0.0.1:8000/ws/group/${groupId}/?token=${localStorage.getItem("access_token")}`;
 
   const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(WS_URL, {
     onOpen: () => console.log("WebSocket connected"),
