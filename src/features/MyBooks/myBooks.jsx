@@ -6,6 +6,8 @@ import BookCard from "../../common/BookCard/bookCard";
 import ReadingGoalCard from "../../common/ReadingGoalCard/readingGoalCard";
 import Loading from "../../common/Loading/Loading";
 import { useNavigate } from "react-router";
+import { FiPlus } from "react-icons/fi";
+import BookshelfSeparator from "./BookShelf";
 
 export default function MyBooks() {
   const [loading, setLoading] = useState(false);
@@ -31,7 +33,7 @@ export default function MyBooks() {
       setLoading(true);
       const token = localStorage.getItem("access_token");
       try {
-        const response = await fetch(`https://www.batbooks.ir/book/my/`, {
+        const response = await fetch(`http://127.0.0.1:8000/book/my/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -57,7 +59,7 @@ export default function MyBooks() {
       const token = localStorage.getItem("access_token");
       try {
         const response = await fetch(
-          `https://www.batbooks.ir/book-actions/get/favorite/`,
+          `http://127.0.0.1:8000/book-actions/get/favorite/`,
           {
             method: "GET",
             headers: {
@@ -73,6 +75,7 @@ export default function MyBooks() {
 
         const data = await response.json();
         setFavoriteBooks([...data.results, ...favoriteBooks]);
+        console.log(favoriteBooks);
       } catch (error) {
         console.error("خطا در ارسال به سرور:", error);
       } finally {
@@ -116,7 +119,7 @@ export default function MyBooks() {
       <Navbar />
       <main
         dir="rtl"
-        className="pt-4 md:pt-[16px] pr-1 md:pr-[7px] pb-14 md:pb-[59px] text-center"
+        className="bg-slate-50 pt-4 md:pt-[16px] px-1 md:px-[27px] pb-14 md:pb-[59px] text-center"
       >
         <h1 className="text-2xl md:text-[32px] font-bold text-[#1A365D] mb-4 md:mb-[16px]">
           کتاب های من
@@ -124,20 +127,13 @@ export default function MyBooks() {
         <div
           className={`flex ${isMobile ? "flex-col" : "gap-[26px]"} relative`}
         >
-          {!isMobile && (
-            <div
-              className={`${isTablet ? "w-[200px]" : "w-[243px]"} h-[${isTablet ? "600px" : "764px"}]`}
-            >
-              <ReadingGoalCard />
-            </div>
-          )}
-          <div className="flex flex-col w-full text-right">
+          <div className="flex flex-col w-full text-right ">
             <h3 className="mr-2 md:mr-[11px] text-base md:text-[16px] font-[700] text-[#1A365D] mb-4 md:mb-[22px]">
               کتاب های مورد علاقه من
             </h3>
             <div
               ref={containerRef1}
-              className="mb-4 md:mb-[22px] overflow-x-scroll scrollbar-opacity-0 w-full ml-auto py-4 md:py-[18px]"
+              className="  pr-3 overflow-x-scroll scrollbar-opacity-0 w-full ml-auto pt-4  "
             >
               {favoriteBooks[1] &&
               favoriteBooks.length > (isMobile ? 2 : isTablet ? 5 : 7) ? (
@@ -164,7 +160,7 @@ export default function MyBooks() {
                   </button>
                 </>
               ) : null}
-              <div className="flex z-1 gap-4 md:gap-[25px]">
+              <div className="flex z-1 gap-4 md:gap-[25px]  p-3 pb-0 rounded-2xl ">
                 {loading2 ? <Loading /> : null}
                 {!loading2 && favoriteBooks[1]
                   ? favoriteBooks.map((book, i) =>
@@ -177,11 +173,11 @@ export default function MyBooks() {
                           description={book.description}
                           coverImage={
                             book.image
-                              ? `https://www.batbooks.ir/${book.image}`
+                              ? `http://127.0.0.1:8000/${book.image}`
                               : `/images/book_sample1.png`
                           }
                           minw={isMobile ? 150 : 180}
-                          h={isMobile ? 220 : 254}
+                          h={isMobile ? 240 : 260}
                         />
                       ) : (
                         <Book
@@ -195,25 +191,22 @@ export default function MyBooks() {
                     )
                   : null}
                 {!loading2 && !favoriteBooks[1] ? (
-                  <span className="text-sm md:text-base">
-                    موردی برای نمایش وجود ندارد...
-                  </span>
+                  <div
+                    onClick={() => navigate("/advancedsearchbook")}
+                    className="flex h-60 w-45 cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-slate-300 bg-white p-3 text-center text-slate-500 shadow-sm transition-colors duration-300 hover:border-blue-400 hover:text-blue-500"
+                  >
+                    <p className="text-sm">
+                      کتاب های مورد علاقه خود را اضافه کنید
+                    </p>
+                    <FiPlus className="h-12 w-12" />
+                  </div>
                 ) : null}
               </div>
             </div>
-            {favoriteBooks[1] &&
-            favoriteBooks.length > (isMobile ? 4 : isTablet ? 8 : 10) ? (
-              <button className="mx-auto md:mx-[31%] mb-6 md:mb-[38px] w-[150px] md:w-[197px] h-[34px] md:h-[38px] flex items-center py-1 md:py-[7px] px-3 md:px-[23px] gap-2 md:gap-[10px] bg-[#2663CD] rounded-full text-sm md:text-[16px] text-white font-[400] text-nowrap shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
-                <span>مشاهده همه موارد</span>
-                <img
-                  src="/images/arrow-right.png"
-                  alt="right"
-                  className="w-4 h-4"
-                />
-              </button>
-            ) : null}
+              <BookshelfSeparator/>
+            
             {writtenBooks[1] ? (
-              <div className="flex items-center mr-2 md:mr-[11px] mb-4 md:mb-[22px] justify-between">
+              <div className="flex items-center mr-2  md:mr-[11px] mb-4 md:mb-[22px] justify-between">
                 <h3 className="text-base md:text-[16px] font-[700] text-[#1A365D]">
                   نوشته شده توسط من
                 </h3>
@@ -239,7 +232,7 @@ export default function MyBooks() {
 
             <div
               ref={containerRef2}
-              className="mb-4 md:mb-[22px] overflow-x-scroll scrollbar-opacity-0 w-full ml-auto py-4 md:py-[18px]"
+              className=" pr-3  overflow-x-scroll scrollbar-opacity-0 w-full ml-auto pt-4 md:pt-[18px]"
             >
               {writtenBooks[1] &&
               writtenBooks.length > (isMobile ? 2 : isTablet ? 5 : 7) ? (
@@ -272,6 +265,7 @@ export default function MyBooks() {
                   ? writtenBooks.map((book, i) =>
                       i !== writtenBooks.length - 1 ? (
                         <Book
+                          mine={true}
                           id={book.id}
                           key={i}
                           title={book.name}
@@ -297,25 +291,19 @@ export default function MyBooks() {
                     )
                   : null}
                 {!loading && !writtenBooks[1] ? (
-                  <div className="flex gap-2 md:gap-[10px] items-center flex-col md:flex-row">
-                    <span className="text-sm md:text-base">
-                      موردی برای نمایش وجود ندارد...
-                    </span>
-                    <button
-                      onClick={() => navigate("./createbook")}
-                      className="w-[150px] md:w-[193px] h-[34px] md:h-[38px] flex items-center py-1 md:py-[7px] px-3 md:px-[23px] gap-2 md:gap-[10px] bg-[#2663CD] rounded-full text-sm md:text-[16px] text-white font-[400] text-nowrap shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
-                    >
-                      <span>نوشتن کتاب جدید</span>
-                      <img
-                        src="/images/add_sign.svg"
-                        alt="add"
-                        className="w-4 h-4"
-                      />
-                    </button>
+                  <div
+                    onClick={() => navigate("/mybooks/createbook")}
+                    className="flex gap-2 md:gap-[10px] items-center flex-col md:flex-row"
+                  >
+                    <div className="flex h-60 w-45 cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-slate-300 bg-white p-3 text-center text-slate-500 shadow-sm transition-colors duration-300 hover:border-blue-400 hover:text-blue-500">
+                      <p className="text-sm">اولین کتاب خود را بنویسید</p>
+                      <FiPlus className="h-12 w-12" />
+                    </div>
                   </div>
                 ) : null}
               </div>
             </div>
+            <BookshelfSeparator/>
             {writtenBooks[1] &&
             writtenBooks.length > (isMobile ? 4 : isTablet ? 8 : 10) ? (
               <button className="mx-auto md:mx-[31%] w-[150px] md:w-[197px] h-[34px] md:h-[38px] flex items-center py-1 md:py-[7px] px-3 md:px-[23px] gap-2 md:gap-[10px] bg-[#2663CD] rounded-full text-sm md:text-[16px] text-white font-[400] text-nowrap shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
@@ -347,6 +335,7 @@ export default function MyBooks() {
 }
 
 export function Book({
+  mine = false,
   coverImage,
   title = "تست",
   author = "تست",
@@ -382,8 +371,8 @@ export function Book({
         description={description}
         chapters={chapters}
       />
-      {!isLast && (
-        <button onClick={handleEditClick} className="btn mt-2 md:mt-4">
+      {!isLast && mine && (
+        <button onClick={handleEditClick} className="btn mt-2 md:mt-4 !mb-0">
           <span className="span-btn">ویرایش کتاب</span>
         </button>
       )}

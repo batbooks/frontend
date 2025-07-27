@@ -14,7 +14,7 @@ interface GroupChat {
 
 interface Props {
   setGroupName: React.Dispatch<React.SetStateAction<string>>;
-  onGroupSelect: React.Dispatch<React.SetStateAction<number>>;
+  onGroupSelect: React.Dispatch<React.SetStateAction<number | null>>;
   setChatContext: React.Dispatch<React.SetStateAction<string | null>>;
   chatContext: string;
   popUp2: boolean;
@@ -56,15 +56,12 @@ const GroupChatList: React.FC<Props> = ({
     const fetchGroups = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(
-          `https://www.batbooks.ir/chat/group/list/`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-            },
-          }
-        );
+        const response = await fetch(`http://127.0.0.1:8000/chat/group/list/`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        });
         if (!response.ok) throw new Error("خطا در دریافت گروه‌ها");
         const data: GroupChat[] = await response.json();
         console.log(data);
@@ -127,7 +124,7 @@ const GroupChatList: React.FC<Props> = ({
                 {group.image ? (
                   <img
                     className="w-10 h-10 rounded-full border-2 border-white shadow-sm"
-                    src={`${group.image}`}
+                    src={`http://127.0.0.1:8000${group.image}`}
                     alt={group.name}
                   />
                 ) : (

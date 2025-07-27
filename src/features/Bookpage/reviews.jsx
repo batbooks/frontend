@@ -13,6 +13,14 @@ import { Rating } from "@mui/material";
 import Swal from "sweetalert2";
 import parse from "html-react-parser";
 import { Editor } from "primereact/editor";
+import {
+  FiEdit,
+  FiEdit2,
+  FiEdit3,
+  FiTrash,
+  FiTrash2,
+  FiUserPlus,
+} from "react-icons/fi";
 
 function Reviews({ book }) {
   const { bookId } = useParams();
@@ -34,7 +42,7 @@ function Reviews({ book }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchPage(`https://www.batbooks.ir/comments/book/${bookId}/reviews/`);
+    fetchPage(`http://127.0.0.1:8000/comments/book/${bookId}/reviews/`);
   }, [bookId]);
 
   const fetchPage = async (url, append = false) => {
@@ -73,7 +81,7 @@ function Reviews({ book }) {
     setLoading1(true);
     try {
       const response = await fetch(
-        `https://www.batbooks.ir/user/is/follow/${userId}/`,
+        `http://127.0.0.1:8000/user/is/follow/${userId}/`,
         {
           method: "GET",
           headers: {
@@ -104,7 +112,7 @@ function Reviews({ book }) {
   const handleDeleteReview = async () => {
     try {
       const response = await fetch(
-        `https://www.batbooks.ir/comments/book/${bookId}/reviews/my-review/`,
+        `http://127.0.0.1:8000/comments/book/${bookId}/reviews/my-review/`,
         {
           method: "DELETE",
           headers: {
@@ -166,7 +174,7 @@ function Reviews({ book }) {
       })
     );
 
-    await fetch(`https://www.batbooks.ir/comments/review/like/${reviewId}/`, {
+    await fetch(`http://127.0.0.1:8000/comments/review/like/${reviewId}/`, {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -191,19 +199,16 @@ function Reviews({ book }) {
       })
     );
 
-    await fetch(
-      `https://www.batbooks.ir/comments/review/dislike/${reviewId}/`,
-      {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
+    await fetch(`http://127.0.0.1:8000/comments/review/dislike/${reviewId}/`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    });
   };
 
   const handleFollow = async (reviewId) => {
     try {
       const response = await fetch(
-        `https://www.batbooks.ir/user/toggle/follow/${reviewId}/`,
+        `http://127.0.0.1:8000/user/toggle/follow/${reviewId}/`,
         {
           method: "GET",
           headers: {
@@ -233,7 +238,7 @@ function Reviews({ book }) {
   const handleSaveEdit = async (reviewId) => {
     try {
       const response = await fetch(
-        `https://www.batbooks.ir/comments/book/${bookId}/reviews/my-review/`,
+        `http://127.0.0.1:8000/comments/book/${bookId}/reviews/my-review/`,
         {
           method: "PUT",
           headers: {
@@ -307,7 +312,7 @@ function Reviews({ book }) {
         dir="ltr"
         className="  bg-blue-300 flex flex-col rounded-[15px] border-[2px] border-[#000000]/21 md:flex-row md:items-center md:justify-between mb-6 p-6 lg:p-[48px]"
       >
-        <div className="flex flex-col items-center mb-6 md:mb-0 bg-[#d9f0ff] py-6 rounded-[10px] shadow-[0_0_5px_#000]">
+        <div className="flex flex-col items-center p-3 mb-6 md:mb-0 bg-[#d9f0ff] py-6 rounded-[10px] shadow-[0_0_5px_#000]">
           <span className="text-4xl font-bold">
             {Math.round(book.rating * 10) / 10}
           </span>
@@ -365,7 +370,7 @@ function Reviews({ book }) {
                       <img
                         src={
                           review.image
-                            ? `https://www.batbooks.ir${review.image}`
+                            ? `http://127.0.0.1:8000${review.image}`
                             : "/images/user_none.png"
                         }
                         alt="user"
@@ -406,13 +411,27 @@ function Reviews({ book }) {
                             className="btn !py-[5px] !px-[38px] !text-[14px] before:!bg-[#FF3B30] !bg-[#CC2F26] !shadow-lg"
                             onClick={() => handleDeleteReview()}
                           >
-                            <span className="span-btn">حذف نقد</span>
+                            <span className="span-btn">
+                              <div className="flex flex-row items-center gap-2">
+                                <FiTrash2 className="w-2 h-2 lg:w-[17px] lg:h-[17px]"></FiTrash2>
+                                <p className="text-nowrap">حذف نقد</p>
+                              </div>
+                            </span>
                           </button>
                           <button
-                            className="btn  !py-[5px] !px-[38px] !text-[14px] !font-[400]"
+                            className="btn  !py-[5px] !px-[20px]   !text-[14px] !font-[400]"
                             onClick={() => handleEditReview(review)}
                           >
-                            <span className="span-btn">ویرایش نقد</span>
+                            <span className="span-btn">
+                              <div className="flex flex-row items-center gap-2">
+                                <img
+                                  className="w-2 h-2 lg:w-[17px] lg:h-[17px] relative"
+                                  src="/src/assets/images/edit_sign.png"
+                                  alt="edit"
+                                />
+                                <p className="text-nowrap"> ویرایش نقد </p>
+                              </div>
+                            </span>
                           </button>
                         </div>
                       ) : (
@@ -426,11 +445,16 @@ function Reviews({ book }) {
                             }));
                           }}
                         >
-                          {followingMap[review.user.id] ? (
-                            <span className="span-btn">دنبال نکردن</span>
-                          ) : (
-                            <span className="span-btn">دنبال کردن</span>
-                          )}
+                          <span className="span-btn">
+                            <div className="flex flex-row-reverse gap-2 items-center text-nowrap">
+                              <p className="span-btn">
+                                {followingMap[review.user.id]
+                                  ? "دنبال نکردن"
+                                  : "دنبال کردن"}
+                              </p>
+                              <FiUserPlus className="w-2 h-2 lg:w-[17px] lg:h-[17px]" />
+                            </div>
+                          </span>
                         </button>
                       )
                     ) : null}

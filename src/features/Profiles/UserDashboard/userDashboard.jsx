@@ -192,7 +192,7 @@ export default function UserDashboard() {
       const token = localStorage.getItem("access_token");
       try {
         const response = await fetch(
-          `https://www.batbooks.ir/comments/user/reviews/`,
+          `http://127.0.0.1:8000/comments/user/reviews/`,
           {
             method: "GET",
             headers: {
@@ -227,7 +227,7 @@ export default function UserDashboard() {
       const token = localStorage.getItem("access_token");
       try {
         const response = await fetch(
-          `https://www.batbooks.ir/comments/user/comments/`,
+          `http://127.0.0.1:8000/comments/user/comments/`,
           {
             method: "GET",
             headers: {
@@ -262,7 +262,7 @@ export default function UserDashboard() {
       const token = localStorage.getItem("access_token");
       try {
         const response = await fetch(
-          `https://www.batbooks.ir/book/user-book-progress/`,
+          `http://127.0.0.1:8000/book/user-book-progress/`,
           {
             method: "GET",
             headers: {
@@ -599,7 +599,7 @@ function Review({
             <div className="w-16 h-16 md:w-18 md:h-18 lg:w-[83px] lg:h-[83px] rounded-full overflow-hidden">
               {userImage ? (
                 <img
-                  src={`https://www.batbooks.ir${userImage}`}
+                  src={`http://127.0.0.1:8000${userImage}`}
                   alt="user"
                   className="w-full h-full object-cover"
                 />
@@ -733,7 +733,7 @@ function Comment({
             {userImage ? (
               <img
                 className="w-16 h-16 lg:w-[83px] lg:h-[83px] rounded-full"
-                src={`https://www.batbooks.ir${userImage}`}
+                src={`http://127.0.0.1:8000${userImage}`}
                 alt="user"
               />
             ) : (
@@ -850,7 +850,7 @@ function ReadingBook({
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(
-        `/api/book/user-book-progress/${historyId}/`,
+        `http://127.0.0.1:8000/book/user-book-progress/${historyId}/`,
         {
           method: "DELETE",
           headers: {
@@ -901,7 +901,7 @@ function ReadingBook({
                 navigate(`/book/${bookId}`);
               }}
               className={`shadow-lg shadow-[#000000]/25 rounded-xl lg:rounded-[20px] w-32 md:w-36 lg:w-[153px] h-40 md:h-44 lg:h-[189px] cursor-pointer`}
-              src={`https://www.batbooks.ir${bookImage}`}
+              src={`http://127.0.0.1:8000${bookImage}`}
               alt="book"
             ></img>
           )}

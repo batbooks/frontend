@@ -32,7 +32,7 @@ function ThreadPosts({ threadId, threadName = "تست" }) {
       setLoading(true);
       const token = localStorage.getItem("access_token");
       try {
-        const response2 = await fetch(`https://www.batbooks.ir/user/following/`, {
+        const response2 = await fetch(`http://127.0.0.1:8000/user/following/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -40,7 +40,7 @@ function ThreadPosts({ threadId, threadName = "تست" }) {
           },
         });
         const response = await fetch(
-          `https://www.batbooks.ir/comments/threads/${threadId}/posts/`,
+          `http://127.0.0.1:8000/comments/threads/${threadId}/posts/`,
           {
             method: "GET",
             headers: {
@@ -228,13 +228,16 @@ function Post({
     setLoading(true);
     const token = localStorage.getItem("access_token");
     try {
-      const response = await fetch(`https://www.batbooks.ir/comments/posts/${postId}/`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `http://127.0.0.1:8000/comments/posts/${postId}/`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (!response.ok) {
         throw new Error("مشکلی پیش آمد...دوباره تلاش کنید");
       }
@@ -264,14 +267,17 @@ function Post({
     setLoading(true);
     const token = localStorage.getItem("access_token");
     try {
-      const response = await fetch(`https://www.batbooks.ir/comments/posts/${postId}/`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ body }),
-      });
+      const response = await fetch(
+        `http://127.0.0.1:8000/comments/posts/${postId}/`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ body }),
+        }
+      );
       if (!response.ok) {
         throw new Error("مشکلی پیش آمد...دوباره تلاش کنید");
       }
@@ -302,13 +308,16 @@ function Post({
     setIsFollowing(!isFollowing);
     const token = localStorage.getItem("access_token");
     try {
-      const response = await fetch(`https://www.batbooks.ir/user/toggle/follow/${userId}/`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `http://127.0.0.1:8000/user/toggle/follow/${userId}/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (!response.ok) {
         throw new Error("مشکلی پیش آمد...دوباره تلاش کنید");
       }
@@ -334,7 +343,7 @@ function Post({
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(
-        `https://www.batbooks.ir/user/toggle/Not_Interested/${userId}/`,
+        `http://127.0.0.1:8000/user/toggle/Not_Interested/${userId}/`,
         {
           method: "GET",
           headers: {
@@ -382,7 +391,7 @@ function Post({
             />
           ) : (
             <img
-              src={`https://www.batbooks.ir${userImage}`}
+              src={`http://127.0.0.1:8000${userImage}`}
               alt="user"
               className="mx-auto cursor-pointer rounded-full w-[90px] h-[90px]"
               onClick={() =>
@@ -674,13 +683,16 @@ const HeartButton = ({ setPostLikes, isLikedByMe, postId }) => {
     try {
       setLoading(true);
       const token = localStorage.getItem("access_token");
-      const response = await fetch(`https://www.batbooks.ir/comments/posts/${postId}/like/`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `http://127.0.0.1:8000/comments/posts/${postId}/like/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (!response.ok) throw new Error();
       setLiked(true);
     } catch (err) {
@@ -750,14 +762,17 @@ function SendPost({
     e.preventDefault();
     try {
       const token = localStorage.getItem("access_token");
-      const response = await fetch(`https://www.batbooks.ir/comments/threads/${thread}/create/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ body }),
-      });
+      const response = await fetch(
+        `http://127.0.0.1:8000/comments/threads/${thread}/create/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ body }),
+        }
+      );
       if (!response.ok) {
         throw new Error("مشکلی پیش آمد...دوباره تلاش کنید");
       }
@@ -789,14 +804,17 @@ function SendPost({
     e.preventDefault();
     try {
       const token = localStorage.getItem("access_token");
-      const response = await fetch(`https://www.batbooks.ir/comments/post/reply/${ReplyPostId}/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ thread, body }),
-      });
+      const response = await fetch(
+        `http://127.0.0.1:8000/comments/post/reply/${ReplyPostId}/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ thread, body }),
+        }
+      );
       if (!response.ok) {
         throw new Error("!!!مشکلی پیش اومد");
       }
@@ -833,10 +851,13 @@ function SendPost({
         <div
           className={`flex flex-col justify-between gap-[15px] items-center ${isClicked ? "mb-[41px]" : ""}`}
         >
-          <img
-            src={`https://www.batbooks.ir${user.user_info.image}`}
-            className="min-w-[63px] max-w-[63px] max-h-[63px] min-h-[63px] rounded-full mb-[10px]"
-          />
+          {user.user_info.image && (
+            <img
+              src={`http://127.0.0.1:8000${user.user_info.image}`}
+              className="min-w-[63px] max-w-[63px] max-h-[63px] min-h-[63px] rounded-full mb-[10px]"
+            />
+          )}
+
           <h1 className="text-[24px] font-[700] mb-[8px]">نظر شما چیست؟</h1>
           <button
             onClick={() => setIsClicked(!isClicked)}

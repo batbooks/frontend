@@ -14,7 +14,7 @@ const EditChapter = () => {
   useEffect(() => {
     const fetchBook = async () => {
       try {
-        const res = await fetch(`https://www.batbooks.ir/book/${bookId}/`);
+        const res = await fetch(`http://127.0.0.1:8000/book/${bookId}/`);
         const data = await res.json();
         setBookData(data);
       } catch (err) {
@@ -34,7 +34,7 @@ const EditChapter = () => {
   return (
     <>
       <Navbar />
-      <div className="text-center bg-[#A4C0ED] m-auto px-[150px] my-[88px] mx-[180px] border-[2px] border-[#000000]/31 pt-[57px] rounded-[30px] shadow-lg shadow-[#000000]/25">
+      <div className="text-center bg-[#A4C0ED]  px-[150px] py-[70px] my-[88px] mx-[200px] border-[2px] border-[#000000]/31 pt-[57px] rounded-[30px] shadow-lg shadow-[#000000]/25">
         <div className="flex flex-row justify-between">
           <button
             onClick={() => {
@@ -64,7 +64,7 @@ const EditChapter = () => {
           </button>
         </div>
 
-        <div className="py-[47px]">
+        <div className=" m-auto">
           <table className="rounded-[10px] min-w-full text-center text-sm bg-white shadow-lg shadow-[#000000]/31">
             <thead className="bg-[#2663cd]/90 rounded-[10px]">
               <tr className="rounded-[30px]">
@@ -74,9 +74,7 @@ const EditChapter = () => {
                 <th className="text-center px-[10px] py-[16px] text-[14px] text-white font-semibold w-[139px]  border-l-[2px] border-[#B9B9B9]">
                   آخرین ویرایش
                 </th>
-                <th className="px-[10px] py-[16px] text-[14px] text-white font-semibold w-[139px] text-center border-l-[2px] border-[#B9B9B9]">
-                  امتیاز
-                </th>
+                
                 <th className="px-[10px] py-[16px] text-[14px] text-white font-semibold text-right border-l-[2px] border-[#B9B9B9]">
                   نام فصل
                 </th>
@@ -92,7 +90,7 @@ const EditChapter = () => {
                   chapterId={chapter.id}
                   chapterNum={index + 1}
                   chapterName={chapter.title}
-                  chapterPages={chapter.rating + " امتیاز"}
+                  
                   chapterEditedIn={new Date(
                     chapter.updated_at
                   ).toLocaleDateString("fa-IR")}
@@ -133,9 +131,7 @@ function Chapter({
       <td className="text-center px-[12px] py-[18px] text-[14px]  border-t-[2px] border-l-[2px] border-[#B9B9B9]">
         {chapterEditedIn}
       </td>
-      <td className="text-center px-[12px] py-[18px] text-[14px]  border-t-[2px] border-l-[2px] border-[#B9B9B9]">
-        {chapterPages}
-      </td>
+      
       <td className="text-right px-[12px] py-[18px] text-[14px]  border-t-[2px] border-l-[2px] border-[#B9B9B9]">
         {chapterName}
       </td>
