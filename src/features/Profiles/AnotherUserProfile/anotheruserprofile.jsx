@@ -356,7 +356,7 @@ export default function Another_User_Profile() {
             </div>
           </div>
 
-          {UserWritten[0] ? (
+          {UserWritten[0]? (
             <div className="min-w-[242px] h-[385px] m-[32px] mt-[5px]  ml-0 ">
               <div className="flex items-start text-center gap-2 md:gap-3 lg:gap-[10px] mb-3">
                 <FiBookmark className="opacity-70 text-xl md:text-2xl lg:text-2xl" />
