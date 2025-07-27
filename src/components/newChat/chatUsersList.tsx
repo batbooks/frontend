@@ -67,7 +67,7 @@ const ChatUserList: React.FC<Props> = ({
   const [people, setPeople] = useState([]);
   const [nextUrl, setNextUrl] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [read,setRead]=useState(false)
+  const [read, setRead] = useState(false);
   useEffect(() => {
     fetchPage(`http://127.0.0.1:8000/user/users/all/`);
   }, []);
@@ -100,8 +100,8 @@ const ChatUserList: React.FC<Props> = ({
     }
   };
   useEffect(() => {
-  if (!popUp) setSearchTerm("");
-}, [popUp]);
+    if (!popUp) setSearchTerm("");
+  }, [popUp]);
   useEffect(() => {
     const fetchMessages = async () => {
       setIsLoading(true);
@@ -117,7 +117,6 @@ const ChatUserList: React.FC<Props> = ({
         if (!response.ok) throw new Error("خطا در دریافت کاربران");
         const data: ChatUser[] = await response.json();
         setUsers(data);
-        
       } catch (err) {
         setError(
           err instanceof Error ? err.message : "یک خطای ناشناخته رخ داده است."
@@ -129,9 +128,8 @@ const ChatUserList: React.FC<Props> = ({
     };
     fetchMessages();
   }, []);
-    const { user:me } = useSelector((state:any) => state.auth);
-    
-  
+  const { user: me } = useSelector((state: any) => state.auth);
+
   return (
     // Main container for the ChatUserList
     <div
@@ -191,7 +189,10 @@ const ChatUserList: React.FC<Props> = ({
           return (
             <li
               key={user.id}
-              onClick={() => {onUserSelect(user.id);setRead(true)}}
+              onClick={() => {
+                onUserSelect(user.id);
+                setRead(true);
+              }}
               className="flex items-center justify-between p-3 hover:bg-slate-100 cursor-pointer transition dir-rtl"
             >
               {/* Avatar/Initials */}
@@ -225,7 +226,9 @@ const ChatUserList: React.FC<Props> = ({
               {/* Unread count */}
               <div className="flex-shrink-0 w-8 text-center">
                 {user.unread_count > 0 && (
-                  <span className={`inline-flex items-center justify-center ${!read?"opacity-100":"opacity-0"} bg-red-500 text-white text-xs font-semibold rounded-full h-5 w-5`}>
+                  <span
+                    className={`inline-flex items-center justify-center ${!read ? "opacity-100" : "opacity-0"} bg-red-500 text-white text-xs font-semibold rounded-full h-5 w-5`}
+                  >
                     {user.unread_count}
                   </span>
                 )}
@@ -248,20 +251,24 @@ const ChatUserList: React.FC<Props> = ({
               {people
                 .filter(
                   (person: any) =>
-                    users.some((user) => user.id !=person.id ) &&
-                    person.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-                    person.id!=me.id
-                    
-
+                    !users.some((user) => user.id === person.id) &&
+                    person.name
+                      .toLowerCase()
+                      .includes(searchTerm.toLowerCase()) &&
+                    person.id !== me.id
                 )
                 .map((person: any) => {
                   const colorIndex = person.id % avatarColors.length;
                   const avatarColor = avatarColors[colorIndex];
-
+                  console.log(people);
+                  console.log(users);
                   return (
                     <li
                       key={person.id}
-                      onClick={() => {onUserSelect(person.id);setPopUp(false)}}
+                      onClick={() => {
+                        onUserSelect(person.id);
+                        setPopUp(false);
+                      }}
                       className="flex gap-1.5 items-center  p-3 hover:bg-slate-100 cursor-pointer transition dir-rtl"
                     >
                       <div>
