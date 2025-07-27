@@ -1,5 +1,5 @@
 {
-  "app": "batbooks-frontend",
+  "app": "batbook-frontend",
   "platform": "react",
   "react": {
     "mirror": true,

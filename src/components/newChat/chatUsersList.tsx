@@ -251,16 +251,17 @@ const ChatUserList: React.FC<Props> = ({
               {people
                 .filter(
                   (person: any) =>
-                    users.some((user) => user.id != person.id) &&
+                    !users.some((user) => user.id === person.id) &&
                     person.name
                       .toLowerCase()
                       .includes(searchTerm.toLowerCase()) &&
-                    person.id != me.id
+                    person.id !== me.id
                 )
                 .map((person: any) => {
                   const colorIndex = person.id % avatarColors.length;
                   const avatarColor = avatarColors[colorIndex];
-
+                  console.log(people);
+                  console.log(users);
                   return (
                     <li
                       key={person.id}
