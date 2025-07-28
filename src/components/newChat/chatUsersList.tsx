@@ -69,7 +69,7 @@ const ChatUserList: React.FC<Props> = ({
   const [searchTerm, setSearchTerm] = useState("");
   const [read, setRead] = useState(false);
   useEffect(() => {
-    fetchPage(`http://127.0.0.1:8000/user/users/all/`);
+    fetchPage(`https://batbooks.liara.run/user/users/all/`);
   }, []);
   const fetchPage = async (url: string, append = false) => {
     setLoading(true);
@@ -107,13 +107,16 @@ const ChatUserList: React.FC<Props> = ({
       setIsLoading(true);
       setError(null);
       try {
-        const response = await fetch(`http://127.0.0.1:8000/chat/direct/`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-          },
-        });
+        const response = await fetch(
+          `https://batbooks.liara.run/chat/direct/`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          }
+        );
         if (!response.ok) throw new Error("خطا در دریافت کاربران");
         const data: ChatUser[] = await response.json();
         setUsers(data);
@@ -200,7 +203,7 @@ const ChatUserList: React.FC<Props> = ({
                 {user.image ? (
                   <img
                     className="w-10 h-10 rounded-full border-2 border-white shadow-sm"
-                    src={`http://127.0.0.1:8000${user.image}`} // Assuming user.image is a path like /media/avatars/user.jpg
+                    src={`https://batbooks.liara.run${user.image}`} // Assuming user.image is a path like /media/avatars/user.jpg
                     alt={user.name}
                   />
                 ) : (
@@ -275,7 +278,7 @@ const ChatUserList: React.FC<Props> = ({
                         {person.user_info.image ? (
                           <img
                             className="w-10 h-10 rounded-full border-2 border-white shadow-sm"
-                            src={`http://127.0.0.1:8000${person.user_info.image}`}
+                            src={`https://batbooks.liara.run${person.user_info.image}`}
                             alt={person.user_info.image}
                           />
                         ) : (

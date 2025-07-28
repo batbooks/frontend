@@ -14,7 +14,7 @@ const EditChapter = () => {
   useEffect(() => {
     const fetchBook = async () => {
       try {
-        const res = await fetch(`http://127.0.0.1:8000/book/${bookId}/`);
+        const res = await fetch(`https://batbooks.liara.run/book/${bookId}/`);
         const data = await res.json();
         setBookData(data);
       } catch (err) {

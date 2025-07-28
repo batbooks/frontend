@@ -42,7 +42,7 @@ export default function Profile() {
     const auth = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`http://127.0.0.1:8000/auth/who/`, {
+        const response = await fetch(`https://batbooks.liara.run/auth/who/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -68,7 +68,7 @@ export default function Profile() {
 
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/book/user/${userid}/`,
+          `https://batbooks.liara.run/book/user/${userid}/`,
           {
             method: "GET",
           }
@@ -95,7 +95,7 @@ export default function Profile() {
       setLoading1(true);
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/user/following/`,
+          `https://batbooks.liara.run/user/following/`,
           {
             method: "GET",
             headers: {
@@ -179,7 +179,7 @@ export default function Profile() {
                 className="w-full h-full shadow-lg shadow-[#000000]/25 object-cover"
                 src={
                   userInfo.image
-                    ? `http://127.0.0.1:8000${userInfo.image}`
+                    ? `https://batbooks.liara.run${userInfo.image}`
                     : `/images/user_image.png`
                 }
                 alt="userimage"
@@ -450,7 +450,7 @@ export default function Profile() {
             />
           ) : (
             <img
-              src={`http://127.0.0.1:8000${user.following_image}`}
+              src={`https://batbooks.liara.run${user.following_image}`}
               alt="following"
               className="rounded-full w-20 h-20 md:w-[110px] md:h-[110px]"
             />

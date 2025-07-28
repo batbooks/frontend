@@ -24,7 +24,7 @@ export default function AdvancedSearchBook() {
   useEffect(() => {
     const fetchAllBooks = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/book/all/`, {
+        const response = await fetch(`https://batbooks.liara.run/book/all/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -73,7 +73,7 @@ export default function AdvancedSearchBook() {
         if (pageDiff > 0) {
           let nextLink = nextPageLink;
           for (let i = 0; i < pageDiff; i++) {
-            const response = await fetch(`http://127.0.0.1:8000${nextLink}`, {
+            const response = await fetch(`https://batbooks.liara.run${nextLink}`, {
               method: "GET",
               headers: {
                 "Content-Type": "application/json",
@@ -83,13 +83,13 @@ export default function AdvancedSearchBook() {
               throw new Error("مشکلی پیش اومد...دوباره تلاش کنید");
             }
             const data = await response.json();
-            nextLink = data.next?.replace("http://127.0.0.1:8000/", "");
+            nextLink = data.next?.replace("https://batbooks.liara.run/", "");
             if (i === pageDiff - 1) {
               setNextPageLink(
-                data.next?.replace("http://127.0.0.1:8000/", "")
+                data.next?.replace("https://batbooks.liara.run/", "")
               );
               setPrevPageLink(
-                data.previous?.replace("http://127.0.0.1:8000/", "")
+                data.previous?.replace("https://batbooks.liara.run/", "")
               );
               setcurrentpage(page);
               setShowingBooks(data.results);
@@ -98,7 +98,7 @@ export default function AdvancedSearchBook() {
         } else if (pageDiff < 0) {
           let prevLink = prevPageLink;
           for (let i = pageDiff; i < 0; i++) {
-            const response = await fetch(`http://127.0.0.1:8000${prevLink}`, {
+            const response = await fetch(`https://batbooks.liara.run${prevLink}`, {
               method: "GET",
               headers: {
                 "Content-Type": "application/json",
@@ -108,13 +108,13 @@ export default function AdvancedSearchBook() {
               throw new Error("مشکلی پیش اومد...دوباره تلاش کنید");
             }
             const data = await response.json();
-            prevLink = data.previous?.replace("http://127.0.0.1:8000/", "");
+            prevLink = data.previous?.replace("https://batbooks.liara.run/", "");
             if (i === -1) {
               setNextPageLink(
-                data.next?.replace("http://127.0.0.1:8000/", "")
+                data.next?.replace("https://batbooks.liara.run/", "")
               );
               setPrevPageLink(
-                data.previous?.replace("http://127.0.0.1:8000/", "")
+                data.previous?.replace("https://batbooks.liara.run/", "")
               );
               setcurrentpage(page);
               setShowingBooks(data.results);
@@ -326,7 +326,7 @@ function Book({
       try {
         const token = localStorage.getItem("access_token");
         const response = await fetch(
-          `http://127.0.0.1:8000/book-actions/is/favorite/${bookId}/`,
+          `https://batbooks.liara.run/book-actions/is/favorite/${bookId}/`,
           {
             method: "GET",
             headers: {
@@ -364,7 +364,7 @@ function Book({
     try {
       const token = localStorage.getItem("access_token");
       const response = await fetch(
-        `http://127.0.0.1:8000/book-actions/toggle/favorite/${bookId}/`,
+        `https://batbooks.liara.run/book-actions/toggle/favorite/${bookId}/`,
         {
           method: "GET",
           headers: {
@@ -402,7 +402,7 @@ function Book({
           coverImage={
             coverImage === null
               ? "/images/book_sample1.png"
-              : `http://127.0.0.1:8000${coverImage}`
+              : `https://batbooks.liara.run${coverImage}`
           }
           title={bookName}
           author={authorName}
@@ -428,7 +428,7 @@ function Book({
               onClick={() => {
                 if (!loading) navigate(`/book/${bookId}`);
               }}
-              src={`http://127.0.0.1:8000${coverImage}`}
+              src={`https://batbooks.liara.run${coverImage}`}
               alt="book"
               className="rounded-[20px] w-[130px] h-[150px] cursor-pointer"
             />

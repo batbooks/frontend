@@ -13,7 +13,7 @@ export default function UserCard({ user }) {
     const fetchFollowing = async () => {
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/user/is/follow/${user.user_id}/`,
+          `https://batbooks.liara.run/user/is/follow/${user.user_id}/`,
           {
             method: "GET",
 
@@ -36,7 +36,7 @@ export default function UserCard({ user }) {
   const handleFollow = async () => {
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/user/toggle/follow/${user.user_id}/`,
+        `https://batbooks.liara.run/user/toggle/follow/${user.user_id}/`,
         {
           method: "GET",
 
@@ -69,7 +69,7 @@ export default function UserCard({ user }) {
           className="min-w-15 w-20 h-20 sm:min-w-15 sm:h-23 sm:w-23 lg:min-w-30 lg:h-30 lg:w-30 rounded-full object-cover border-2 border-white cursor-pointer"
           src={
             user.image != null
-              ? `http://127.0.0.1:8000/${user.image}`
+              ? `https://batbooks.liara.run/${user.image}`
               : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIm2CWzfiMbqIPMJ32QvKMkapvArB7NQDJVg&s"
           }
           alt={user.user}

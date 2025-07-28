@@ -18,7 +18,7 @@ export default function Forums() {
       setLoading(true);
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/forum/?page=${currentpage}`
+          `https://batbooks.liara.run/forum/?page=${currentpage}`
         );
         if (response.ok) {
           const data = await response.json();
@@ -206,7 +206,7 @@ const Forum = ({
 
   const getImageSrc = () => {
     if (forumImage) {
-      return `http://127.0.0.1:8000${forumImage}`;
+      return `https://batbooks.liara.run${forumImage}`;
     }
     return `/images/book_sample${bookId % 10 || 1}.png`;
   };

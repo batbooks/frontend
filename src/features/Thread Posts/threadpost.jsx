@@ -32,7 +32,7 @@ function ThreadPosts({ threadId, threadName = "تست" }) {
       setLoading(true);
       const token = localStorage.getItem("access_token");
       try {
-        const response2 = await fetch(`http://127.0.0.1:8000/user/following/`, {
+        const response2 = await fetch(`https://batbooks.liara.run/user/following/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -40,7 +40,7 @@ function ThreadPosts({ threadId, threadName = "تست" }) {
           },
         });
         const response = await fetch(
-          `http://127.0.0.1:8000/comments/threads/${threadId}/posts/`,
+          `https://batbooks.liara.run/comments/threads/${threadId}/posts/`,
           {
             method: "GET",
             headers: {
@@ -229,7 +229,7 @@ function Post({
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/comments/posts/${postId}/`,
+        `https://batbooks.liara.run/comments/posts/${postId}/`,
         {
           method: "DELETE",
           headers: {
@@ -268,7 +268,7 @@ function Post({
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/comments/posts/${postId}/`,
+        `https://batbooks.liara.run/comments/posts/${postId}/`,
         {
           method: "PUT",
           headers: {
@@ -309,7 +309,7 @@ function Post({
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/user/toggle/follow/${userId}/`,
+        `https://batbooks.liara.run/user/toggle/follow/${userId}/`,
         {
           method: "GET",
           headers: {
@@ -343,7 +343,7 @@ function Post({
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/user/toggle/Not_Interested/${userId}/`,
+        `https://batbooks.liara.run/user/toggle/Not_Interested/${userId}/`,
         {
           method: "GET",
           headers: {
@@ -391,7 +391,7 @@ function Post({
             />
           ) : (
             <img
-              src={`http://127.0.0.1:8000${userImage}`}
+              src={`https://batbooks.liara.run${userImage}`}
               alt="user"
               className="mx-auto cursor-pointer rounded-full w-[90px] h-[90px]"
               onClick={() =>
@@ -684,7 +684,7 @@ const HeartButton = ({ setPostLikes, isLikedByMe, postId }) => {
       setLoading(true);
       const token = localStorage.getItem("access_token");
       const response = await fetch(
-        `http://127.0.0.1:8000/comments/posts/${postId}/like/`,
+        `https://batbooks.liara.run/comments/posts/${postId}/like/`,
         {
           method: "GET",
           headers: {
@@ -763,7 +763,7 @@ function SendPost({
     try {
       const token = localStorage.getItem("access_token");
       const response = await fetch(
-        `http://127.0.0.1:8000/comments/threads/${thread}/create/`,
+        `https://batbooks.liara.run/comments/threads/${thread}/create/`,
         {
           method: "POST",
           headers: {
@@ -805,7 +805,7 @@ function SendPost({
     try {
       const token = localStorage.getItem("access_token");
       const response = await fetch(
-        `http://127.0.0.1:8000/comments/post/reply/${ReplyPostId}/`,
+        `https://batbooks.liara.run/comments/post/reply/${ReplyPostId}/`,
         {
           method: "POST",
           headers: {
@@ -853,7 +853,7 @@ function SendPost({
         >
           {user.user_info.image && (
             <img
-              src={`http://127.0.0.1:8000${user.user_info.image}`}
+              src={`https://batbooks.liara.run${user.user_info.image}`}
               className="min-w-[63px] max-w-[63px] max-h-[63px] min-h-[63px] rounded-full mb-[10px]"
             />
           )}

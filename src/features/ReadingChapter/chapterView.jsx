@@ -34,7 +34,7 @@ const ReadingPage = () => {
 
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/book/chapter/${chapterId}/`,
+          `https://batbooks.liara.run/book/chapter/${chapterId}/`,
           {
             method: "GET",
             headers: {
@@ -99,7 +99,7 @@ const ReadingPage = () => {
             <img
               onClick={() => navigate(`/book/${bookId}`)}
               className="w-[179px] h-[247px] rounded-[15px] cursor-pointer hover:scale-105 transition-all duration-200"
-              src={`http://127.0.0.1:8000${bookCover}`}
+              src={`https://batbooks.liara.run${bookCover}`}
               alt="chapter"
             />
           ) : (

@@ -16,10 +16,10 @@ interface Message {
 
 interface ChatWindowProps {
   userId: number | null;
-  setUserId:React.Dispatch<React.SetStateAction<number | null>>
+  setUserId: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
-const ChatWindow: React.FC<ChatWindowProps> = ({ userId,setUserId }) => {
+const ChatWindow: React.FC<ChatWindowProps> = ({ userId, setUserId }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -35,14 +35,20 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ userId,setUserId }) => {
         )}`
       : null;
 
-  const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(WS_URL, {
-    onOpen: () => console.log("WebSocket connected"),
-    onClose: () => {console.log("WebSocket disconnected");setUserId(null)},
-    onError: (event) => console.error("WebSocket error:", event),
-    shouldReconnect: () => true, // auto‑reconnect
-    share: false, // isolate this socket instance
-    retryOnError: true,
-  });
+  const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
+    WS_URL,
+    {
+      onOpen: () => console.log("WebSocket connected"),
+      onClose: () => {
+        console.log("WebSocket disconnected");
+        setUserId(null);
+      },
+      onError: (event) => console.error("WebSocket error:", event),
+      shouldReconnect: () => true, // auto‑reconnect
+      share: false, // isolate this socket instance
+      retryOnError: true,
+    }
+  );
 
   const socketConnected = readyState === ReadyState.OPEN;
 
@@ -53,7 +59,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ userId,setUserId }) => {
       setIsLoading(true);
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/chat/show/${userId}/`,
+          `https://batbooks.liara.run/chat/show/${userId}/`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -79,7 +85,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ userId,setUserId }) => {
 
   /* ---------------------------- Inbound messages ---------------------------- */
   useEffect(() => {
-    console.log(lastJsonMessage)
+    console.log(lastJsonMessage);
     if (!lastJsonMessage || userId === null) return;
 
     if (lastJsonMessage.type_of_data === "new_message") {
@@ -103,7 +109,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ userId,setUserId }) => {
   /* ------------------------- Send message to server ------------------------- */
   const handleSendMessage = useCallback(() => {
     if (!newMessage.trim() || !socketConnected) return;
-    console.log(newMessage)
+    console.log(newMessage);
     // optimistic UI update
     setMessages((prev) => [
       ...prev,
@@ -114,9 +120,9 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ userId,setUserId }) => {
         date: new Date().toISOString(),
       },
     ]);
-    console.log(newMessage)
+    console.log(newMessage);
     sendJsonMessage({ message: newMessage, type: "new_message" });
-    console.log(newMessage)
+    console.log(newMessage);
     setNewMessage("");
   }, [newMessage, socketConnected, sendJsonMessage]);
 
@@ -128,7 +134,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ userId,setUserId }) => {
     return (
       <ul className="space-y-4">
         {messages.map((msg, index) => (
-          <ChatMessage  message={msg} />
+          <ChatMessage message={msg} />
         ))}
         <div ref={chatEndRef} />
       </ul>
@@ -136,12 +142,17 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ userId,setUserId }) => {
   };
 
   return (
-    <div dir="rtl" className="flex flex-col h-full bg-gray-50 rounded-lg shadow-inner">
+    <div
+      dir="rtl"
+      className="flex flex-col h-full bg-gray-50 rounded-lg shadow-inner"
+    >
       <div className="text-center py-1 text-xs text-gray-500 bg-gray-100">
         {socketConnected ? "متصل شدید" : "در حال اتصال..."}
       </div>
 
-      <div className="flex-grow p-4 overflow-y-auto pr-2">{renderContent()}</div>
+      <div className="flex-grow p-4 overflow-y-auto pr-2">
+        {renderContent()}
+      </div>
 
       <div className="p-4 bg-white border-t border-gray-200">
         <MessageInput

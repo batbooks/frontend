@@ -55,7 +55,7 @@ function CreateBook() {
       });
       console.log(formData.get("description"));
 
-      const res = await fetch(`http://127.0.0.1:8000/book/create/`, {
+      const res = await fetch(`https://batbooks.liara.run/book/create/`, {
         method: "POST",
         body: formData,
         headers: {
