@@ -25,10 +25,16 @@ const CreateChapter = () => {
         const token = localStorage.getItem("access_token");
         const auth = token ? `Bearer ${token}` : "";
 
-        const response = await fetch(`http://127.0.0.1:8000/book/${id}/`, {
-          method: "GET",
-          headers: { "Content-Type": "application/json", Authorization: auth },
-        });
+        const response = await fetch(
+          `https://www.batbooks.liara.run/book/${id}/`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: auth,
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Failed to fetch data");
@@ -55,31 +61,37 @@ const CreateChapter = () => {
       let response;
 
       if (inputType === "editor") {
-        response = await fetch(`http://127.0.0.1:8000/book/chapter/create/`, {
-          method: "POST",
-          body: JSON.stringify({
-            book: id,
-            title: chapterName,
-            body: chapterContent,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: auth,
-          },
-        });
+        response = await fetch(
+          `https://www.batbooks.liara.run/book/chapter/create/`,
+          {
+            method: "POST",
+            body: JSON.stringify({
+              book: id,
+              title: chapterName,
+              body: chapterContent,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: auth,
+            },
+          }
+        );
       } else if (inputType === "pdf") {
         const formData = new FormData();
         formData.append("book", id);
         formData.append("title", chapterName);
         formData.append("pdf", pdfFile);
 
-        response = await fetch(`http://127.0.0.1:8000/book/uploadfile/`, {
-          method: "POST",
-          body: formData,
-          headers: {
-            Authorization: auth,
-          },
-        });
+        response = await fetch(
+          `https://www.batbooks.liara.run/book/uploadfile/`,
+          {
+            method: "POST",
+            body: formData,
+            headers: {
+              Authorization: auth,
+            },
+          }
+        );
       }
 
       const result = await response.json();

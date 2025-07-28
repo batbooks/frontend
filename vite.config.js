@@ -11,7 +11,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "https://www.batbooks.ir",
+        target: "https://www.batbooks.liara.run",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },

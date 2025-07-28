@@ -18,7 +18,7 @@ const Threads = () => {
     try {
       const token = localStorage.getItem("access_token");
       const response = await fetch(
-        "http://127.0.0.1:8000/forum/threads/create/",
+        "https://www.batbooks.liara.run/forum/threads/create/",
         {
           method: "POST",
           headers: {
@@ -73,7 +73,7 @@ const Threads = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        let url = `http://127.0.0.1:8000/forum/${forumId}/`;
+        let url = `https://www.batbooks.liara.run/forum/${forumId}/`;
         if (currentPage > 1) {
           url += `?page=${currentPage}`;
         }

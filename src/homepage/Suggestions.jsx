@@ -65,7 +65,7 @@ export default function Suggestions() {
 
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/suggestion/book/`,
+          `https://www.batbooks.liara.run/suggestion/book/`,
           {
             method: "GET",
             headers: {

@@ -33,7 +33,7 @@ export default function Another_User_Profile() {
       console.log("asda");
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/user/info/${userId}/`
+          `https://www.batbooks.liara.run/user/info/${userId}/`
         );
         if (!response.ok) throw new Error("Failed to fetch book");
         const data = await response.json();
@@ -50,7 +50,7 @@ export default function Another_User_Profile() {
 
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/book/user/${userId}/`,
+          `https://www.batbooks.liara.run/book/user/${userId}/`,
           {
             method: "GET",
           }
@@ -80,7 +80,7 @@ export default function Another_User_Profile() {
       setLoading1(true);
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/user/is/follow/${userId}/`,
+          `https://www.batbooks.liara.run/user/is/follow/${userId}/`,
           {
             method: "GET",
 
@@ -105,7 +105,7 @@ export default function Another_User_Profile() {
       setLoading2(true);
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/user/is/Not_Interested/${userId}/`,
+          `https://www.batbooks.liara.run/user/is/Not_Interested/${userId}/`,
           {
             method: "GET",
 
@@ -147,7 +147,7 @@ export default function Another_User_Profile() {
   const handleFollow = async () => {
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/user/toggle/follow/${userId}/`,
+        `https://www.batbooks.liara.run/user/toggle/follow/${userId}/`,
         {
           method: "GET",
 
@@ -164,7 +164,7 @@ export default function Another_User_Profile() {
   const handleBlockd = async () => {
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/user/toggle/Not_Interested/${userId}/`,
+        `https://www.batbooks.liara.run/user/toggle/Not_Interested/${userId}/`,
         {
           method: "GET",
 
@@ -227,7 +227,7 @@ export default function Another_User_Profile() {
                 className="w-full h-full shadow-lg shadow-[#000000]/25 object-cover"
                 src={
                   user.image
-                    ? `http://127.0.0.1:8000${user.image}`
+                    ? `https://www.batbooks.liara.run${user.image}`
                     : `/images/user_image.png`
                 }
                 alt="userimage"
@@ -238,8 +238,8 @@ export default function Another_User_Profile() {
                 {user.user}
               </h3>
               <svg
-              className="cursor-pointer"
-              onClick={()=>navigate("/chat",{state:{userId}})}
+                className="cursor-pointer"
+                onClick={() => navigate("/chat", { state: { userId } })}
                 xmlns="http://www.w3.org/2000/svg"
                 width={30}
                 height={30}
@@ -249,7 +249,6 @@ export default function Another_User_Profile() {
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                
               >
                 <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
               </svg>
@@ -353,7 +352,7 @@ export default function Another_User_Profile() {
                 title={lastBook.name}
                 coverImage={
                   lastBook.image != null
-                    ? `http://127.0.0.1:8000${lastBook.image}`
+                    ? `https://www.batbooks.liara.run${lastBook.image}`
                     : "/23.png"
                 }
                 chapters={80}
@@ -494,7 +493,7 @@ export function Book({ book, isLast = false, minw = 180, h = 254 }) {
         author={book.Author}
         coverImage={
           book.image != null
-            ? `http://127.0.0.1:8000/${book.image}`
+            ? `https://www.batbooks.liara.run/${book.image}`
             : "/20.jpg"
         }
         description={book.description}

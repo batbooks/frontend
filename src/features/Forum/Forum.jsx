@@ -18,7 +18,7 @@ export default function Forums() {
       setLoading(true);
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/forum/?page=${currentpage}`
+          `https://www.batbooks.liara.run/forum/?page=${currentpage}`
         );
         if (response.ok) {
           const data = await response.json();
@@ -221,34 +221,34 @@ const Forum = ({
 
   const getImageSrc = () => {
     if (forumImage) {
-      return `http://127.0.0.1:8000${forumImage}`;
+      return `https://www.batbooks.liara.run${forumImage}`;
     }
     return `/images/book_sample${bookId % 10 || 1}.png`;
   };
 
   return (
     <button
-  onClick={() => navigate(`/threads/${forumId}`)}
-  className="relative overflow-hidden py-2 pr-2 pl-12 md:pl-16 lg:pl-20 bg-[#a3d5ff] outline outline-[0.125rem] outline-[#000000]/21 rounded-lg gap-4 md:gap-6 flex items-center cursor-pointer hover:ease-in-out hover:before:w-full hover:before:h-full before:absolute before:w-0 before:h-0 before:bg-[#2663CD]/40 before:shadow-none hover:shadow-[#000000]/21 hover:shadow-lg before:inset-0 before:transition-all before:duration-300 before:ease-in-out transition-all active:before:bg-[#2663CD]/20 active:outline-none active:shadow-none w-full"
->
-  <img
-    src={getImageSrc()}
-    alt="book cover"
-    className="relative w-16 h-20 md:w-24 md:h-28 lg:w-28 lg:h-32 rounded-md z-10 object-cover"
-  />
-  <div className="flex flex-col text-start relative z-10 w-full">
-    <h3 className="text-base md:text-lg font-medium text-black truncate">
-      {forumName}
-    </h3>
-    <div className="flex gap-2 mb-2">
-      <span className="text-xs md:text-sm font-light text-[#333333]">
-        ایجاد شده در {formatDate(createdAt)}
-      </span>
-    </div>
-    <p className="text-sm font-light line-clamp-2 md:line-clamp-3">
-      {forumDescription}
-    </p>
-  </div>
-</button>
+      onClick={() => navigate(`/threads/${forumId}`)}
+      className="relative overflow-hidden py-2 pr-2 pl-12 md:pl-16 lg:pl-20 bg-[#a3d5ff] outline outline-[0.125rem] outline-[#000000]/21 rounded-lg gap-4 md:gap-6 flex items-center cursor-pointer hover:ease-in-out hover:before:w-full hover:before:h-full before:absolute before:w-0 before:h-0 before:bg-[#2663CD]/40 before:shadow-none hover:shadow-[#000000]/21 hover:shadow-lg before:inset-0 before:transition-all before:duration-300 before:ease-in-out transition-all active:before:bg-[#2663CD]/20 active:outline-none active:shadow-none w-full"
+    >
+      <img
+        src={getImageSrc()}
+        alt="book cover"
+        className="relative w-16 h-20 md:w-24 md:h-28 lg:w-28 lg:h-32 rounded-md z-10 object-cover"
+      />
+      <div className="flex flex-col text-start relative z-10 w-full">
+        <h3 className="text-base md:text-lg font-medium text-black truncate">
+          {forumName}
+        </h3>
+        <div className="flex gap-2 mb-2">
+          <span className="text-xs md:text-sm font-light text-[#333333]">
+            ایجاد شده در {formatDate(createdAt)}
+          </span>
+        </div>
+        <p className="text-sm font-light line-clamp-2 md:line-clamp-3">
+          {forumDescription}
+        </p>
+      </div>
+    </button>
   );
 };

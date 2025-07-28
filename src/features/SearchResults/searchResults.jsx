@@ -27,7 +27,9 @@ export default function SearchResults({ searchingItem = "people" }) {
       const fetchForums = async () => {
         setLoading(true);
         try {
-          const response = await fetch(`http://127.0.0.1:8000/forum/?page=${currentpage}`);
+          const response = await fetch(
+            `https://www.batbooks.liara.run/forum/?page=${currentpage}`
+          );
           if (response.ok) {
             const data = await response.json();
             setForums(data.results);
@@ -45,7 +47,9 @@ export default function SearchResults({ searchingItem = "people" }) {
       const fetchPeople = async () => {
         setLoading(true);
         try {
-          const response = await fetch(`http://127.0.0.1:8000/user/users/all/?page=1`);
+          const response = await fetch(
+            `https://www.batbooks.liara.run/user/users/all/?page=1`
+          );
           if (response.ok) {
             const data = await response.json();
             setPeople(data.results);
@@ -67,7 +71,7 @@ export default function SearchResults({ searchingItem = "people" }) {
     console.log(page);
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/user/search/${searched}/?page=${page}`
+        `https://www.batbooks.liara.run/user/search/${searched}/?page=${page}`
       );
       if (response.ok) {
         const data = await response.json();
@@ -454,18 +458,24 @@ function SearchFilters({ searchingItem }) {
   useEffect(() => {
     const fetchGenresAndTags = async () => {
       setLoading(true);
-      const response = await fetch(`http://127.0.0.1:8000/tag/genres/`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const response2 = await fetch(`http://127.0.0.1:8000/tag/tag-categories/`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `https://www.batbooks.liara.run/tag/genres/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const response2 = await fetch(
+        `https://www.batbooks.liara.run/tag/tag-categories/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const data = await response.json();
       const data2 = await response2.json();
       setGenres(data.genres);
@@ -1011,14 +1021,17 @@ function Person({ person }) {
     setLoading(true);
     const fetchFollowing = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/user/is/follow/${person.id}/`, {
-          method: "GET",
+        const response = await fetch(
+          `https://www.batbooks.liara.run/user/is/follow/${person.id}/`,
+          {
+            method: "GET",
 
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-          },
-        });
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          }
+        );
         const data = await response.json();
         setIsFollowing(data.is_follow);
       } catch (err) {
@@ -1031,14 +1044,17 @@ function Person({ person }) {
   }, []);
   const handleFollow = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/user/toggle/follow/${person.id}/`, {
-        method: "GET",
+      const response = await fetch(
+        `https://www.batbooks.liara.run/user/toggle/follow/${person.id}/`,
+        {
+          method: "GET",
 
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        },
-      });
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
+      );
     } catch (err) {
       console.error(err.message);
     }
@@ -1066,7 +1082,11 @@ function Person({ person }) {
           className="rounded-full w-[110px] h-[110px]"
         />
         <div className="flex flex-col gap-[7px] items-start">
-          <h3 >{person.name.length > 12 ? person.name.slice(0, 12) + '...' : person.name}</h3>
+          <h3>
+            {person.name.length > 12
+              ? person.name.slice(0, 12) + "..."
+              : person.name}
+          </h3>
           <span>{person.user_info.following_count}</span>
         </div>
       </div>

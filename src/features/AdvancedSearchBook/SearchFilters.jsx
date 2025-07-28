@@ -335,7 +335,7 @@ export function SearchFilters({
       try {
         setLoading2(true);
         const response = await fetch(
-          `http://127.0.0.1:8000/advance/${Query}`,
+          `https://www.batbooks.liara.run/advance/${Query}`,
           {
             method: "GET",
             headers: {
@@ -350,9 +350,11 @@ export function SearchFilters({
           const data = await response.json();
           setcurrentpage(1);
           setTotalPages(Math.ceil(data.count / itemsPerPage));
-          setNextPageLink(data.next?.replace("http://127.0.0.1:8000/", ""));
+          setNextPageLink(
+            data.next?.replace("https://www.batbooks.liara.run/", "")
+          );
           setPrevPageLink(
-            data.previous?.replace("http://127.0.0.1:8000/", "")
+            data.previous?.replace("https://www.batbooks.liara.run/", "")
           );
           setShowingBooks(data.results);
         }
@@ -664,13 +666,13 @@ export function SearchFilters({
           setLoading2(true);
           console.log(Query);
           const response = isVisibleFilters
-            ? await fetch(`http://127.0.0.1:8000/advance/${Query}`, {
+            ? await fetch(`https://www.batbooks.liara.run/advance/${Query}`, {
                 method: "GET",
                 headers: {
                   "Content-Type": "application/json",
                 },
               })
-            : await fetch(`http://127.0.0.1:8000/advance/${Query2}`, {
+            : await fetch(`https://www.batbooks.liara.run/advance/${Query2}`, {
                 method: "GET",
                 headers: {
                   "Content-Type": "application/json",
@@ -685,9 +687,11 @@ export function SearchFilters({
             setShowingBooksSearchWord(searchWord);
             setcurrentpage(1);
             setTotalPages(Math.ceil(data.count / itemsPerPage));
-            setNextPageLink(data.next?.replace("http://127.0.0.1:8000/", ""));
+            setNextPageLink(
+              data.next?.replace("https://www.batbooks.liara.run/", "")
+            );
             setPrevPageLink(
-              data.previous?.replace("http://127.0.0.1:8000/", "")
+              data.previous?.replace("https://www.batbooks.liara.run/", "")
             );
             setShowingBooks(data.results);
           }
@@ -712,14 +716,17 @@ export function SearchFilters({
   useEffect(() => {
     const fetchGenresAndTags = async () => {
       setLoading(true);
-      const response = await fetch(`http://127.0.0.1:8000/tag/genres/`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `https://www.batbooks.liara.run/tag/genres/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const response2 = await fetch(
-        `http://127.0.0.1:8000/tag/tag-categories/`,
+        `https://www.batbooks.liara.run/tag/tag-categories/`,
         {
           method: "GET",
           headers: {

@@ -26,11 +26,11 @@ export default function HamburgerNavbar({
   openCommunications,
   handleNav,
   handleLogout,
-  setSelectedItem
+  setSelectedItem,
 }) {
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   const location = useLocation();
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   useEffect(() => {
     if (location.pathname === "/") setSelectedItem(1);
     else if (location.pathname === "/mybooks") setSelectedItem(2);
@@ -71,7 +71,7 @@ export default function HamburgerNavbar({
                   <li className="w-full px-3 flex items-center gap-3">
                     <img
                       className="w-10 h-10  rounded-full"
-                      src={`http://127.0.0.1:8000${user.user_info.image}`}
+                      src={`https://www.batbooks.liara.run${user.user_info.image}`}
                       alt="asd"
                     />
                     <h3>{user.name} </h3>
@@ -158,7 +158,9 @@ export default function HamburgerNavbar({
                     <MenuItem
                       icon={<FiUsers />}
                       label=" چت "
-                      onClick={()=>{navigate("/chat",{state:{UserId:null}})}}
+                      onClick={() => {
+                        navigate("/chat", { state: { UserId: null } });
+                      }}
                     />
                   </li>
                   <li className="transition-all duration-200 ">

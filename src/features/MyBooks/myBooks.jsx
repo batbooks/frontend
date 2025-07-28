@@ -31,13 +31,16 @@ export default function MyBooks() {
       setLoading(true);
       const token = localStorage.getItem("access_token");
       try {
-        const response = await fetch(`http://127.0.0.1:8000/book/my/`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          `https://www.batbooks.liara.run/book/my/`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error("درخواست موفق نبود");
@@ -57,7 +60,7 @@ export default function MyBooks() {
       const token = localStorage.getItem("access_token");
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/book-actions/get/favorite/`,
+          `https://www.batbooks.liara.run/book-actions/get/favorite/`,
           {
             method: "GET",
             headers: {
@@ -177,7 +180,7 @@ export default function MyBooks() {
                           description={book.description}
                           coverImage={
                             book.image
-                              ? `http://127.0.0.1:8000/${book.image}`
+                              ? `https://www.batbooks.liara.run/${book.image}`
                               : `/images/book_sample1.png`
                           }
                           minw={isMobile ? 150 : 180}

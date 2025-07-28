@@ -91,14 +91,16 @@ const BookPage = () => {
 
         const [bookResponse, favoriteResponse, reveiewsResponse] =
           await Promise.all([
-            fetch(`http://127.0.0.1:8000/book/${bookId}/`),
+            fetch(`https://www.batbooks.liara.run/book/${bookId}/`),
             fetch(
-              `http://127.0.0.1:8000/book-actions/is/favorite/${bookId}/`,
+              `https://www.batbooks.liara.run/book-actions/is/favorite/${bookId}/`,
               {
                 headers: { Authorization: auth },
               }
             ),
-            fetch(`http://127.0.0.1:8000/comments/book/${bookId}/reviews/`),
+            fetch(
+              `https://www.batbooks.liara.run/comments/book/${bookId}/reviews/`
+            ),
           ]);
 
         if (bookResponse.status == 404) {
@@ -138,7 +140,7 @@ const BookPage = () => {
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/book-actions/toggle/favorite/${bookId}/`,
+        `https://www.batbooks.liara.run/book-actions/toggle/favorite/${bookId}/`,
         {
           method: "GET",
           headers: {
@@ -190,7 +192,7 @@ const BookPage = () => {
     }
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/comments/book/${bookId}/reviews/create/`,
+        `https://www.batbooks.liara.run/comments/book/${bookId}/reviews/create/`,
         {
           method: "POST",
           headers: {
@@ -239,7 +241,7 @@ const BookPage = () => {
       formData.append("book", bookId);
       formData.append("last_read_chapter", chapterId);
       const response = await fetch(
-        `http://127.0.0.1:8000/book/user-book-progress/`,
+        `https://www.batbooks.liara.run/book/user-book-progress/`,
         {
           method: "POST",
           body: formData,
@@ -256,7 +258,7 @@ const BookPage = () => {
       console.error(err.message);
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/book/user-book-progress/`,
+          `https://www.batbooks.liara.run/book/user-book-progress/`,
           {
             method: "GET",
             headers: {
@@ -274,7 +276,7 @@ const BookPage = () => {
         const id = data.find((book) => Number(book.book) === Number(bookId)).id;
         try {
           const response = await fetch(
-            `http://127.0.0.1:8000/book/user-book-progress/${id}/`,
+            `https://www.batbooks.liara.run/book/user-book-progress/${id}/`,
             {
               method: "PUT",
               body: formData,
@@ -335,7 +337,7 @@ const BookPage = () => {
           <img
             src={
               book.image
-                ? `http://127.0.0.1:8000${book.image}`
+                ? `https://www.batbooks.liara.run${book.image}`
                 : `https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-book-cover-design-template-34323b0f0734dccded21e0e3bebf004c_screen.jpg?ts=1637015198`
             }
             alt="Book Cover"

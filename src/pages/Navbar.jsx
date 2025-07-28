@@ -116,7 +116,7 @@ function Navbar() {
             {isAuthenticated && user.user_info.image != null ? (
               <img
                 className="w-[50px] h-[50px] rounded-[30px]"
-                src={`http://127.0.0.1:8000${user.user_info.image}`}
+                src={`https://www.batbooks.liara.run${user.user_info.image}`}
                 alt="User Image 2"
               />
             ) : (

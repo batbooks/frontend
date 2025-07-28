@@ -192,7 +192,7 @@ export default function UserDashboard() {
       const token = localStorage.getItem("access_token");
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/comments/user/reviews/`,
+          `https://www.batbooks.liara.run/comments/user/reviews/`,
           {
             method: "GET",
             headers: {
@@ -227,7 +227,7 @@ export default function UserDashboard() {
       const token = localStorage.getItem("access_token");
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/comments/user/comments/`,
+          `https://www.batbooks.liara.run/comments/user/comments/`,
           {
             method: "GET",
             headers: {
@@ -262,7 +262,7 @@ export default function UserDashboard() {
       const token = localStorage.getItem("access_token");
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/book/user-book-progress/`,
+          `https://www.batbooks.liara.run/book/user-book-progress/`,
           {
             method: "GET",
             headers: {
@@ -599,7 +599,7 @@ function Review({
             <div className="w-16 h-16 md:w-18 md:h-18 lg:w-[83px] lg:h-[83px] rounded-full overflow-hidden">
               {userImage ? (
                 <img
-                  src={`http://127.0.0.1:8000${userImage}`}
+                  src={`https://www.batbooks.liara.run${userImage}`}
                   alt="user"
                   className="w-full h-full object-cover"
                 />
@@ -733,7 +733,7 @@ function Comment({
             {userImage ? (
               <img
                 className="w-16 h-16 lg:w-[83px] lg:h-[83px] rounded-full"
-                src={`http://127.0.0.1:8000${userImage}`}
+                src={`https://www.batbooks.liara.run${userImage}`}
                 alt="user"
               />
             ) : (
@@ -901,7 +901,7 @@ function ReadingBook({
                 navigate(`/book/${bookId}`);
               }}
               className={`shadow-lg shadow-[#000000]/25 rounded-xl lg:rounded-[20px] w-32 md:w-36 lg:w-[153px] h-40 md:h-44 lg:h-[189px] cursor-pointer`}
-              src={`http://127.0.0.1:8000${bookImage}`}
+              src={`https://www.batbooks.liara.run${bookImage}`}
               alt="book"
             ></img>
           )}

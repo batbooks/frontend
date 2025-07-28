@@ -69,7 +69,7 @@ const ChatUserList: React.FC<Props> = ({
   const [searchTerm, setSearchTerm] = useState("");
   const [read,setRead]=useState(false)
   useEffect(() => {
-    fetchPage(`http://127.0.0.1:8000/user/users/all/`);
+    fetchPage(`https://www.batbooks.liara.run/user/users/all/`);
   }, []);
   const fetchPage = async (url: string, append = false) => {
     setLoading(true);
