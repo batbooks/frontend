@@ -17,7 +17,7 @@ function Login() {
   let navigate = useNavigate();
   const fetchuserinfo = async (token) => {
     try {
-      const response = await fetch(`https://www.batbooks.liara.run/auth/who/`, {
+      const response = await fetch(`http://127.0.0.1:8000/auth/who/`, {
         method: "GET",
 
         headers: {
@@ -39,19 +39,16 @@ function Login() {
     setLoading(true);
 
     try {
-      const response = await fetch(
-        "https://www.batbooks.liara.run/auth/token/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email,
-            password,
-          }),
-        }
-      );
+      const response = await fetch("http://127.0.0.1:8000/auth/token/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
 
       // if (!response.ok) {
       //   throw new Error("Login failed");
@@ -93,9 +90,14 @@ function Login() {
   return (
     <div className="w-[100vw] h-[100vh] bg-[#D9F0FF]">
       <div className="flex gap-1 items-center ">
-        <h2 className="text-[24px] mt-1.5 ml-2 font-bold ">
+        <button
+          onClick={() => {
+            navigate("/");
+          }}
+          className="cursor-pointer text-[24px] mt-1.5 ml-2 font-[800] "
+        >
           Bat<span className="text-[#2663CD]">Books</span>
-        </h2>
+        </button>
       </div>
       <main className="w-[700px] h-[450px] m-auto bg-[#A4C0ED] rounded-[13px] justify-center mt-14 pt-10 relatvie">
         <h2 className="font-bold text-center text-[20px] ">خوش آمدید</h2>

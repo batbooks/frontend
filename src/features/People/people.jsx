@@ -3,6 +3,7 @@ import Navbar from "../../pages/Navbar";
 import Footer from "../../common/Footer/Footer";
 import { useNavigate } from "react-router";
 import Loading from "../../common/Loading/Loading";
+import { FiUserPlus, FiSearch } from "react-icons/fi";
 
 export default function People() {
   const [people, setPeople] = useState([]);
@@ -20,7 +21,7 @@ export default function People() {
       setLoading(true);
       try {
         const response = await fetch(
-          `https://www.batbooks.liara.run/user/users/all/?page=${currentpage}`
+          `http://127.0.0.1:8000/user/users/all/?page=${currentpage}`
         );
         if (response.ok) {
           const data = await response.json();
@@ -46,7 +47,7 @@ export default function People() {
     }
     try {
       const response = await fetch(
-        `https://www.batbooks.liara.run/user/search/${searched}/?page=${page}`
+        `http://127.0.0.1:8000/user/search/${searched}/?page=${page}`
       );
       if (response.ok) {
         const data = await response.json();
@@ -111,7 +112,10 @@ export default function People() {
               className="!py-[12px] !px-[28px] !rounded-[20px] !w-fit !h-fit !mb-0 !ml-0 !mr-0 shadow-2xl btn self-center md:self-auto lg:!min-w-[180px] lg:!px-[32px]"
             >
               <span className="span-btn !text-[16px] !font-[400] whitespace-nowrap">
-                جستجوی فرد
+                <div className="flex flex-row-reverse items-center gap-2">
+                  <p>جستجوی فرد </p>
+                  <FiSearch></FiSearch>
+                </div>
               </span>
             </button>
           </div>
@@ -160,7 +164,7 @@ function Person({ person }) {
     const fetchFollowing = async () => {
       try {
         const response = await fetch(
-          `https://www.batbooks.liara.run/user/is/follow/${person.id}/`,
+          `http://127.0.0.1:8000/user/is/follow/${person.id}/`,
           {
             method: "GET",
             headers: {
@@ -183,7 +187,7 @@ function Person({ person }) {
   const handleFollow = async () => {
     try {
       const response = await fetch(
-        `https://www.batbooks.liara.run/user/toggle/follow/${person.id}/`,
+        `http://127.0.0.1:8000/user/toggle/follow/${person.id}/`,
         {
           method: "GET",
           headers: {
@@ -226,7 +230,7 @@ function Person({ person }) {
     >
       <div
         className="flex items-center 
-    gap-2 sm:gap-3 md:gap-4 lg:gap-4 xl:gap-[21px] 
+    gap-1 sm:gap-2 md:gap-3 lg:gap-3 xl:gap-[15px] 
     relative w-full"
       >
         <img
@@ -243,13 +247,13 @@ function Person({ person }) {
       gap-1 sm:gap-1 md:gap-2 lg:gap-2 xl:gap-[7px] 
       items-start flex-grow min-w-0"
         >
-          <h3 className="text-xs sm:text-sm md:text-[15px] lg:text-[15px] xl:text-[16px] truncate w-full">
+          <h3 className="text-xs sm:text-sm md:text-[15px] lg:text-[15px] xl:text-[16px] truncate ">
             {person.name.length > 15
               ? person.name.slice(0, 15) + "..."
               : person.name}
           </h3>
-          <span className="text-[10px] sm:text-xs md:text-[13px] lg:text-[13px] xl:text-[14px]">
-            {person.user_info.following_count}
+          <span className="text-[8px] sm:text-xs md:text-[13px] lg:text-[13px] xl:text-[14px]">
+            تعداد دنبال کنندگان : {person.user_info.following_count}
           </span>
         </div>
       </div>
@@ -270,7 +274,7 @@ function Person({ person }) {
             handleFollow();
           }
         }}
-        className="btn 
+        className="btn !flex !items-end
       py-1 px-2 sm:py-2 sm:px-3 
       md:py-[6px] md:px-[14px] 
       lg:py-[6px] lg:px-[16px] 
@@ -285,7 +289,10 @@ function Person({ person }) {
       md:text-[13px] lg:text-[13px] 
       xl:text-[14px] font-[300]"
         >
-          {isFollowing ? "دنبال نکردن" : "دنبال کردن"}
+          <div className="flex flex-row-reverse gap-1 items-center">
+            <p>{isFollowing ? "دنبال نکردن" : "دنبال کردن"}</p>
+            <FiUserPlus />
+          </div>
         </span>
       </div>
     </button>

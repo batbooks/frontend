@@ -24,15 +24,12 @@ export default function AdvancedSearchBook() {
   useEffect(() => {
     const fetchAllBooks = async () => {
       try {
-        const response = await fetch(
-          `https://www.batbooks.liara.run/book/all/`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const response = await fetch(`http://127.0.0.1:8000/book/all/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
         if (!response.ok) {
           throw new Error("مشکلی پیش اومد...دوباره تلاش کنید");
         }
@@ -76,7 +73,7 @@ export default function AdvancedSearchBook() {
         if (pageDiff > 0) {
           let nextLink = nextPageLink;
           for (let i = 0; i < pageDiff; i++) {
-            const response = await fetch(`/api${nextLink}`, {
+            const response = await fetch(`http://127.0.0.1:8000${nextLink}`, {
               method: "GET",
               headers: {
                 "Content-Type": "application/json",
@@ -86,16 +83,11 @@ export default function AdvancedSearchBook() {
               throw new Error("مشکلی پیش اومد...دوباره تلاش کنید");
             }
             const data = await response.json();
-            nextLink = data.next?.replace(
-              "https://www.batbooks.liara.run/",
-              ""
-            );
+            nextLink = data.next?.replace("http://127.0.0.1:8000/", "");
             if (i === pageDiff - 1) {
-              setNextPageLink(
-                data.next?.replace("https://www.batbooks.liara.run/", "")
-              );
+              setNextPageLink(data.next?.replace("http://127.0.0.1:8000/", ""));
               setPrevPageLink(
-                data.previous?.replace("https://www.batbooks.liara.run/", "")
+                data.previous?.replace("http://127.0.0.1:8000/", "")
               );
               setcurrentpage(page);
               setShowingBooks(data.results);
@@ -104,7 +96,7 @@ export default function AdvancedSearchBook() {
         } else if (pageDiff < 0) {
           let prevLink = prevPageLink;
           for (let i = pageDiff; i < 0; i++) {
-            const response = await fetch(`/api${prevLink}`, {
+            const response = await fetch(`http://127.0.0.1:8000${prevLink}`, {
               method: "GET",
               headers: {
                 "Content-Type": "application/json",
@@ -114,16 +106,11 @@ export default function AdvancedSearchBook() {
               throw new Error("مشکلی پیش اومد...دوباره تلاش کنید");
             }
             const data = await response.json();
-            prevLink = data.previous?.replace(
-              "https://www.batbooks.liara.run/",
-              ""
-            );
+            prevLink = data.previous?.replace("http://127.0.0.1:8000/", "");
             if (i === -1) {
-              setNextPageLink(
-                data.next?.replace("https://www.batbooks.liara.run/", "")
-              );
+              setNextPageLink(data.next?.replace("http://127.0.0.1:8000/", ""));
               setPrevPageLink(
-                data.previous?.replace("https://www.batbooks.liara.run/", "")
+                data.previous?.replace("http://127.0.0.1:8000/", "")
               );
               setcurrentpage(page);
               setShowingBooks(data.results);
@@ -335,7 +322,7 @@ function Book({
       try {
         const token = localStorage.getItem("access_token");
         const response = await fetch(
-          `https://www.batbooks.liara.run/book-actions/is/favorite/${bookId}/`,
+          `http://127.0.0.1:8000/book-actions/is/favorite/${bookId}/`,
           {
             method: "GET",
             headers: {
@@ -373,7 +360,7 @@ function Book({
     try {
       const token = localStorage.getItem("access_token");
       const response = await fetch(
-        `https://www.batbooks.liara.run/book-actions/toggle/favorite/${bookId}/`,
+        `http://127.0.0.1:8000/book-actions/toggle/favorite/${bookId}/`,
         {
           method: "GET",
           headers: {
@@ -411,7 +398,7 @@ function Book({
           coverImage={
             coverImage === null
               ? "/images/book_sample1.png"
-              : `https://www.batbooks.liara.run${coverImage}`
+              : `http://127.0.0.1:8000${coverImage}`
           }
           title={bookName}
           author={authorName}
@@ -437,7 +424,7 @@ function Book({
               onClick={() => {
                 if (!loading) navigate(`/book/${bookId}`);
               }}
-              src={`https://www.batbooks.liara.run${coverImage}`}
+              src={`http://127.0.0.1:8000${coverImage}`}
               alt="book"
               className="rounded-[20px] w-[130px] h-[150px] cursor-pointer"
             />

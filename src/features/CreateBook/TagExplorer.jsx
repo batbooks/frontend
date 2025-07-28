@@ -41,8 +41,8 @@ const TagExplorer = ({
         const token = localStorage.getItem("access_token");
 
         const [genreResponse, tagResponse] = await Promise.all([
-          fetch(`https://www.batbooks.liara.run/tag/genres/`),
-          fetch(`https://www.batbooks.liara.run/tag/tag-categories/`, {
+          fetch(`http://127.0.0.1:8000/tag/genres/`),
+          fetch(`http://127.0.0.1:8000/tag/tag-categories/`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",

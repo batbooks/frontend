@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
+import useWebSocket, { ReadyState } from "react-use-websocket";
 import ChatMessage from "./chatMessage";
 import LoadingSpinner from "./loadingSpinner";
 import EmptyChat from "./emptyChat";
@@ -14,28 +15,45 @@ interface Message {
 }
 
 interface ChatWindowProps {
-  userId: number|null;
+  userId: number | null;
+  setUserId:React.Dispatch<React.SetStateAction<number | null>>
 }
 
-const ChatWindow: React.FC<ChatWindowProps> = ({ userId }) => {
-  let temp_is_you: boolean = false;
+const ChatWindow: React.FC<ChatWindowProps> = ({ userId,setUserId }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [socketConnected, setSocketConnected] = useState(false);
 
-  const socketRef = useRef<WebSocket | null>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
-  const WS_URL = `wss://www.batbooks.ir/ws/websocket/${userId}/?token=${localStorage.getItem("access_token")}`;
+  /* -------------------------------- WebSocket ------------------------------- */
+  const WS_URL =
+    userId !== null
+      ? `ws://127.0.0.1:8000/ws/websocket/${userId}/?token=${localStorage.getItem(
+          "access_token"
+        )}`
+      : null;
 
+  const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(WS_URL, {
+    onOpen: () => console.log("WebSocket connected"),
+    onClose: () => {console.log("WebSocket disconnected");setUserId(null)},
+    onError: (event) => console.error("WebSocket error:", event),
+    shouldReconnect: () => true, // auto‑reconnect
+    share: false, // isolate this socket instance
+    retryOnError: true,
+  });
+
+  const socketConnected = readyState === ReadyState.OPEN;
+
+  /* ------------------------------ Initial fetch ----------------------------- */
   useEffect(() => {
     const fetchMessages = async () => {
+      if (userId === null) return;
       setIsLoading(true);
       try {
         const response = await fetch(
-          `https://www.batbooks.liara.run/chat/show/${userId}/`,
+          `http://127.0.0.1:8000/chat/show/${userId}/`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -56,90 +74,61 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ userId }) => {
       }
     };
 
-    if (userId) fetchMessages();
+    fetchMessages();
   }, [userId]);
 
+  /* ---------------------------- Inbound messages ---------------------------- */
   useEffect(() => {
-    if (!userId) return;
+    console.log(lastJsonMessage)
+    if (!lastJsonMessage || userId === null) return;
 
-    const socket = new WebSocket(WS_URL);
-    socketRef.current = socket;
+    if (lastJsonMessage.type_of_data === "new_message") {
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: undefined,
+          is_you: false,
+          message: lastJsonMessage.data,
+          date: new Date().toISOString(),
+        },
+      ]);
+    }
+  }, [lastJsonMessage, userId]);
 
-    socket.onopen = () => {
-      console.log("WebSocket connected");
-      setSocketConnected(true);
-    };
-
-    socket.onmessage = (event) => {
-      console.log(event);
-      const received = JSON.parse(event.data);
-
-      if (received.type_of_data == "new_message") {
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: undefined, // or a temporary ID if needed
-            from_user: undefined,
-            to_user: undefined,
-            is_you: temp_is_you,
-            message: received.data,
-            date: new Date().toISOString(), // actual date string
-          },
-        ]);
-      }
-    };
-
-    socket.onclose = () => {
-      console.log("WebSocket disconnected");
-      setSocketConnected(false);
-    };
-
-    socket.onerror = (error) => {
-      console.error("WebSocket error:", error);
-    };
-
-    return () => {
-      socket.close();
-    };
-  }, [userId]);
-
+  /* ---------------------------- Auto‑scroll down ---------------------------- */
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const handleSendMessage = () => {
-    if (
-      newMessage.trim() &&
-      socketConnected &&
-      socketRef.current?.readyState === WebSocket.OPEN
-    ) {
-      temp_is_you = true;
-      setMessages((prev) => [
-          ...prev,
-          {
-            id: undefined, // or a temporary ID if needed
-            from_user: undefined,
-            to_user: undefined,
-            is_you: temp_is_you,
-            message: newMessage,
-            date: new Date().toISOString(), // actual date string
-          },
-        ])
-      socketRef.current.send(
-        JSON.stringify({ message: newMessage, type: "new_message" })
-      );
-      setNewMessage("");
-    }
-  };
+  /* ------------------------- Send message to server ------------------------- */
+  const handleSendMessage = useCallback(() => {
+    if (!newMessage.trim() || !socketConnected) return;
+    console.log(newMessage)
+    // optimistic UI update
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: undefined,
+        is_you: true,
+        message: newMessage,
+        date: new Date().toISOString(),
+      },
+    ]);
+    console.log(newMessage)
+    sendJsonMessage({ message: newMessage, type: "new_message" });
+    console.log(newMessage)
+    setNewMessage("");
+  }, [newMessage, socketConnected, sendJsonMessage]);
 
+  /* ------------------------------- Rendering -------------------------------- */
   const renderContent = () => {
     if (isLoading) return <LoadingSpinner />;
     if (error) return <p className="text-center text-red-500">{error}</p>;
     if (messages.length === 0) return <EmptyChat />;
     return (
       <ul className="space-y-4">
-        {messages.map((msg) => (
-          <ChatMessage key={msg.id} message={msg} />
+        {messages.map((msg, index) => (
+          <ChatMessage  message={msg} />
         ))}
         <div ref={chatEndRef} />
       </ul>
@@ -147,17 +136,12 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ userId }) => {
   };
 
   return (
-    <div
-      dir="rtl"
-      className="flex flex-col h-full bg-gray-50 rounded-lg shadow-inner"
-    >
-      <div className="text-center py-1 text-xs text-gray-500 bg-gray-100 ">
-        {socketConnected ? " متصل شدید " : "در حال اتصال..."}
+    <div dir="rtl" className="flex flex-col h-full bg-gray-50 rounded-lg shadow-inner">
+      <div className="text-center py-1 text-xs text-gray-500 bg-gray-100">
+        {socketConnected ? "متصل شدید" : "در حال اتصال..."}
       </div>
 
-      <div className="flex-grow p-4 overflow-y-auto pr-2">
-        {renderContent()}
-      </div>
+      <div className="flex-grow p-4 overflow-y-auto pr-2">{renderContent()}</div>
 
       <div className="p-4 bg-white border-t border-gray-200">
         <MessageInput

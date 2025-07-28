@@ -64,15 +64,12 @@ export default function Popular_authors() {
       setLoading(true);
 
       try {
-        const response = await fetch(
-          `https://www.batbooks.liara.run/popular/author/`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const response = await fetch(`http://127.0.0.1:8000/popular/author/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
         console.log("asd");
         if (response.ok) {
           const data = await response.json();

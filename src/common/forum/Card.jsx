@@ -51,7 +51,7 @@ export default function Card({ data }) {
         {/* توضیحات */}
         <div className="mt-1 md:mt-2 text-right">
           <p className="text-justify leading-relaxed text-sm md:text-base">
-            <span className="font-semibold">توضیحات:</span> این متن نمونه است
+            <span className="font-semibold">توضیحات:</span> {data.text}
           </p>
         </div>
       </div>

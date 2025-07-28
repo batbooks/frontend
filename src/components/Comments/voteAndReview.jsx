@@ -12,17 +12,14 @@ export default function VoteAndReview({ chapter, commentsCount }) {
     e.preventDefault();
     try {
       const token = localStorage.getItem("access_token");
-      const response = await fetch(
-        "https://www.batbooks.liara.run/comments/create/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ chapter, body }),
-        }
-      );
+      const response = await fetch("http://127.0.0.1:8000/comments/create/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ chapter, body }),
+      });
       if (!response.ok) {
         throw new Error("!!!مشکلی پیش اومد");
       }
@@ -60,7 +57,7 @@ export default function VoteAndReview({ chapter, commentsCount }) {
       >
         <div className="flex flex-col items-center">
           <img
-            src={`https://www.batbooks.liara.run${user.user_info.image}`}
+            src={`http://127.0.0.1:8000${user.user_info.image}`}
             className="min-w-[63px] max-w-[63px] max-h-[63px] min-h-[63px] rounded-full mb-[15px]"
           />
           <h1 className="text-[24px] font-[700] mb-[8px]">نظر شما چیست؟</h1>

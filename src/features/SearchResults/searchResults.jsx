@@ -28,7 +28,7 @@ export default function SearchResults({ searchingItem = "people" }) {
         setLoading(true);
         try {
           const response = await fetch(
-            `https://www.batbooks.liara.run/forum/?page=${currentpage}`
+            `http://127.0.0.1:8000/forum/?page=${currentpage}`
           );
           if (response.ok) {
             const data = await response.json();
@@ -48,7 +48,7 @@ export default function SearchResults({ searchingItem = "people" }) {
         setLoading(true);
         try {
           const response = await fetch(
-            `https://www.batbooks.liara.run/user/users/all/?page=1`
+            `http://127.0.0.1:8000/user/users/all/?page=1`
           );
           if (response.ok) {
             const data = await response.json();
@@ -71,7 +71,7 @@ export default function SearchResults({ searchingItem = "people" }) {
     console.log(page);
     try {
       const response = await fetch(
-        `https://www.batbooks.liara.run/user/search/${searched}/?page=${page}`
+        `http://127.0.0.1:8000/user/search/${searched}/?page=${page}`
       );
       if (response.ok) {
         const data = await response.json();
@@ -458,17 +458,14 @@ function SearchFilters({ searchingItem }) {
   useEffect(() => {
     const fetchGenresAndTags = async () => {
       setLoading(true);
-      const response = await fetch(
-        `https://www.batbooks.liara.run/tag/genres/`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch(`http://127.0.0.1:8000/tag/genres/`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       const response2 = await fetch(
-        `https://www.batbooks.liara.run/tag/tag-categories/`,
+        `http://127.0.0.1:8000/tag/tag-categories/`,
         {
           method: "GET",
           headers: {
@@ -1022,7 +1019,7 @@ function Person({ person }) {
     const fetchFollowing = async () => {
       try {
         const response = await fetch(
-          `https://www.batbooks.liara.run/user/is/follow/${person.id}/`,
+          `http://127.0.0.1:8000/user/is/follow/${person.id}/`,
           {
             method: "GET",
 
@@ -1045,7 +1042,7 @@ function Person({ person }) {
   const handleFollow = async () => {
     try {
       const response = await fetch(
-        `https://www.batbooks.liara.run/user/toggle/follow/${person.id}/`,
+        `http://127.0.0.1:8000/user/toggle/follow/${person.id}/`,
         {
           method: "GET",
 

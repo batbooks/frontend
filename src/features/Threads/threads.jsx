@@ -13,19 +13,25 @@ const Threads = () => {
   const [totalItems, setTotalItems] = useState(0);
   const [loading, setLoading] = useState(false);
   const [input1, setInput1] = useState("");
+  const [input2, setInput2] = useState("");
   const handleSubmitThread = async (e) => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("access_token");
       const response = await fetch(
-        "https://www.batbooks.liara.run/forum/threads/create/",
+        "http://127.0.0.1:8000/forum/threads/create/",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ name: input1, forum: forumId, status: "O" }),
+          body: JSON.stringify({
+            name: input1,
+            text: input2,
+            forum: forumId,
+            status: "O",
+          }),
         }
       );
       if (!response.ok) {
@@ -73,7 +79,7 @@ const Threads = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        let url = `https://www.batbooks.liara.run/forum/${forumId}/`;
+        let url = `http://127.0.0.1:8000/forum/${forumId}/`;
         if (currentPage > 1) {
           url += `?page=${currentPage}`;
         }
@@ -131,26 +137,6 @@ const Threads = () => {
         </h1>
 
         {/* Search Box */}
-        <div className="flex items-center justify-center p-4 md:p-6">
-          <div className="relative w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl mx-2 sm:mx-4">
-            <input
-              type="text"
-              placeholder="نام کتاب ، نام تالار ، نام نویسنده"
-              dir="rtl"
-              className="bg-white w-full px-8 sm:px-10 md:px-12 py-1.5 sm:py-2 rounded-full border border-gray-300 shadow-md sm:shadow-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-700 text-xs sm:text-sm md:text-base transition-all duration-200"
-            />
-            <svg
-              onClick={onSearch}
-              className="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-gray-500 hover:text-gray-700 cursor-pointer transition-colors duration-200"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 50 50"
-              fill="currentColor"
-              aria-label="جستجو"
-            >
-              <path d="M 21 3 C 11.621094 3 4 10.621094 4 20 C 4 29.378906 11.621094 37 21 37 C 24.710938 37 28.140625 35.804688 30.9375 33.78125 L 44.09375 46.90625 L 46.90625 44.09375 L 33.90625 31.0625 C 36.460938 28.085938 38 24.222656 38 20 C 38 10.621094 30.378906 3 21 3 Z M 21 5 C 29.296875 5 36 11.703125 36 20 C 36 28.296875 29.296875 35 21 35 C 12.703125 35 6 28.296875 6 20 C 6 11.703125 12.703125 5 21 5 Z"></path>
-            </svg>
-          </div>
-        </div>
 
         <div className="flex justify-end px-4 md:px-0">
           <Button
@@ -181,6 +167,8 @@ const Threads = () => {
             handleSubmit={handleSubmitThread}
             input1={input1}
             setInput1={setInput1}
+            input2={input2}
+            setInput2={setInput2}
           />
         </div>
         <div

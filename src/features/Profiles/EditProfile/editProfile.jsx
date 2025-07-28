@@ -24,7 +24,7 @@ export default function EditProfile({ setEditClicked }) {
       if (userName) formData2.append("username", userName);
       if (formData) {
         const response = await fetch(
-          `https://www.batbooks.liara.run/user/info/change/update/`,
+          `http://127.0.0.1:8000/user/info/change/update/`,
           {
             method: "PUT",
             body: formData,
@@ -50,7 +50,7 @@ export default function EditProfile({ setEditClicked }) {
 
       if (formData2) {
         const response = await fetch(
-          `https://www.batbooks.liara.run/user/info/change/username/`,
+          `http://127.0.0.1:8000/user/info/change/username/`,
           {
             method: "PUT",
             body: formData2,

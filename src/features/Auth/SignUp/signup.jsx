@@ -17,14 +17,11 @@ function Signup() {
     setError("");
     setLoading(true);
     try {
-      const response = await fetch(
-        "https://www.batbooks.liara.run/auth/register/",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password, c_password: repeatPassword }),
-        }
-      );
+      const response = await fetch("http://127.0.0.1:8000/auth/register/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password, c_password: repeatPassword }),
+      });
       const data = await response.json();
 
       if (response.ok) {
@@ -52,11 +49,16 @@ function Signup() {
   }
 
   return (
-    <div className="w-[100vw] h-[100vh] ">
+    <div className="w-[100vw] h-[100vh] bg-[#D9F0FF]">
       <div className="flex gap-1 items-center ">
-        <h2 className="text-[24px] mt-1.5 ml-2 font-bold text-[#002D54]">
+        <button
+          onClick={() => {
+            navigate("/");
+          }}
+          className="cursor-pointer text-[24px] mt-1.5 ml-2 font-[800] "
+        >
           Bat<span className="text-[#2663CD]">Books</span>
-        </h2>
+        </button>
       </div>
 
       <main className="w-[700px] h-[450px] m-auto bg-[#A4C0ED] rounded-[13px] justify-center mt-14 pt-10 relatvie">
