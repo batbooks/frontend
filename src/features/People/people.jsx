@@ -3,7 +3,7 @@ import Navbar from "../../pages/Navbar";
 import Footer from "../../common/Footer/Footer";
 import { useNavigate } from "react-router";
 import Loading from "../../common/Loading/Loading";
-import { FiUserPlus,FiSearch } from "react-icons/fi";
+import { FiUserPlus, FiSearch } from "react-icons/fi";
 
 export default function People() {
   const [people, setPeople] = useState([]);
@@ -113,11 +113,8 @@ export default function People() {
             >
               <span className="span-btn !text-[16px] !font-[400] whitespace-nowrap">
                 <div className="flex flex-row-reverse items-center gap-2">
-
-                
-
-                <p>جستجوی فرد </p>
-                <FiSearch></FiSearch>
+                  <p>جستجوی فرد </p>
+                  <FiSearch></FiSearch>
                 </div>
               </span>
             </button>
@@ -260,13 +257,12 @@ function Person({ person }) {
       items-start flex-grow min-w-0"
         >
           <h3 className="text-xs sm:text-sm md:text-[15px] lg:text-[15px] xl:text-[16px] truncate ">
-          
             {person.name.length > 15
               ? person.name.slice(0, 15) + "..."
               : person.name}
           </h3>
           <span className="text-[8px] sm:text-xs md:text-[13px] lg:text-[13px] xl:text-[14px]">
-         تعداد دنبال کنندگان  :  {person.user_info.following_count} 
+            تعداد دنبال کنندگان : {person.user_info.following_count}
           </span>
         </div>
       </div>
@@ -305,8 +301,6 @@ function Person({ person }) {
           <div className="flex flex-row-reverse gap-1 items-center">
             <p>{isFollowing ? "دنبال نکردن" : "دنبال کردن"}</p>
             <FiUserPlus />
-          
-
           </div>
         </span>
       </div>

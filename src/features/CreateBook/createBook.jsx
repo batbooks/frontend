@@ -55,7 +55,7 @@ function CreateBook() {
       });
       console.log(formData.get("description"));
 
-      const res = await fetch(`http://127.0.0.1:8000/book/create/`, {
+      await fetch(`http://127.0.0.1:8000/book/create/`, {
         method: "POST",
         body: formData,
         headers: {
@@ -82,11 +82,9 @@ function CreateBook() {
             title: "ساخت کتاب با مشکل روبرو شد ",
             icon: "error",
             confirmButtonText: "باشه",
-            text:JSON.stringify(errorText)
-            
+            text: JSON.stringify(errorText),
           });
         }, 100);
-        
       }
     } catch (err) {
       console.log(err.message);
