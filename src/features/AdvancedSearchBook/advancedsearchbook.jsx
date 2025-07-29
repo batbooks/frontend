@@ -142,7 +142,7 @@ export default function AdvancedSearchBook() {
       <Navbar />
       <main
         dir="rtl"
-        className="flex flex-col items-center pt-[25px] pb-[60px] px-[10px] sm:px-[50px] w-[100%]"
+        className="flex flex-col items-center pt-[25px] pb-[60px] px-[15px]  md:px-[30px] sm:px-[50px] "
       >
         <h1 className="font-bold text-[#265073] text-[32px] mb-[30px]">
           جستجوی کتاب

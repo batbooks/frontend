@@ -227,9 +227,9 @@ export function FromToInputs({
   }
 
   return (
-    <div className="flex lg:justify-between sm:justify-around justify-between 2xl:mr-[30px]">
+    <div className="w-1/2 md:w-full flex  lg:justify-between gap-3   2xl:mr-[30px] justify-between sm:justify-start">
       <div className="flex items-center gap-[9px]">
-        <span className="text-[20px] font-[300] ">از:</span>
+        <span className="text-[17px] font-[300] ">از:</span>
         <input
           dir="ltr"
           value={fromValue}
@@ -246,11 +246,11 @@ export function FromToInputs({
               e.target.blur();
             }
           }}
-          className="h-[40px] lg:w-[80px] md:w-[120px] w-[80px] bg-white rounded-[5px] text-center outline-[2px] outline-[#000000]/21 focus:outline-[3px] focus:outline-[#2663CD]"
+          className="h-[30px] lg:w-[60px] md:w-[120px] w-[80px] bg-white rounded-[5px] text-center outline-[2px] outline-[#000000]/21 focus:outline-[3px] focus:outline-[#2663CD]"
         />
       </div>
       <div className="flex items-center gap-[9px]">
-        <span className="text-[20px] font-[300] ">تا:</span>
+        <span className="text-[17px] font-[300] ">تا:</span>
         <input
           dir="ltr"
           value={toValue}
@@ -267,7 +267,7 @@ export function FromToInputs({
               e.target.blur();
             }
           }}
-          className="h-[40px] lg:w-[80px] md:w-[120px] w-[80px] bg-white rounded-[5px] text-center outline-[2px] outline-[#000000]/21 focus:outline-[3px] focus:outline-[#2663CD]"
+          className="h-[30px] lg:w-[60px] md:w-[120px] w-[80px] bg-white rounded-[5px] text-center outline-[2px] outline-[#000000]/21 focus:outline-[3px] focus:outline-[#2663CD]"
         />
       </div>
     </div>

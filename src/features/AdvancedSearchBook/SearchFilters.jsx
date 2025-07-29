@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import Swal from "sweetalert2";
 import Loading from "../../common/Loading/Loading";
 import { AvgScores } from "./AvgScores";
-import { CheckBoxes } from "./CheckBoxes";
+import { StatusDropDown } from "./CheckBoxes";
 import { CreationDate } from "./CreationDate";
 import { Filter } from "./Filter";
 import { FromToInputs } from "./FromToInputs";
@@ -334,15 +334,12 @@ export function SearchFilters({
     const fetchAdvancedSearchBook = async () => {
       try {
         setLoading2(true);
-        const response = await fetch(
-          `http://127.0.0.1:8000/advance/${Query}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const response = await fetch(`http://127.0.0.1:8000/advance/${Query}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
         if (!response.ok) {
           setLoading2(false);
           throw new Error("مشکلی پیش اومد...دوباره تلاش کنید");
@@ -351,9 +348,7 @@ export function SearchFilters({
           setcurrentpage(1);
           setTotalPages(Math.ceil(data.count / itemsPerPage));
           setNextPageLink(data.next?.replace("http://127.0.0.1:8000/", ""));
-          setPrevPageLink(
-            data.previous?.replace("http://127.0.0.1:8000/", "")
-          );
+          setPrevPageLink(data.previous?.replace("http://127.0.0.1:8000/", ""));
           setShowingBooks(data.results);
         }
       } catch (err) {
@@ -865,7 +860,7 @@ export function SearchFilters({
       </form>
       <SharedStateProvider>
         <div
-          className={`flex flex-col w-full bg-[#A4C0ED] rounded-[20px] border-[2px] border-[#000000]/21 px-[10px] sm:px-[55px] pt-[30px] pb-[50px] mb-[37px] ${isVisibleFilters ? "visible" : "hidden"}`}
+          className={`flex flex-col w-full bg-[#A4C0ED] rounded-[20px] border-[2px] border-[#000000]/21 px-[10px] sm:px-[45px] pt-[30px] pb-[50px] mb-[37px] ${isVisibleFilters ? "visible" : "hidden"}`}
         >
           <div className="flex flex-col gap-[17px] w-full">
             <div className="flex justify-between items-center">
@@ -880,7 +875,7 @@ export function SearchFilters({
                 </h2>
               </div>
             </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 mx-0 gap-[11px] mb-[20px]">
+            <div className="grid  grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 mx-0 gap-[11px] mb-[20px]">
               {filters?.map((filter, i) => (
                 <Filter
                   key={i}
@@ -905,39 +900,52 @@ export function SearchFilters({
               ))}
             </div>
           </div>
-          <h2 className="border-t-[1px] border-000000] pt-[20px] text-[20px] font-[300]  mb-[17px]">
-            ژانرها:
-          </h2>
-          <div
-            className={`${!(selectedGenres.length === 0 && genres.length === 0) ? "grid sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-x-[25px] gap-y-[33px] overflow-y-scroll max-h-[155px]" : "scrollbar-opacity-0"} sm:mx-[30px] p-[20px] bg-[#FFF] rounded-[15px] border-[2px] border-[#000000]/21 mb-[50px]`}
-          >
-            {loading ? (
-              <Loading />
-            ) : (
-              selectedGenres.map((genre) => (
-                <div key={genre.id} className="flex flex-col items-center">
-                  <SharedStateProvider>
-                    <SelectedGenreAndTag
-                      Obj={genre}
-                      deleteFilter={setFilters}
-                      filters={filters}
-                      selected={selectedGenres}
-                      addSelected={setSelectedGenres}
-                      unselected={genres}
-                      deleteUnselected={setGenres}
-                    />
-                  </SharedStateProvider>
-                </div>
-              ))
-            )}
-            {loading
-              ? null
-              : genres.map((genre) => (
-                  <div key={genre.id} className="flex flex-col items-center">
+          <section className="mb-8 ">
+            <div className="flex  flex-col sm:flex-row gap-5 ">
+              <div className="sm:w-1/2  ">
+                <KeyWord setFilters={setFilters} />
+              </div>
+              <div className="sm:w-1/2">
+                <Writer setFilters={setFilters} />
+              </div>
+            </div>
+          </section>
+          <div className="flex flex-col lg:flex-row items-center sm:w-[calc(100%-30px)] 2xl:w-[calc(100%-60px)] gap-[50px] mt-[25px] mb-[60px]">
+            <div className="w-full flex flex-col sm:flex-row sm:justify-between md:gap-5" >
+              <AvgScores setFilters={setFilters} />
+              <div className="flex flex-col gap-[17px] w-full  ">
+                <h2 className="text-[17px] font-[300]">تعداد فصل ها:</h2>
+                <FromToInputs
+                  maxValue={"9999"}
+                  valueLength={4}
+                  setFilters={setFilters}
+                  filterPattern={"chapter"}
+                  fromValue={fromValueChapter}
+                  toValue={toValueChapter}
+                  setFromValue={setFromValueChapter}
+                  setToValue={setToValueChapter}
+                />
+              </div>
+            </div>
+            <CreationDate setFilters={setFilters} />
+            <StatusDropDown addFilter={setFilters} filters={filters} />
+          </div>
+          <div className="flex  gap-x-7">
+            <div className=" w-1/2">
+              <h2 className=" md:w-auto text-center md:text-start   text-[17px] font-[300]  mb-[17px]">
+                ژانرها:
+              </h2>
+              <div
+                className={`${!(selectedGenres.length === 0 && genres.length === 0) ? " grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3  gap-x-[15px] gap-y-[15px] overflow-y-scroll max-h-[155px]" : "scrollbar-opacity-0"} sm:mx-[30px] p-[15px] bg-[#FFF] rounded-[15px] border-[2px] border-[#000000]/21 mb-[50px]`}
+              >
+                {loading ? (
+                  <Loading />
+                ) : (
+                  selectedGenres.map((genre) => (
                     <SharedStateProvider>
-                      <GenreAndTag
+                      <SelectedGenreAndTag
                         Obj={genre}
-                        addFilter={setFilters}
+                        deleteFilter={setFilters}
                         filters={filters}
                         selected={selectedGenres}
                         addSelected={setSelectedGenres}
@@ -945,54 +953,78 @@ export function SearchFilters({
                         deleteUnselected={setGenres}
                       />
                     </SharedStateProvider>
-                  </div>
-                ))}
-            {genres.length === 0 && selectedGenres.length === 0 ? (
-              <p className="text-[18px] mx-auto text-red-500">
-                مشکلی در اتصال به اینترنت بوجود آمد
-              </p>
-            ) : null}
+                  ))
+                )}
+                {loading
+                  ? null
+                  : genres.map((genre) => (
+                      <div
+                        key={genre.id}
+                        className="flex items-center text-nowrap justify-center "
+                      >
+                        <SharedStateProvider>
+                          <GenreAndTag
+                            Obj={genre}
+                            addFilter={setFilters}
+                            filters={filters}
+                            selected={selectedGenres}
+                            addSelected={setSelectedGenres}
+                            unselected={genres}
+                            deleteUnselected={setGenres}
+                          />
+                        </SharedStateProvider>
+                      </div>
+                    ))}
+                {genres.length === 0 && selectedGenres.length === 0 ? (
+                  <p className="text-[18px] mx-auto text-red-500">
+                    مشکلی در اتصال به اینترنت بوجود آمد
+                  </p>
+                ) : null}
+              </div>
+            </div>
+            <div className=" w-1/2">
+              <h2 className="md:w-auto text-center md:text-start   text-[17px] font-[300]  mb-[17px]">
+                دسته بندی تگ ها:
+              </h2>
+              <div
+                className={`${!(tagCategories.length === 0 && selectedTagCategories.length === 0) ? " grid  grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[15px] gap-y-[23px] overflow-y-scroll max-h-[155px] text-nowrap" : "scrollbar-opacity-0"} sm:mx-[30px] p-[10px] bg-[#FFF] rounded-[15px] border-[2px] border-[#000000]/21 mb-[17px]`}
+              >
+                {loading
+                  ? null
+                  : selectedTagCategories.map((tagCategory) => (
+                      <SelectedTagCategory
+                        key={tagCategory.id}
+                        Obj={tagCategory}
+                        selected={selectedTagCategories}
+                        addSelected={setSelectedTagCategories}
+                        unselected={tagCategories}
+                        deleteUnselected={setTagCategories}
+                      />
+                    ))}
+                {loading ? (
+                  <Loading />
+                ) : (
+                  tagCategories.map((tagCategory) => (
+                    <TagCategory
+                      key={tagCategory.id}
+                      Obj={tagCategory}
+                      selected={selectedTagCategories}
+                      addSelected={setSelectedTagCategories}
+                      unselected={tagCategories}
+                      deleteUnselected={setTagCategories}
+                    />
+                  ))
+                )}
+                {tagCategories.length === 0 &&
+                selectedTagCategories.length === 0 ? (
+                  <p className="text-[18px] mx-auto text-red-500">
+                    مشکلی در اتصال به اینترنت بوجود آمد
+                  </p>
+                ) : null}
+              </div>
+            </div>
           </div>
-          <h2 className="text-[20px] font-[300]  mb-[17px]">
-            دسته بندی تگ ها:
-          </h2>
-          <div
-            className={`${!(tagCategories.length === 0 && selectedTagCategories.length === 0) ? "grid sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-x-[25px] gap-y-[33px] overflow-y-scroll max-h-[155px]" : "scrollbar-opacity-0"} sm:mx-[30px] p-[20px] bg-[#FFF] rounded-[15px] border-[2px] border-[#000000]/21 mb-[17px]`}
-          >
-            {loading
-              ? null
-              : selectedTagCategories.map((tagCategory) => (
-                  <SelectedTagCategory
-                    key={tagCategory.id}
-                    Obj={tagCategory}
-                    selected={selectedTagCategories}
-                    addSelected={setSelectedTagCategories}
-                    unselected={tagCategories}
-                    deleteUnselected={setTagCategories}
-                  />
-                ))}
-            {loading ? (
-              <Loading />
-            ) : (
-              tagCategories.map((tagCategory) => (
-                <TagCategory
-                  key={tagCategory.id}
-                  Obj={tagCategory}
-                  selected={selectedTagCategories}
-                  addSelected={setSelectedTagCategories}
-                  unselected={tagCategories}
-                  deleteUnselected={setTagCategories}
-                />
-              ))
-            )}
-            {tagCategories.length === 0 &&
-            selectedTagCategories.length === 0 ? (
-              <p className="text-[18px] mx-auto text-red-500">
-                مشکلی در اتصال به اینترنت بوجود آمد
-              </p>
-            ) : null}
-          </div>
-          <h2 className="text-[20px] font-[300] mb-[17px]">جستجوی تگ ها:</h2>
+          <h2 className="text-[17px] font-[300] mb-[17px]">جستجوی تگ ها:</h2>
           <input
             value={searchKey}
             onChange={(e) => setSearchKey(e.target.value)}
@@ -1000,7 +1032,7 @@ export function SearchFilters({
             placeholder="تگ مورد نظر خود را اینجا جستجو کنید..."
           ></input>
           <div
-            className={`${!(showingTags.length === 0 && showingSelectedTags.length === 0) ? "grid sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-x-[25px] gap-y-[33px] overflow-y-scroll max-h-[155px]" : "scrollbar-opacity-0"} sm:mx-[30px] p-[20px] bg-[#FFF] rounded-[15px] border-[2px] border-[#000000]/21 mb-[50px]`}
+            className={`${!(showingTags.length === 0 && showingSelectedTags.length === 0) ? "grid grid-cols-2 md:grid-cols-3  lg:grid-cols-4 xl:grid-cols-5 gap-x-[15px] gap-y-[23px]  md:gap-x-[25px] md:gap-y-[33px] overflow-y-scroll max-h-[155px]" : "scrollbar-opacity-0"} sm:mx-[30px] p-[20px] bg-[#FFF] rounded-[15px] border-[2px] border-[#000000]/21 mb-[50px]`}
           >
             {loading
               ? null
@@ -1024,20 +1056,22 @@ export function SearchFilters({
               <Loading />
             ) : (
               showingTags.map((tag) => (
-                <GenreAndTag
-                  Obj={tag}
-                  key={tag.id}
-                  addFilter={setFilters}
-                  filters={filters}
-                  selected={showingSelectedTags}
-                  addSelected={setShowingSelectedTags}
-                  unselected={showingTags}
-                  deleteUnselected={setShowingTags}
-                  allSelected={allSelectedTags}
-                  addAllSelected={setAllSelectedTags}
-                  allUnselected={allTags}
-                  deleteAllUnselected={setAllTags}
-                />
+                <div className="flex items-center justify-center">
+                  <GenreAndTag
+                    Obj={tag}
+                    key={tag.id}
+                    addFilter={setFilters}
+                    filters={filters}
+                    selected={showingSelectedTags}
+                    addSelected={setShowingSelectedTags}
+                    unselected={showingTags}
+                    deleteUnselected={setShowingTags}
+                    allSelected={allSelectedTags}
+                    addAllSelected={setAllSelectedTags}
+                    allUnselected={allTags}
+                    deleteAllUnselected={setAllTags}
+                  />
+                </div>
               ))
             )}
             {showingTags.length === 0 && showingSelectedTags.length === 0 ? (
@@ -1046,56 +1080,7 @@ export function SearchFilters({
               </p>
             ) : null}
           </div>
-          <div className="flex flex-col lg:flex-row justify-between gap-[50px] sm:w-[calc(100%-30px)] mb-[50px]">
-            <div className="flex flex-col gap-[17px] w-full lg:w-1/3">
-              <h2 className="text-[20px] font-[300]">تعداد فصل ها:</h2>
-              <FromToInputs
-                maxValue={"9999"}
-                valueLength={4}
-                setFilters={setFilters}
-                filterPattern={"chapter"}
-                fromValue={fromValueChapter}
-                toValue={toValueChapter}
-                setFromValue={setFromValueChapter}
-                setToValue={setToValueChapter}
-              />
-            </div>
-            <div className="flex flex-col gap-[17px] w-full lg:w-1/3">
-              <h2 className="text-[20px] font-[300] ">تعداد پسندیدگان:</h2>
-              <FromToInputs
-                maxValue={"99999"}
-                valueLength={5}
-                setFilters={setFilters}
-                filterPattern={"fav"}
-                fromValue={fromValueFav}
-                toValue={toValueFav}
-                setFromValue={setFromValueFav}
-                setToValue={setToValueFav}
-              />
-            </div>
-            <div className="flex flex-col gap-[17px] w-full lg:w-1/3">
-              <h2 className="text-[20px] font-[300] ">تعداد امتیازدهندگان:</h2>
-              <FromToInputs
-                maxValue={"99999"}
-                valueLength={5}
-                setFilters={setFilters}
-                filterPattern={"scorer"}
-                fromValue={fromValueScorer}
-                toValue={toValueScorer}
-                setFromValue={setFromValueScorer}
-                setToValue={setToValueScorer}
-              />
-            </div>
-          </div>
-          <div className="flex gap-[50px] flex-col lg:flex-row justify-between sm:w-[calc(100%-30px)] 2xl:w-[calc(100%-60px)] items-center mb-[50px]">
-            <AvgScores setFilters={setFilters} />
-            <CheckBoxes addFilter={setFilters} filters={filters} />
-            <Writer setFilters={setFilters} />
-          </div>
-          <div className="flex flex-col lg:flex-row items-center sm:w-[calc(100%-30px)] 2xl:w-[calc(100%-60px)] gap-[50px] mt-[25px] mb-[60px]">
-            <KeyWord setFilters={setFilters} />
-            <CreationDate setFilters={setFilters} />
-          </div>
+
           <button
             onClick={() => {
               handleAdvancedSearch();
