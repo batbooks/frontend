@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 export function FromToInputs({
   maxValue,
   valueLength,
@@ -225,7 +227,9 @@ export function FromToInputs({
     setToValue(`${numWithoutLeadingZeros}`);
     setNotEqualFilter(numWithoutLeadingZeros, "from");
   }
-
+  useEffect(()=>{
+    
+  })
   return (
     <div className="w-1/2 md:w-7/10 flex  lg:justify-between gap-3    justify-between sm:justify-start">
       <div className="flex items-center gap-[9px]">

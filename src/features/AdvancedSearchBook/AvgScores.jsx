@@ -1,9 +1,34 @@
+import { useEffect, useRef } from "react";
 import { useSharedState } from "./SharedStateProvider";
 
-export function AvgScores({ setFilters }) {
+export function AvgScores({ setFilters, avg_from, avg_to }) {
   const { avgScoreFrom, setAvgScoreFrom, avgScoreTo, setAvgScoreTo } =
     useSharedState();
-
+  const didRun = useRef(false);
+  useEffect(() => {
+    if (!didRun.current && avg_from) {
+      setAvgScoreFrom(avg_from);
+      if (avg_to && avg_from == avg_to) {
+        setFilters((filters) => [
+          ...(filters || []),
+          `میانگین امتیاز: ${avg_from.toFixed(1)}`,
+        ]);
+      } else {
+        setFilters((filters) => [
+          ...(filters || []),
+          `میانگین امتیاز: از ${avg_from.toFixed(1)}`,
+        ]);
+      }
+    }
+    if (!didRun.current && avg_to) {
+      setAvgScoreTo(avg_to);
+      setFilters((filters) => [
+        ...(filters || []),
+        `میانگین امتیاز: تا ${avg_to.toFixed(1)}`,
+      ]);
+    }
+    didRun.current = true;
+  }, []);
   return (
     <div className="flex flex-col gap-[17px] w-full  mb-3 sm:mb-0">
       <h2 className="text-[17px] font-[300] ">میانگین امتیازات کتاب:</h2>

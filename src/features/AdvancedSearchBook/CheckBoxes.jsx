@@ -1,16 +1,32 @@
 import { useState, useRef, useEffect } from "react";
 import { useSharedState } from "./SharedStateProvider";
 
-export function StatusDropDown({ addFilter, filters }) {
+export function StatusDropDown({ addFilter, filters ,status}) {
   const { checkedNum, setCheckedNum } = useSharedState();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
-
   const options = [
     { id: 0, label: "در حال تالیف", value: "وضعیت: در حال تالیف" },
     { id: 1, label: "به اتمام رسیده", value: "وضعیت: به اتمام رسیده" },
     { id: 2, label: "متوقف شده", value: "وضعیت: متوقف شده" },
   ];
+  useEffect(()=>{
+    if(status){
+      if (status=="C"){
+        setCheckedNum(1)
+        handleSelect(options[1])
+      }
+      if(status=="O"){
+        setCheckedNum(0)
+        handleSelect(options[0])
+      }
+      else{
+        setCheckedNum(2)
+        handleSelect(options[2])
+      }
+    }
+  },[]);
+  
 
   const selectedOption = options.find((option) => option.id === checkedNum);
 

@@ -15,6 +15,7 @@ import { SharedStateProvider } from "./SharedStateProvider";
 import { TagCategory } from "./TagCategory";
 import { Writer } from "./Writer";
 import { SelectMenu } from "./SelectMenu";
+import { useLocation, useNavigate } from "react-router";
 
 const persianToEnglishDigits = (str) => {
   return str.replace(/[۰-۹]/g, (d) => "۰۱۲۳۴۵۶۷۸۹".indexOf(d));
@@ -25,6 +26,17 @@ const convertShamsiToGregorian = (shamsiDateStr) => {
   const { gy, gm, gd } = jalaali.toGregorian(jy, jm, jd); // convert to Gregorian
   return `${gy}-${String(gm).padStart(2, "0")}-${String(gd).padStart(2, "0")}`;
 };
+const englishToPersianDigits = (str) => {
+  return str.replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[d]);
+};
+
+const convertGregorianToShamsi = (gregorianDateStr) => {
+  const [gy, gm, gd] = gregorianDateStr.split("-").map(Number);
+  const { jy, jm, jd } = jalaali.toJalaali(gy, gm, gd);
+  const shamsiStr = `${jy}/${String(jm).padStart(2, "0")}/${String(jd).padStart(2, "0")}`;
+  return englishToPersianDigits(shamsiStr);
+};
+
 export function SearchFilters({
   loading2,
   setLoading2,
@@ -36,10 +48,33 @@ export function SearchFilters({
   setPrevPageLink,
   showingBooks,
 }) {
+  const location = useLocation();
+  const query = new URLSearchParams(location.search);
+  const search = query.get("search") || "";
+  const user = query.get("user");
+  const status = query.get("status");
+  const description = query.get("description") || "";
+  const dateA = query.get("date_after");
+  const dateAfter = dateA ? convertGregorianToShamsi(dateA) : null;
+  const dateB = query.get("date_before");
+  const dateBefore = dateB ? convertGregorianToShamsi(dateB) : null;
+  const ratingMin = parseFloat(query.get("rating_min"));
+  const ratingMax = parseFloat(query.get("rating_max"));
+  const chapterCountMin = query.get("chapter_count_min");
+  const genreOr = query.get("genre_or"); // مثلاً "1,3,5"
+  const genreArray = genreOr
+    ? genreOr.split(",").map((num) => parseInt(num, 10))
+    : [];
+  const chapterCountMax = query.get("chapter_count_max");
+  const tagOr = query.get("tag_or");
+  const ordering = query.get("ordering");
+  console.log(ordering);
+  console.log(genreOr);
   const [isHovered, setIsHovered] = useState(false);
   const [isVisibleFilters, setIsVisibleFilters] = useState(false);
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState([]);
+  console.log(filters)
   const [genres, setGenres] = useState([]);
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [tagCategories, setTagCategories] = useState([]);
@@ -48,21 +83,26 @@ export function SearchFilters({
   const [showingSelectedTags, setShowingSelectedTags] = useState([]);
   const [allTags, setAllTags] = useState([]);
   const [allSelectedTags, setAllSelectedTags] = useState([]);
-  const [fromValueChapter, setFromValueChapter] = useState("1");
-  const [toValueChapter, setToValueChapter] = useState("9999");
+  const [fromValueChapter, setFromValueChapter] = useState(
+    chapterCountMin || "1"
+  );
+  const [toValueChapter, setToValueChapter] = useState(
+    chapterCountMax || "9999"
+  );
   const [fromValueFav, setFromValueFav] = useState("1");
   const [toValueFav, setToValueFav] = useState("99999");
   const [fromValueScorer, setFromValueScorer] = useState("1");
   const [toValueScorer, setToValueScorer] = useState("99999");
   const [searchKey, setSearchKey] = useState("");
-  const [searchWord, setSearchWord] = useState("");
-  const [showingBooksSearchWord, setShowingBooksSearchWord] = useState("");
+  const [searchWord, setSearchWord] = useState(search);
   const [isBlankSearchWord, setIsBlankSearchWord] = useState(false);
   const filterNum = (filters || []).length;
   const genreIds = useRef([]);
   const tagIds = useRef([]);
-
+  const navigate = useNavigate();
   function handleAdvancedSearch() {
+    console.log(searchWord);
+
     const Query = filters.reduce((acc, filter, i) => {
       if (filter.includes("ژانر: ")) {
         genreIds.current = [
@@ -329,11 +369,14 @@ export function SearchFilters({
         acc = acc + "&tag_or=" + tagIds.current.join(",");
       }
       return acc;
-    }, `?search=${showingBooksSearchWord}`);
+    }, `?search=${searchWord}`);
 
     const fetchAdvancedSearchBook = async () => {
+      navigate(`/advancedsearchbook/${Query}`);
       try {
         setLoading2(true);
+
+        console.log(`http://127.0.0.1:8000/advancedsearchbook/${Query}`);
         const response = await fetch(`http://127.0.0.1:8000/advance/${Query}`, {
           method: "GET",
           headers: {
@@ -347,8 +390,8 @@ export function SearchFilters({
           const data = await response.json();
           setcurrentpage(1);
           setTotalPages(Math.ceil(data.count / itemsPerPage));
-          setNextPageLink(data.next?.replace("http://127.0.0.1:8000/", ""));
-          setPrevPageLink(data.previous?.replace("http://127.0.0.1:8000/", ""));
+          setNextPageLink(data.next);
+          setPrevPageLink(data.previous);
           setShowingBooks(data.results);
         }
       } catch (err) {
@@ -677,7 +720,7 @@ export function SearchFilters({
           } else {
             const data = await response.json();
             setIsVisibleFilters(false);
-            setShowingBooksSearchWord(searchWord);
+
             setcurrentpage(1);
             setTotalPages(Math.ceil(data.count / itemsPerPage));
             setNextPageLink(data.next?.replace("http://127.0.0.1:8000/", ""));
@@ -703,7 +746,41 @@ export function SearchFilters({
     };
     fetchSimpleSearchBook();
   }
+  const didRun = useRef(false);
 
+  useEffect(() => {
+    if (!didRun.current && user) {
+      setFilters((filters) => [...(filters || []), "نویسنده: " + user]);
+    }
+    if (!didRun.current && description) {
+      setFilters((filters) => [...(filters || []), "کلید: " + description]);
+    }
+    ///////////////////////////////////////////
+
+    if (!didRun.current && chapterCountMin) {
+      if (chapterCountMax && chapterCountMin == chapterCountMax) {
+        setFilters((filters) => [
+          ...(filters || []),
+          `تعداد فصل ها: ${chapterCountMin} فصل`,
+        ]);
+      } else {
+        setFilters((filters) => [
+          ...(filters || []),
+          `تعداد فصل ها: از ${chapterCountMin} فصل`,
+        ]);
+      }
+    }
+    if (!didRun.current && chapterCountMax) {
+      setFilters((filters) => [
+        ...(filters || []),
+        `تعداد فصل ها: تا ${chapterCountMax} فصل`,
+      ]);
+    }
+    console.log(selectedGenres);
+
+    didRun.current = true;
+  }, []);
+  const didRun2 = useRef(false);
   useEffect(() => {
     const fetchGenresAndTags = async () => {
       setLoading(true);
@@ -724,7 +801,16 @@ export function SearchFilters({
       );
       const data = await response.json();
       const data2 = await response2.json();
-      setGenres(data.genres);
+      setGenres(data.genres.filter((genre) => !genreArray.includes(genre.id)));
+      const temp = data.genres.filter((genre) => genreArray.includes(genre.id));
+      setSelectedGenres(temp);
+      console.log(temp);
+      if (!didRun2.current) {
+        temp.map((genre) => {
+          setFilters((filters) => [...(filters || []), `ژانر: ${genre.title}`]);
+        });
+        didRun2.current=true
+      }
       setTagCategories(data2.tag_categories);
       const alllTags = data2.tag_categories.reduce((acc, tagCategory) => {
         return [...acc, ...tagCategory.tags];
@@ -906,13 +992,17 @@ export function SearchFilters({
                 <KeyWord setFilters={setFilters} />
               </div>
               <div className="sm:w-1/2">
-                <Writer setFilters={setFilters} />
+                <Writer name={user} setFilters={setFilters} />
               </div>
             </div>
           </section>
           <div className="flex flex-col lg:flex-row items-center sm:w-[calc(100%-30px)] 2xl:w-[calc(100%-60px)] gap-[50px] mt-[25px] mb-[60px]">
             <div className="w-full flex flex-col sm:flex-row sm:justify-between md:gap-5">
-              <AvgScores setFilters={setFilters} />
+              <AvgScores
+                setFilters={setFilters}
+                avg_from={ratingMin}
+                avg_to={ratingMax}
+              />
               <div className="flex flex-col gap-[17px] w-full  ">
                 <h2 className="text-[17px] font-[300]">تعداد فصل ها:</h2>
                 <FromToInputs
@@ -927,8 +1017,16 @@ export function SearchFilters({
                 />
               </div>
             </div>
-            <CreationDate setFilters={setFilters} />
-            <StatusDropDown addFilter={setFilters} filters={filters} />
+            <CreationDate
+              date_from={dateAfter}
+              date_to={dateBefore}
+              setFilters={setFilters}
+            />
+            <StatusDropDown
+              status={status}
+              addFilter={setFilters}
+              filters={filters}
+            />
           </div>
           <div className="flex  gap-x-7">
             <div className=" w-1/2">
@@ -1099,6 +1197,7 @@ export function SearchFilters({
           setFilters={setFilters}
           loading={loading2}
           showingBooks={showingBooks}
+          ordering={ordering}
         />
       </SharedStateProvider>
     </div>

@@ -2,10 +2,38 @@ import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import DatePicker from "react-multi-date-picker";
 import { useSharedState } from "./SharedStateProvider";
+import { useEffect, useRef } from "react";
 
-export function CreationDate({ setFilters }) {
+export function CreationDate({ setFilters, date_from, date_to }) {
   const { dateFrom, setDateFrom, dateTo, setDateTo } = useSharedState();
-
+  const didRun = useRef(false);
+  console.log(date_to,date_from)
+  useEffect(() => {
+    if (!didRun.current && date_from) {
+      setDateFrom(date_from);
+      if (String(date_from) == String(date_to)) {
+        
+        setFilters((filters) => [
+          ...(filters || []),
+          `تاریخ ایجاد: ${date_to}`,
+        ]);
+      } else {
+        console.log("salam")
+        setFilters((filters) => [
+          ...(filters || []),
+          `تاریخ ایجاد: از ${date_from}`,
+        ]);
+      }
+    }
+    if (!didRun.current && date_to) {
+      setDateTo(date_to);
+      setFilters((filters) => [
+        ...(filters || []),
+        `تاریخ ایجاد: تا ${date_to}`,
+      ]);
+    }
+    didRun.current = true;
+  }, []);
   return (
     <div className="flex flex-col gap-[17px] w-full ">
       <h2 className="text-[17px] font-[300] ">تاریخ انتشار:</h2>

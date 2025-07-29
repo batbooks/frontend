@@ -23,7 +23,7 @@ export function KeyWord({ setFilters }) {
             }
           }}
         />
-        <p className=" text-[14px] mt-[10px] mr-[12px] text-green-700 absolute group-focus-within:block hidden">
+        <p className=" text-[14px] mt-[10px] mr-[12px] text-red-700 absolute group-focus-within:block hidden">
           لطفا پس از وارد کردن عبارتی بیشتر از سه حرف،جهت اعمال فیلتر Enter را
           بزنید
         </p>
