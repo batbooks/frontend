@@ -7,8 +7,8 @@ export function AvgScores({ setFilters }) {
   return (
     <div className="flex flex-col gap-[17px] w-full  mb-3 sm:mb-0">
       <h2 className="text-[17px] font-[300] ">میانگین امتیازات کتاب:</h2>
-      <div className="w-1/2 md:w-full flex  lg:justify-between gap-3   2xl:mr-[30px] justify-between sm:justify-start">
-        <div className="gap-[9px] flex items-center">
+      <div className="w-1/2 md:w-7/10 flex  lg:justify-between gap-3    justify-between sm:justify-start">
+        <div className="gap-[9px] flex items-center ">
           <span className="text-[17px] font-[300] ">از:</span>
           <div className="flex items-center gap-[9px] relative group">
             <div className="flex-col absolute mb-[-5px] hidden group-hover:flex">

@@ -9,7 +9,7 @@ export function CreationDate({ setFilters }) {
   return (
     <div className="flex flex-col gap-[17px] w-full ">
       <h2 className="text-[17px] font-[300] ">تاریخ انتشار:</h2>
-      <div className="flex 2xl:mr-[30px] w-full ">
+      <div className="flex  w-full ">
         <div className="flex  items-center gap-2">
           <span className="text-[17px] font-[300]">از:</span>
           <DatePicker

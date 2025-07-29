@@ -911,7 +911,7 @@ export function SearchFilters({
             </div>
           </section>
           <div className="flex flex-col lg:flex-row items-center sm:w-[calc(100%-30px)] 2xl:w-[calc(100%-60px)] gap-[50px] mt-[25px] mb-[60px]">
-            <div className="w-full flex flex-col sm:flex-row sm:justify-between md:gap-5" >
+            <div className="w-full flex flex-col sm:flex-row sm:justify-between md:gap-5">
               <AvgScores setFilters={setFilters} />
               <div className="flex flex-col gap-[17px] w-full  ">
                 <h2 className="text-[17px] font-[300]">تعداد فصل ها:</h2>
@@ -1080,19 +1080,20 @@ export function SearchFilters({
               </p>
             ) : null}
           </div>
-
-          <button
-            onClick={() => {
-              handleAdvancedSearch();
-              tagIds.current = [];
-              genreIds.current = [];
-            }}
-            className="btn !w-fit !h-fit !mb-0 px-[26px] py-[12px] !rounded-[20px] border-[2px] border-[#000000]/21 active:border-0"
-          >
-            <span className="span-btn !text-[16px] !font-[400]">
-              اعمال تمامی فیلترها
-            </span>
-          </button>
+          <div className="flex justify-end w-full">
+            <button
+              onClick={() => {
+                handleAdvancedSearch();
+                tagIds.current = [];
+                genreIds.current = [];
+              }}
+              className="btn md:!mx-0 md:!ml-[30px] !text-nowrap !w-full md:!w-fit    !h-fit !mb-0 px-[26px] py-[12px] !rounded-[20px] border-[2px] border-[#000000]/21 active:border-0"
+            >
+              <span className="span-btn !text-[16px] !font-[400]">
+                اعمال تمامی فیلترها
+              </span>
+            </button>
+          </div>
         </div>
         <SelectMenu
           setFilters={setFilters}

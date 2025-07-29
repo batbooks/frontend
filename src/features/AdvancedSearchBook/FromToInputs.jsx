@@ -227,7 +227,7 @@ export function FromToInputs({
   }
 
   return (
-    <div className="w-1/2 md:w-full flex  lg:justify-between gap-3   2xl:mr-[30px] justify-between sm:justify-start">
+    <div className="w-1/2 md:w-7/10 flex  lg:justify-between gap-3    justify-between sm:justify-start">
       <div className="flex items-center gap-[9px]">
         <span className="text-[17px] font-[300] ">از:</span>
         <input

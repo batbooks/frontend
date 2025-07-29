@@ -48,13 +48,13 @@ export function StatusDropDown({ addFilter, filters }) {
 
   return (
     <div className="flex flex-col gap-[10px] w-full lg:w-1/2" ref={dropdownRef}>
-      <h2 className="text-[17px] font-[300]">وضعیت کتاب:</h2>
+      <h2 className="text-[17px] font-[300] ">وضعیت کتاب:</h2>
       <div className="relative ">
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="h-[35px] flex items-center justify-between w-full px-4 py-3 bg-white border border-gray-300 rounded-lg shadow-sm text-right focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-300"
         >
-          <span className="text-[17px] font-[400] text-gray-700">
+          <span className="text-[17px] font-[400] text-gray-700 text-nowrap">
             {selectedOption ? selectedOption.label : "انتخاب کنید..."}
           </span>
           {/* آیکون فلش */}
