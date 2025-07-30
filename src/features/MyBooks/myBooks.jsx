@@ -46,7 +46,7 @@ export default function MyBooks() {
         }
 
         const data = await response.json();
-        setWrittenBooks([...data.results, ...writtenBooks]);
+        setWrittenBooks([...data, ...writtenBooks]);
       } catch (error) {
         console.error("خطا در ارسال به سرور:", error);
       } finally {
