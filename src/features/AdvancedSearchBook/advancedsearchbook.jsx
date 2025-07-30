@@ -85,7 +85,7 @@ export default function AdvancedSearchBook() {
             const data = await response.json();
             nextLink = data.next?.replace("https://batbooks.liara.run/", "");
             if (i === pageDiff - 1) {
-              setNextPageLink(data.next?.replace("http://127.0.0.1:8000/", ""));
+              setNextPageLink(data.next?.replace("https://batbooks.liara.run/", ""));
               setPrevPageLink(
                 data.previous?.replace("https://batbooks.liara.run/", "")
               );
@@ -108,7 +108,7 @@ export default function AdvancedSearchBook() {
             const data = await response.json();
             prevLink = data.previous?.replace("https://batbooks.liara.run/", "");
             if (i === -1) {
-              setNextPageLink(data.next?.replace("http://127.0.0.1:8000/", ""));
+              setNextPageLink(data.next?.replace("https://batbooks.liara.run/", ""));
               setPrevPageLink(
                 data.previous?.replace("https://batbooks.liara.run/", "")
               );

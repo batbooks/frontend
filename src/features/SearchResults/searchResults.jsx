@@ -28,7 +28,7 @@ export default function SearchResults({ searchingItem = "people" }) {
         setLoading(true);
         try {
           const response = await fetch(
-            `http://127.0.0.1:8000/forum/?page=${currentpage}`
+            `https://batbooks.liara.run/forum/?page=${currentpage}`
           );
           if (response.ok) {
             const data = await response.json();
@@ -48,7 +48,7 @@ export default function SearchResults({ searchingItem = "people" }) {
         setLoading(true);
         try {
           const response = await fetch(
-            `http://127.0.0.1:8000/user/users/all/?page=1`
+            `https://batbooks.liara.run/user/users/all/?page=1`
           );
           if (response.ok) {
             const data = await response.json();
@@ -465,7 +465,7 @@ function SearchFilters({ searchingItem }) {
         },
       });
       const response2 = await fetch(
-        `http://127.0.0.1:8000/tag/tag-categories/`,
+        `https://batbooks.liara.run/tag/tag-categories/`,
         {
           method: "GET",
           headers: {
@@ -1019,7 +1019,7 @@ function Person({ person }) {
     const fetchFollowing = async () => {
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/user/is/follow/${person.id}/`,
+          `https://batbooks.liara.run/user/is/follow/${person.id}/`,
           {
             method: "GET",
 
@@ -1042,7 +1042,7 @@ function Person({ person }) {
   const handleFollow = async () => {
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/user/toggle/follow/${person.id}/`,
+        `https://batbooks.liara.run/user/toggle/follow/${person.id}/`,
         {
           method: "GET",
 

@@ -509,7 +509,7 @@ export function Book({ book, isLast = false, minw = 180, h = 254 }) {
         title={book.name}
         author={book.Author}
         coverImage={
-          book.image != null ? `http://127.0.0.1:8000/${book.image}` : "/20.jpg"
+          book.image != null ? `https://batbooks.liara.run/${book.image}` : "/20.jpg"
         }
         description={book.description}
         chapters={80}

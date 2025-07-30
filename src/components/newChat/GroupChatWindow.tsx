@@ -193,7 +193,7 @@ const GroupChatWindow: React.FC<GroupChatWindowProps> = ({
       setIsLoading1(true);
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/chat/group/members/${groupId}/`,
+          `https://batbooks.liara.run/chat/group/members/${groupId}/`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -218,7 +218,7 @@ const GroupChatWindow: React.FC<GroupChatWindowProps> = ({
       setIsLoading(true);
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/chat/group/message/${groupId}/`,
+          `https://batbooks.liara.run/chat/group/message/${groupId}/`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -264,9 +264,7 @@ const GroupChatWindow: React.FC<GroupChatWindowProps> = ({
             id: undefined,
             sender: received.sender,
             sender_id: received.user_id,
-            sender_img: received.image
-              ? `/api${received.image}`
-              : undefined,
+            sender_img: received.image ? `/api${received.image}` : undefined,
             message: received.message,
             date: new Date().toISOString(), // actual date string
           },
@@ -305,7 +303,7 @@ const GroupChatWindow: React.FC<GroupChatWindowProps> = ({
   //     //     sender: "شما",
   //     //     sender_id: user.id,
   //     //     sender_img: user.user_info.image
-  //     //       ? `http://127.0.0.1:8000/${user.user_info.image}`
+  //     //       ? `https://batbooks.liara.run/${user.user_info.image}`
   //     //       : undefined,
   //     //     message: newMessage,
   //     //     date: new Date().toISOString(), // actual date string

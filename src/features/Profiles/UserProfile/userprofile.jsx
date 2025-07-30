@@ -104,7 +104,7 @@ export default function Profile() {
     const fetchFollowings = async () => {
       setLoading1(true);
       try {
-        const response = await fetch(`http://127.0.0.1:8000/user/following/`, {
+        const response = await fetch(`https://batbooks.liara.run/user/following/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

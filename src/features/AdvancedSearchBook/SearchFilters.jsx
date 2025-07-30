@@ -334,7 +334,7 @@ export function SearchFilters({
     const fetchAdvancedSearchBook = async () => {
       try {
         setLoading2(true);
-        const response = await fetch(`http://127.0.0.1:8000/advance/${Query}`, {
+        const response = await fetch(`https://batbooks.liara.run/advance/${Query}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -347,8 +347,8 @@ export function SearchFilters({
           const data = await response.json();
           setcurrentpage(1);
           setTotalPages(Math.ceil(data.count / itemsPerPage));
-          setNextPageLink(data.next?.replace("http://127.0.0.1:8000/", ""));
-          setPrevPageLink(data.previous?.replace("http://127.0.0.1:8000/", ""));
+          setNextPageLink(data.next?.replace("https://batbooks.liara.run/", ""));
+          setPrevPageLink(data.previous?.replace("https://batbooks.liara.run/", ""));
           setShowingBooks(data.results);
         }
       } catch (err) {
