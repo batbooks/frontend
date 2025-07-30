@@ -53,7 +53,9 @@ export default function EditProfile({ setEditClicked }) {
           `http://127.0.0.1:8000/user/info/change/username/`,
           {
             method: "PUT",
-            body: formData2,
+            body: JSON.stringify({
+              username:
+            }),
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -115,7 +117,7 @@ export default function EditProfile({ setEditClicked }) {
         />
       </button>
       <div className="z-2">
-        <h1 className="text-[40px] font-[700] text-[#cc1a85] mb-[43.4px] z-3">
+        <h1 className="text-[40px] font-[700] text-blue-800 mb-[43.4px] z-3">
           پروفایل
         </h1>
 
