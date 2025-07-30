@@ -370,7 +370,7 @@ export default function Another_User_Profile() {
                 title={lastBook.name}
                 coverImage={
                   lastBook.image != null
-                    ? `http://127.0.0.1:8000${lastBook.image}`
+                    ? `${lastBook.image}`
                     : "/23.png"
                 }
                 chapters={80}
@@ -481,11 +481,7 @@ export default function Another_User_Profile() {
               <span>موردی برای نمایش وجود ندارد...</span>
             )}
           </div>
-          {UserWritten.length > 8 ? (
-            <button className="btn w-[200px]!">
-              <span className="span-btn "> مشاهده تمام موارد </span>
-            </button>
-          ) : null}
+          
         </div>
       </main>
       <div className="mt-[-60px]">
@@ -509,7 +505,7 @@ export function Book({ book, isLast = false, minw = 180, h = 254 }) {
         title={book.name}
         author={book.Author}
         coverImage={
-          book.image != null ? `http://127.0.0.1:8000/${book.image}` : "/20.jpg"
+          book.image != null ? `${book.image}` : "/20.jpg"
         }
         description={book.description}
         chapters={80}

@@ -16,6 +16,7 @@ import { TagCategory } from "./TagCategory";
 import { Writer } from "./Writer";
 import { SelectMenu } from "./SelectMenu";
 import { useLocation, useNavigate } from "react-router";
+import Button from "./button";
 
 const persianToEnglishDigits = (str) => {
   return str.replace(/[۰-۹]/g, (d) => "۰۱۲۳۴۵۶۷۸۹".indexOf(d));
@@ -956,6 +957,7 @@ export function SearchFilters({
           <div className="flex flex-col gap-[17px] w-full">
             <div className="flex justify-between items-center">
               <div className="flex gap-[3px] items-center">
+                <Button></Button>
                 <img
                   src="/images/filter.png"
                   alt="filter"
@@ -967,6 +969,7 @@ export function SearchFilters({
               </div>
             </div>
             <div className="grid  grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 mx-0 gap-[11px] mb-[20px]">
+          
               {filters?.map((filter, i) => (
                 <Filter
                   key={i}
@@ -1045,7 +1048,8 @@ export function SearchFilters({
                   <Loading />
                 ) : (
                   selectedGenres.map((genre) => (
-                    <SharedStateProvider>
+                    
+                      
                       <SelectedGenreAndTag
                         Obj={genre}
                         deleteFilter={setFilters}
@@ -1055,7 +1059,7 @@ export function SearchFilters({
                         unselected={genres}
                         deleteUnselected={setGenres}
                       />
-                    </SharedStateProvider>
+                    
                   ))
                 )}
                 {loading
@@ -1065,7 +1069,7 @@ export function SearchFilters({
                         key={genre.id}
                         className="flex items-center text-nowrap justify-center "
                       >
-                        <SharedStateProvider>
+                        
                           <GenreAndTag
                             Obj={genre}
                             addFilter={setFilters}
@@ -1075,7 +1079,7 @@ export function SearchFilters({
                             unselected={genres}
                             deleteUnselected={setGenres}
                           />
-                        </SharedStateProvider>
+                        
                       </div>
                     ))}
                 {genres.length === 0 && selectedGenres.length === 0 ? (
