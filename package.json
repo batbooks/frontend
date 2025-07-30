@@ -38,6 +38,7 @@
     "primeicons": "^7.0.0",
     "primereact": "^10.9.3",
     "quill": "^2.0.3",
+    "quill-better-table": "^1.2.10",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.9",
     "react-date-object": "^2.1.9",

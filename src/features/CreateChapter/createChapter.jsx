@@ -5,6 +5,13 @@ import { Editor } from "primereact/editor";
 import { useLocation } from "react-router";
 import Loading from "../../common/Loading/Loading";
 import Swal from "sweetalert2";
+import Quill from 'quill';
+import BetterTable from 'quill-better-table';
+import 'quill-better-table/dist/quill-better-table.css';
+
+Quill.register({
+  'modules/better-table': BetterTable,
+});
 
 const CreateChapter = () => {
   const [chapterName, setChapterName] = useState("");
@@ -163,6 +170,18 @@ const CreateChapter = () => {
                 <Editor
                   value={chapterContent}
                   onTextChange={(e) => setChapterContent(e.htmlValue)}
+                  modules={{
+                    'better-table': {
+                      operationMenu: {
+                        items: {
+                          unmergeCells: { text: 'Unmerge Cells' },
+                        },
+                      },
+                    },
+                    keyboard: {
+                      bindings: BetterTable.keyboardBindings,
+                    },
+                  }}
                   className="h-[286px] border-[2px] border-[#000000]/21 bg-white"
                 />
               </div>
