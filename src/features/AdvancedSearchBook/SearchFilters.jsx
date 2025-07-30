@@ -11,7 +11,7 @@ import { GenreAndTag } from "./GenreAndTag";
 import { KeyWord } from "./KeyWord";
 import { SelectedGenreAndTag } from "./SelectedGenreAndTag";
 import { SelectedTagCategory } from "./SelectedTagCategory";
-import { SharedStateProvider } from "./SharedStateProvider";
+import { SharedStateProvider, useSharedState } from "./SharedStateProvider";
 import { TagCategory } from "./TagCategory";
 import { Writer } from "./Writer";
 import { SelectMenu } from "./SelectMenu";
@@ -39,6 +39,8 @@ const convertGregorianToShamsi = (gregorianDateStr) => {
 };
 
 export function SearchFilters({
+  numberOfBooks,
+  setNumberOfBooks,
   loading2,
   setLoading2,
   setShowingBooks,
@@ -103,6 +105,7 @@ export function SearchFilters({
   const genreIds = useRef([]);
   const tagIds = useRef([]);
   const navigate = useNavigate();
+
   function handleAdvancedSearch() {
     console.log(searchWord);
 
@@ -393,6 +396,7 @@ export function SearchFilters({
           const data = await response.json();
           setcurrentpage(1);
           setTotalPages(Math.ceil(data.count / itemsPerPage));
+          setNumberOfBooks(data.count);
           setNextPageLink(data.next);
           setPrevPageLink(data.previous);
           setShowingBooks(data.results);
