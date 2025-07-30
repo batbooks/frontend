@@ -105,15 +105,18 @@ function AppRoutes() {
         />
         <Route path="/threads/:forumId" element={<Threads forumId={3} />} />
         <Route path="/chat" element={<Chat />} />
-         <Route path="/temp" element={<Temp />} />
+        <Route path="/temp" element={<Temp />} />
         <Route path="/threadposts/:threadId" element={<ThreadPostsWrapper />} />
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/playlists" element={<PlaylistPage />} />
-        <Route path="/playlists/:id" element={<PlaylistDetailPage />} />
+        <Route path="/playlists/:playlistId" element={<PlaylistDetailPage />} />
         <Route path="/public-playlists" element={<PublicPlaylistsPage />} />
-        <Route path="/anotherUserPlaylists" element={<UserPlaylistsPage />} />
         <Route
-          path="/othersPlaylists/:id"
+          path="/anotherUserPlaylists/:userId"
+          element={<UserPlaylistsPage />}
+        />
+        <Route
+          path="/othersPlaylists/:playlistId"
           element={<OthersPlaylistDetailPage />}
         />
       </Routes>

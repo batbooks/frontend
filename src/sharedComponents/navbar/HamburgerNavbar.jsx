@@ -70,11 +70,19 @@ export default function HamburgerNavbar({
               {isAuthenticated ? (
                 <>
                   <li className="w-full px-3 flex items-center gap-3">
-                    <img
-                      className="w-10 h-10  rounded-full"
-                      src={`http://127.0.0.1:8000${user.user_info.image}`}
-                      alt="asd"
-                    />
+                    {isAuthenticated && user.user_info.image != null ? (
+                      <img
+                        className="w-[50px] h-[50px] rounded-[30px]"
+                        src={`http://127.0.0.1:8000${user.user_info.image}`}
+                        alt="User Image 2"
+                      />
+                    ) : (
+                      <img
+                        className="w-[50px] h-[50px] rounded-[30px]"
+                        src="/images/user_none.png"
+                        alt="User Image 3"
+                      />
+                    )}
                     <h3>{user.name} </h3>
                   </li>
                   <li>
