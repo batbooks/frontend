@@ -1,13 +1,30 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSharedState } from "./SharedStateProvider";
 
-export function SelectMenu({ setFilters, loading, showingBooks }) {
+export function SelectMenu({ setFilters, loading, showingBooks, ordering }) {
   const { selectValue, setSelectValue } = useSharedState();
   const [isSelectOpened, setIsSelectOpened] = useState(false);
+  const orderingMap = {
+  updated_at: "تازه ترین",
+  "-avg_rating": "محبوب ترین",
+  name: "حروف الفبا",
+  chapter_count: "تعداد فصل ها",
+};
+  const didRun=useRef(false)
+  useEffect(() => {
+  if (!didRun.current && ordering) {
+    const persianLabel = orderingMap[ordering] ;
+    setSelectValue(persianLabel);
+    setFilters((filters) => [
+      ...(filters || []),
+      `مرتب سازی براساس: ${persianLabel}`,
+    ]);
+    didRun.current = true;
+  }
+}, []);
   if (loading || showingBooks.length === 0) {
     return null;
   }
-
   return (
     <div className="flex items-center gap-[10px] mr-auto">
       <h2 className="text-[16px] font-[300]">مرتب سازی براساس</h2>

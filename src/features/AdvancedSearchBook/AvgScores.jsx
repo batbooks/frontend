@@ -1,15 +1,40 @@
+import { useEffect, useRef } from "react";
 import { useSharedState } from "./SharedStateProvider";
 
-export function AvgScores({ setFilters }) {
+export function AvgScores({ setFilters, avg_from, avg_to }) {
   const { avgScoreFrom, setAvgScoreFrom, avgScoreTo, setAvgScoreTo } =
     useSharedState();
-
+  const didRun = useRef(false);
+  useEffect(() => {
+    if (!didRun.current && avg_from) {
+      setAvgScoreFrom(avg_from);
+      if (avg_to && avg_from == avg_to) {
+        setFilters((filters) => [
+          ...(filters || []),
+          `میانگین امتیاز: ${avg_from.toFixed(1)}`,
+        ]);
+      } else {
+        setFilters((filters) => [
+          ...(filters || []),
+          `میانگین امتیاز: از ${avg_from.toFixed(1)}`,
+        ]);
+      }
+    }
+    if (!didRun.current && avg_to) {
+      setAvgScoreTo(avg_to);
+      setFilters((filters) => [
+        ...(filters || []),
+        `میانگین امتیاز: تا ${avg_to.toFixed(1)}`,
+      ]);
+    }
+    didRun.current = true;
+  }, []);
   return (
-    <div className="flex flex-col gap-[17px] w-full lg:w-3/10">
-      <h2 className="text-[20px] font-[300] ">میانگین امتیازات کتاب:</h2>
-      <div className="flex lg:justify-between sm:justify-around justify-between 2xl:mr-[30px]">
-        <div className="gap-[9px] flex items-center">
-          <span className="text-[20px] font-[300] ">از:</span>
+    <div className="flex flex-col gap-[17px] w-full  mb-3 sm:mb-0">
+      <h2 className="text-[17px] font-[300] ">میانگین امتیازات کتاب:</h2>
+      <div className="w-1/2 md:w-7/10 flex  lg:justify-between gap-3    justify-between sm:justify-start">
+        <div className="gap-[9px] flex items-center ">
+          <span className="text-[17px] font-[300] ">از:</span>
           <div className="flex items-center gap-[9px] relative group">
             <div className="flex-col absolute mb-[-5px] hidden group-hover:flex">
               <div className="flex flex-col items-center mb-[-4px]">
@@ -103,12 +128,12 @@ export function AvgScores({ setFilters }) {
               dir="ltr"
               value={avgScoreFrom.toFixed(1)}
               disabled
-              className="h-[40px] lg:w-[80px] md:w-[120px] w-[80px] bg-white rounded-[5px] text-center outline-[2px] outline-[#000000]/21"
+              className="h-[30px] lg:w-[60px] md:w-[120px] w-[80px] bg-white rounded-[5px] text-center outline-[2px] outline-[#000000]/21"
             />
           </div>
         </div>
         <div className="gap-[9px] flex items-center">
-          <span className="text-[20px] font-[300] ">تا:</span>
+          <span className="text-[17px] font-[300] ">تا:</span>
           <div className="flex items-center relative group">
             <div className="flex-col absolute mb-[-5px] hidden group-hover:flex">
               <div className="flex flex-col items-center mb-[-4px]">
@@ -202,7 +227,7 @@ export function AvgScores({ setFilters }) {
               dir="ltr"
               value={avgScoreTo.toFixed(1)}
               disabled
-              className="h-[40px] lg:w-[80px] md:w-[120px] w-[80px] bg-white rounded-[5px] text-center outline-[2px] outline-[#000000]/21"
+              className="h-[30px] lg:w-[60px] md:w-[120px] w-[80px] bg-white rounded-[5px] text-center outline-[2px] outline-[#000000]/21"
             />
           </div>
         </div>

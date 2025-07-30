@@ -1,20 +1,57 @@
-import { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
 
-function Signup() {
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+
+// -----------------------
+//  آیکون‌های نمایش/مخفی‌سازی رمز عبور
+// -----------------------
+const EyeIcon = () => (
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+  </svg>
+);
+
+const EyeOffIcon = () => (
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274 4.057 5.064 7 9.542 7 .847 0 1.67.111 2.458.318M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2 2l20 20" />
+  </svg>
+);
+
+// -----------------------
+//   کامپوننت ثبت‌نام
+// -----------------------
+export default function Signup() {
+  const navigate = useNavigate();
+
+  // فیلدهای فرم
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [repeatPassword, setRepeatPassword] = useState('');
+
+  // وضعیت نمایش رمزها
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [repeatPassword, setRepeatPassword] = useState("");
-  const [error, setError] = useState("");
+
+  // وضعیت خطا و لودینگ
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  let navigate = useNavigate();
-
+  // -----------------------
+  //   ارسال فرم
+  // -----------------------
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    setError('');
+
+    // بررسی تطابق رمزها قبل از درخواست
+    if (password !== repeatPassword) {
+      setError('رمزهای عبور یکسان نیستند!');
+      return;
+    }
+
     setLoading(true);
     try {
       const response = await fetch("https://batbooks.liara.run/auth/register/", {
@@ -25,153 +62,155 @@ function Signup() {
       const data = await response.json();
 
       if (response.ok) {
-        navigate("/auth/otp", { state: { email: { email } } });
+        // انتقال به صفحهٔ OTP و ارسال ایمیل در state
+        navigate('/auth/otp', { state: { email } });
       } else {
-        setError(data[0]);
-        throw new Error(data[0]);
+        // پیام خطا از بک‌اند یا پیام عمومی
+        setError(data[0] || 'خطایی رخ داد. لطفاً دوباره امتحان کنید.');
       }
     } catch (err) {
+      // خطای شبکه یا خطاهای دیگر
       if (password.length < 8) {
-        setError(" طول پسورد شما کم است ");
+        setError('طول پسورد شما کم است.');
       } else {
-        setError(" ایمیل شما اشتباه است ");
+        setError('ایمیل شما اشتباه است.');
       }
     } finally {
       setLoading(false);
     }
   };
 
-  function handleShowPassword() {
-    setShowPassword((show) => !show);
-  }
-  function handleShowRepeatPassword() {
-    setShowRepeatPassword((show) => !show);
-  }
-
   return (
-    <div className="w-[100vw] h-[100vh] bg-[#D9F0FF]">
-      <div className="flex gap-1 items-center ">
-        <button
-          onClick={() => {
-            navigate("/");
-          }}
-          className="cursor-pointer text-[24px] mt-1.5 ml-2 font-[800] "
-        >
-          Bat<span className="text-[#2663CD]">Books</span>
-        </button>
-      </div>
+    <>
+      {/* فونت و استایل عمومی */}
+      <style>
+        {`
+          @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap');
+          body {
+            font-family: 'Vazirmatn', sans-serif;
+          }
+          .password-toggle-icon {
+            position: absolute;
+            top: 50%;
+            left: 1rem;
+            transform: translateY(-50%);
+            cursor: pointer;
+          }
+        `}
+      </style>
 
-      <main className="w-[700px] h-[450px] m-auto bg-[#A4C0ED] rounded-[13px] justify-center mt-14 pt-10 relatvie">
-        <h2 className="font-bold text-center text-[20px] mt-auto ">
-          خوش آمدید<span> batbooks</span> به
-        </h2>
-        <h3 className="text-center text-[16px] mt-1.5 mb-12.5">
-          برای ادامه دادن ثبت نام کنید
-        </h3>
-        <form onSubmit={handleSubmit}>
-          <div className="flex justify-center relative mb-3">
-            <input
-              className="bg-[#FFFFFF] mx-auto flex justify-center pl-14 px-4 items-center  w-[60%] h-[4.58vh] rounded-[40px] placeholder:text-right placeholder:mr-[50px]"
-              value={email}
-              placeholder="ایمیل"
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <img
-              src="/images/user.png"
-              alt="user"
-              className="absolute right-[150px] top-[50%] -translate-y-1/2"
-            />
+      <div className="bg-sky-50 text-gray-800" dir="rtl">
+        <div className="relative min-h-screen w-full flex items-center justify-center p-4 overflow-hidden">
+          {/* تزئینات پس‌زمینه */}
+          <div className="absolute top-10 right-10 w-48 h-48 text-sky-200/80 opacity-60 rotate-12 hidden md:block">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 22.5a.5.5 0 0 1-.5-.5v-19a.5.5 0 0 1 .5-.5h.5a2.5 2.5 0 0 1 2.5 2.5v15a2.5 2.5 0 0 1-2.5 2.5h-.5Zm-5.25-2.25a.75.75 0 0 0 0 1.5h.5a1 1 0 0 0 1-1v-15a1 1 0 0 0-1-1h-.5a.75.75 0 0 0 0 1.5h.5a.25.25 0 0 1 .25.25v14.5a.25.25 0 0 1-.25.25h-.5ZM8.5 22.5a.5.5 0 0 1-.5-.5v-19a.5.5 0 0 1 .5-.5h.5a2.5 2.5 0 0 1 2.5 2.5v15a2.5 2.5 0 0 1-2.5 2.5h-.5Zm-5-4a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 .5-.5h.5a2.5 2.5 0 0 1 2.5 2.5v9a2.5 2.5 0 0 1-2.5 2.5h-.5Z" />
+            </svg>
           </div>
-          <div className="flex justify-center relative mb-3">
-            <input
-              type={showPassword ? "text" : "password"}
-              className="bg-[#FFFFFF] mx-auto flex justify-center pl-14 px-4 items-center  w-[60%] h-[4.58vh] rounded-[40px] placeholder:text-right placeholder:mr-[50px]"
-              value={password}
-              placeholder="رمز عبور (8 کاراکتر)"
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <img
-              src="/images/lock.png"
-              alt="lock-password"
-              className="absolute right-38 top-[50%] -translate-y-1/2"
-            />
-            {!showPassword ? (
-              <img
-                src="/images/eye-on.png"
-                alt="eye-on-password"
-                onClick={handleShowPassword}
-                className="absolute z-50 left-38 top-[50%] -translate-y-1/2"
-              />
-            ) : (
-              <img
-                src="/images/eye-off.png"
-                alt="eye-off-password"
-                onClick={handleShowPassword}
-                className="absolute z-50 left-38 top-[50%] -translate-y-1/2"
-              />
-            )}
+          <div className="absolute bottom-4 left-4 w-64 h-64 text-sky-200/80 opacity-60 -rotate-12 hidden lg:block">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
+              <circle cx="12" cy="12" r="4" />
+            </svg>
           </div>
-          <div className="flex justify-center relative mb-3">
-            <input
-              type={showRepeatPassword ? "text" : "password"}
-              className="bg-[#FFFFFF] mx-auto flex justify-center pl-14 px-4 items-center  w-[60%] h-[4.58vh] rounded-[40px] placeholder:text-right placeholder:mr-[50px]"
-              value={repeatPassword}
-              placeholder="تکرار رمز عبور"
-              onChange={(e) => setRepeatPassword(e.target.value)}
-            />
-            <img
-              src="/images/lock.png"
-              alt="lock-repeat-password"
-              className="absolute right-38 top-[50%] -translate-y-1/2"
-            />
-            {!showRepeatPassword ? (
-              <img
-                src="/images/eye-on.png"
-                alt="eye-on-repeat-password"
-                onClick={handleShowRepeatPassword}
-                className="absolute z-50 left-38 top-[50%] -translate-y-1/2"
-              />
-            ) : (
-              <img
-                src="/images/eye-off.png"
-                alt="eye-off-repeat-password"
-                onClick={handleShowRepeatPassword}
-                className="absolute z-50 left-38 top-[50%] -translate-y-1/2"
-              />
-            )}
+
+          {/* کارت ثبت‌نام */}
+          <div className="relative z-10 w-full max-w-md">
+            <div className="bg-white/70 backdrop-blur-xl border border-gray-200/50 shadow-2xl shadow-sky-200/60 rounded-2xl p-8 md:p-12">
+              {/* هدر */}
+              <div className="text-center mb-8">
+                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-wider">ایجاد حساب کاربری</h1>
+                <p className="text-gray-500 mt-2">به بت‌بوکس بپیوندید</p>
+              </div>
+
+              {/* فرم ثبت‌نام */}
+              <form onSubmit={handleSubmit}>
+                {/* نام */}
+                
+
+                {/* ایمیل */}
+                <div className="relative mb-6">
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3.5 pointer-events-none">
+                    <svg className="w-5 h-5 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 16">
+                      <path d="m10.036 8.278 9.258-7.79A1.979 1.979 0 0 0 18 0H2A1.987 1.987 0 0 0 .641.541l9.395 7.737Z" />
+                      <path d="M11.241 9.817c-.36.275-.801.425-1.255.427-.428 0-.845-.138-1.187-.395L0 2.6V14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2.5l-8.759 7.317Z" />
+                    </svg>
+                  </div>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="bg-white/50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pr-12 p-3.5 transition duration-300 placeholder-gray-500"
+                    placeholder="ایمیل خود را وارد کنید"
+                    required
+                  />
+                </div>
+
+                {/* رمز عبور */}
+                <div className="relative mb-6">
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3.5 pointer-events-none">
+                    <svg className="w-5 h-5 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 20">
+                      <path d="M14 7h-1.5V4.5a4.5 4.5 0 1 0-9 0V7H2a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2Zm-5 8a1 1 0 1 1-2 0v-3a1 1 0 1 1 2 0v3Zm1.5-8h-5V4.5a2.5 2.5 0 1 1 5 0V7Z" />
+                    </svg>
+                  </div>
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="bg-white/50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pr-12 p-3.5 transition duration-300 placeholder-gray-500"
+                    placeholder="رمز عبور"
+                    required
+                  />
+                  <span onClick={() => setShowPassword(!showPassword)} className="password-toggle-icon text-gray-500 hover:text-gray-800">
+                    {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+                  </span>
+                </div>
+
+                {/* تکرار رمز عبور */}
+                <div className="relative mb-6">
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3.5 pointer-events-none">
+                    <svg className="w-5 h-5 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 20">
+                      <path d="M14 7h-1.5V4.5a4.5 4.5 0 1 0-9 0V7H2a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2Zm-5 8a1 1 0 1 1-2 0v-3a1 1 0 1 1 2 0v3Zm1.5-8h-5V4.5a2.5 2.5 0 1 1 5 0V7Z" />
+                    </svg>
+                  </div>
+                  <input
+                    type={showRepeatPassword ? 'text' : 'password'}
+                    value={repeatPassword}
+                    onChange={(e) => setRepeatPassword(e.target.value)}
+                    className="bg-white/50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pr-12 p-3.5 transition duration-300 placeholder-gray-500"
+                    placeholder="تکرار رمز عبور"
+                    required
+                  />
+                  <span onClick={() => setShowRepeatPassword(!showRepeatPassword)} className="password-toggle-icon text-gray-500 hover:text-gray-800">
+                    {showRepeatPassword ? <EyeOffIcon /> : <EyeIcon />}
+                  </span>
+                </div>
+
+                {/* پیام خطا */}
+                {error && <p className="text-red-600 text-sm mb-4 text-center">{error}</p>}
+
+                {/* دکمه ثبت‌نام */}
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className={`w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-3.5 text-center transition duration-300 transform ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'}`}
+                >
+                  {loading ? 'در حال ثبت‌نام...' : 'ثبت نام'}
+                </button>
+
+                {/* لینک ورود */}
+                <p className="text-sm text-center text-gray-500 mt-8">
+                  قبلاً ثبت نام کرده‌اید؟{' '}
+                  <Link to="/auth/login" className="font-medium text-blue-600 hover:underline">
+                    وارد شوید
+                  </Link>
+                </p>
+              </form>
+            </div>
           </div>
-          {error != "" ? (
-            <p className="text-red-600 text-center mb-2">{error}</p>
-          ) : null}
-          <button type="submit" className="btn" disabled={loading}>
-            <span className="span-btn">
-              {loading ? "...در حال ثبت نام" : "ثبت نام"}
-            </span>
-          </button>
-        </form>
-        <img
-          src="/images/mid-left.png"
-          alt="mid-left"
-          className=" absolute left-[335px] top-[280px]  "
-        />
-        <img
-          src="/images/mid-right.png"
-          alt="mid-right"
-          className="absolute right-[280px] top-[-15px]"
-        />
-      </main>
-      <img
-        src="/images/bottom-left.png"
-        alt="bottom-left"
-        className="absolute left-0 bottom-0 w-[25vw] aspect-auto"
-      />
-      <img
-        src="/images/bottom-right.png"
-        alt="bottom-right"
-        className=" absolute right-[0px] bottom-0 w-[33vw] aspect-auto"
-      />
-    </div>
+        </div>
+      </div>
+    </>
   );
 }
 
-export default Signup;

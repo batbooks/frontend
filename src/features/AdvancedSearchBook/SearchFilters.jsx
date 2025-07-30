@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import Swal from "sweetalert2";
 import Loading from "../../common/Loading/Loading";
 import { AvgScores } from "./AvgScores";
-import { CheckBoxes } from "./CheckBoxes";
+import { StatusDropDown } from "./CheckBoxes";
 import { CreationDate } from "./CreationDate";
 import { Filter } from "./Filter";
 import { FromToInputs } from "./FromToInputs";
@@ -15,6 +15,7 @@ import { SharedStateProvider } from "./SharedStateProvider";
 import { TagCategory } from "./TagCategory";
 import { Writer } from "./Writer";
 import { SelectMenu } from "./SelectMenu";
+import { useLocation, useNavigate } from "react-router";
 
 const persianToEnglishDigits = (str) => {
   return str.replace(/[۰-۹]/g, (d) => "۰۱۲۳۴۵۶۷۸۹".indexOf(d));
@@ -25,6 +26,17 @@ const convertShamsiToGregorian = (shamsiDateStr) => {
   const { gy, gm, gd } = jalaali.toGregorian(jy, jm, jd); // convert to Gregorian
   return `${gy}-${String(gm).padStart(2, "0")}-${String(gd).padStart(2, "0")}`;
 };
+const englishToPersianDigits = (str) => {
+  return str.replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[d]);
+};
+
+const convertGregorianToShamsi = (gregorianDateStr) => {
+  const [gy, gm, gd] = gregorianDateStr.split("-").map(Number);
+  const { jy, jm, jd } = jalaali.toJalaali(gy, gm, gd);
+  const shamsiStr = `${jy}/${String(jm).padStart(2, "0")}/${String(jd).padStart(2, "0")}`;
+  return englishToPersianDigits(shamsiStr);
+};
+
 export function SearchFilters({
   loading2,
   setLoading2,
@@ -36,10 +48,33 @@ export function SearchFilters({
   setPrevPageLink,
   showingBooks,
 }) {
+  const location = useLocation();
+  const query = new URLSearchParams(location.search);
+  const search = query.get("search") || "";
+  const user = query.get("user");
+  const status = query.get("status");
+  const description = query.get("description") || "";
+  const dateA = query.get("date_after");
+  const dateAfter = dateA ? convertGregorianToShamsi(dateA) : null;
+  const dateB = query.get("date_before");
+  const dateBefore = dateB ? convertGregorianToShamsi(dateB) : null;
+  const ratingMin = parseFloat(query.get("rating_min"));
+  const ratingMax = parseFloat(query.get("rating_max"));
+  const chapterCountMin = query.get("chapter_count_min");
+  const genreOr = query.get("genre_or"); // مثلاً "1,3,5"
+  const genreArray = genreOr
+    ? genreOr.split(",").map((num) => parseInt(num, 10))
+    : [];
+  const chapterCountMax = query.get("chapter_count_max");
+  const tagOr = query.get("tag_or");
+  const ordering = query.get("ordering");
+  console.log(ordering);
+  console.log(genreOr);
   const [isHovered, setIsHovered] = useState(false);
   const [isVisibleFilters, setIsVisibleFilters] = useState(false);
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState([]);
+  console.log(filters)
   const [genres, setGenres] = useState([]);
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [tagCategories, setTagCategories] = useState([]);
@@ -48,21 +83,26 @@ export function SearchFilters({
   const [showingSelectedTags, setShowingSelectedTags] = useState([]);
   const [allTags, setAllTags] = useState([]);
   const [allSelectedTags, setAllSelectedTags] = useState([]);
-  const [fromValueChapter, setFromValueChapter] = useState("1");
-  const [toValueChapter, setToValueChapter] = useState("9999");
+  const [fromValueChapter, setFromValueChapter] = useState(
+    chapterCountMin || "1"
+  );
+  const [toValueChapter, setToValueChapter] = useState(
+    chapterCountMax || "9999"
+  );
   const [fromValueFav, setFromValueFav] = useState("1");
   const [toValueFav, setToValueFav] = useState("99999");
   const [fromValueScorer, setFromValueScorer] = useState("1");
   const [toValueScorer, setToValueScorer] = useState("99999");
   const [searchKey, setSearchKey] = useState("");
-  const [searchWord, setSearchWord] = useState("");
-  const [showingBooksSearchWord, setShowingBooksSearchWord] = useState("");
+  const [searchWord, setSearchWord] = useState(search);
   const [isBlankSearchWord, setIsBlankSearchWord] = useState(false);
   const filterNum = (filters || []).length;
   const genreIds = useRef([]);
   const tagIds = useRef([]);
-
+  const navigate = useNavigate();
   function handleAdvancedSearch() {
+    console.log(searchWord);
+
     const Query = filters.reduce((acc, filter, i) => {
       if (filter.includes("ژانر: ")) {
         genreIds.current = [
@@ -329,12 +369,15 @@ export function SearchFilters({
         acc = acc + "&tag_or=" + tagIds.current.join(",");
       }
       return acc;
-    }, `?search=${showingBooksSearchWord}`);
+    }, `?search=${searchWord}`);
 
     const fetchAdvancedSearchBook = async () => {
+      navigate(`/advancedsearchbook/${Query}`);
       try {
         setLoading2(true);
-        const response = await fetch(`https://batbooks.liara.run/advance/${Query}`, {
+
+        console.log(`http://127.0.0.1:8000/advancedsearchbook/${Query}`);
+        const response = await fetch(`http://127.0.0.1:8000/advance/${Query}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -347,8 +390,8 @@ export function SearchFilters({
           const data = await response.json();
           setcurrentpage(1);
           setTotalPages(Math.ceil(data.count / itemsPerPage));
-          setNextPageLink(data.next?.replace("https://batbooks.liara.run/", ""));
-          setPrevPageLink(data.previous?.replace("https://batbooks.liara.run/", ""));
+          setNextPageLink(data.next);
+          setPrevPageLink(data.previous);
           setShowingBooks(data.results);
         }
       } catch (err) {
@@ -677,7 +720,7 @@ export function SearchFilters({
           } else {
             const data = await response.json();
             setIsVisibleFilters(false);
-            setShowingBooksSearchWord(searchWord);
+
             setcurrentpage(1);
             setTotalPages(Math.ceil(data.count / itemsPerPage));
             setNextPageLink(data.next?.replace("https://batbooks.liara.run/", ""));
@@ -703,7 +746,41 @@ export function SearchFilters({
     };
     fetchSimpleSearchBook();
   }
+  const didRun = useRef(false);
 
+  useEffect(() => {
+    if (!didRun.current && user) {
+      setFilters((filters) => [...(filters || []), "نویسنده: " + user]);
+    }
+    if (!didRun.current && description) {
+      setFilters((filters) => [...(filters || []), "کلید: " + description]);
+    }
+    ///////////////////////////////////////////
+
+    if (!didRun.current && chapterCountMin) {
+      if (chapterCountMax && chapterCountMin == chapterCountMax) {
+        setFilters((filters) => [
+          ...(filters || []),
+          `تعداد فصل ها: ${chapterCountMin} فصل`,
+        ]);
+      } else {
+        setFilters((filters) => [
+          ...(filters || []),
+          `تعداد فصل ها: از ${chapterCountMin} فصل`,
+        ]);
+      }
+    }
+    if (!didRun.current && chapterCountMax) {
+      setFilters((filters) => [
+        ...(filters || []),
+        `تعداد فصل ها: تا ${chapterCountMax} فصل`,
+      ]);
+    }
+    console.log(selectedGenres);
+
+    didRun.current = true;
+  }, []);
+  const didRun2 = useRef(false);
   useEffect(() => {
     const fetchGenresAndTags = async () => {
       setLoading(true);
@@ -724,7 +801,16 @@ export function SearchFilters({
       );
       const data = await response.json();
       const data2 = await response2.json();
-      setGenres(data.genres);
+      setGenres(data.genres.filter((genre) => !genreArray.includes(genre.id)));
+      const temp = data.genres.filter((genre) => genreArray.includes(genre.id));
+      setSelectedGenres(temp);
+      console.log(temp);
+      if (!didRun2.current) {
+        temp.map((genre) => {
+          setFilters((filters) => [...(filters || []), `ژانر: ${genre.title}`]);
+        });
+        didRun2.current=true
+      }
       setTagCategories(data2.tag_categories);
       const alllTags = data2.tag_categories.reduce((acc, tagCategory) => {
         return [...acc, ...tagCategory.tags];
@@ -860,7 +946,7 @@ export function SearchFilters({
       </form>
       <SharedStateProvider>
         <div
-          className={`flex flex-col w-full bg-[#A4C0ED] rounded-[20px] border-[2px] border-[#000000]/21 px-[10px] sm:px-[55px] pt-[30px] pb-[50px] mb-[37px] ${isVisibleFilters ? "visible" : "hidden"}`}
+          className={`flex flex-col w-full bg-[#A4C0ED] rounded-[20px] border-[2px] border-[#000000]/21 px-[10px] sm:px-[45px] pt-[30px] pb-[50px] mb-[37px] ${isVisibleFilters ? "visible" : "hidden"}`}
         >
           <div className="flex flex-col gap-[17px] w-full">
             <div className="flex justify-between items-center">
@@ -875,7 +961,7 @@ export function SearchFilters({
                 </h2>
               </div>
             </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 mx-0 gap-[11px] mb-[20px]">
+            <div className="grid  grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 mx-0 gap-[11px] mb-[20px]">
               {filters?.map((filter, i) => (
                 <Filter
                   key={i}
@@ -900,39 +986,64 @@ export function SearchFilters({
               ))}
             </div>
           </div>
-          <h2 className="border-t-[1px] border-000000] pt-[20px] text-[20px] font-[300]  mb-[17px]">
-            ژانرها:
-          </h2>
-          <div
-            className={`${!(selectedGenres.length === 0 && genres.length === 0) ? "grid sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-x-[25px] gap-y-[33px] overflow-y-scroll max-h-[155px]" : "scrollbar-opacity-0"} sm:mx-[30px] p-[20px] bg-[#FFF] rounded-[15px] border-[2px] border-[#000000]/21 mb-[50px]`}
-          >
-            {loading ? (
-              <Loading />
-            ) : (
-              selectedGenres.map((genre) => (
-                <div key={genre.id} className="flex flex-col items-center">
-                  <SharedStateProvider>
-                    <SelectedGenreAndTag
-                      Obj={genre}
-                      deleteFilter={setFilters}
-                      filters={filters}
-                      selected={selectedGenres}
-                      addSelected={setSelectedGenres}
-                      unselected={genres}
-                      deleteUnselected={setGenres}
-                    />
-                  </SharedStateProvider>
-                </div>
-              ))
-            )}
-            {loading
-              ? null
-              : genres.map((genre) => (
-                  <div key={genre.id} className="flex flex-col items-center">
+          <section className="mb-8 ">
+            <div className="flex  flex-col sm:flex-row gap-5 ">
+              <div className="sm:w-1/2  ">
+                <KeyWord setFilters={setFilters} />
+              </div>
+              <div className="sm:w-1/2">
+                <Writer name={user} setFilters={setFilters} />
+              </div>
+            </div>
+          </section>
+          <div className="flex flex-col lg:flex-row items-center sm:w-[calc(100%-30px)] 2xl:w-[calc(100%-60px)] gap-[50px] mt-[25px] mb-[60px]">
+            <div className="w-full flex flex-col sm:flex-row sm:justify-between md:gap-5">
+              <AvgScores
+                setFilters={setFilters}
+                avg_from={ratingMin}
+                avg_to={ratingMax}
+              />
+              <div className="flex flex-col gap-[17px] w-full  ">
+                <h2 className="text-[17px] font-[300]">تعداد فصل ها:</h2>
+                <FromToInputs
+                  maxValue={"9999"}
+                  valueLength={4}
+                  setFilters={setFilters}
+                  filterPattern={"chapter"}
+                  fromValue={fromValueChapter}
+                  toValue={toValueChapter}
+                  setFromValue={setFromValueChapter}
+                  setToValue={setToValueChapter}
+                />
+              </div>
+            </div>
+            <CreationDate
+              date_from={dateAfter}
+              date_to={dateBefore}
+              setFilters={setFilters}
+            />
+            <StatusDropDown
+              status={status}
+              addFilter={setFilters}
+              filters={filters}
+            />
+          </div>
+          <div className="flex  gap-x-7">
+            <div className=" w-1/2">
+              <h2 className=" md:w-auto text-center md:text-start   text-[17px] font-[300]  mb-[17px]">
+                ژانرها:
+              </h2>
+              <div
+                className={`${!(selectedGenres.length === 0 && genres.length === 0) ? " grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3  gap-x-[15px] gap-y-[15px] overflow-y-scroll max-h-[155px]" : "scrollbar-opacity-0"} sm:mx-[30px] p-[15px] bg-[#FFF] rounded-[15px] border-[2px] border-[#000000]/21 mb-[50px]`}
+              >
+                {loading ? (
+                  <Loading />
+                ) : (
+                  selectedGenres.map((genre) => (
                     <SharedStateProvider>
-                      <GenreAndTag
+                      <SelectedGenreAndTag
                         Obj={genre}
-                        addFilter={setFilters}
+                        deleteFilter={setFilters}
                         filters={filters}
                         selected={selectedGenres}
                         addSelected={setSelectedGenres}
@@ -940,54 +1051,78 @@ export function SearchFilters({
                         deleteUnselected={setGenres}
                       />
                     </SharedStateProvider>
-                  </div>
-                ))}
-            {genres.length === 0 && selectedGenres.length === 0 ? (
-              <p className="text-[18px] mx-auto text-red-500">
-                مشکلی در اتصال به اینترنت بوجود آمد
-              </p>
-            ) : null}
+                  ))
+                )}
+                {loading
+                  ? null
+                  : genres.map((genre) => (
+                      <div
+                        key={genre.id}
+                        className="flex items-center text-nowrap justify-center "
+                      >
+                        <SharedStateProvider>
+                          <GenreAndTag
+                            Obj={genre}
+                            addFilter={setFilters}
+                            filters={filters}
+                            selected={selectedGenres}
+                            addSelected={setSelectedGenres}
+                            unselected={genres}
+                            deleteUnselected={setGenres}
+                          />
+                        </SharedStateProvider>
+                      </div>
+                    ))}
+                {genres.length === 0 && selectedGenres.length === 0 ? (
+                  <p className="text-[18px] mx-auto text-red-500">
+                    مشکلی در اتصال به اینترنت بوجود آمد
+                  </p>
+                ) : null}
+              </div>
+            </div>
+            <div className=" w-1/2">
+              <h2 className="md:w-auto text-center md:text-start   text-[17px] font-[300]  mb-[17px]">
+                دسته بندی تگ ها:
+              </h2>
+              <div
+                className={`${!(tagCategories.length === 0 && selectedTagCategories.length === 0) ? " grid  grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[15px] gap-y-[23px] overflow-y-scroll max-h-[155px] text-nowrap" : "scrollbar-opacity-0"} sm:mx-[30px] p-[10px] bg-[#FFF] rounded-[15px] border-[2px] border-[#000000]/21 mb-[17px]`}
+              >
+                {loading
+                  ? null
+                  : selectedTagCategories.map((tagCategory) => (
+                      <SelectedTagCategory
+                        key={tagCategory.id}
+                        Obj={tagCategory}
+                        selected={selectedTagCategories}
+                        addSelected={setSelectedTagCategories}
+                        unselected={tagCategories}
+                        deleteUnselected={setTagCategories}
+                      />
+                    ))}
+                {loading ? (
+                  <Loading />
+                ) : (
+                  tagCategories.map((tagCategory) => (
+                    <TagCategory
+                      key={tagCategory.id}
+                      Obj={tagCategory}
+                      selected={selectedTagCategories}
+                      addSelected={setSelectedTagCategories}
+                      unselected={tagCategories}
+                      deleteUnselected={setTagCategories}
+                    />
+                  ))
+                )}
+                {tagCategories.length === 0 &&
+                selectedTagCategories.length === 0 ? (
+                  <p className="text-[18px] mx-auto text-red-500">
+                    مشکلی در اتصال به اینترنت بوجود آمد
+                  </p>
+                ) : null}
+              </div>
+            </div>
           </div>
-          <h2 className="text-[20px] font-[300]  mb-[17px]">
-            دسته بندی تگ ها:
-          </h2>
-          <div
-            className={`${!(tagCategories.length === 0 && selectedTagCategories.length === 0) ? "grid sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-x-[25px] gap-y-[33px] overflow-y-scroll max-h-[155px]" : "scrollbar-opacity-0"} sm:mx-[30px] p-[20px] bg-[#FFF] rounded-[15px] border-[2px] border-[#000000]/21 mb-[17px]`}
-          >
-            {loading
-              ? null
-              : selectedTagCategories.map((tagCategory) => (
-                  <SelectedTagCategory
-                    key={tagCategory.id}
-                    Obj={tagCategory}
-                    selected={selectedTagCategories}
-                    addSelected={setSelectedTagCategories}
-                    unselected={tagCategories}
-                    deleteUnselected={setTagCategories}
-                  />
-                ))}
-            {loading ? (
-              <Loading />
-            ) : (
-              tagCategories.map((tagCategory) => (
-                <TagCategory
-                  key={tagCategory.id}
-                  Obj={tagCategory}
-                  selected={selectedTagCategories}
-                  addSelected={setSelectedTagCategories}
-                  unselected={tagCategories}
-                  deleteUnselected={setTagCategories}
-                />
-              ))
-            )}
-            {tagCategories.length === 0 &&
-            selectedTagCategories.length === 0 ? (
-              <p className="text-[18px] mx-auto text-red-500">
-                مشکلی در اتصال به اینترنت بوجود آمد
-              </p>
-            ) : null}
-          </div>
-          <h2 className="text-[20px] font-[300] mb-[17px]">جستجوی تگ ها:</h2>
+          <h2 className="text-[17px] font-[300] mb-[17px]">جستجوی تگ ها:</h2>
           <input
             value={searchKey}
             onChange={(e) => setSearchKey(e.target.value)}
@@ -995,7 +1130,7 @@ export function SearchFilters({
             placeholder="تگ مورد نظر خود را اینجا جستجو کنید..."
           ></input>
           <div
-            className={`${!(showingTags.length === 0 && showingSelectedTags.length === 0) ? "grid sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-x-[25px] gap-y-[33px] overflow-y-scroll max-h-[155px]" : "scrollbar-opacity-0"} sm:mx-[30px] p-[20px] bg-[#FFF] rounded-[15px] border-[2px] border-[#000000]/21 mb-[50px]`}
+            className={`${!(showingTags.length === 0 && showingSelectedTags.length === 0) ? "grid grid-cols-2 md:grid-cols-3  lg:grid-cols-4 xl:grid-cols-5 gap-x-[15px] gap-y-[23px]  md:gap-x-[25px] md:gap-y-[33px] overflow-y-scroll max-h-[155px]" : "scrollbar-opacity-0"} sm:mx-[30px] p-[20px] bg-[#FFF] rounded-[15px] border-[2px] border-[#000000]/21 mb-[50px]`}
           >
             {loading
               ? null
@@ -1019,20 +1154,22 @@ export function SearchFilters({
               <Loading />
             ) : (
               showingTags.map((tag) => (
-                <GenreAndTag
-                  Obj={tag}
-                  key={tag.id}
-                  addFilter={setFilters}
-                  filters={filters}
-                  selected={showingSelectedTags}
-                  addSelected={setShowingSelectedTags}
-                  unselected={showingTags}
-                  deleteUnselected={setShowingTags}
-                  allSelected={allSelectedTags}
-                  addAllSelected={setAllSelectedTags}
-                  allUnselected={allTags}
-                  deleteAllUnselected={setAllTags}
-                />
+                <div className="flex items-center justify-center">
+                  <GenreAndTag
+                    Obj={tag}
+                    key={tag.id}
+                    addFilter={setFilters}
+                    filters={filters}
+                    selected={showingSelectedTags}
+                    addSelected={setShowingSelectedTags}
+                    unselected={showingTags}
+                    deleteUnselected={setShowingTags}
+                    allSelected={allSelectedTags}
+                    addAllSelected={setAllSelectedTags}
+                    allUnselected={allTags}
+                    deleteAllUnselected={setAllTags}
+                  />
+                </div>
               ))
             )}
             {showingTags.length === 0 && showingSelectedTags.length === 0 ? (
@@ -1041,73 +1178,26 @@ export function SearchFilters({
               </p>
             ) : null}
           </div>
-          <div className="flex flex-col lg:flex-row justify-between gap-[50px] sm:w-[calc(100%-30px)] mb-[50px]">
-            <div className="flex flex-col gap-[17px] w-full lg:w-1/3">
-              <h2 className="text-[20px] font-[300]">تعداد فصل ها:</h2>
-              <FromToInputs
-                maxValue={"9999"}
-                valueLength={4}
-                setFilters={setFilters}
-                filterPattern={"chapter"}
-                fromValue={fromValueChapter}
-                toValue={toValueChapter}
-                setFromValue={setFromValueChapter}
-                setToValue={setToValueChapter}
-              />
-            </div>
-            <div className="flex flex-col gap-[17px] w-full lg:w-1/3">
-              <h2 className="text-[20px] font-[300] ">تعداد پسندیدگان:</h2>
-              <FromToInputs
-                maxValue={"99999"}
-                valueLength={5}
-                setFilters={setFilters}
-                filterPattern={"fav"}
-                fromValue={fromValueFav}
-                toValue={toValueFav}
-                setFromValue={setFromValueFav}
-                setToValue={setToValueFav}
-              />
-            </div>
-            <div className="flex flex-col gap-[17px] w-full lg:w-1/3">
-              <h2 className="text-[20px] font-[300] ">تعداد امتیازدهندگان:</h2>
-              <FromToInputs
-                maxValue={"99999"}
-                valueLength={5}
-                setFilters={setFilters}
-                filterPattern={"scorer"}
-                fromValue={fromValueScorer}
-                toValue={toValueScorer}
-                setFromValue={setFromValueScorer}
-                setToValue={setToValueScorer}
-              />
-            </div>
+          <div className="flex justify-end w-full">
+            <button
+              onClick={() => {
+                handleAdvancedSearch();
+                tagIds.current = [];
+                genreIds.current = [];
+              }}
+              className="btn md:!mx-0 md:!ml-[30px] !text-nowrap !w-full md:!w-fit    !h-fit !mb-0 px-[26px] py-[12px] !rounded-[20px] border-[2px] border-[#000000]/21 active:border-0"
+            >
+              <span className="span-btn !text-[16px] !font-[400]">
+                اعمال تمامی فیلترها
+              </span>
+            </button>
           </div>
-          <div className="flex gap-[50px] flex-col lg:flex-row justify-between sm:w-[calc(100%-30px)] 2xl:w-[calc(100%-60px)] items-center mb-[50px]">
-            <AvgScores setFilters={setFilters} />
-            <CheckBoxes addFilter={setFilters} filters={filters} />
-            <Writer setFilters={setFilters} />
-          </div>
-          <div className="flex flex-col lg:flex-row items-center sm:w-[calc(100%-30px)] 2xl:w-[calc(100%-60px)] gap-[50px] mt-[25px] mb-[60px]">
-            <KeyWord setFilters={setFilters} />
-            <CreationDate setFilters={setFilters} />
-          </div>
-          <button
-            onClick={() => {
-              handleAdvancedSearch();
-              tagIds.current = [];
-              genreIds.current = [];
-            }}
-            className="btn !w-fit !h-fit !mb-0 px-[26px] py-[12px] !rounded-[20px] border-[2px] border-[#000000]/21 active:border-0"
-          >
-            <span className="span-btn !text-[16px] !font-[400]">
-              اعمال تمامی فیلترها
-            </span>
-          </button>
         </div>
         <SelectMenu
           setFilters={setFilters}
           loading={loading2}
           showingBooks={showingBooks}
+          ordering={ordering}
         />
       </SharedStateProvider>
     </div>
