@@ -108,10 +108,16 @@ function AppRoutes() {
         <Route path="/threadposts/:threadId" element={<ThreadPostsWrapper />} />
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/playlists" element={<PlaylistPage />} />
-        <Route path="/playlists/:id" element={<PlaylistDetailPage />} />
+        <Route path="/playlists/:playlistId" element={<PlaylistDetailPage />} />
         <Route path="/public-playlists" element={<PublicPlaylistsPage />} />
-        <Route path="/anotherUserPlaylists" element={<UserPlaylistsPage />} />
-        <Route path="/othersPlaylists/:id" element={<OthersPlaylistDetailPage />} />
+        <Route
+          path="/anotherUserPlaylists/:userId"
+          element={<UserPlaylistsPage />}
+        />
+        <Route
+          path="/othersPlaylists/:playlistId"
+          element={<OthersPlaylistDetailPage />}
+        />
       </Routes>
     </Router>
   );
