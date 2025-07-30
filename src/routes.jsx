@@ -31,7 +31,7 @@ import ThreadPostsWrapper from "./features/Thread Posts/threadpost.jsx";
 import PublicPlaylistsPage from "./features/playlist/PublicPlaylistsPage.jsx";
 import UserPlaylistsPage from "./features/playlist/anotherUserPlaylistsPage.jsx";
 import OthersPlaylistDetailPage from "./features/playlist/othersPlaylistDetailPage.jsx";
-
+import Temp from "./features/temp.jsx";
 function AppRoutes() {
   return (
     <Router>
@@ -104,7 +104,8 @@ function AppRoutes() {
           }
         />
         <Route path="/threads/:forumId" element={<Threads forumId={3} />} />
-        <Route path="chat" element={<Chat />} />
+        <Route path="/chat" element={<Chat />} />
+        <Route path="/temp" element={<Temp />} />
         <Route path="/threadposts/:threadId" element={<ThreadPostsWrapper />} />
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/playlists" element={<PlaylistPage />} />
