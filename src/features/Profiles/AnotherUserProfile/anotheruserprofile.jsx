@@ -308,11 +308,11 @@ export default function Another_User_Profile() {
                 </span>
               </button>
               <button
-                onClick={() => handleScrollDown(1.8)}
+                onClick={() => navigate(`/anotherUserPlaylists/${user.user_id}`)}
                 className=" btn !m-0 !mt-[10px] !min-h-[60px] !flex !flex-col !bg-[#ffffff]  !rounded-[10px]"
               >
                 <span className=" span-btn !text-[24px] !font-[600] !text-[#265073]">
-                  5
+                  {user.playlist_count}
                 </span>
                 <span className="span-btn !font-[400] !text-[#000000]/70 !text-[14px]">
                   پلی لیست
