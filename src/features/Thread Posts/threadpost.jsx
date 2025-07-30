@@ -404,6 +404,22 @@ function Post({
         </div>
         <div className="flex flex-col w-full pb-[10px] border-b-[1px] border-[#000]/10 gap-[10px]">
           <h1 className="text-[16px] font-semibold mx-auto">{userName}</h1>
+          
+          <button
+            onClick={() => {
+              if (isMine) setIsClickedEdit(true);
+              else handleFollow();
+            }}
+            className={`btn !py-[5px] !px-[38px] !mb-[0] !mx-auto !text-[14px] !font-[400] !shadow-md active:!shadow-none ${loading ? "!cursor-progress" : ""}`}
+          >
+            <span className="span-btn">
+              {isMine
+                ? "ویرایش پست"
+                : !isFollowing
+                  ? "دنبال کردن"
+                  : "دنبال نکردن"}
+            </span>
+          </button>
           <button
             onClick={() => {
               if (isMine) {
@@ -442,21 +458,6 @@ function Post({
           >
             <span className="span-btn">
               {isMine ? "حذف پست" : "مسدود کردن"}
-            </span>
-          </button>
-          <button
-            onClick={() => {
-              if (isMine) setIsClickedEdit(true);
-              else handleFollow();
-            }}
-            className={`btn !py-[5px] !px-[38px] !mb-[0] !mx-auto !text-[14px] !font-[400] !shadow-md active:!shadow-none ${loading ? "!cursor-progress" : ""}`}
-          >
-            <span className="span-btn">
-              {isMine
-                ? "ویرایش پست"
-                : !isFollowing
-                  ? "دنبال کردن"
-                  : "دنبال نکردن"}
             </span>
           </button>
           {!isMine ? (
@@ -541,18 +542,7 @@ function Post({
                     {error ? <p className="text-red-500">{error}</p> : null}
                   </div>
                   <div className="flex flex-col w-4/20 gap-[20px]">
-                    <button
-                      onClick={() => {
-                        setIsClickedEdit(false);
-                        setNewBody("");
-                        setError("");
-                      }}
-                      className={`btn py-[12px] !w-full !h-fit !mb-0 !ml-0 !mr-0 !rounded-[15px] before:!bg-[#FF3B30] !bg-[#CC2F26] active:!shadow-none ${loading ? "!cursor-progress" : ""}`}
-                    >
-                      <span className="span-btn !text-[16px] !font-[400] text-nowrap">
-                        عدم ویرایش
-                      </span>
-                    </button>
+                    
                     <button
                       onClick={() => {
                         if (body !== postMessage && body) {
@@ -580,6 +570,18 @@ function Post({
                     >
                       <span className="span-btn !text-[16px] !font-[400] text-nowrap">
                         ویرایش
+                      </span>
+                    </button>
+                    <button
+                      onClick={() => {
+                        setIsClickedEdit(false);
+                        setNewBody("");
+                        setError("");
+                      }}
+                      className={`btn py-[12px] !w-full !h-fit !mb-0 !ml-0 !mr-0 !rounded-[15px] before:!bg-[#FF3B30] !bg-[#CC2F26] active:!shadow-none ${loading ? "!cursor-progress" : ""}`}
+                    >
+                      <span className="span-btn !text-[16px] !font-[400] text-nowrap">
+                        عدم ویرایش
                       </span>
                     </button>
                   </div>
@@ -613,18 +615,7 @@ function Post({
                   {error ? <p className="text-red-500">{error}</p> : null}
                 </div>
                 <div className="flex flex-col w-4/20 gap-[20px]">
-                  <button
-                    onClick={() => {
-                      setIsClickedEdit(false);
-                      setNewBody("");
-                      setError("");
-                    }}
-                    className={`btn py-[12px] !w-full !h-fit !mb-0 !ml-0 !mr-0 !rounded-[15px] before:!bg-[#FF3B30] !bg-[#CC2F26] active:!shadow-none ${loading ? "!cursor-progress" : ""}`}
-                  >
-                    <span className="span-btn !text-[16px] !font-[400] text-nowrap">
-                      عدم ویرایش
-                    </span>
-                  </button>
+                  
                   <button
                     onClick={() => {
                       if (body !== postMessage && body) {
@@ -652,6 +643,18 @@ function Post({
                   >
                     <span className="span-btn !text-[16px] !font-[400] text-nowrap">
                       ویرایش
+                    </span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      setIsClickedEdit(false);
+                      setNewBody("");
+                      setError("");
+                    }}
+                    className={`btn py-[12px] !w-full !h-fit !mb-0 !ml-0 !mr-0 !rounded-[15px] before:!bg-[#FF3B30] !bg-[#CC2F26] active:!shadow-none ${loading ? "!cursor-progress" : ""}`}
+                  >
+                    <span className="span-btn !text-[16px] !font-[400] text-nowrap">
+                      عدم ویرایش
                     </span>
                   </button>
                 </div>
