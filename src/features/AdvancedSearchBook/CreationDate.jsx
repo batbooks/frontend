@@ -7,18 +7,17 @@ import { useEffect, useRef } from "react";
 export function CreationDate({ setFilters, date_from, date_to }) {
   const { dateFrom, setDateFrom, dateTo, setDateTo } = useSharedState();
   const didRun = useRef(false);
-  console.log(date_to,date_from)
+  console.log(date_to, date_from);
   useEffect(() => {
     if (!didRun.current && date_from) {
       setDateFrom(date_from);
       if (String(date_from) == String(date_to)) {
-        
         setFilters((filters) => [
           ...(filters || []),
           `تاریخ ایجاد: ${date_to}`,
         ]);
       } else {
-        console.log("salam")
+        console.log("salam");
         setFilters((filters) => [
           ...(filters || []),
           `تاریخ ایجاد: از ${date_from}`,

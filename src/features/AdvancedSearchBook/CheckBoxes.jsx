@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useSharedState } from "./SharedStateProvider";
 
-export function StatusDropDown({ addFilter, filters ,status}) {
+export function StatusDropDown({ addFilter, filters, status }) {
   const { checkedNum, setCheckedNum } = useSharedState();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -10,23 +10,32 @@ export function StatusDropDown({ addFilter, filters ,status}) {
     { id: 1, label: "به اتمام رسیده", value: "وضعیت: به اتمام رسیده" },
     { id: 2, label: "متوقف شده", value: "وضعیت: متوقف شده" },
   ];
-  useEffect(()=>{
-    if(status){
-      if (status=="C"){
-        setCheckedNum(1)
-        handleSelect(options[1])
+  const didRun = useRef(false);
+  useEffect(() => {
+    if (!didRun.current && status) {
+      if (status == "C") {
+        setCheckedNum(1);
+        addFilter((filters) => [
+          ...(filters || []),
+          `وضعیت: ${options[1].label}`,
+        ]);
       }
-      if(status=="O"){
-        setCheckedNum(0)
-        handleSelect(options[0])
-      }
-      else{
-        setCheckedNum(2)
-        handleSelect(options[2])
+      if (status == "O") {
+        setCheckedNum(0);
+        addFilter((filters) => [
+          ...(filters || []),
+          `وضعیت: ${options[0].label}`,
+        ]);
+      } else {
+        setCheckedNum(2);
+        addFilter((filters) => [
+          ...(filters || []),
+          `وضعیت: ${options[2].label}`,
+        ]);
       }
     }
-  },[]);
-  
+    didRun.current = true;
+  }, []);
 
   const selectedOption = options.find((option) => option.id === checkedNum);
 
@@ -43,21 +52,19 @@ export function StatusDropDown({ addFilter, filters ,status}) {
     };
   }, [dropdownRef]);
 
-
   const handleSelect = (option) => {
     const newCheckedNum = checkedNum === option.id ? -1 : option.id;
     setCheckedNum(newCheckedNum);
 
     // ابتدا فیلترهای وضعیت موجود را حذف کن
-    let updatedFilters = filters?.filter(
-      (filter) => !filter.startsWith("وضعیت:")
-    ) || [];
+    let updatedFilters =
+      filters?.filter((filter) => !filter.startsWith("وضعیت:")) || [];
 
     // اگر گزینه‌ی جدیدی انتخاب شده، آن را اضافه کن
     if (newCheckedNum !== -1) {
       updatedFilters = [...updatedFilters, option.value];
     }
-    
+
     addFilter(updatedFilters);
     setIsOpen(false);
   };

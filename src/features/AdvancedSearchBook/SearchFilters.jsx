@@ -67,6 +67,9 @@ export function SearchFilters({
     : [];
   const chapterCountMax = query.get("chapter_count_max");
   const tagOr = query.get("tag_or");
+  const tagArray = tagOr
+    ? tagOr.split(",").map((num) => parseInt(num, 10))
+    : [];
   const ordering = query.get("ordering");
   console.log(ordering);
   console.log(genreOr);
@@ -74,7 +77,7 @@ export function SearchFilters({
   const [isVisibleFilters, setIsVisibleFilters] = useState(false);
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState([]);
-  console.log(filters)
+  console.log(filters);
   const [genres, setGenres] = useState([]);
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [tagCategories, setTagCategories] = useState([]);
@@ -95,7 +98,6 @@ export function SearchFilters({
   const [toValueScorer, setToValueScorer] = useState("99999");
   const [searchKey, setSearchKey] = useState("");
   const [searchWord, setSearchWord] = useState(search);
-  const [isBlankSearchWord, setIsBlankSearchWord] = useState(false);
   const filterNum = (filters || []).length;
   const genreIds = useRef([]);
   const tagIds = useRef([]);
@@ -698,38 +700,34 @@ export function SearchFilters({
     }, `?search=${searchWord}`);
     const fetchSimpleSearchBook = async () => {
       try {
-        if (searchWord.trim() !== "") {
-          setLoading2(true);
-          console.log(Query);
-          const response = isVisibleFilters
-            ? await fetch(`http://127.0.0.1:8000/advance/${Query}`, {
-                method: "GET",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              })
-            : await fetch(`http://127.0.0.1:8000/advance/${Query2}`, {
-                method: "GET",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              });
-          if (!response.ok) {
-            setLoading2(false);
-            throw new Error("مشکلی پیش اومد...دوباره تلاش کنید");
-          } else {
-            const data = await response.json();
-            setIsVisibleFilters(false);
+        setLoading2(true);
+        console.log(Query);
+        const response = isVisibleFilters
+          ? await fetch(`http://127.0.0.1:8000/advance/${Query}`, {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            })
+          : await fetch(`http://127.0.0.1:8000/advance/${Query2}`, {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+        if (!response.ok) {
+          setLoading2(false);
+          throw new Error("مشکلی پیش اومد...دوباره تلاش کنید");
+        } else {
+          const data = await response.json();
+          setIsVisibleFilters(false);
 
-            setcurrentpage(1);
-            setTotalPages(Math.ceil(data.count / itemsPerPage));
-            setNextPageLink(data.next?.replace("http://127.0.0.1:8000/", ""));
-            setPrevPageLink(
-              data.previous?.replace("http://127.0.0.1:8000/", "")
-            );
-            setShowingBooks(data.results);
-          }
-        } else setIsBlankSearchWord(true);
+          setcurrentpage(1);
+          setTotalPages(Math.ceil(data.count / itemsPerPage));
+          setNextPageLink(data.next?.replace("http://127.0.0.1:8000/", ""));
+          setPrevPageLink(data.previous?.replace("http://127.0.0.1:8000/", ""));
+          setShowingBooks(data.results);
+        }
       } catch (err) {
         setTimeout(() => {
           Swal.fire({
@@ -781,6 +779,7 @@ export function SearchFilters({
     didRun.current = true;
   }, []);
   const didRun2 = useRef(false);
+  const didRun3 = useRef(false);
   useEffect(() => {
     const fetchGenresAndTags = async () => {
       setLoading(true);
@@ -809,14 +808,24 @@ export function SearchFilters({
         temp.map((genre) => {
           setFilters((filters) => [...(filters || []), `ژانر: ${genre.title}`]);
         });
-        didRun2.current=true
+        didRun2.current = true;
       }
       setTagCategories(data2.tag_categories);
       const alllTags = data2.tag_categories.reduce((acc, tagCategory) => {
         return [...acc, ...tagCategory.tags];
       }, []);
-      setShowingTags(alllTags);
-      setAllTags(alllTags);
+      setShowingTags(alllTags.filter((tag) => !tagArray.includes(tag.id)));
+      setAllTags(alllTags.filter((tag) => !tagArray.includes(tag.id)));
+      const temp2 = alllTags.filter((tag) => tagArray.includes(tag.id));
+      setShowingSelectedTags(temp2);
+      setAllSelectedTags(temp2);
+      console.log(temp2);
+      if (!didRun3.current) {
+        temp2.map((tag) => {
+          setFilters((filters) => [...(filters || []), `تگ: ${tag.title}`]);
+        });
+        didRun3.current = true;
+      }
     };
     try {
       fetchGenresAndTags();
@@ -917,9 +926,7 @@ export function SearchFilters({
               value={searchWord}
               onChange={(e) => {
                 setSearchWord(e.target.value);
-                setIsBlankSearchWord(false);
               }}
-              onBlur={() => setIsBlankSearchWord(false)}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   e.preventDefault();
@@ -936,11 +943,6 @@ export function SearchFilters({
               alt="search"
               className="absolute left-[14px] top-[12px]"
             />
-            {isBlankSearchWord ? (
-              <p className="text-red-500 absolute mt-[55px] mr-[25px]">
-                این فیلد خالی است.لطفا چیزی بنویسید...
-              </p>
-            ) : null}
           </div>
         </div>
       </form>
