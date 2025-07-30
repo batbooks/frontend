@@ -51,7 +51,7 @@ export default function Otp() {
       setError('');
       setTimer(60);
       // درخواست ارسال مجدد (در صورت وجود API)
-      await fetch('http://127.0.0.1:8000/auth/resend-otp/', {
+      await fetch('https://batbooks.liara.run/auth/resend-otp/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),

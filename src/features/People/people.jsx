@@ -234,7 +234,7 @@ function Person({ person }) {
     relative w-full"
       >
         {person.user_info.image?<img
-          src={`http://127.0.0.1:8000/${person.user_info.image}`}
+          src={`https://batbooks.liara.run/${person.user_info.image}`}
           alt="follow"
           className="rounded-full 
         w-12 h-12 sm:w-14 sm:h-14 

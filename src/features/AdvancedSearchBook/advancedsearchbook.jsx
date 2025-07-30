@@ -28,8 +28,8 @@ export default function AdvancedSearchBook() {
       try {
         const response = await fetch(
           !query.size > 0
-            ? `http://127.0.0.1:8000/advance/`
-            : `http://127.0.0.1:8000/advance/${location.search}`,
+            ? `https://batbooks.liara.run/advance/`
+            : `https://batbooks.liara.run/advance/${location.search}`,
           {
             method: "GET",
             headers: {

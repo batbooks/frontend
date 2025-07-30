@@ -376,8 +376,8 @@ export function SearchFilters({
       try {
         setLoading2(true);
 
-        console.log(`http://127.0.0.1:8000/advancedsearchbook/${Query}`);
-        const response = await fetch(`http://127.0.0.1:8000/advance/${Query}`, {
+        console.log(`https://batbooks.liara.run/advancedsearchbook/${Query}`);
+        const response = await fetch(`https://batbooks.liara.run/advance/${Query}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

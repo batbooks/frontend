@@ -37,7 +37,7 @@ export default function Login() {
   // واکشی اطلاعات کاربر پس از دریافت توکن
   const fetchUserInfo = async (token) => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/auth/who/', {
+      const response = await fetch('https://batbooks.liara.run/auth/who/', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
