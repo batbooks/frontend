@@ -51,7 +51,12 @@ function Signup() {
   return (
     <div className="w-[100vw] h-[100vh] bg-[#D9F0FF]">
       <div className="flex gap-1 items-center ">
-        <button onClick={()=>{navigate("/")}} className="cursor-pointer text-[24px] mt-1.5 ml-2 font-[800] ">
+        <button
+          onClick={() => {
+            navigate("/");
+          }}
+          className="cursor-pointer text-[24px] mt-1.5 ml-2 font-[800] "
+        >
           Bat<span className="text-[#2663CD]">Books</span>
         </button>
       </div>

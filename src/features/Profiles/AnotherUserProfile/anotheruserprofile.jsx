@@ -356,7 +356,7 @@ export default function Another_User_Profile() {
             </div>
           </div>
 
-          {UserWritten[0]? (
+          {UserWritten[0] ? (
             <div className="min-w-[242px] h-[385px] m-[32px] mt-[5px]  ml-0 ">
               <div className="flex items-start text-center gap-2 md:gap-3 lg:gap-[10px] mb-3">
                 <FiBookmark className="opacity-70 text-xl md:text-2xl lg:text-2xl" />
@@ -365,7 +365,7 @@ export default function Another_User_Profile() {
                 </h1>
               </div>
               <BookCard
-              id={lastBook.id}
+                id={lastBook.id}
                 author={lastBook.Author}
                 title={lastBook.name}
                 coverImage={
@@ -375,7 +375,6 @@ export default function Another_User_Profile() {
                 }
                 chapters={80}
                 description={lastBook.description}
-                
               />
             </div>
           ) : (
@@ -510,9 +509,7 @@ export function Book({ book, isLast = false, minw = 180, h = 254 }) {
         title={book.name}
         author={book.Author}
         coverImage={
-          book.image != null
-            ? `https://batbooks.liara.run/${book.image}`
-            : "/20.jpg"
+          book.image != null ? `http://127.0.0.1:8000/${book.image}` : "/20.jpg"
         }
         description={book.description}
         chapters={80}

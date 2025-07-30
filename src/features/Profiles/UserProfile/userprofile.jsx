@@ -9,7 +9,17 @@ import { logout } from "../../../redux/infoSlice";
 import Loading from "../../../common/Loading/Loading";
 import { useNavigate } from "react-router";
 import UserDashboard from "../UserDashboard/userDashboard";
-import { FiArchive, FiBookmark, FiCreditCard, FiEdit3, FiGrid, FiInfo, FiLayers, FiLogOut, FiUser } from "react-icons/fi";
+import {
+  FiArchive,
+  FiBookmark,
+  FiCreditCard,
+  FiEdit3,
+  FiGrid,
+  FiInfo,
+  FiLayers,
+  FiLogOut,
+  FiUser,
+} from "react-icons/fi";
 import {
   FaIdCard,
   FaInfoCircle,
@@ -94,16 +104,13 @@ export default function Profile() {
     const fetchFollowings = async () => {
       setLoading1(true);
       try {
-        const response = await fetch(
-          `https://batbooks.liara.run/user/following/`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await fetch(`http://127.0.0.1:8000/user/following/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
         if (response.ok) {
           const data = await response.json();
           setFollowings(data.results);

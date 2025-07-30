@@ -49,19 +49,27 @@ export default function Bookcard({ id, suggestions, isHovered, setIsHovered }) {
             className="w-[220px] h-[300px] rounded-t-2xl blur-[4px] transition-all duration-100"
             src={
               suggestions[id]?.image != null
+<<<<<<< HEAD
                 ? `https://batbooks.liara.run${suggestions[id]?.image}`
+=======
+                ? `http://127.0.0.1:8000/${suggestions[id]?.image}`
+>>>>>>> bd82cc3a1cba06646f85d91dbd94e9a55ae6d98c
                 : "20.jpg"
             }
             alt=""
           />
         ) : (
-          
           <img
             className="w-[250px] h-[300px]  rounded-t-2xl transition-all duration-100 "
             src={
               suggestions[id]?.image != null
+<<<<<<< HEAD
                 ? `https://batbooks.liara.run${suggestions[id]?.image}`
                 : "/20.jpg"
+=======
+                ? `http://127.0.0.1:8000/${suggestions[id]?.image}`
+                : "20.jpg"
+>>>>>>> bd82cc3a1cba06646f85d91dbd94e9a55ae6d98c
             }
             alt=""
           />

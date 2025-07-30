@@ -74,7 +74,7 @@ const EditChapter = () => {
                 <th className="text-center px-[10px] py-[16px] text-[14px] text-white font-semibold w-[139px]  border-l-[2px] border-[#B9B9B9]">
                   آخرین ویرایش
                 </th>
-                
+
                 <th className="px-[10px] py-[16px] text-[14px] text-white font-semibold text-right border-l-[2px] border-[#B9B9B9]">
                   نام فصل
                 </th>
@@ -90,7 +90,6 @@ const EditChapter = () => {
                   chapterId={chapter.id}
                   chapterNum={index + 1}
                   chapterName={chapter.title}
-                  
                   chapterEditedIn={new Date(
                     chapter.updated_at
                   ).toLocaleDateString("fa-IR")}
@@ -131,7 +130,7 @@ function Chapter({
       <td className="text-center px-[12px] py-[18px] text-[14px]  border-t-[2px] border-l-[2px] border-[#B9B9B9]">
         {chapterEditedIn}
       </td>
-      
+
       <td className="text-right px-[12px] py-[18px] text-[14px]  border-t-[2px] border-l-[2px] border-[#B9B9B9]">
         {chapterName}
       </td>

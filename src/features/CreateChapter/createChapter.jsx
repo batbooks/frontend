@@ -27,7 +27,10 @@ const CreateChapter = () => {
 
         const response = await fetch(`https://batbooks.liara.run/book/${id}/`, {
           method: "GET",
-          headers: { "Content-Type": "application/json", Authorization: auth },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: auth,
+          },
         });
 
         if (!response.ok) {

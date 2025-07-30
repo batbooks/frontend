@@ -26,7 +26,12 @@ const Threads = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ name: input1,text:input2, forum: forumId, status: "O" }),
+          body: JSON.stringify({
+            name: input1,
+            text: input2,
+            forum: forumId,
+            status: "O",
+          }),
         }
       );
       if (!response.ok) {
@@ -132,11 +137,10 @@ const Threads = () => {
         </h1>
 
         {/* Search Box */}
-        
 
-        <div className="flex justify-end px-4 md:px-0">
+        <div className="flex justify-center md:justify-end px-4 mt-4 ">
           <Button
-            className="flex items-center gap-2 mr-4 md:mr-20 bg-[#2663CD] rounded-[10px] text-[#ffffff] text-sm md:text-[16px] font-[400] py-2 md:py-[9px] px-4 md:px-[32px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
+            className="flex items-center gap-2 mx-auto md:mr-20 bg-[#2663CD] rounded-[10px] text-[#ffffff] text-sm md:text-[16px] font-[400] py-2 md:py-[9px] px-4 md:px-[32px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto"
             onClick={handleOpen}
             variant="gradient"
           >

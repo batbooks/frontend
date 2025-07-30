@@ -334,15 +334,12 @@ export function SearchFilters({
     const fetchAdvancedSearchBook = async () => {
       try {
         setLoading2(true);
-        const response = await fetch(
-          `https://batbooks.liara.run/advance/${Query}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const response = await fetch(`http://127.0.0.1:8000/advance/${Query}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
         if (!response.ok) {
           setLoading2(false);
           throw new Error("مشکلی پیش اومد...دوباره تلاش کنید");
@@ -350,10 +347,8 @@ export function SearchFilters({
           const data = await response.json();
           setcurrentpage(1);
           setTotalPages(Math.ceil(data.count / itemsPerPage));
-          setNextPageLink(data.next?.replace("https://batbooks.liara.run/", ""));
-          setPrevPageLink(
-            data.previous?.replace("https://batbooks.liara.run/", "")
-          );
+          setNextPageLink(data.next?.replace("http://127.0.0.1:8000/", ""));
+          setPrevPageLink(data.previous?.replace("http://127.0.0.1:8000/", ""));
           setShowingBooks(data.results);
         }
       } catch (err) {

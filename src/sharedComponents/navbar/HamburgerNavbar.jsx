@@ -16,7 +16,7 @@ import {
   FiChevronDown,
   FiChevronUp,
   FiPhone,
-  FiMessageCircle
+  FiMessageCircle,
 } from "react-icons/fi";
 import { useLocation, useNavigate } from "react-router-dom";
 export default function HamburgerNavbar({
@@ -27,11 +27,11 @@ export default function HamburgerNavbar({
   openCommunications,
   handleNav,
   handleLogout,
-  setSelectedItem
+  setSelectedItem,
 }) {
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   const location = useLocation();
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   useEffect(() => {
     if (location.pathname === "/") setSelectedItem(1);
     else if (location.pathname === "/mybooks") setSelectedItem(2);
@@ -159,7 +159,9 @@ export default function HamburgerNavbar({
                     <MenuItem
                       icon={<FiMessageCircle />}
                       label=" چت "
-                      onClick={()=>{navigate("/chat",{state:{UserId:null}})}}
+                      onClick={() => {
+                        navigate("/chat", { state: { UserId: null } });
+                      }}
                     />
                   </li>
                   <li className="transition-all duration-200 ">
