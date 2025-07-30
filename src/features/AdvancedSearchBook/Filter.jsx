@@ -84,12 +84,12 @@ export function Filter({
               setToValueScorer("99999");
             }
             if (filterName.includes("میانگین امتیاز: از")) {
-              setAvgScoreFrom(1.0);
+              setAvgScoreFrom("1.0");
             } else if (filterName.includes("میانگین امتیاز: تا")) {
-              setAvgScoreTo(5.0);
+              setAvgScoreTo("5.0");
             } else if (filterName.includes("میانگین امتیاز: ")) {
-              setAvgScoreFrom(1.0);
-              setAvgScoreTo(5.0);
+              setAvgScoreFrom("1.0");
+              setAvgScoreTo("5.0");
             }
             if (filterName.includes("وضعیت: ")) {
               setCheckedNum(-1);
