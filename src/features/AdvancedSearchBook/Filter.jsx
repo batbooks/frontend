@@ -31,6 +31,7 @@ export function Filter({
   return (
     <div className="overflow-hidden relative items-center shadow-lg flex justify-between text-nowrap rounded-full bg-white pr-[11px] pl-[30px] py-[6px] w-full mx-0 grow-1">
       <span className="z-1 text-[15px] font-[100]">{filterName}</span>
+       
       <div className="bg-white h-full w-[28px] rounded-l-full z-2 absolute left-0 grid">
         <button
           onClick={() => {

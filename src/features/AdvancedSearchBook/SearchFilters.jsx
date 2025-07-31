@@ -11,11 +11,12 @@ import { GenreAndTag } from "./GenreAndTag";
 import { KeyWord } from "./KeyWord";
 import { SelectedGenreAndTag } from "./SelectedGenreAndTag";
 import { SelectedTagCategory } from "./SelectedTagCategory";
-import { SharedStateProvider } from "./SharedStateProvider";
+import { SharedStateProvider, useSharedState } from "./SharedStateProvider";
 import { TagCategory } from "./TagCategory";
 import { Writer } from "./Writer";
 import { SelectMenu } from "./SelectMenu";
 import { useLocation, useNavigate } from "react-router";
+import Button from "./button";
 
 const persianToEnglishDigits = (str) => {
   return str.replace(/[۰-۹]/g, (d) => "۰۱۲۳۴۵۶۷۸۹".indexOf(d));
@@ -38,6 +39,8 @@ const convertGregorianToShamsi = (gregorianDateStr) => {
 };
 
 export function SearchFilters({
+  numberOfBooks,
+  setNumberOfBooks,
   loading2,
   setLoading2,
   setShowingBooks,
@@ -100,6 +103,7 @@ export function SearchFilters({
   const genreIds = useRef([]);
   const tagIds = useRef([]);
   const navigate = useNavigate();
+  
   function handleAdvancedSearch() {
     console.log(searchWord);
 
@@ -390,6 +394,7 @@ export function SearchFilters({
           const data = await response.json();
           setcurrentpage(1);
           setTotalPages(Math.ceil(data.count / itemsPerPage));
+          setNumberOfBooks(data.count)
           setNextPageLink(data.next);
           setPrevPageLink(data.previous);
           setShowingBooks(data.results);
@@ -723,6 +728,7 @@ export function SearchFilters({
 
             setcurrentpage(1);
             setTotalPages(Math.ceil(data.count / itemsPerPage));
+            setNumberOfBooks(data.count)
             setNextPageLink(data.next?.replace("http://127.0.0.1:8000/", ""));
             setPrevPageLink(
               data.previous?.replace("http://127.0.0.1:8000/", "")
@@ -951,6 +957,7 @@ export function SearchFilters({
           <div className="flex flex-col gap-[17px] w-full">
             <div className="flex justify-between items-center">
               <div className="flex gap-[3px] items-center">
+                <Button></Button>
                 <img
                   src="/images/filter.png"
                   alt="filter"
@@ -962,6 +969,7 @@ export function SearchFilters({
               </div>
             </div>
             <div className="grid  grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 mx-0 gap-[11px] mb-[20px]">
+          
               {filters?.map((filter, i) => (
                 <Filter
                   key={i}
@@ -1040,7 +1048,8 @@ export function SearchFilters({
                   <Loading />
                 ) : (
                   selectedGenres.map((genre) => (
-                    <SharedStateProvider>
+                    
+                      
                       <SelectedGenreAndTag
                         Obj={genre}
                         deleteFilter={setFilters}
@@ -1050,7 +1059,7 @@ export function SearchFilters({
                         unselected={genres}
                         deleteUnselected={setGenres}
                       />
-                    </SharedStateProvider>
+                    
                   ))
                 )}
                 {loading
@@ -1060,7 +1069,7 @@ export function SearchFilters({
                         key={genre.id}
                         className="flex items-center text-nowrap justify-center "
                       >
-                        <SharedStateProvider>
+                        
                           <GenreAndTag
                             Obj={genre}
                             addFilter={setFilters}
@@ -1070,7 +1079,7 @@ export function SearchFilters({
                             unselected={genres}
                             deleteUnselected={setGenres}
                           />
-                        </SharedStateProvider>
+                        
                       </div>
                     ))}
                 {genres.length === 0 && selectedGenres.length === 0 ? (
@@ -1184,6 +1193,7 @@ export function SearchFilters({
                 handleAdvancedSearch();
                 tagIds.current = [];
                 genreIds.current = [];
+                
               }}
               className="btn md:!mx-0 md:!ml-[30px] !text-nowrap !w-full md:!w-fit    !h-fit !mb-0 px-[26px] py-[12px] !rounded-[20px] border-[2px] border-[#000000]/21 active:border-0"
             >
