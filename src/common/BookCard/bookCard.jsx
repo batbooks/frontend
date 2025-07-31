@@ -56,7 +56,9 @@ export default function BookCard({
         <div className="flex flex-col gap-5">
           <h3 className="text-cyan-400 font-bold text-[20px] mt-1">{title}</h3>
           <p className="text-gray-300 text-[13px] flex-wrap break-words">
-            {description}
+            {String(description).length > 165
+              ? description.slice(0, 165) + "..."
+              : description}
           </p>
         </div>
         <div className="flex flex-col">
