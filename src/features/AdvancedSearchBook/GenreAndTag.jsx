@@ -31,9 +31,9 @@ export function GenreAndTag({
         }
       }}
       title={Obj.description}
-      className="btn !bg-[#2663CD]/80 !w-full !h-fit !mb-0 !mx-0 !rounded-[10px] py-[10px]"
+      className="btn !bg-[#2663CD]/80  !h-fit !mb-0 !mx-0 !rounded-[10px] py-[10px] !w-full"
     >
-      <span className="span-btn !text-[14px] !font-[300]">{Obj.title}</span>
+      <span className="span-btn !text-[12px] lg:!text-[14px] !font-[300]">{Obj.title}</span>
     </button>
   );
 }

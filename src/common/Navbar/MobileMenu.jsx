@@ -39,11 +39,11 @@ const MobileMenu = () => {
         <ul className="divide-y divide-gray-200 text-right text-gray-800">
           <li>
             <Link
-              to="/contact"
+              to="/public-playlists"
               className="block px-5 py-3 hover:bg-blue-100 transition"
               onClick={() => setIsMenuOpen(false)}
             >
-              تماس با ما
+              پلی لیست های عمومی
             </Link>
           </li>
           <li>

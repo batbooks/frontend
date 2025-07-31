@@ -17,8 +17,13 @@ import {
   FiChevronUp,
   FiPhone,
   FiMessageCircle,
+  FiBookmark,
+  FiBarChart,
+  FiCreditCard,
+  FiBookOpen,
 } from "react-icons/fi";
 import { useLocation, useNavigate } from "react-router-dom";
+import { FaBookOpen } from "react-icons/fa";
 export default function HamburgerNavbar({
   mobileMenuOpen,
   closeMenu,
@@ -36,7 +41,7 @@ export default function HamburgerNavbar({
     if (location.pathname === "/") setSelectedItem(1);
     else if (location.pathname === "/mybooks") setSelectedItem(2);
     else if (location.pathname === "/search") setSelectedItem(3);
-    else if (location.pathname === "/contact") setSelectedItem(4);
+    else if (location.pathname === "/public-playlists") setSelectedItem(4);
     else if (location.pathname === "/chat") setSelectedItem(5);
     else setSelectedItem(0);
   }, [location.pathname]);
@@ -70,11 +75,19 @@ export default function HamburgerNavbar({
               {isAuthenticated ? (
                 <>
                   <li className="w-full px-3 flex items-center gap-3">
-                    <img
-                      className="w-10 h-10  rounded-full"
-                      src={`http://127.0.0.1:8000${user.user_info.image}`}
-                      alt="asd"
-                    />
+                    {isAuthenticated && user.user_info.image != null ? (
+                      <img
+                        className="w-[50px] h-[50px] rounded-[30px]"
+                        src={`http://127.0.0.1:8000${user.user_info.image}`}
+                        alt="User Image 2"
+                      />
+                    ) : (
+                      <img
+                        className="w-[50px] h-[50px] rounded-[30px]"
+                        src="/images/user_none.png"
+                        alt="User Image 3"
+                      />
+                    )}
                     <h3>{user.name} </h3>
                   </li>
                   <li>
@@ -189,9 +202,9 @@ export default function HamburgerNavbar({
               </li>
               <li>
                 <MenuItem
-                  icon={<FiPhone />}
-                  label="ارتباط با ما"
-                  onClick={() => handleNav("/contact", 4)}
+                  icon={<FiBookOpen />}
+                  label="پلی لیست های عمومی"
+                  onClick={() => handleNav("/public-playlists", 4)}
                 />
               </li>
             </ul>

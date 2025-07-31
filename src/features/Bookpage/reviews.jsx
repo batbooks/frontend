@@ -407,17 +407,7 @@ function Reviews({ book }) {
                     {isAuthenticated ? (
                       user !== null && user.id === review.user.id ? (
                         <div>
-                          <button
-                            className="btn !py-[5px] !px-[38px] !text-[14px] before:!bg-[#FF3B30] !bg-[#CC2F26] !shadow-lg"
-                            onClick={() => handleDeleteReview()}
-                          >
-                            <span className="span-btn">
-                              <div className="flex flex-row items-center gap-2">
-                                <FiTrash2 className="w-2 h-2 lg:w-[17px] lg:h-[17px]"></FiTrash2>
-                                <p className="text-nowrap">حذف نقد</p>
-                              </div>
-                            </span>
-                          </button>
+                          
                           <button
                             className="btn  !py-[5px] !px-[20px]   !text-[14px] !font-[400]"
                             onClick={() => handleEditReview(review)}
@@ -430,6 +420,17 @@ function Reviews({ book }) {
                                   alt="edit"
                                 />
                                 <p className="text-nowrap"> ویرایش نقد </p>
+                              </div>
+                            </span>
+                          </button>
+                          <button
+                            className="btn !py-[5px] !px-[38px] !text-[14px] before:!bg-[#FF3B30] !bg-[#CC2F26] !shadow-lg"
+                            onClick={() => handleDeleteReview()}
+                          >
+                            <span className="span-btn">
+                              <div className="flex flex-row items-center gap-2">
+                                <FiTrash2 className="w-2 h-2 lg:w-[17px] lg:h-[17px]"></FiTrash2>
+                                <p className="text-nowrap">حذف نقد</p>
                               </div>
                             </span>
                           </button>

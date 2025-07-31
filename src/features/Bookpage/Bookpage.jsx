@@ -213,6 +213,7 @@ const BookPage = () => {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
+            title: reviewTitle,
             body: reviewContent,
             rating: reviewRating,
             book: parseInt(bookId),
@@ -248,6 +249,7 @@ const BookPage = () => {
 
   const handleIsReadingBook = async (bookId, chapterId) => {
     const token = localStorage.getItem("access_token");
+    const auth = token ? `Bearer ${token}` : "";
     setLoading2(true);
     try {
       const formData = new FormData();
@@ -259,7 +261,7 @@ const BookPage = () => {
           method: "POST",
           body: formData,
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: auth,
           },
         }
       );

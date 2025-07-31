@@ -6,7 +6,7 @@ import { Rating } from "@mui/material";
 import Loading from "../../common/Loading/Loading";
 import Swal from "sweetalert2";
 import { SearchFilters } from "./SearchFilters";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import BookCard from "../../common/BookCard/bookCard";
 import { useSelector } from "react-redux";
 
@@ -19,24 +19,40 @@ export default function AdvancedSearchBook() {
   const [totalPages, setTotalPages] = useState(1);
   const [nextPageLink, setNextPageLink] = useState(".");
   const [prevPageLink, setPrevPageLink] = useState(".");
+  const [numberOfBooks, setNumberOfBooks] = useState(0);
   const itemsPerPage = 10;
-
+  const location = useLocation();
+  const query = new URLSearchParams(location.search);
+  console.log("location:", location);
   useEffect(() => {
     const fetchAllBooks = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/book/all/`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await fetch(
+          !query.size > 0
+            ? `http://127.0.0.1:8000/advance/`
+            : `http://127.0.0.1:8000/advance/${location.search}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
         if (!response.ok) {
           throw new Error("مشکلی پیش اومد...دوباره تلاش کنید");
         }
         const data = await response.json();
-        setAllBooks(data);
-        setTotalPages(Math.ceil(data.length / itemsPerPage));
-        setShowingBooks(data.filter((_, i) => i < 10));
+        console.log("data:", data);
+
+       
+          setAllBooks(data.results);
+          setNextPageLink(data.next);
+          setPrevPageLink(data.previous);
+          setNumberOfBooks(data.count)
+          setTotalPages(Math.ceil(data.count / itemsPerPage));
+          console.log(Math.ceil(data.count / itemsPerPage));
+          setShowingBooks(data.results);
+        
       } catch (err) {
         setTimeout(() => {
           Swal.fire({
@@ -73,21 +89,25 @@ export default function AdvancedSearchBook() {
         if (pageDiff > 0) {
           let nextLink = nextPageLink;
           for (let i = 0; i < pageDiff; i++) {
-            const response = await fetch(`http://127.0.0.1:8000${nextLink}`, {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-              },
-            });
+            const response = await fetch(
+              !query.size > 0 ? `${nextLink}` : nextLink,
+              {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            );
             if (!response.ok) {
               throw new Error("مشکلی پیش اومد...دوباره تلاش کنید");
             }
             const data = await response.json();
-            nextLink = data.next?.replace("http://127.0.0.1:8000/", "");
+            
+            nextLink = data.next
             if (i === pageDiff - 1) {
-              setNextPageLink(data.next?.replace("http://127.0.0.1:8000/", ""));
+              setNextPageLink(data.next);
               setPrevPageLink(
-                data.previous?.replace("http://127.0.0.1:8000/", "")
+                data.previous
               );
               setcurrentpage(page);
               setShowingBooks(data.results);
@@ -96,22 +116,31 @@ export default function AdvancedSearchBook() {
         } else if (pageDiff < 0) {
           let prevLink = prevPageLink;
           for (let i = pageDiff; i < 0; i++) {
-            const response = await fetch(`http://127.0.0.1:8000${prevLink}`, {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-              },
-            });
+            const response = await fetch(
+              !query.size > 0 ? `${prevLink}` : prevLink,
+              {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            );
             if (!response.ok) {
               throw new Error("مشکلی پیش اومد...دوباره تلاش کنید");
             }
             const data = await response.json();
-            prevLink = data.previous?.replace("http://127.0.0.1:8000/", "");
+            
+              prevLink = data.previous;
+            
             if (i === -1) {
-              setNextPageLink(data.next?.replace("http://127.0.0.1:8000/", ""));
-              setPrevPageLink(
-                data.previous?.replace("http://127.0.0.1:8000/", "")
-              );
+             
+                setNextPageLink(
+                  data.next
+                );
+                setPrevPageLink(
+                  data.previous
+                );
+              
               setcurrentpage(page);
               setShowingBooks(data.results);
             }
@@ -138,7 +167,7 @@ export default function AdvancedSearchBook() {
       <Navbar />
       <main
         dir="rtl"
-        className="flex flex-col items-center pt-[25px] pb-[60px] px-[10px] sm:px-[50px] w-[100%]"
+        className="flex flex-col items-center pt-[25px] pb-[60px] px-[15px]  md:px-[30px] sm:px-[50px] "
       >
         <h1 className="font-bold text-[#265073] text-[32px] mb-[30px]">
           جستجوی کتاب
@@ -153,6 +182,8 @@ export default function AdvancedSearchBook() {
           setNextPageLink={setNextPageLink}
           setPrevPageLink={setPrevPageLink}
           showingBooks={showingBooks}
+          numberOfBooks={numberOfBooks}
+          setNumberOfBooks={setNumberOfBooks}
         />
         <div className="flex flex-col w-[100%]">
           {loading ? (
@@ -162,17 +193,18 @@ export default function AdvancedSearchBook() {
           ) : showingBooks.length === 0 && !loading ? (
             <>
               <h2 className="text-[16px] right-0 font-[300] hidden sm:block">
-                نتایج جستجو
+               نتایج جستجو ({numberOfBooks ?? 0})
               </h2>
               <p className="text-[24px] mx-auto">موردی یافت نشد</p>
             </>
           ) : !loading ? (
-            <SearchBookResults books={showingBooks} loading={loading} />
+            <SearchBookResults numberOfBooks={numberOfBooks} books={showingBooks} loading={loading} />
           ) : null}
           {/* Pagination */}
           {totalPages > 1 && (
             <div className="flex justify-center gap-2 my-6 items-center">
               {/* Previous Button */}
+              {console.log("asdasdadasddadadadasadasdad")}
               <button
                 onClick={() => handlePageChange(currentpage - 1)}
                 disabled={currentpage === 1}
@@ -272,7 +304,7 @@ export default function AdvancedSearchBook() {
   );
 }
 
-function SearchBookResults({ books, loading }) {
+function SearchBookResults({ books, loading ,numberOfBooks}) {
   if (loading) {
     return (
       <div className="h-[100vh] grid place-items-center">
@@ -284,7 +316,9 @@ function SearchBookResults({ books, loading }) {
   return (
     <div className="flex flex-col -mt-[30px]">
       <div className="flex items-center justify-between mb-[60px] sm:mb-[30px]">
-        <h2 className="text-[16px] font-[300] hidden sm:block">نتایج جستجو</h2>
+        <h2 className="text-[16px] font-[300] hidden sm:block">
+نتایج جستجو ({numberOfBooks ?? 0})
+        </h2>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-1 xl:grid-cols-2 gap-x-[15px] sm:gap-x-[37px] gap-y-[25px] mb-[30px]">
         {books.map((book, i) => (
@@ -396,9 +430,7 @@ function Book({
       >
         <BookCard
           coverImage={
-            coverImage === null
-              ? "/images/book_sample1.png"
-              : `http://127.0.0.1:8000${coverImage}`
+            coverImage === null ? "/images/book_sample1.png" : `${coverImage}`
           }
           title={bookName}
           author={authorName}
@@ -424,7 +456,7 @@ function Book({
               onClick={() => {
                 if (!loading) navigate(`/book/${bookId}`);
               }}
-              src={`http://127.0.0.1:8000${coverImage}`}
+              src={coverImage}
               alt="book"
               className="rounded-[20px] w-[130px] h-[150px] cursor-pointer"
             />
@@ -438,6 +470,7 @@ function Book({
             >
               {bookName}
             </h3>
+            {coverImage ? console.log(coverImage) : null}
             <div className="flex flex-col md:flex-row gap-[5px] 2xl:gap-[30px] top-0 -mt-[5px]">
               <span className="text-[18px] font-[400]">مؤلف: {authorName}</span>
               <Rating
@@ -454,6 +487,15 @@ function Book({
           </div>
         </div>
         <div className="flex flex-col gap-[13px]">
+          <button
+            onClick={() => {
+              navigate(`/book/${bookId}`);
+            }}
+            disabled={loading ? true : false}
+            className={`btn !py-[9px] !rounded-[10px] !min-w-[160px] !h-fit !mr-0 !ml-0 !mb-0 ${loading ? "!cursor-progress" : ""}`}
+          >
+            <span className="span-btn">مشاهده جزئیات کتاب</span>
+          </button>
           {!isFav && isAuthenticated ? (
             <button
               onClick={() => {
@@ -470,20 +512,12 @@ function Book({
                 handleAddFavorite();
               }}
               disabled={loading ? true : false}
-              className={`btn !py-[9px] !rounded-[10px] !min-w-[160px] !h-fit !mr-0 !ml-0 !mb-0 ${loading ? "!cursor-progress" : ""}`}
+              className={`btn !py-[9px] !rounded-[10px] !min-w-[160px] !bg-red-700 before:!bg-[#FF3B30]  !h-fit !mr-0 !ml-0 !mb-0 ${loading ? "!cursor-progress" : ""}`}
             >
               <span className="span-btn">حذف از موردعلاقه ها</span>
             </button>
           ) : null}
-          <button
-            onClick={() => {
-              navigate(`/book/${bookId}`);
-            }}
-            disabled={loading ? true : false}
-            className={`btn !py-[9px] !rounded-[10px] !min-w-[160px] !h-fit !mr-0 !ml-0 !mb-0 ${loading ? "!cursor-progress" : ""}`}
-          >
-            <span className="span-btn">مشاهده جزئیات کتاب</span>
-          </button>
+          
         </div>
       </div>
     </>

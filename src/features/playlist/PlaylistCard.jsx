@@ -10,6 +10,22 @@ const PlaylistCard = ({
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 relative h-full flex flex-col">
       <div className="absolute top-2 left-2 flex flex-col gap-2">
+        {onEdit && (
+          <button
+            onClick={() => onEdit(playlist)}
+            className="bg-yellow-500 hover:bg-yellow-600 text-white p-1 rounded-full"
+            title="ویرایش پلی‌لیست"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+            </svg>
+          </button>
+        )}
         {onDelete && (
           <button
             onClick={() => onDelete(playlist.id)}
@@ -30,42 +46,30 @@ const PlaylistCard = ({
             </svg>
           </button>
         )}
-        {onEdit && (
-          <button
-            onClick={() => onEdit(playlist)}
-            className="bg-yellow-500 hover:bg-yellow-600 text-white p-1 rounded-full"
-            title="ویرایش پلی‌لیست"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-            </svg>
-          </button>
-        )}
       </div>
 
       <div className="p-4 text-right flex-grow flex flex-col">
-        <div className="flex justify-between items-start">
-          <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded mb-2">
-            {playlist.genre}
+        {playlist.is_public ? (
+          <span className="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded mb-2 w-fit">
+            عمومی
           </span>
-          {playlist.isPublic && (
-            <span className="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded mb-2">
-              عمومی
+        ) : (
+          <span className="inline-block bg-red-100 text-red-800 text-xs px-2 py-1 rounded mb-2 w-fit">
+            خصوصی
+          </span>
+        )}
+        <div className=" gap-x-2 text-center flex flex-wrap w-[90%] ">
+          {playlist.genres.map((genre) => (
+            <span className="inline-block bg-blue-100 w-fit  text-blue-800 text-xs px-2 py-1 rounded mb-2">
+              {genre.title}
             </span>
-          )}
+          ))}
         </div>
 
-        <h2 className="text-xl font-semibold text-gray-800">
-          {playlist.title}
-        </h2>
+        <h2 className="text-xl font-semibold text-gray-800">{playlist.name}</h2>
         {showCreator && (
           <p className="text-sm text-gray-500 mt-1">
-            ساخته شده توسط: {playlist.creator}
+            ساخته شده توسط: {playlist.user_name}
           </p>
         )}
         <p className="text-gray-600 mt-2 text-sm flex-grow">
@@ -78,14 +82,14 @@ const PlaylistCard = ({
               key={index}
               className="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded"
             >
-              #{tag}
+              #{tag.title}
             </span>
           ))}
         </div>
 
         <div dir="rtl" className="mt-4 flex justify-between items-center">
           <span className="text-xs text-gray-500">
-            {playlist.bookCount} کتاب
+            {playlist.book_count} کتاب
           </span>
           <button
             onClick={onView}

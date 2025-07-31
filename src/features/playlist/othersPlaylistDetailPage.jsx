@@ -1,56 +1,56 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../../pages/Navbar";
 import Footer from "../../common/Footer/Footer";
 
 const OthersPlaylistDetailPage = () => {
-  useParams();
+  const { playlistId } = useParams();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
-  // داده‌های نمونه با رنکینگ (بدون فیلد cover)
-  const playlist = {
-    id: 1,
-    title: "رمان‌های کلاسیک جهان",
-    description: "برترین آثار ادبیات جهان از نویسندگان مطرح",
-    genre: "ادبیات",
-    books: [
-      {
-        id: 101,
-        title: "جنگ و صلح",
-        author: "لئو تولستوی",
-        rating: 4.9,
-        rank: 1,
-      },
-      {
-        id: 102,
-        title: "بینوایان",
-        author: "ویکتور هوگو",
-        rating: 4.8,
-        rank: 2,
-      },
-      {
-        id: 103,
-        title: "آنا کارنینا",
-        author: "لئو تولستوی",
-        rating: 4.7,
-        rank: 3,
-      },
-      {
-        id: 104,
-        title: "جنایت و مکافات",
-        author: "فئودور داستایفسکی",
-        rating: 4.6,
-        rank: 4,
-      },
-    ],
-  };
+  const [playlist, setPlaylist] = useState({
+    id: null,
+    name: "",
+    description: "",
+    books: [],
+  });
 
+  useEffect(() => {
+    const fetchdata = async () => {
+      try {
+        setLoading(true);
+        const token = localStorage.getItem("access_token");
+        const auth = token ? `Bearer ${token}` : "";
+
+        const response = await fetch(
+          `http://127.0.0.1:8000/user/playlists/${playlistId}/books/`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: auth,
+            },
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          setPlaylist(data);
+        }
+      } catch (err) {
+        console.error(err);
+        throw new Error("Failed to fetch data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchdata();
+  }, []);
+  console.log(playlist);
   const handleBack = () => {
     navigate(-1);
   };
-
-  // مرتب‌سازی کتاب‌ها بر اساس رنک
-  const sortedBooks = [...playlist.books].sort((a, b) => a.rank - b.rank);
 
   return (
     <>
@@ -80,11 +80,8 @@ const OthersPlaylistDetailPage = () => {
 
         <div className="bg-white rounded-lg shadow-lg p-6">
           <div className="mb-6">
-            <span className="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full">
-              {playlist.genre}
-            </span>
-            <h1 className="text-2xl font-bold text-gray-800 mt-3">
-              {playlist.title}
+            <h1 className="text-2xl font-bold text-gray-800 ">
+              {playlist.name}
             </h1>
             <p className="text-gray-600 mt-2">{playlist.description}</p>
           </div>
@@ -105,12 +102,12 @@ const OthersPlaylistDetailPage = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
-                  {sortedBooks.map((book) => (
+                  {playlist.books.map((book) => (
                     <tr
                       key={book.id}
                       className="hover:bg-gray-50 transition-colors"
                     >
-                      <td className="py-4 px-4 text-center">
+                      <td className="py-4 px-4 text-right">
                         <span
                           className={`inline-flex items-center justify-center w-8 h-8 rounded-full 
                           ${
@@ -127,13 +124,15 @@ const OthersPlaylistDetailPage = () => {
                         </span>
                       </td>
                       <td className="py-4 px-4 font-medium text-gray-800">
-                        {book.title}
+                        {book.book.name}
                       </td>
-                      <td className="py-4 px-4 text-gray-600">{book.author}</td>
+                      <td className="py-4 px-4 text-gray-600">
+                        {book.book.Author}
+                      </td>
                       <td className="py-4 px-4">
                         <div className="flex items-center">
                           <span className="text-yellow-500 mr-1">
-                            {book.rating.toFixed(1)}
+                            {parseFloat(book.book.rating).toFixed(1)}
                           </span>
                           <svg
                             xmlns="http://www.w3.org/2000/svg"

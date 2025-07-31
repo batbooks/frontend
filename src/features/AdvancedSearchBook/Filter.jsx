@@ -31,6 +31,7 @@ export function Filter({
   return (
     <div className="overflow-hidden relative items-center shadow-lg flex justify-between text-nowrap rounded-full bg-white pr-[11px] pl-[30px] py-[6px] w-full mx-0 grow-1">
       <span className="z-1 text-[15px] font-[100]">{filterName}</span>
+       
       <div className="bg-white h-full w-[28px] rounded-l-full z-2 absolute left-0 grid">
         <button
           onClick={() => {
@@ -84,12 +85,12 @@ export function Filter({
               setToValueScorer("99999");
             }
             if (filterName.includes("میانگین امتیاز: از")) {
-              setAvgScoreFrom(1.0);
+              setAvgScoreFrom("1.0");
             } else if (filterName.includes("میانگین امتیاز: تا")) {
-              setAvgScoreTo(5.0);
+              setAvgScoreTo("5.0");
             } else if (filterName.includes("میانگین امتیاز: ")) {
-              setAvgScoreFrom(1.0);
-              setAvgScoreTo(5.0);
+              setAvgScoreFrom("1.0");
+              setAvgScoreTo("5.0");
             }
             if (filterName.includes("وضعیت: ")) {
               setCheckedNum(-1);
