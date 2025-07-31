@@ -174,7 +174,7 @@ export default function MyBooks() {
                           chapters={book.chapter_count}
                           coverImage={
                             book.image
-                              ? `http://127.0.0.1:8000/${book.image}`
+                              ? `http://127.0.0.1:8000${book.image}`
                               : `/images/book_sample1.png`
                           }
                           minw={isMobile ? 150 : 180}
