@@ -68,7 +68,7 @@ const GroupChatMessage: React.FC<GroupChatMessageProps> = ({ message }) => {
           <div className="flex flex-row items-center gap-3 mb-1">
             {message.sender_img ? (
               <img
-                src={`https://batbooks.liara.run${message.sender_img}`}
+                src={`${message.sender_img}`}
                 alt={message.sender}
                 className="w-8 h-8 rounded-full self-end"
               />

@@ -171,6 +171,7 @@ export default function MyBooks() {
                           title={book.name}
                           author={book.Author}
                           description={book.description}
+                          chapters={book.chapter_count}
                           coverImage={
                             book.image
                               ? `https://batbooks.liara.run/${book.image}`
@@ -271,6 +272,7 @@ export default function MyBooks() {
                           title={book.name}
                           author={book.Author}
                           description={book.description}
+                          chapters={book.chapter_count}
                           coverImage={
                             book.image
                               ? `${book.image}`

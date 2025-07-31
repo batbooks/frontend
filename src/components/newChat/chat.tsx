@@ -28,7 +28,7 @@ const Chat: React.FC = () => {
     <div>
       <Navbar></Navbar>
       {chatContext == "direct" && (
-        <div className="min-h-screen bg-slate-100 flex p-4 " dir="rtl">
+        <div className="min-h-[87vh]  bg-slate-100 flex p-4 " dir="rtl">
           <ChatUserList
             chatContext={chatContext}
             popUp={popUp}

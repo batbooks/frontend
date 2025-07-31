@@ -53,9 +53,7 @@ export default function EditProfile({ setEditClicked }) {
           `https://batbooks.liara.run/user/info/change/username/`,
           {
             method: "PUT",
-            // body: JSON.stringify({
-            //   username:
-            // }),
+            body: formData2,
             headers: {
               Authorization: `Bearer ${token}`,
             },
