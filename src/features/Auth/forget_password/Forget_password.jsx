@@ -1,23 +1,12 @@
-import React from "react";
-import { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router";
-import Forget_password_2 from "./Vf";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-function Forget_password() {
+export default function Forget_password() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
-  // const [code, setCode] = useState('');
-  const [isCodeSent, setIsCodeSent] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  // const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
-  const [generatedCode, setGeneratedCode] = useState("");
-  // const [countdown, setCountdown] = useState(0); // Countdown timer
-
-  // Simulate an API call to get the verification code
-
-  // Handle countdown timer
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSendCode = async (e) => {
     e.preventDefault();
@@ -26,173 +15,58 @@ function Forget_password() {
     setMessage("");
 
     try {
-      // Replace this with your actual API endpoint
-      const response = await fetch(
-        "http://127.0.0.1:8000/auth/reset-password/send-otp/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email }),
-        }
-      );
+      const response = await fetch(" https://batbooks.liara.run/auth/reset-password/send-otp/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json", 
+        },
+        body: JSON.stringify({ email }),
+      });
 
       const data = await response.json();
 
       if (response.ok) {
-        setMessage("Code sent successfully!");
-        // Redirect to verification page or next step after a short delay
-
-        navigate("/Vf", { state: { email: { email } } }); // Adjust the route as needed
+        setMessage("کد بازیابی با موفقیت ارسال شد.");
+        navigate("/vf", { state: { email } });
       } else {
-        throw new Error(data.message || "Failed to send verification code");
+        throw new Error(data.message || "ارسال کد ناموفق بود");
       }
     } catch (err) {
-      setError(" ایمیل خود را درست وارد کنید ");
+      setError("ایمیل خود را درست وارد کنید.");
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="w-full h-[100vh] bg-[#D9F0FF]">
-      <div className="flex gap-1 items-center ">
-        <button
-          onClick={() => {
-            navigate("/");
-          }}
-          className="cursor-pointer text-[24px] mt-1.5 ml-2 font-[800] "
-        >
-          Bat<span className="text-[#2663CD]">Books</span>
-        </button>
-      </div>
-      <main
-        style={styles.container}
-        className="flex flex-col m-auto mt-24 h-80 w-[39vw] bg-[#A4C0ED] rounded-lg"
-      >
-        <h2 style={styles.title} className="font-bold">
-          بازیابی رمز عبور
-        </h2>
-        <form onSubmit={handleSendCode} style={styles.form}>
-          <div className="relative">
+    <div className="min-h-screen flex items-center justify-center bg-sky-50 text-gray-800 p-4" dir="rtl">
+      <div className="bg-white/70 backdrop-blur-xl border border-gray-200/50 shadow-2xl rounded-2xl p-8 md:p-12 max-w-md w-full">
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold">بازیابی رمز عبور</h1>
+          <p className="text-gray-500 mt-3">ایمیل خود را برای دریافت کد وارد کنید.</p>
+        </div>
+        <form onSubmit={handleSendCode}>
+          <div className="mb-6">
             <input
-              className="p-[1.29vw] pr-[2.6vw] rounded-full h-10 w-[26vw] bg-white placeholder:opacity-40 placeholder:text-right placeholder:mr-4 hover:ring-2 hover:ring-blue-700  focus:outline-none  focus:ring-2 focus:ring-blue-700 transition-all duration-300 "
               type="email"
+              className="w-full p-3.5 text-sm border border-gray-300 rounded-lg bg-white/50 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="ایمیل ثبت شده"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder=" ...ایمیل خود را وارد کنید "
               required
             />
-            <div className="absolute inset-y-0 left-[27.5vw] flex items-center pl-[1vw] pointer-events-none ">
-              <img
-                src="/images/user.png"
-                alt="Email Icon"
-                className="h-4.5  w-[1.2vw] opacity-90"
-              />
-            </div>
           </div>
-          {error && <div className="text-red-600">{error}</div>}
-          <div className="flex flex-row justify-center gap-[0.77vw]">
-            <button type="submit" disabled={isLoading} className="btn">
-              <span className="span-btn ">ارسال کد</span>
-            </button>
-          </div>
-
-          {message && <div style={styles.message}>{message}</div>}
+          {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+          {message && <p className="text-green-600 text-sm mb-4">{message}</p>}
+          <button
+            type="submit"
+            className="w-full text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm px-5 py-3.5"
+            disabled={isLoading}
+          >
+            {isLoading ? "در حال ارسال..." : "ارسال کد"}
+          </button>
         </form>
-
-        <Link
-          to={"/auth/login"}
-          className="text-[1vw] text-center mx-auto flex justify-center hover:text-[#2663CD]   cursor-pointer"
-        >
-          بازگشت به صفحه ورود
-        </Link>
-        <img
-          src="/images/mid-left.png"
-          alt="mid-right"
-          className="w-45 absolute top-64 left-[30vw] "
-        />
-        {/* <img src="batbooks.png" alt="mid-right" className="w-[5.2vw] absolute top-3 left-0 "/> */}
-
-        <img
-          src="/images/bottom-left.png"
-          alt="bottom-left"
-          className="absolute left-0 bottom-0 w-[25vw] aspect-auto"
-        />
-        <img
-          src="/images/bottom-right.png"
-          alt="bottom-right"
-          className=" absolute right-[0px] bottom-0 w-[33vw] aspect-auto"
-        />
-
-        <img
-          src="/images/mid-right.png"
-          alt="mid-right"
-          className="w-[13vw]   absolute -top-1 left-[62.3vw] min-w-32"
-        />
-      </main>
+      </div>
     </div>
   );
 }
-
-const styles = {
-  container: {
-    padding: "20px",
-
-    backgroundColor: "#A4C0ED",
-    textAlign: "center",
-  },
-  title: {
-    marginTop: "40px",
-    fontSize: "17px",
-    marginBottom: "20px",
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "15px",
-  },
-  inputGroup: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "10px",
-  },
-  input: {
-    padding: "10px",
-    // borderRadius: '4px',
-    // border: '1px solid #ccc',
-    fontSize: "16px",
-  },
-
-  button: {
-    padding: "10px",
-    borderRadius: "4px",
-    border: "none",
-    backgroundColor: "#007bff",
-    color: "#fff",
-    fontSize: "16px",
-    cursor: "pointer",
-    flex: 1,
-  },
-  submitButton: {
-    padding: "10px",
-    borderRadius: "4px",
-    border: "none",
-    backgroundColor: "#28a745",
-    color: "#fff",
-    fontSize: "16px",
-    cursor: "pointer",
-    flex: 1,
-  },
-  error: {
-    color: "red",
-    fontSize: "14px",
-  },
-  message: {
-    color: "green",
-    fontSize: "14px",
-  },
-};
-
-export default Forget_password;

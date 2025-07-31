@@ -124,10 +124,10 @@ export default function AdvancedSearch({ onSearchResults }) {
 
           {/* Date pickers (Shamsi) */}
           <div>
-            <label className="block text-sm font-medium">تاریخ قبل از</label>
+            <label className="block text-sm font-medium">تاریخ بعد از</label>
             <DatePicker
-              value={dateBefore}
-              onChange={setDateBefore}
+              value={dateAfter}
+              onChange={setDateAfter}
               calendar={persian}
               locale={persian_fa}
               calendarPosition="bottom-right"
@@ -136,10 +136,10 @@ export default function AdvancedSearch({ onSearchResults }) {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium">تاریخ بعد از</label>
+            <label className="block text-sm font-medium">تاریخ قبل از</label>
             <DatePicker
-              value={dateAfter}
-              onChange={setDateAfter}
+              value={dateBefore}
+              onChange={setDateBefore}
               calendar={persian}
               locale={persian_fa}
               calendarPosition="bottom-right"

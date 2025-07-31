@@ -183,9 +183,9 @@ export default function Login() {
 
                 {/* لینک فراموشی رمز عبور */}
                 <div className="text-left mb-6">
-                  <a href="#" className="text-sm text-gray-500 hover:text-gray-900 hover:underline transition duration-300">
+                  <button onClick={()=>navigate("/forget_password")} className="text-sm text-gray-500 hover:text-gray-900 hover:underline transition duration-300">
                     رمز عبور را فراموش کرده‌اید؟
-                  </a>
+                  </button>
                 </div>
 
                 {/* دکمه ارسال */}

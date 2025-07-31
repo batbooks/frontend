@@ -86,7 +86,11 @@ function Navbar() {
   return (
     <header
       dir="rtl"
-      className={`${isVisiblePanel || isVisibleUser ? "relative" : ""} p-7  sticky top-0 z-150  lg:${isScrolled ? "h-[70px] shadow-md transition-all duration-300" : ""} h-[100px] md:max-w-screen lg:m-auto flex bg-[#a3d5ff] justify-between py-[1px] lg:pl-[50px]  lg:pr-[30px]`}
+      className={`bg-[#a3d5ff]/50 backdrop-blur-md border-b border-white/20 shadow-md 
+    sticky top-0 z-[150] transition-all duration-300 
+    ${isScrolled ? "h-[70px]" : "h-[100px]"} 
+    p-7 md:max-w-screen lg:m-auto flex justify-between py-[1px] lg:pl-[50px] lg:pr-[30px] 
+    ${isVisiblePanel || isVisibleUser ? "relative" : ""}`}
     >
       <nav className="hidden lg:flex items-center gap-[60px]">
         <div

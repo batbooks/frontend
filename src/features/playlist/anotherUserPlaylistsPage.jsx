@@ -52,8 +52,12 @@ const UserPlaylistsPage = () => {
       <Navbar />
       <div className="min-h-screen mt-20 bg-[#a3d5ff] mx-12 p-8 pb-14 rounded-2xl">
         <div className="mb-8 text-right">
-          <h1 className="text-3xl font-bold text-gray-800 mr-1">
-            <span>{userPlaylists[0]?.user_name}</span> پلی‌لیست‌های
+          <h1
+            className="gap-2 text-3xl font-bold text-gray-800 mr-1 flex flex-row"
+            dir="rtl"
+          >
+            <span> پلی لیست های </span>
+            <span>{userPlaylists[0]?.user_name}</span>
           </h1>
           <p className="text-gray-600 mt-2 mr-1">
             مجموعه‌ای از کتاب‌های سازمان‌یافته توسط این کاربر

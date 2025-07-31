@@ -416,7 +416,7 @@ function Reviews({ book }) {
                               <div className="flex flex-row items-center gap-2">
                                 <img
                                   className="w-2 h-2 lg:w-[17px] lg:h-[17px] relative"
-                                  src="/src/assets/images/edit_sign.png"
+                                  src="/images/edit_sign.png"
                                   alt="edit"
                                 />
                                 <p className="text-nowrap"> ویرایش نقد </p>
