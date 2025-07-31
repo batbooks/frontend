@@ -188,7 +188,7 @@ export default function AdvancedSearch({ onSearchResults }) {
               }`}
               onClick={() => setTagMode("or")}
             >
-              OR
+              یا
             </button>
             <button
               className={`text-sm border px-3 py-1 rounded ${
@@ -198,7 +198,7 @@ export default function AdvancedSearch({ onSearchResults }) {
               }`}
               onClick={() => setTagMode("and")}
             >
-              AND
+              و
             </button>
           </div>
 
@@ -212,7 +212,7 @@ export default function AdvancedSearch({ onSearchResults }) {
               }`}
               onClick={() => setGenreMode("or")}
             >
-              OR
+              یا
             </button>
             <button
               className={`text-sm border px-3 py-1 rounded ${
@@ -222,7 +222,7 @@ export default function AdvancedSearch({ onSearchResults }) {
               }`}
               onClick={() => setGenreMode("and")}
             >
-              AND
+              و
             </button>
           </div>
         </div>
