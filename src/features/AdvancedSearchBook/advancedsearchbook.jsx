@@ -44,15 +44,13 @@ export default function AdvancedSearchBook() {
         const data = await response.json();
         console.log("data:", data);
 
-       
-          setAllBooks(data.results);
-          setNextPageLink(data.next);
-          setPrevPageLink(data.previous);
-          setNumberOfBooks(data.count)
-          setTotalPages(Math.ceil(data.count / itemsPerPage));
-          console.log(Math.ceil(data.count / itemsPerPage));
-          setShowingBooks(data.results);
-        
+        setAllBooks(data.results);
+        setNextPageLink(data.next);
+        setPrevPageLink(data.previous);
+        setNumberOfBooks(data.count);
+        setTotalPages(Math.ceil(data.count / itemsPerPage));
+        console.log(Math.ceil(data.count / itemsPerPage));
+        setShowingBooks(data.results);
       } catch (err) {
         setTimeout(() => {
           Swal.fire({
@@ -102,13 +100,11 @@ export default function AdvancedSearchBook() {
               throw new Error("مشکلی پیش اومد...دوباره تلاش کنید");
             }
             const data = await response.json();
-            
-            nextLink = data.next
+
+            nextLink = data.next;
             if (i === pageDiff - 1) {
               setNextPageLink(data.next);
-              setPrevPageLink(
-                data.previous
-              );
+              setPrevPageLink(data.previous);
               setcurrentpage(page);
               setShowingBooks(data.results);
             }
@@ -129,18 +125,13 @@ export default function AdvancedSearchBook() {
               throw new Error("مشکلی پیش اومد...دوباره تلاش کنید");
             }
             const data = await response.json();
-            
-              prevLink = data.previous;
-            
+
+            prevLink = data.previous;
+
             if (i === -1) {
-             
-                setNextPageLink(
-                  data.next
-                );
-                setPrevPageLink(
-                  data.previous
-                );
-              
+              setNextPageLink(data.next);
+              setPrevPageLink(data.previous);
+
               setcurrentpage(page);
               setShowingBooks(data.results);
             }
@@ -193,12 +184,16 @@ export default function AdvancedSearchBook() {
           ) : showingBooks.length === 0 && !loading ? (
             <>
               <h2 className="text-[16px] right-0 font-[300] hidden sm:block">
-               نتایج جستجو ({numberOfBooks ?? 0})
+                نتایج جستجو ({numberOfBooks ?? 0})
               </h2>
               <p className="text-[24px] mx-auto">موردی یافت نشد</p>
             </>
           ) : !loading ? (
-            <SearchBookResults numberOfBooks={numberOfBooks} books={showingBooks} loading={loading} />
+            <SearchBookResults
+              numberOfBooks={numberOfBooks}
+              books={showingBooks}
+              loading={loading}
+            />
           ) : null}
           {/* Pagination */}
           {totalPages > 1 && (
@@ -304,7 +299,7 @@ export default function AdvancedSearchBook() {
   );
 }
 
-function SearchBookResults({ books, loading ,numberOfBooks}) {
+function SearchBookResults({ books, loading, numberOfBooks }) {
   if (loading) {
     return (
       <div className="h-[100vh] grid place-items-center">
@@ -317,7 +312,7 @@ function SearchBookResults({ books, loading ,numberOfBooks}) {
     <div className="flex flex-col -mt-[30px]">
       <div className="flex items-center justify-between mb-[60px] sm:mb-[30px]">
         <h2 className="text-[16px] font-[300] hidden sm:block">
-نتایج جستجو ({numberOfBooks ?? 0})
+          نتایج جستجو ({numberOfBooks ?? 0})
         </h2>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-1 xl:grid-cols-2 gap-x-[15px] sm:gap-x-[37px] gap-y-[25px] mb-[30px]">
@@ -330,6 +325,7 @@ function SearchBookResults({ books, loading ,numberOfBooks}) {
             star={book.rating}
             bookDescription={book.description}
             bookId={book.id}
+            chapters={book.chapter_count}
           />
         ))}
       </div>
@@ -344,6 +340,7 @@ function Book({
   star,
   bookDescription,
   bookId,
+  chapters,
 }) {
   let navigate = useNavigate();
   const [isFav, setIsFav] = useState(false);
@@ -434,7 +431,7 @@ function Book({
           }
           title={bookName}
           author={authorName}
-          chapters={85}
+          chapters={chapters}
           description={bookDescription}
         />
       </div>
@@ -517,7 +514,6 @@ function Book({
               <span className="span-btn">حذف از موردعلاقه ها</span>
             </button>
           ) : null}
-          
         </div>
       </div>
     </>

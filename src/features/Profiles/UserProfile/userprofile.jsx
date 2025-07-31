@@ -248,7 +248,7 @@ export default function Profile() {
             </div>
 
             <div
-              className={`flex flex-wrap  xl:flex xl:flex-wrap ${!lastBook?"lg:grid lg:grid-cols-2":null}   gap-4 md:gap-5 lg:gap-[20px] mb-4 md:mb-5 lg:mb-[19px]`}
+              className={`flex flex-wrap  xl:flex xl:flex-wrap ${!lastBook ? "lg:grid lg:grid-cols-2" : null}   gap-4 md:gap-5 lg:gap-[20px] mb-4 md:mb-5 lg:mb-[19px]`}
             >
               <button
                 onClick={() => {
