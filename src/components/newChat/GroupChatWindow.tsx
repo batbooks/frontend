@@ -82,6 +82,7 @@ const GroupChatWindow: React.FC<GroupChatWindowProps> = ({
       if (!response.ok) throw new Error(" خطا در بارگزاری افراد ");
       const data = await response.json();
       setMembers(data.members);
+      console.log(data.members)
     } catch (err) {
       setError(err instanceof Error ? err.message : "خطای ناشناخته");
     } finally {
@@ -185,136 +186,7 @@ const GroupChatWindow: React.FC<GroupChatWindowProps> = ({
     }
   };
 
-  const handleToggle = () => {
-    setShowMembers(!showMembers);
-  };
-  useEffect(() => {
-    const fetchMembers = async () => {
-      setIsLoading1(true);
-      try {
-        const response = await fetch(
-          `https://batbooks.liara.run/chat/group/members/${groupId}/`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-            },
-          }
-        );
-        if (!response.ok) throw new Error(" خطا در بارگزاری افراد ");
-        const data = await response.json();
-        console.log(members);
-        setMembers(data.members);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "خطای ناشناخته");
-      } finally {
-        setIsLoading1(false);
-      }
-    };
-    fetchMembers();
-  }, [groupId]);
-  useEffect(() => {
-    const fetchMessages = async () => {
-      setIsLoading(true);
-      try {
-        const response = await fetch(
-          `https://batbooks.liara.run/chat/group/message/${groupId}/`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-            },
-          }
-        );
-        if (!response.ok) throw new Error("خطا در دریافت پیام‌ها");
-        const data: GroupMessage[] = await response.json();
-        const sorted = data.sort(
-          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
-        );
-        setMessages(sorted);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "خطای ناشناخته");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    if (groupId) fetchMessages();
-  }, [groupId]);
-
-  useEffect(() => {
-    if (!groupId) return;
-
-    const socket = new WebSocket(WS_URL);
-    socketRef.current = socket;
-
-    socket.onopen = () => {
-      console.log("WebSocket connected");
-      setSocketConnected(true);
-    };
-
-    socket.onmessage = (event) => {
-      const received = JSON.parse(event.data);
-      console.log(JSON.parse(event.data));
-
-      if (received.type == "group_message") {
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: undefined,
-            sender: received.sender,
-            sender_id: received.user_id,
-            sender_img: received.image ? `/api${received.image}` : undefined,
-            message: received.message,
-            date: new Date().toISOString(), // actual date string
-          },
-        ]);
-      }
-    };
-
-    socket.onclose = () => {
-      console.log("WebSocket disconnected");
-      setSocketConnected(false);
-    };
-
-    socket.onerror = (error) => {
-      console.error("WebSocket error:", error);
-    };
-
-    return () => {
-      socket.close();
-    };
-  }, [groupId]);
-
-  useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
-
-  // const handleSendMessage = () => {
-  //   if (
-  //     newMessage.trim() &&
-  //     socketConnected &&
-  //     socketRef.current?.readyState === WebSocket.OPEN
-  //   ) {
-  //     // setMessages((prev) => [
-  //     //   ...prev,
-  //     //   {
-  //     //     id: undefined,
-  //     //     sender: "شما",
-  //     //     sender_id: user.id,
-  //     //     sender_img: user.user_info.image
-  //     //       ? `https://batbooks.liara.run/${user.user_info.image}`
-  //     //       : undefined,
-  //     //     message: newMessage,
-  //     //     date: new Date().toISOString(), // actual date string
-  //     //   },
-  //     // ]);
-  //     socketRef.current.send(
-  //       JSON.stringify({ message: newMessage, type: "group_message" })
-  //     );
-  //     setNewMessage("");
-  //   }
-  // };
+  /* --------------------------- Add members to grp -------------------------- */
   const handleAddSelectedMembers = async () => {
     if (selectedUserIds.length === 0) return;
     const userIdsString = selectedUserIds.join(",");
@@ -341,9 +213,7 @@ const GroupChatWindow: React.FC<GroupChatWindowProps> = ({
 
   /* ----------------------------- UI Handlers ------------------------------ */
   const toggleSelectUser = (id: number) => {
-    setSelectedUserIds((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
-    );
+    setSelectedUserIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
   };
 
   const renderContent = () => {
