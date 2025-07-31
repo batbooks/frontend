@@ -134,7 +134,7 @@ const ChatUserList: React.FC<Props> = ({
     // Main container for the ChatUserList
     <div
       className="
-      sticky top-300
+      sticky top-0
       z-10                    
       h-fit              
       max-h-[80%]    

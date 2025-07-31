@@ -15,7 +15,7 @@ const ChatNavbar: React.FC<ChatNavbarProps> = ({
   const inactiveNavItemStyle = "text-gray-600 hover:bg-gray-200";
 
   return (
-    <div className="flex justify-center pt-27 px-4 bg-gray-100 rounded-lg shadow">
+    <div className="flex justify-center  px-4 bg-gray-100 rounded-lg shadow">
       <section
         className={`${navItemBaseStyle} ${
           chatContext === "direct" ? activeNavItemStyle : inactiveNavItemStyle
