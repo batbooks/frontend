@@ -226,13 +226,13 @@ export default function Another_User_Profile() {
         </div>
         <div className="flex min-w-[90vw] bg-[#A4C0ED] ml-auto rounded-[35px] shadow-lg shadow-[#000000]/25 mb-[40px] pl-[52px] pr-[23px] pt-[20px] gap-[39px] border-[2px] border-[#000000]/8 ">
           <div className="min-w-[236px] flex flex-col gap-[15px]">
-            <div className="w-[236px] aspect-square rounded-full overflow-hidden">
+            <div className="w-[236px] aspect-square rounded-full overflow-hidden border-4 border-white">
               <img
-                className="w-full h-full shadow-lg shadow-[#000000]/25 object-cover"
+                className="w-full h-full shadow-lg shadow-[#000000]/25 object-cover "
                 src={
                   user.image
                     ? `http://127.0.0.1:8000${user.image}`
-                    : `/images/user_image.png`
+                    : user.gender=="female"?"/images/femaleProfile.png":"/images/maleProfile.png"
                 }
                 alt="userimage"
               />
@@ -241,6 +241,7 @@ export default function Another_User_Profile() {
               <h3 className="  text-[24px] font-bold text-center">
                 {user.user}
               </h3>
+                
               <svg
                 className="cursor-pointer"
                 onClick={() => navigate("/chat", { state: { userId } })}
@@ -346,6 +347,7 @@ export default function Another_User_Profile() {
                 <p className="text-[14px] absolute bottom-10">
                   <span className="font-semibold">جنسیت:</span>{" "}
                   {user.gender === "female" ? "زن" : "مرد"}
+                  
                 </p>
                 <p className="text-[14px] font-[300] absolute bottom-2">
                   {/* {user.joined_date} */}
