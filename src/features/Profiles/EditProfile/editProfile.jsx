@@ -53,7 +53,9 @@ export default function EditProfile({ setEditClicked }) {
           `http://127.0.0.1:8000/user/info/change/username/`,
           {
             method: "PUT",
-            body: formData2,
+            // body: JSON.stringify({
+            //   username:
+            // }),
             headers: {
               Authorization: `Bearer ${token}`,
             },

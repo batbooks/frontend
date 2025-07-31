@@ -16,7 +16,7 @@ import { TagCategory } from "./TagCategory";
 import { Writer } from "./Writer";
 import { SelectMenu } from "./SelectMenu";
 import { useLocation, useNavigate } from "react-router";
-import Button from "./button";
+import DeleteButton from "./DeleteAllFilters";
 
 const persianToEnglishDigits = (str) => {
   return str.replace(/[۰-۹]/g, (d) => "۰۱۲۳۴۵۶۷۸۹".indexOf(d));
@@ -61,8 +61,8 @@ export function SearchFilters({
   const dateAfter = dateA ? convertGregorianToShamsi(dateA) : null;
   const dateB = query.get("date_before");
   const dateBefore = dateB ? convertGregorianToShamsi(dateB) : null;
-  const ratingMin = parseFloat(query.get("rating_min"));
-  const ratingMax = parseFloat(query.get("rating_max"));
+  const ratingMin = query.get("rating_min");
+  const ratingMax = query.get("rating_max");
   const chapterCountMin = query.get("chapter_count_min");
   const genreOr = query.get("genre_or"); // مثلاً "1,3,5"
   const genreArray = genreOr
@@ -70,6 +70,9 @@ export function SearchFilters({
     : [];
   const chapterCountMax = query.get("chapter_count_max");
   const tagOr = query.get("tag_or");
+  const tagArray = tagOr
+    ? tagOr.split(",").map((num) => parseInt(num, 10))
+    : [];
   const ordering = query.get("ordering");
   console.log(ordering);
   console.log(genreOr);
@@ -77,7 +80,7 @@ export function SearchFilters({
   const [isVisibleFilters, setIsVisibleFilters] = useState(false);
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState([]);
-  console.log(filters)
+  console.log(filters);
   const [genres, setGenres] = useState([]);
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [tagCategories, setTagCategories] = useState([]);
@@ -98,12 +101,11 @@ export function SearchFilters({
   const [toValueScorer, setToValueScorer] = useState("99999");
   const [searchKey, setSearchKey] = useState("");
   const [searchWord, setSearchWord] = useState(search);
-  const [isBlankSearchWord, setIsBlankSearchWord] = useState(false);
   const filterNum = (filters || []).length;
   const genreIds = useRef([]);
   const tagIds = useRef([]);
   const navigate = useNavigate();
-  
+
   function handleAdvancedSearch() {
     console.log(searchWord);
 
@@ -394,7 +396,7 @@ export function SearchFilters({
           const data = await response.json();
           setcurrentpage(1);
           setTotalPages(Math.ceil(data.count / itemsPerPage));
-          setNumberOfBooks(data.count)
+          setNumberOfBooks(data.count);
           setNextPageLink(data.next);
           setPrevPageLink(data.previous);
           setShowingBooks(data.results);
@@ -414,343 +416,6 @@ export function SearchFilters({
       }
     };
     fetchAdvancedSearchBook();
-  }
-
-  function handleSimpleSearch() {
-    const Query = filters.reduce((acc, filter, i) => {
-      if (filter.includes("ژانر: ")) {
-        genreIds.current = [
-          ...genreIds.current,
-          String(
-            selectedGenres.find(
-              (genre) => genre.title === filter.replace("ژانر: ", "")
-            ).id
-          ),
-        ];
-      }
-      if (filter.includes("تگ: ")) {
-        tagIds.current = [
-          ...tagIds.current,
-          String(
-            allSelectedTags.find(
-              (tag) => tag.title === filter.replace("تگ: ", "")
-            ).id
-          ),
-        ];
-      }
-      if (filter.includes("تعداد فصل ها: از")) {
-        if (filters.length === i + 1 && genreIds.current.length !== 0) {
-          acc = acc + "&genre_or=" + genreIds.current.join(",");
-        }
-        if (filters.length === i + 1 && tagIds.current.length !== 0) {
-          acc = acc + "&tag_or=" + tagIds.current.join(",");
-        }
-        return (
-          acc +
-          "&chapter_count_min=" +
-          filter.replace("تعداد فصل ها: از ", "").replace(" فصل", "")
-        );
-      } else if (filter.includes("تعداد فصل ها: تا")) {
-        if (filters.length === i + 1 && genreIds.current.length !== 0) {
-          acc = acc + "&genre_or=" + genreIds.current.join(",");
-        }
-        if (filters.length === i + 1 && tagIds.current.length !== 0) {
-          acc = acc + "&tag_or=" + tagIds.current.join(",");
-        }
-        return (
-          acc +
-          "&chapter_count_max=" +
-          filter.replace("تعداد فصل ها: تا ", "").replace(" فصل", "")
-        );
-      } else if (filter.includes("تعداد فصل ها: ")) {
-        if (filters.length === i + 1 && genreIds.current.length !== 0) {
-          acc = acc + "&genre_or=" + genreIds.current.join(",");
-        }
-        if (filters.length === i + 1 && tagIds.current.length !== 0) {
-          acc = acc + "&tag_or=" + tagIds.current.join(",");
-        }
-        return (
-          acc +
-          "&chapter_count_min=" +
-          filter.replace("تعداد فصل ها: ", "").replace(" فصل", "") +
-          "&chapter_count_max=" +
-          filter.replace("تعداد فصل ها: ", "").replace(" فصل", "")
-        );
-      }
-      if (filter.includes("تعداد پسندیده ها: از")) {
-        if (filters.length === i + 1 && genreIds.current.length !== 0) {
-          acc = acc + "&genre_or=" + genreIds.current.join(",");
-        }
-        if (filters.length === i + 1 && tagIds.current.length !== 0) {
-          acc = acc + "&tag_or=" + tagIds.current.join(",");
-        }
-        return (
-          acc +
-          "&favorite_count_min=" +
-          filter.replace("تعداد پسندیده ها: از ", "").replace(" نفر", "")
-        );
-      } else if (filter.includes("تعداد پسندیده ها: تا")) {
-        if (filters.length === i + 1 && genreIds.current.length !== 0) {
-          acc = acc + "&genre_or=" + genreIds.current.join(",");
-        }
-        if (filters.length === i + 1 && tagIds.current.length !== 0) {
-          acc = acc + "&tag_or=" + tagIds.current.join(",");
-        }
-        return (
-          acc +
-          "&favorite_count_max=" +
-          filter.replace("تعداد پسندیده ها: تا ", "").replace(" نفر", "")
-        );
-      } else if (filter.includes("تعداد پسندیده ها: ")) {
-        if (filters.length === i + 1 && genreIds.current.length !== 0) {
-          acc = acc + "&genre_or=" + genreIds.current.join(",");
-        }
-        if (filters.length === i + 1 && tagIds.current.length !== 0) {
-          acc = acc + "&tag_or=" + tagIds.current.join(",");
-        }
-        return (
-          acc +
-          "&favorite_count_min=" +
-          filter.replace("تعداد پسندیده ها: ", "").replace(" نفر", "") +
-          "&favorite_count_max=" +
-          filter.replace("تعداد پسندیده ها: ", "").replace(" نفر", "")
-        );
-      }
-      if (filter.includes("تعداد امتیازدهندگان: از")) {
-        if (filters.length === i + 1 && genreIds.current.length !== 0) {
-          acc = acc + "&genre_or=" + genreIds.current.join(",");
-        }
-        if (filters.length === i + 1 && tagIds.current.length !== 0) {
-          acc = acc + "&tag_or=" + tagIds.current.join(",");
-        }
-        return (
-          acc +
-          "&number_rating_min=" +
-          filter.replace("تعداد امتیازدهندگان: از ", "").replace(" نفر", "")
-        );
-      } else if (filter.includes("تعداد امتیازدهندگان: تا")) {
-        if (filters.length === i + 1 && genreIds.current.length !== 0) {
-          acc = acc + "&genre_or=" + genreIds.current.join(",");
-        }
-        if (filters.length === i + 1 && tagIds.current.length !== 0) {
-          acc = acc + "&tag_or=" + tagIds.current.join(",");
-        }
-        return (
-          acc +
-          "&number_rating_max=" +
-          filter.replace("تعداد امتیازدهندگان: تا ", "").replace(" نفر", "")
-        );
-      } else if (filter.includes("تعداد امتیازدهندگان: ")) {
-        if (filters.length === i + 1 && genreIds.current.length !== 0) {
-          acc = acc + "&genre_or=" + genreIds.current.join(",");
-        }
-        if (filters.length === i + 1 && tagIds.current.length !== 0) {
-          acc = acc + "&tag_or=" + tagIds.current.join(",");
-        }
-        return (
-          acc +
-          "&number_rating_min=" +
-          filter.replace("تعداد امتیازدهندگان: ", "").replace(" نفر", "") +
-          "&number_rating_max=" +
-          filter.replace("تعداد امتیازدهندگان: ", "").replace(" نفر", "")
-        );
-      }
-      if (filter.includes("میانگین امتیاز: از")) {
-        if (filters.length === i + 1 && genreIds.current.length !== 0) {
-          acc = acc + "&genre_or=" + genreIds.current.join(",");
-        }
-        if (filters.length === i + 1 && tagIds.current.length !== 0) {
-          acc = acc + "&tag_or=" + tagIds.current.join(",");
-        }
-        return acc + "&rating_min=" + filter.replace("میانگین امتیاز: از ", "");
-      } else if (filter.includes("میانگین امتیاز: تا")) {
-        if (filters.length === i + 1 && genreIds.current.length !== 0) {
-          acc = acc + "&genre_or=" + genreIds.current.join(",");
-        }
-        if (filters.length === i + 1 && tagIds.current.length !== 0) {
-          acc = acc + "&tag_or=" + tagIds.current.join(",");
-        }
-        return acc + "&rating_max=" + filter.replace("میانگین امتیاز: تا ", "");
-      } else if (filter.includes("میانگین امتیاز: ")) {
-        if (filters.length === i + 1 && genreIds.current.length !== 0) {
-          acc = acc + "&genre_or=" + genreIds.current.join(",");
-        }
-        if (filters.length === i + 1 && tagIds.current.length !== 0) {
-          acc = acc + "&tag_or=" + tagIds.current.join(",");
-        }
-        return (
-          acc +
-          "&rating_min=" +
-          filter.replace("میانگین امتیاز: ", "") +
-          "&rating_max=" +
-          filter.replace("میانگین امتیاز: ", "")
-        );
-      }
-      if (filter.includes("وضعیت: ")) {
-        const newStr = filter.replace("وضعیت: ", "");
-        const status =
-          newStr === "متوقف شده"
-            ? "H"
-            : newStr === "به اتمام رسیده"
-              ? "C"
-              : newStr === "در حال تالیف"
-                ? "O"
-                : null;
-        if (filters.length === i + 1 && genreIds.current.length !== 0) {
-          acc = acc + "&genre_or=" + genreIds.current.join(",");
-        }
-        if (filters.length === i + 1 && tagIds.current.length !== 0) {
-          acc = acc + "&tag_or=" + tagIds.current.join(",");
-        }
-        return acc + "&status=" + status;
-      }
-      if (filter.includes("نویسنده: ")) {
-        if (filters.length === i + 1 && genreIds.current.length !== 0) {
-          acc = acc + "&genre_or=" + genreIds.current.join(",");
-        }
-        if (filters.length === i + 1 && tagIds.current.length !== 0) {
-          acc = acc + "&tag_or=" + tagIds.current.join(",");
-        }
-        return acc + "&user=" + filter.replace("نویسنده: ", "");
-      }
-      if (filter.includes("کلید: ")) {
-        if (filters.length === i + 1 && genreIds.current.length !== 0) {
-          acc = acc + "&genre_or=" + genreIds.current.join(",");
-        }
-        if (filters.length === i + 1 && tagIds.current.length !== 0) {
-          acc = acc + "&tag_or=" + tagIds.current.join(",");
-        }
-        return acc + "&description=" + filter.replace("کلید: ", "");
-      }
-      if (filter.includes("تاریخ ایجاد: از")) {
-        const miladi = convertShamsiToGregorian(
-          filter.replace("تاریخ ایجاد: از ", "")
-        );
-        if (filters.length === i + 1 && genreIds.current.length !== 0) {
-          acc = acc + "&genre_or=" + genreIds.current.join(",");
-        }
-        if (filters.length === i + 1 && tagIds.current.length !== 0) {
-          acc = acc + "&tag_or=" + tagIds.current.join(",");
-        }
-        return acc + "&date_after=" + miladi;
-      } else if (filter.includes("تاریخ ایجاد: تا")) {
-        const miladi = convertShamsiToGregorian(
-          filter.replace("تاریخ ایجاد: تا ", "")
-        );
-        if (filters.length === i + 1 && genreIds.current.length !== 0) {
-          acc = acc + "&genre_or=" + genreIds.current.join(",");
-        }
-        if (filters.length === i + 1 && tagIds.current.length !== 0) {
-          acc = acc + "&tag_or=" + tagIds.current.join(",");
-        }
-        return acc + "&date_before=" + miladi;
-      } else if (filter.includes("تاریخ ایجاد: ")) {
-        const miladi = convertShamsiToGregorian(
-          filter.replace("تاریخ ایجاد: ", "")
-        );
-        if (filters.length === i + 1 && genreIds.current.length !== 0) {
-          acc = acc + "&genre_or=" + genreIds.current.join(",");
-        }
-        if (filters.length === i + 1 && tagIds.current.length !== 0) {
-          acc = acc + "&tag_or=" + tagIds.current.join(",");
-        }
-        return acc + "&date_after=" + miladi + "&date_before=" + miladi;
-      }
-      if (filter.includes("مرتب سازی براساس: ")) {
-        const newStr = filter.replace("مرتب سازی براساس: ", "");
-        const status =
-          newStr === "تازه ترین"
-            ? "updated_at"
-            : newStr === "محبوب ترین"
-              ? "-avg_rating"
-              : newStr === "حروف الفبا"
-                ? "name"
-                : newStr === "تعداد فصل ها"
-                  ? "chapter_count"
-                  : null;
-        if (filters.length === i + 1 && genreIds.current.length !== 0) {
-          acc = acc + "&genre_or=" + genreIds.current.join(",");
-        }
-        if (filters.length === i + 1 && tagIds.current.length !== 0) {
-          acc = acc + "&tag_or=" + tagIds.current.join(",");
-        }
-        return acc + "&ordering=" + status;
-      }
-      if (filters.length === i + 1 && genreIds.current.length !== 0) {
-        acc = acc + "&genre_or=" + genreIds.current.join(",");
-      }
-      if (filters.length === i + 1 && tagIds.current.length !== 0) {
-        acc = acc + "&tag_or=" + tagIds.current.join(",");
-      }
-      return acc;
-    }, `?search=${searchWord}`);
-    const Query2 = filters.reduce((acc, filter) => {
-      if (filter.includes("مرتب سازی براساس: ")) {
-        const newStr = filter.replace("مرتب سازی براساس: ", "");
-        const status =
-          newStr === "تازه ترین"
-            ? "updated_at"
-            : newStr === "محبوب ترین"
-              ? "-avg_rating"
-              : newStr === "حروف الفبا"
-                ? "name"
-                : newStr === "تعداد فصل ها"
-                  ? "chapter_count"
-                  : null;
-        return acc + "&ordering=" + status;
-      }
-      return acc;
-    }, `?search=${searchWord}`);
-    const fetchSimpleSearchBook = async () => {
-      try {
-        if (searchWord.trim() !== "") {
-          setLoading2(true);
-          console.log(Query);
-          const response = isVisibleFilters
-            ? await fetch(`http://127.0.0.1:8000/advance/${Query}`, {
-                method: "GET",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              })
-            : await fetch(`http://127.0.0.1:8000/advance/${Query2}`, {
-                method: "GET",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              });
-          if (!response.ok) {
-            setLoading2(false);
-            throw new Error("مشکلی پیش اومد...دوباره تلاش کنید");
-          } else {
-            const data = await response.json();
-            setIsVisibleFilters(false);
-
-            setcurrentpage(1);
-            setTotalPages(Math.ceil(data.count / itemsPerPage));
-            setNumberOfBooks(data.count)
-            setNextPageLink(data.next?.replace("http://127.0.0.1:8000/", ""));
-            setPrevPageLink(
-              data.previous?.replace("http://127.0.0.1:8000/", "")
-            );
-            setShowingBooks(data.results);
-          }
-        } else setIsBlankSearchWord(true);
-      } catch (err) {
-        setTimeout(() => {
-          Swal.fire({
-            title: `${err.message}`,
-            icon: "error",
-            confirmButtonText: "باشه",
-          }).then((result) => {
-            if (result.isConfirmed) {
-              window.location.reload();
-            }
-          });
-        }, 100);
-      }
-    };
-    fetchSimpleSearchBook();
   }
   const didRun = useRef(false);
 
@@ -787,6 +452,7 @@ export function SearchFilters({
     didRun.current = true;
   }, []);
   const didRun2 = useRef(false);
+  const didRun3 = useRef(false);
   useEffect(() => {
     const fetchGenresAndTags = async () => {
       setLoading(true);
@@ -815,14 +481,24 @@ export function SearchFilters({
         temp.map((genre) => {
           setFilters((filters) => [...(filters || []), `ژانر: ${genre.title}`]);
         });
-        didRun2.current=true
+        didRun2.current = true;
       }
       setTagCategories(data2.tag_categories);
       const alllTags = data2.tag_categories.reduce((acc, tagCategory) => {
         return [...acc, ...tagCategory.tags];
       }, []);
-      setShowingTags(alllTags);
-      setAllTags(alllTags);
+      setShowingTags(alllTags.filter((tag) => !tagArray.includes(tag.id)));
+      setAllTags(alllTags.filter((tag) => !tagArray.includes(tag.id)));
+      const temp2 = alllTags.filter((tag) => tagArray.includes(tag.id));
+      setShowingSelectedTags(temp2);
+      setAllSelectedTags(temp2);
+      console.log(temp2);
+      if (!didRun3.current) {
+        temp2.map((tag) => {
+          setFilters((filters) => [...(filters || []), `تگ: ${tag.title}`]);
+        });
+        didRun3.current = true;
+      }
     };
     try {
       fetchGenresAndTags();
@@ -923,13 +599,11 @@ export function SearchFilters({
               value={searchWord}
               onChange={(e) => {
                 setSearchWord(e.target.value);
-                setIsBlankSearchWord(false);
               }}
-              onBlur={() => setIsBlankSearchWord(false)}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   e.preventDefault();
-                  handleSimpleSearch();
+                  handleAdvancedSearch();
                   tagIds.current = [];
                   genreIds.current = [];
                 }
@@ -942,11 +616,6 @@ export function SearchFilters({
               alt="search"
               className="absolute left-[14px] top-[12px]"
             />
-            {isBlankSearchWord ? (
-              <p className="text-red-500 absolute mt-[55px] mr-[25px]">
-                این فیلد خالی است.لطفا چیزی بنویسید...
-              </p>
-            ) : null}
           </div>
         </div>
       </form>
@@ -957,7 +626,6 @@ export function SearchFilters({
           <div className="flex flex-col gap-[17px] w-full">
             <div className="flex justify-between items-center">
               <div className="flex gap-[3px] items-center">
-                <Button></Button>
                 <img
                   src="/images/filter.png"
                   alt="filter"
@@ -967,9 +635,22 @@ export function SearchFilters({
                   فیلترها ({filterNum})
                 </h2>
               </div>
+              <DeleteButton
+                setFromValueChapter={setFromValueChapter}
+                setToValueChapter={setToValueChapter}
+                setGenres={setGenres}
+                setSelectedGenres={setSelectedGenres}
+                selectedGenres={selectedGenres}
+                setAllTags={setAllTags}
+                setAllSelectedTags={setAllSelectedTags}
+                allSelectedTags={allSelectedTags}
+                setShowingTags={setShowingTags}
+                setShowingSelectedTags={setShowingSelectedTags}
+                showingSelectedTags={showingSelectedTags}
+                setFilters={setFilters}
+              />
             </div>
             <div className="grid  grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 mx-0 gap-[11px] mb-[20px]">
-          
               {filters?.map((filter, i) => (
                 <Filter
                   key={i}
@@ -1048,18 +729,15 @@ export function SearchFilters({
                   <Loading />
                 ) : (
                   selectedGenres.map((genre) => (
-                    
-                      
-                      <SelectedGenreAndTag
-                        Obj={genre}
-                        deleteFilter={setFilters}
-                        filters={filters}
-                        selected={selectedGenres}
-                        addSelected={setSelectedGenres}
-                        unselected={genres}
-                        deleteUnselected={setGenres}
-                      />
-                    
+                    <SelectedGenreAndTag
+                      Obj={genre}
+                      deleteFilter={setFilters}
+                      filters={filters}
+                      selected={selectedGenres}
+                      addSelected={setSelectedGenres}
+                      unselected={genres}
+                      deleteUnselected={setGenres}
+                    />
                   ))
                 )}
                 {loading
@@ -1069,17 +747,15 @@ export function SearchFilters({
                         key={genre.id}
                         className="flex items-center text-nowrap justify-center "
                       >
-                        
-                          <GenreAndTag
-                            Obj={genre}
-                            addFilter={setFilters}
-                            filters={filters}
-                            selected={selectedGenres}
-                            addSelected={setSelectedGenres}
-                            unselected={genres}
-                            deleteUnselected={setGenres}
-                          />
-                        
+                        <GenreAndTag
+                          Obj={genre}
+                          addFilter={setFilters}
+                          filters={filters}
+                          selected={selectedGenres}
+                          addSelected={setSelectedGenres}
+                          unselected={genres}
+                          deleteUnselected={setGenres}
+                        />
                       </div>
                     ))}
                 {genres.length === 0 && selectedGenres.length === 0 ? (
@@ -1193,7 +869,6 @@ export function SearchFilters({
                 handleAdvancedSearch();
                 tagIds.current = [];
                 genreIds.current = [];
-                
               }}
               className="btn md:!mx-0 md:!ml-[30px] !text-nowrap !w-full md:!w-fit    !h-fit !mb-0 px-[26px] py-[12px] !rounded-[20px] border-[2px] border-[#000000]/21 active:border-0"
             >
