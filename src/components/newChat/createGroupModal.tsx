@@ -354,7 +354,7 @@ const CreateGroupModal: React.FC<Props> = ({ onClose, onGroupCreated }) => {
                     />
                     {user.following_image ? (
                       <img
-                        src={user.following_image}
+                        src={`http://127.0.0.1:8000${user.following_image}`}
                         alt={user.following}
                         className="w-8 h-8 rounded-full object-cover"
                         loading="lazy"
