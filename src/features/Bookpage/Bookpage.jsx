@@ -329,7 +329,7 @@ const BookPage = () => {
 
   if (loading2) {
     return (
-      <main className="w-full flex items-center">
+      <main className="grid place-items-center h-[100vh]">
         <Loading />
       </main>
     );

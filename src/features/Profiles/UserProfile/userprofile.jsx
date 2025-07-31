@@ -211,13 +211,13 @@ export default function Profile() {
                 {!isHoveredEdit ? (
                   <img
                     className="w-5 h-5 lg:w-[22px] lg:h-[22px] relative"
-                    src="/src/assets/images/edit_sign.png"
+                    src="/images/edit_sign.png"
                     alt="edit"
                   />
                 ) : (
                   <img
                     className="w-5 h-5 lg:w-[22px] lg:h-[22px] relative"
-                    src="/src/assets/images/edit_sign2.png"
+                    src="/images/edit_sign2.png"
                     alt="edit"
                   />
                 )}
