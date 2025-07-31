@@ -32,9 +32,11 @@ import PublicPlaylistsPage from "./features/playlist/PublicPlaylistsPage.jsx";
 import UserPlaylistsPage from "./features/playlist/anotherUserPlaylistsPage.jsx";
 import OthersPlaylistDetailPage from "./features/playlist/othersPlaylistDetailPage.jsx";
 import Temp from "./features/temp.jsx";
+import ScrollToTop from "./scrollToTop.jsx";
 function AppRoutes() {
   return (
     <Router>
+      <ScrollToTop/>
       <Routes>
         <Route path="/" element={<Homepage />}></Route>
         <Route path="/auth/signup" element={<Signup />}></Route>

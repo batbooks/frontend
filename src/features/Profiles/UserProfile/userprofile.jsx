@@ -190,11 +190,14 @@ export default function Profile() {
                 src={
                   userInfo.image
                     ? `http://127.0.0.1:8000${userInfo.image}`
-                    : `/images/userProfile.jpg`
+                    : userInfo.gender == "female"
+                      ? "/images/femaleProfile.png"
+                      : "/images/maleProfile.png"
                 }
                 alt="userimage"
               />
             </div>
+            {console.log(userInfo)}
             <h3 className="w-full text-xl md:text-2xl lg:text-[24px] font-bold text-center ">
               {userInfo.user}
             </h3>
@@ -351,7 +354,7 @@ export default function Profile() {
                 </div>
                 <p className="text-xs md:text-sm lg:text-[14px] absolute bottom-10">
                   <span className="font-semibold">جنسیت:</span>{" "}
-                  {user.gender === "female" ? "زن" : "مرد"}
+                  {userInfo.gender === "female" ? "زن" : "مرد"}
                 </p>
                 <p className="text-xs md:text-sm lg:text-[14px] font-light absolute bottom-2">
                   <span className="font-semibold"> تاریخ ثبت نام: </span>
@@ -367,11 +370,11 @@ export default function Profile() {
                 onClick={() => {
                   navigate(`/book/${lastBook.id}`);
                 }}
-                className="hidden h-full xl:block lg:min-w-[170px]  xl:min-w-[220px]  lg:h-[368px] m-0  lg:mt-1 xl:ml-0"
+                className="hidden h-full xl:block lg:min-w-[170px]  xl:min-w-[220px]  lg:h-[380px] m-0  lg:mt-1 xl:ml-0"
               >
                 <div className="flex  text-center gap-2 md:gap-3 lg:gap-[10px] mb-2">
-                  <FiBookmark className="opacity-70 text-xl md:text-2xl lg:text-3xl" />
-                  <h1 className="text-base md:text-md xl:text-[18px] font-bold text-nowrap">
+                  <FiBookmark className="opacity-70  md:text-md lg:text-lg" />
+                  <h1 className="text-base md:text-sm xl:text-[14px] font-bold text-nowrap">
                     آخرین کتاب نوشته شده:
                   </h1>
                 </div>

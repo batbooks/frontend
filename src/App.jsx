@@ -6,6 +6,8 @@ import Loading from "./common/Loading/Loading";
 import { store } from "./redux/store";
 import AppRoutes from "./routes";
 import { loginSuccess, logout } from "./redux/infoSlice";
+import ScrollToTop from "./scrollToTop";
+import { useLocation } from "react-router";
 // import { Navigate, useNavigate } from "react-router";
 
 function AppContent() {
@@ -15,6 +17,7 @@ function AppContent() {
 
   // localStorage.removeItem("access_token")
   // const navigate = useNavigate();
+  
   useEffect(() => {
     const check_refresh = async () => {
       setLoading(true);
@@ -86,7 +89,7 @@ function AppContent() {
 
     checkAuth();
   }, []);
-
+  
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   return !loading ? (
     <AppRoutes />
