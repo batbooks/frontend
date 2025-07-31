@@ -53,7 +53,6 @@ const SearchDropdown = ({ playlistId, onBookAdded }) => {
       // Optional cleanup
       setQuery("");
       setResults([]);
-      setIsFocused(false);
     } catch (err) {
       console.error(err.message);
       alert("خطا در افزودن کتاب");
