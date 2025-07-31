@@ -46,12 +46,10 @@ export default function Bookcard({ id, suggestions, isHovered, setIsHovered }) {
       <div className="relative cursor-pointer ">
         {isHovered[id] ? (
           <img
-            className="w-[220px] h-[300px] rounded-t-2xl blur-[4px] transition-all duration-100"
+            className="w-[250px] h-[300px] rounded-t-2xl blur-[4px] transition-all duration-100"
             src={
               suggestions[id]?.image != null
-
                 ? `https://batbooks.liara.run${suggestions[id]?.image}`
-
                 : "20.jpg"
             }
             alt=""
@@ -62,7 +60,7 @@ export default function Bookcard({ id, suggestions, isHovered, setIsHovered }) {
             src={
               suggestions[id]?.image != null
                 ? `https://batbooks.liara.run${suggestions[id]?.image}`
-                : "/20.jpg"
+                : "20.jpg"
             }
             alt=""
           />
