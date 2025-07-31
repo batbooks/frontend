@@ -127,7 +127,7 @@ const GroupChatList: React.FC<Props> = ({
                 {group.image ? (
                   <img
                     className="w-10 h-10 rounded-full border-2 border-white shadow-sm"
-                    src={`https://batbooks.liara.run${group.image}`}
+                    src={`${group.image}`}
                     alt={group.name}
                   />
                 ) : (
