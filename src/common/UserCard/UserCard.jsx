@@ -82,7 +82,7 @@ export default function UserCard({ user }) {
             <FaBook className="text-gray-600   " /> {user.book_count} کتاب
           </p>
           <p className="text-[15px] text-gray-800 flex items-center gap-1 justify-start">
-            <FaHeart className="text-red-500" /> {user.favorite_count} پسند
+            <FaHeart className="text-red-500" /> {user.follower_count} پسند
           </p>
         </div>
       </div>
