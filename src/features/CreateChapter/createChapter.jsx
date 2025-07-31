@@ -202,7 +202,7 @@ const CreateChapter = () => {
             <div className="mx-auto">
               <button
                 onClick={handleSubmit}
-                className="btn mt-[36px] text-[16.8px] rounded-[12px] border-[2px] border-[#000000]/21 px-[86px] py-[13.5px] bg-[#2663CD] text-white shadow-lg"
+                className="btn mt-18 text-[16.8px] rounded-[12px] border-[2px] border-[#000000]/21 px-[86px] py-[13.5px] bg-[#2663CD] text-white shadow-lg"
               >
                 <span className="span-btn">انتشار</span>
               </button>
