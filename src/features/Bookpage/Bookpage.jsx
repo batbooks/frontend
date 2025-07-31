@@ -213,6 +213,7 @@ const BookPage = () => {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
+            title: reviewTitle,
             body: reviewContent,
             rating: reviewRating,
             book: parseInt(bookId),
