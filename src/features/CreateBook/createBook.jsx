@@ -58,7 +58,7 @@ function CreateBook() {
       const res = await fetch(`https://batbooks.liara.run/book/create/`, {
         method: "POST",
         body: formData,
-        headers: {https://batbooks.liara.run
+        headers: {
           Authorization: `Bearer ${token}`,
         },
       });
