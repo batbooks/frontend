@@ -313,3 +313,96 @@ function Person({ person }) {
     </button>
   );
 }
+function Pagination({ currentPage, totalPages, onPageChange }) {
+  return (
+    <div className="flex justify-center gap-2 my-6 items-center flex-wrap">
+      {/* Previous Button */}
+      <button
+        onClick={() => onPageChange(currentPage - 1)}
+        disabled={currentPage === 1}
+        className={`px-3 py-1 rounded-md ${
+          currentPage === 1
+            ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+            : "bg-blue-500 text-white hover:bg-blue-600"
+        }`}
+      >
+        قبلی
+      </button>
+
+      {/* First Page */}
+      {currentPage > 3 && totalPages > 5 && (
+        <>
+          <button
+            onClick={() => onPageChange(1)}
+            className={`px-3 py-1 rounded-md ${
+              currentPage === 1
+                ? "bg-blue-700 text-white"
+                : "bg-blue-500 text-white hover:bg-blue-600"
+            }`}
+          >
+            1
+          </button>
+          {currentPage > 4 && <span className="px-2">...</span>}
+        </>
+      )}
+
+      {/* Middle Pages */}
+      {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+        let pageNum;
+        if (totalPages <= 5) {
+          pageNum = i + 1;
+        } else if (currentPage <= 3) {
+          pageNum = i + 1;
+        } else if (currentPage >= totalPages - 2) {
+          pageNum = totalPages - 4 + i;
+        } else {
+          pageNum = currentPage - 2 + i;
+        }
+
+        return (
+          <button
+            key={pageNum}
+            onClick={() => onPageChange(pageNum)}
+            className={`px-3 py-1 rounded-md ${
+              currentPage === pageNum
+                ? "bg-blue-700 text-white"
+                : "bg-blue-500 text-white hover:bg-blue-600"
+            }`}
+          >
+            {pageNum}
+          </button>
+        );
+      })}
+
+      {/* Last Page */}
+      {currentPage < totalPages - 2 && totalPages > 5 && (
+        <>
+          {currentPage < totalPages - 3 && <span className="px-2">...</span>}
+          <button
+            onClick={() => onPageChange(totalPages)}
+            className={`px-3 py-1 rounded-md ${
+              currentPage === totalPages
+                ? "bg-blue-700 text-white"
+                : "bg-blue-500 text-white hover:bg-blue-600"
+            }`}
+          >
+            {totalPages}
+          </button>
+        </>
+      )}
+
+      {/* Next Button */}
+      <button
+        onClick={() => onPageChange(currentPage + 1)}
+        disabled={currentPage === totalPages}
+        className={`px-3 py-1 rounded-md ${
+          currentPage === totalPages
+            ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+            : "bg-blue-500 text-white hover:bg-blue-600"
+        }`}
+      >
+        بعدی
+      </button>
+    </div>
+  );
+}
