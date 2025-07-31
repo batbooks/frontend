@@ -36,7 +36,7 @@ function Reviews({ book }) {
   const [editingReview, setEditingReview] = useState(null);
   const [editedContent, setEditedContent] = useState("");
   const [editedTitle, setEditedTitle] = useState("");
-
+  const [editedRating, setEditedRating] = useState(2.5);
   const token = localStorage.getItem("access_token");
   const { isAuthenticated, user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
@@ -233,6 +233,7 @@ function Reviews({ book }) {
     setEditingReview(review.id);
     setEditedContent(review.body);
     setEditedTitle(review.title);
+    setEditedRating(review.rating);
   };
 
   const handleSaveEdit = async (reviewId) => {
@@ -248,6 +249,7 @@ function Reviews({ book }) {
           body: JSON.stringify({
             title: editedTitle,
             body: editedContent,
+            rating: editedRating,
           }),
         }
       );
@@ -256,7 +258,12 @@ function Reviews({ book }) {
         setAllreviews((prev) =>
           prev.map((review) =>
             review.id === reviewId
-              ? { ...review, body: editedContent, title: editedTitle }
+              ? {
+                  ...review,
+                  body: editedContent,
+                  title: editedTitle,
+                  rating: editedRating,
+                }
               : review
           )
         );
@@ -266,6 +273,10 @@ function Reviews({ book }) {
           text: "نقد با موفقیت ویرایش شد",
           icon: "success",
           confirmButtonText: "باشه",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.reload();
+          }
         });
       }
     } catch (err) {
@@ -407,7 +418,6 @@ function Reviews({ book }) {
                     {isAuthenticated ? (
                       user !== null && user.id === review.user.id ? (
                         <div>
-                          
                           <button
                             className="btn  !py-[5px] !px-[20px]   !text-[14px] !font-[400]"
                             onClick={() => handleEditReview(review)}
@@ -463,13 +473,40 @@ function Reviews({ book }) {
                   <div className=" w-full max-w-[1100px] min-h-[180px] p-2 lg:p-6 rounded-[15px] border-black/20 border-[2px] shadow-sm shadow-black/21 bg-[#d9f0ff]">
                     {editingReview === review.id ? (
                       <div className="flex flex-col gap-4">
-                        <input
-                          type="text"
-                          value={editedTitle}
-                          onChange={(e) => setEditedTitle(e.target.value)}
-                          className="p-2 border rounded"
-                          placeholder="عنوان نقد"
-                        />
+                        <div className="flex items-center">
+                          <input
+                            type="text"
+                            value={editedTitle}
+                            onChange={(e) => setEditedTitle(e.target.value)}
+                            className="w-1/2 p-2 border rounded"
+                            placeholder="عنوان نقد"
+                          />
+                          <section className="w-1/2 flex items-center place-content-center gap-[10px]">
+                            <Rating
+                              precision={0.1}
+                              name="custom-rating"
+                              value={editedRating}
+                              onChange={(e) => setEditedRating(e.target.value)}
+                              size="large"
+                              className="mr-2"
+                              dir="ltr"
+                            />
+                            {editedRating < 1 ? setEditedRating(1) : null}
+                            <input
+                              type="number"
+                              step={0.1}
+                              min={0}
+                              max={5}
+                              value={editedRating}
+                              onChange={(e) =>
+                                0 <= e.target.value && e.target.value <= 5
+                                  ? setEditedRating(e.target.value)
+                                  : setEditedRating(0)
+                              }
+                              className="w-[70px] bg-white text-[20px] rounded-[10px] text-center border border-gray-300"
+                            />
+                          </section>
+                        </div>
                         <Editor
                           value={editedContent}
                           onTextChange={(e) => setEditedContent(e.htmlValue)}
