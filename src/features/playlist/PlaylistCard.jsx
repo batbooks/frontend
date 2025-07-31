@@ -54,7 +54,7 @@ const PlaylistCard = ({
             عمومی
           </span>
         ) : (
-          <span className="inline-block bg-red-100 text-red-800 text-xs px-2 py-1 rounded mb-2">
+          <span className="inline-block bg-red-100 text-red-800 text-xs px-2 py-1 rounded mb-2 w-fit">
             خصوصی
           </span>
         )}

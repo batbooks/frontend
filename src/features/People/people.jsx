@@ -17,7 +17,7 @@ export default function People() {
   const itemsPerPage = 10;
 
   useEffect(() => {
-    const fetchPeople = async () => {
+    const fetchAllPeople = async () => {
       setLoading(true);
       try {
         const response = await fetch(
@@ -25,7 +25,27 @@ export default function People() {
         );
         if (response.ok) {
           const data = await response.json();
-          setPeople(data.results);
+
+          const enriched = await Promise.all(
+            data.results.map(async (person) => {
+              try {
+                const res = await fetch(
+                  `http://127.0.0.1:8000/user/is/follow/${person.id}/`,
+                  {
+                    headers: {
+                      Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                    },
+                  }
+                );
+                const followData = await res.json();
+                return { ...person, is_follow: followData.is_follow };
+              } catch {
+                return { ...person, is_follow: false };
+              }
+            })
+          );
+
+          setPeople(enriched);
           setTotalPages(Math.ceil(data.count / itemsPerPage));
         }
       } catch (err) {
@@ -34,7 +54,7 @@ export default function People() {
         setLoading(false);
       }
     };
-    fetchPeople();
+    fetchAllPeople();
   }, [currentpage]);
 
   const fetchPeople = async (page = 1) => {
@@ -44,20 +64,40 @@ export default function People() {
       setError(" کلمه سرچ شده باید بزرگتر از سه حرف باشد ");
       setTotalPages(0);
       setPeople([]);
+      setLoading(false);
+      return;
     }
+
     try {
       const response = await fetch(
         `http://127.0.0.1:8000/user/search/${searched}/?page=${page}`
       );
       if (response.ok) {
         const data = await response.json();
-        setPeople(data.results);
+
+        const enriched = await Promise.all(
+          data.results.map(async (person) => {
+            try {
+              const res = await fetch(
+                `http://127.0.0.1:8000/user/is/follow/${person.id}/`,
+                {
+                  headers: {
+                    Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                  },
+                }
+              );
+              const followData = await res.json();
+              return { ...person, is_follow: followData.is_follow };
+            } catch {
+              return { ...person, is_follow: false };
+            }
+          })
+        );
+
+        setPeople(enriched);
         setTotalPages(Math.ceil(data.count / itemsPerPage));
       }
     } catch (err) {
-      if (searched.length < 3) {
-        setError(" کلمه سرچ شده باید بزرگتر از سه حرف باشد ");
-      }
       setError(err.message);
       setTotalPages(0);
     } finally {
@@ -76,11 +116,12 @@ export default function People() {
 
   if (loading) {
     return (
-      <div className="h-[100vh] grid place-items-center">
+      <main className="w-full h-screen flex items-center justify-center">
         <Loading />
-      </div>
+      </main>
     );
   }
+
   return (
     <>
       <Navbar />
@@ -114,7 +155,7 @@ export default function People() {
               <span className="span-btn !text-[16px] !font-[400] whitespace-nowrap">
                 <div className="flex flex-row-reverse items-center gap-2">
                   <p>جستجوی فرد </p>
-                  <FiSearch></FiSearch>
+                  <FiSearch />
                 </div>
               </span>
             </button>
@@ -130,7 +171,6 @@ export default function People() {
               <Person person={person} key={person.id} />
             ))}
           </div>
-          {/* Pagination */}
           {totalPages > 1 && allOfThem && (
             <Pagination
               currentPage={currentpage}
@@ -138,7 +178,6 @@ export default function People() {
               onPageChange={handlePageChange}
             />
           )}
-          {/* Pagination */}
           {totalPages > 1 && !allOfThem && (
             <Pagination
               currentPage={currentpage1}
@@ -154,60 +193,23 @@ export default function People() {
 }
 
 function Person({ person }) {
-  const [isFollowing, setIsFollowing] = useState(false);
+  const [isFollowing, setIsFollowing] = useState(person.is_follow || false);
   const [isHoveredInnerButton, setIsHoveredInnerButton] = useState(false);
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    setLoading(true);
-    const fetchFollowing = async () => {
-      try {
-        const response = await fetch(
-          `http://127.0.0.1:8000/user/is/follow/${person.id}/`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-            },
-          }
-        );
-        const data = await response.json();
-        setIsFollowing(data.is_follow);
-      } catch (err) {
-        console.log(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchFollowing();
-  }, [person.id]);
 
   const handleFollow = async () => {
     try {
-      const response = await fetch(
-        `http://127.0.0.1:8000/user/toggle/follow/${person.id}/`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-          },
-        }
-      );
+      await fetch(`http://127.0.0.1:8000/user/toggle/follow/${person.id}/`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      });
     } catch (err) {
       console.error(err.message);
     }
   };
-
-  if (loading) {
-    return (
-      <div className="h-[100vh] grid place-items-center">
-        <Loading />
-      </div>
-    );
-  }
 
   return (
     <button
@@ -309,99 +311,5 @@ function Person({ person }) {
         </span>
       </div>
     </button>
-  );
-}
-
-function Pagination({ currentPage, totalPages, onPageChange }) {
-  return (
-    <div className="flex justify-center gap-2 my-6 items-center flex-wrap">
-      {/* Previous Button */}
-      <button
-        onClick={() => onPageChange(currentPage - 1)}
-        disabled={currentPage === 1}
-        className={`px-3 py-1 rounded-md ${
-          currentPage === 1
-            ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-            : "bg-blue-500 text-white hover:bg-blue-600"
-        }`}
-      >
-        قبلی
-      </button>
-
-      {/* First Page */}
-      {currentPage > 3 && totalPages > 5 && (
-        <>
-          <button
-            onClick={() => onPageChange(1)}
-            className={`px-3 py-1 rounded-md ${
-              currentPage === 1
-                ? "bg-blue-700 text-white"
-                : "bg-blue-500 text-white hover:bg-blue-600"
-            }`}
-          >
-            1
-          </button>
-          {currentPage > 4 && <span className="px-2">...</span>}
-        </>
-      )}
-
-      {/* Middle Pages */}
-      {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-        let pageNum;
-        if (totalPages <= 5) {
-          pageNum = i + 1;
-        } else if (currentPage <= 3) {
-          pageNum = i + 1;
-        } else if (currentPage >= totalPages - 2) {
-          pageNum = totalPages - 4 + i;
-        } else {
-          pageNum = currentPage - 2 + i;
-        }
-
-        return (
-          <button
-            key={pageNum}
-            onClick={() => onPageChange(pageNum)}
-            className={`px-3 py-1 rounded-md ${
-              currentPage === pageNum
-                ? "bg-blue-700 text-white"
-                : "bg-blue-500 text-white hover:bg-blue-600"
-            }`}
-          >
-            {pageNum}
-          </button>
-        );
-      })}
-
-      {/* Last Page */}
-      {currentPage < totalPages - 2 && totalPages > 5 && (
-        <>
-          {currentPage < totalPages - 3 && <span className="px-2">...</span>}
-          <button
-            onClick={() => onPageChange(totalPages)}
-            className={`px-3 py-1 rounded-md ${
-              currentPage === totalPages
-                ? "bg-blue-700 text-white"
-                : "bg-blue-500 text-white hover:bg-blue-600"
-            }`}
-          >
-            {totalPages}
-          </button>
-        </>
-      )}
-
-      {/* Next Button */}
-      <button
-        onClick={() => onPageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
-        className={`px-3 py-1 rounded-md ${
-          currentPage === totalPages
-            ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-            : "bg-blue-500 text-white hover:bg-blue-600"
-        }`}
-      >
-        بعدی
-      </button>
-    </div>
   );
 }

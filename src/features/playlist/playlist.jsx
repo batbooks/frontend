@@ -121,6 +121,18 @@ const PlaylistPage = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const handleCreatePlaylist = (newPlaylist) => {
+    setPlaylists((prev) => [...prev, newPlaylist]);
+  };
+
+  if (loading) {
+    return (
+      <main className="w-full h-screen flex items-center justify-center">
+        <Loading />
+      </main>
+    );
+  }
+
   return (
     <>
       <Navbar />
@@ -279,6 +291,7 @@ const PlaylistPage = () => {
         <CreatePlaylistPopup
           isOpen={isCreatePopupOpen}
           onClose={() => setIsCreatePopupOpen(false)}
+          onCreate={handleCreatePlaylist}
         />
       )}
 
