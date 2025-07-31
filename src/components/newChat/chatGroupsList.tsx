@@ -121,7 +121,7 @@ const GroupChatList: React.FC<Props> = ({
                 {group.image ? (
                   <img
                     className="w-10 h-10 rounded-full border-2 border-white shadow-sm"
-                    src={`http://127.0.0.1:8000${group.image}`}
+                    src={`${group.image}`}
                     alt={group.name}
                   />
                 ) : (
