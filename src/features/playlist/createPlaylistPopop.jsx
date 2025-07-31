@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import TagExplorer from "../CreateBook/TagExplorer";
 
-const CreatePlaylistPopup = ({ isOpen, onClose }) => {
+const CreatePlaylistPopup = ({ isOpen, onClose, onCreate }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [isPublic, setIsPublic] = useState(false);
@@ -43,7 +43,12 @@ const CreatePlaylistPopup = ({ isOpen, onClose }) => {
         throw new Error(data.detail || "خطا در ایجاد پلی‌لیست");
       }
 
-      onClose(); // Close on success
+      const createdPlaylist = await response.json();
+
+      if (onCreate) {
+        onCreate(createdPlaylist);
+      }
+      onClose();
     } catch (err) {
       setError(err.message || "مشکلی پیش آمده است");
     } finally {

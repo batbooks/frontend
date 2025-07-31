@@ -1,17 +1,21 @@
 import React, { useState } from "react";
 import TagExplorer from "../CreateBook/TagExplorer";
+import DatePicker from "react-multi-date-picker";
+import persian from "react-date-object/calendars/persian";
+import persian_fa from "react-date-object/locales/persian_fa";
 
 export default function AdvancedSearch({ onSearchResults }) {
   const [params, setParams] = useState({
     search: "",
     name: "",
     description: "",
-    date_after: "",
-    date_before: "",
     user: "",
     book_count_min: "",
     book_count_max: "",
   });
+
+  const [dateAfter, setDateAfter] = useState(null);
+  const [dateBefore, setDateBefore] = useState(null);
 
   const [orderingField, setOrderingField] = useState("created_at");
   const [orderingDir, setOrderingDir] = useState("desc");
@@ -33,6 +37,20 @@ export default function AdvancedSearch({ onSearchResults }) {
     Object.entries(params).forEach(([key, value]) => {
       if (value) query.append(key, value);
     });
+
+    if (dateAfter) {
+      query.append(
+        "date_after",
+        dateAfter.toDate().toISOString().split("T")[0]
+      );
+    }
+
+    if (dateBefore) {
+      query.append(
+        "date_before",
+        dateBefore.toDate().toISOString().split("T")[0]
+      );
+    }
 
     if (selectedTags.length > 0) {
       query.append(
@@ -64,7 +82,6 @@ export default function AdvancedSearch({ onSearchResults }) {
       if (onSearchResults) {
         onSearchResults(data);
       }
-      // نمایش نتایج یا پردازش بیشتر اینجا انجام میشه
     } catch (err) {
       console.error("خطا:", err);
     }
@@ -72,8 +89,7 @@ export default function AdvancedSearch({ onSearchResults }) {
 
   return (
     <div className="max-w-5xl mx-auto text-center" dir="rtl">
-      {/* Collapsible Content */}
-      <div className=" p-6 bg-white shadow rounded">
+      <div className="p-6 bg-white shadow rounded">
         <h2 className="text-xl font-bold mb-6">جستجوی پیشرفته</h2>
 
         {/* Inputs */}
@@ -106,26 +122,29 @@ export default function AdvancedSearch({ onSearchResults }) {
             </div>
           ))}
 
-          {/* Date pickers */}
-          <div>
-            <label className="block text-sm font-medium">تاریخ بعد از</label>
-            <input
-              type="date"
-              name="date_after"
-              value={params.date_after}
-              onChange={handleChange}
-              className="mt-1 w-full border border-gray-300 rounded p-2"
-            />
-          </div>
-
+          {/* Date pickers (Shamsi) */}
           <div>
             <label className="block text-sm font-medium">تاریخ قبل از</label>
-            <input
-              type="date"
-              name="date_before"
-              value={params.date_before}
-              onChange={handleChange}
-              className="mt-1 w-full border border-gray-300 rounded p-2"
+            <DatePicker
+              value={dateBefore}
+              onChange={setDateBefore}
+              calendar={persian}
+              locale={persian_fa}
+              calendarPosition="bottom-right"
+              className="w-full mt-1"
+              style={{ width: "100%" }}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium">تاریخ بعد از</label>
+            <DatePicker
+              value={dateAfter}
+              onChange={setDateAfter}
+              calendar={persian}
+              locale={persian_fa}
+              calendarPosition="bottom-right"
+              className="w-full mt-1"
+              style={{ width: "100%" }}
             />
           </div>
         </div>

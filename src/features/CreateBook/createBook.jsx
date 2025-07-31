@@ -55,10 +55,10 @@ function CreateBook() {
       });
       console.log(formData.get("description"));
 
-      await fetch(`https://batbooks.liara.run/book/create/`, {
+      const res = await fetch(`https://batbooks.liara.run/book/create/`, {
         method: "POST",
         body: formData,
-        headers: {
+        headers: {https://batbooks.liara.run
           Authorization: `Bearer ${token}`,
         },
       });
