@@ -7,6 +7,7 @@ import { useParams } from "react-router";
 import Loading from "../../common/Loading/Loading";
 import parse from "html-react-parser";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router";
 
 const ModifiedChapter = () => {
   const [chapterName, setChapterName] = useState("");
@@ -14,6 +15,7 @@ const ModifiedChapter = () => {
   const [loading, setLoading] = useState(true);
   const { id: chapterId } = useParams();
   const token = localStorage.getItem("access_token");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchChapter = async () => {
@@ -100,6 +102,9 @@ const ModifiedChapter = () => {
           }}
           className="bg-[#A4C0ED] w-[90%] mx-auto flex flex-col px-[75px] pt-[27px] pb-[72px] shadow-lg border-[2px] border-[#000000]/21"
         >
+          <button className="btn m-0 " onClick={() => navigate(-1)}>
+            <span className="span-btn">بازگشت به صفحه قبل</span>
+          </button>
           <span className="font-bold text-[32px] text-[#265073] mx-auto">
             ویرایش فصل
           </span>
@@ -122,7 +127,7 @@ const ModifiedChapter = () => {
                 <Editor
                   value={chapterContent}
                   onTextChange={(e) => setChapterContent(e.htmlValue)}
-                  className="border-[2px]  h-full border-[#000000]/21 bg-white"
+                  className="!border-[2px]  !h-full !border-[#000000]/21 !bg-white ql-editor"
                 />
               </div>
               <div>
@@ -130,7 +135,7 @@ const ModifiedChapter = () => {
                   پیش نمایش محتوای فصل:
                 </label>
                 <div className="bg-white h-full text-[16px]  px-[10px] py-[7px] leading-10 border border-[#2663cd]">
-                  {parse(chapterContent)}
+                  {parse(chapterContent || "")}
                 </div>
               </div>
             </div>
