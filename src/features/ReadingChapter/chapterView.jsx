@@ -74,12 +74,13 @@ const ReadingPage = () => {
 
     fetchChapter();
   }, []);
-  if (loading)
+  if (loading) {
     return (
-      <div className="h-[100vh] grid place-items-center">
+      <main className="grid place-items-center h-[100vh]">
         <Loading />
-      </div>
+      </main>
     );
+  }
   if (!chapterFound) {
     return (
       <div className="grid place-items-center h-[100vh]">
