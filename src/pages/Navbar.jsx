@@ -62,7 +62,7 @@ function Navbar() {
     if (location.pathname === "/") setSelectedItem(1);
     else if (location.pathname === "/mybooks") setSelectedItem(2);
     else if (location.pathname === "/search") setSelectedItem(3);
-    else if (location.pathname === "/contact") setSelectedItem(4);
+    else if (location.pathname === "/public-playlists") setSelectedItem(4);
     else if (location.pathname === "/chat") setSelectedItem(5);
     else setSelectedItem(0);
   }, [location.pathname]);
@@ -358,11 +358,11 @@ function Navbar() {
             <button
               onClick={() => {
                 setSelectedItem(4);
-                navigate("/contact");
+                navigate("/public-playlists");
               }}
               className={`text-[16px] hover:animate-pulse ${selectedItem != 4 ? "cursor-pointer hover:text-[#2663CD]" : "text-[#265073] font-bold"}  active:text-[#2663CD]/50 active:no-underline active:transition-all active:duration-100 focus:outline-none focus:text-[#2663CD]`}
             >
-              ارتباط با ما
+              پلی لیست های عمومی
             </button>
             {selectedItem === 4 ? (
               <div className="w-[40px] h-[2.5px] bg-[#1E40AF] mt-[3px] rounded-full"></div>

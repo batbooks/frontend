@@ -17,8 +17,13 @@ import {
   FiChevronUp,
   FiPhone,
   FiMessageCircle,
+  FiBookmark,
+  FiBarChart,
+  FiCreditCard,
+  FiBookOpen,
 } from "react-icons/fi";
 import { useLocation, useNavigate } from "react-router-dom";
+import { FaBookOpen } from "react-icons/fa";
 export default function HamburgerNavbar({
   mobileMenuOpen,
   closeMenu,
@@ -36,7 +41,7 @@ export default function HamburgerNavbar({
     if (location.pathname === "/") setSelectedItem(1);
     else if (location.pathname === "/mybooks") setSelectedItem(2);
     else if (location.pathname === "/search") setSelectedItem(3);
-    else if (location.pathname === "/contact") setSelectedItem(4);
+    else if (location.pathname === "/public-playlists") setSelectedItem(4);
     else if (location.pathname === "/chat") setSelectedItem(5);
     else setSelectedItem(0);
   }, [location.pathname]);
@@ -197,9 +202,9 @@ export default function HamburgerNavbar({
               </li>
               <li>
                 <MenuItem
-                  icon={<FiPhone />}
-                  label="ارتباط با ما"
-                  onClick={() => handleNav("/contact", 4)}
+                  icon={<FiBookOpen />}
+                  label="پلی لیست های عمومی"
+                  onClick={() => handleNav("/public-playlists", 4)}
                 />
               </li>
             </ul>
