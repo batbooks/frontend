@@ -18,6 +18,7 @@ import {
   FiInfo,
   FiLayers,
   FiLogOut,
+  FiPlus,
   FiUser,
 } from "react-icons/fi";
 import {
@@ -37,6 +38,7 @@ export default function Profile() {
   const [loading2, setLoading2] = useState(true);
   const [userInfo, setUserInfo] = useState([]);
   const [following, setFollowing] = useState([]);
+  const [playlistCount, setPlaylistCount] = useState(0);
   const [writtenBooks, setWrittenBooks] = useState(0);
   const handleFollow = async (user) => {
     try {
@@ -63,6 +65,7 @@ export default function Profile() {
           const data = await response.json();
           userBooks(data.id);
           setUserInfo(data.user_info);
+          setPlaylistCount(data.playlist_count);
         } else {
           setUserInfo([]);
         }
@@ -170,7 +173,7 @@ export default function Profile() {
       </div>
       <main
         style={{ direction: "rtl" }}
-        className="flex flex-col gap-5 md:gap-8 lg:gap-[20px] max-w-screen px-4 sm:px-6 md:px-8 lg:px-20 pb-16 md:pb-20 lg:pb-[90px] pt-3 md:pt-4 lg:pt-[13px] shadow-2xl shadow-[#000000]-25 items-center"
+        className={`${editClicked ? "bg-slate-200/20 blur-sm" : "blur-none"} flex flex-col gap-5 md:gap-8 lg:gap-[20px] max-w-screen px-4 sm:px-6 md:px-8 lg:px-20 pb-16 md:pb-20 lg:pb-[90px] pt-3 md:pt-4 lg:pt-[13px] shadow-2xl shadow-[#000000]-25 items-center`}
       >
         <div className="flex items-center gap-2 md:gap-3 lg:gap-[10px] mb-4 md:mb-6 lg:mb-[20px]">
           <FiUser className="text-[#265073]  text-2xl md:text-3xl " />
@@ -179,15 +182,15 @@ export default function Profile() {
           </h1>
         </div>
 
-        <div className="flex flex-col lg:flex-row w-full max-w-[90vw] bg-[#A4C0ED] ml-auto rounded-2xl lg:rounded-[35px] shadow-lg shadow-[#000000]/25 mb-8 md:mb-10 lg:mb-[40px] p-4 md:p-6 lg:pl-12 lg:pr-6 lg:pt-5 gap-4 md:gap-6 lg:gap-[39px] border-2 border-[#000000]/8">
+        <div className="flex flex-col lg:flex-row w-full max-w-[90vw] bg-[#A4C0ED] ml-auto rounded-2xl lg:rounded-[35px] shadow-lg shadow-[#000000]/25 mb-8 md:mb-10 lg:mb-[40px] p-4 md:p-6 lg:pl-3 lg:pr-6 xl:pl-6 lg:pt-5 gap-4 md:gap-6 lg:gap-[39px] border-2 border-[#000000]/8">
           <div className="flex flex-col items-center  lg:min-w-[236px] gap-3 md:gap-4 lg:gap-[15px]">
-            <div className="w-40 h-40 md:w-48 md:h-48 lg:w-[236px] lg:h-[236px] rounded-full overflow-hidden">
+            <div className="w-40 h-40 md:w-48 md:h-48 lg:w-[236px] lg:h-[236px] rounded-full overflow-hidden border-4 border-white">
               <img
-                className="w-full h-full shadow-lg shadow-[#000000]/25 object-cover"
+                className="w-full h-full shadow-lg shadow-[#000000]/25 object-cover "
                 src={
                   userInfo.image
                     ? `https://batbooks.liara.run${userInfo.image}`
-                    : `/images/user_image.png`
+                    : `/images/userProfile.jpg`
                 }
                 alt="userimage"
               />
@@ -244,19 +247,21 @@ export default function Profile() {
               </h1>
             </div>
 
-            <div className="flex flex-wrap gap-4 md:gap-5 lg:gap-[20px] mb-4 md:mb-5 lg:mb-[19px]">
+            <div
+              className={`flex flex-wrap  xl:flex xl:flex-wrap ${!lastBook?"lg:grid lg:grid-cols-2":null}   gap-4 md:gap-5 lg:gap-[20px] mb-4 md:mb-5 lg:mb-[19px]`}
+            >
               <button
                 onClick={() => {
                   navigate("/mybooks");
                 }}
-                className="btn !m-0 !mt-2 lg:!mt-[10px] !min-h-12 lg:!min-h-[60px] !flex !flex-col !bg-white !rounded-lg"
+                className="btn !m-0 !mt-[10px] !min-h-[60px] !flex !flex-col !bg-[#ffffff]  !rounded-[10px]"
               >
-                <h4 className="span-btn !text-xl md:!text-2xl lg:!text-[24px] !font-semibold !text-[#265073]">
+                <span className="span-btn !text-[24px] !font-[600] !text-[#265073]">
                   {writtenBooks}
-                </h4>
-                <h4 className="span-btn !font-normal !text-[#000000]/70 !text-xs md:!text-sm lg:!text-[14px]">
+                </span>
+                <span className="span-btn !font-normal !text-[#000000]/70 !text-xs md:!text-sm lg:!text-[14px]">
                   کتاب تالیف شده
-                </h4>
+                </span>
               </button>
               <div className="flex flex-col items-center">
                 <button
@@ -270,14 +275,14 @@ export default function Profile() {
                       setIsFollowingOpened(false);
                     }, 250)
                   }
-                  className="btn !m-0 !mt-2 lg:!mt-[10px] !min-h-12 lg:!min-h-[60px] !flex !flex-col !bg-white !rounded-lg"
+                  className="btn !m-0 !mt-[10px] !min-h-[60px] !flex !flex-col !bg-[#ffffff]  !rounded-[10px]"
                 >
-                  <h4 className="span-btn !text-xl md:!text-2xl lg:!text-[24px] !font-semibold !text-[#265073]">
+                  <span className="span-btn !text-[24px] !font-[600] !text-[#265073]">
                     {userInfo.following_count}
-                  </h4>
-                  <h4 className="span-btn !font-normal !text-[#000000]/70 !text-xs md:!text-sm lg:!text-[14px]">
+                  </span>
+                  <span className="span-btn !font-[400] !text-[#000000]/70 !text-[14px]">
                     نفر دنبال شده
-                  </h4>
+                  </span>
                 </button>
                 <ul
                   dir="ltr"
@@ -291,6 +296,40 @@ export default function Profile() {
                     <UserFollowing user={user} />
                   ))}
                 </ul>
+              </div>
+
+              <button
+                onClick={
+                  userInfo.following_count != 0
+                    ? () => setIsFollowingOpened(!isFollowingOpened)
+                    : () => setIsFollowingOpened(isFollowingOpened)
+                }
+                onBlur={() =>
+                  setTimeout(() => {
+                    setIsFollowingOpened(false);
+                  }, 250)
+                }
+                className="btn !m-0 !mt-[10px] !min-h-[60px] !flex !flex-col !bg-[#ffffff]  !rounded-[10px]"
+              >
+                <span className="span-btn !text-[24px] !font-[600] !text-[#265073]">
+                  {userInfo.follower_count}
+                </span>
+                <span className="span-btn !font-[400] !text-[#000000]/70 !text-[14px]">
+                  نفر دنبال کرده
+                </span>
+              </button>
+              <div className="flex flex-col items-center">
+                <button
+                  onClick={() => navigate("/playlists")}
+                  className=" btn !m-0 !mt-[10px] !min-h-[60px] !flex !flex-col !bg-[#ffffff]  !rounded-[10px]"
+                >
+                  <span className=" span-btn !text-[24px] !font-[600] !text-[#265073]">
+                    {playlistCount}
+                  </span>
+                  <span className="span-btn !font-[400] !text-[#000000]/70 !text-[14px]">
+                    پلی لیست
+                  </span>
+                </button>
               </div>
             </div>
             <div className="mt-10 flex items-center text-center gap-2 md:gap-3 lg:gap-[10px] mb-4 md:mb-6 lg:mb-[20px]">
@@ -323,56 +362,42 @@ export default function Profile() {
           </div>
 
           {lastBook ? (
-            <div
-              onClick={() => {
-                navigate(`/book/${lastBook.id}`);
-              }}
-              className="hidden lg:block lg:min-w-[292px] w-[200px] h-auto lg:h-[368px] m-0 lg:m-8 lg:mt-1 lg:ml-0"
-            >
-              <div className="flex items-start text-center gap-2 md:gap-3 lg:gap-[10px] mb-2">
-                <FiBookmark className="opacity-70 text-xl md:text-2xl lg:text-3xl" />
-                <h1 className="text-base md:text-lg lg:text-[18px] font-bold">
-                  آخرین کتاب نوشته شده:
-                </h1>
+            <div className="flex items-end lg:h-full xl:h-full">
+              <div
+                onClick={() => {
+                  navigate(`/book/${lastBook.id}`);
+                }}
+                className="hidden h-full xl:block lg:min-w-[170px]  xl:min-w-[220px]  lg:h-[368px] m-0  lg:mt-1 xl:ml-0"
+              >
+                <div className="flex  text-center gap-2 md:gap-3 lg:gap-[10px] mb-2">
+                  <FiBookmark className="opacity-70 text-xl md:text-2xl lg:text-3xl" />
+                  <h1 className="text-base md:text-md xl:text-[18px] font-bold text-nowrap">
+                    آخرین کتاب نوشته شده:
+                  </h1>
+                </div>
+                <BookCard
+                  title={lastBook.name}
+                  author={lastBook.Author}
+                  coverImage={
+                    lastBook.image
+                      ? `${lastBook.image}`
+                      : "/images/book_sample1.png"
+                  }
+                  description={lastBook.description}
+                  chapters={lastBook.chapter_count}
+                />
               </div>
-              <BookCard
-                title={lastBook.name}
-                author={lastBook.Author}
-                coverImage={
-                  lastBook.image ? lastBook.image : "/images/book_sample1.png"
-                }
-                description={lastBook.description}
-                chapters={85}
-              />
             </div>
           ) : (
-            <button
-              onMouseEnter={() => setIsHoveredFavBook(true)}
-              onMouseLeave={() => setIsHoveredFavBook(false)}
-              className="relative bg-white rounded-xl lg:rounded-[20px] px-4 lg:px-[17px] pt-10 lg:pt-[41px] pb-7 lg:pb-[28px] mt-4 lg:mt-8 mr-auto shadow-lg shadow-[#000000]/25 w-full lg:min-w-[242px] cursor-pointer"
+            <div
+              onClick={() => navigate("/mybooks/createbook")}
+              className="flex gap-2 md:gap-[10px] items-center justify-center  lg:items-end flex-col md:flex-row mb-8"
             >
-              <img
-                src="/images/favorite_book.png"
-                alt="favoritebook"
-                className={`transition-all duration-500 mx-auto ${
-                  isHoveredFavBook ? "blur-sm" : "blur-none"
-                }`}
-              />
-              <button
-                className={`transition-all duration-500 absolute mx-auto inset-x-0 max-h-10 max-w-[239px] my-auto inset-y-0 flex gap-3 md:gap-4 lg:gap-[15px] bg-[#2663cd] text-white text-sm md:text-base lg:text-[16px] whitespace-nowrap items-center rounded-full lg:rounded-[46px] py-2 lg:py-[8px] px-4 lg:px-[18px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-2 focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto ${
-                  isHoveredFavBook
-                    ? "visible opacity-100"
-                    : "invisible opacity-0"
-                }`}
-              >
-                <img
-                  className="w-5 h-5 lg:w-[22px] lg:h-[22px]"
-                  src="/images/edit_sign.png"
-                  alt="edit"
-                />
-                <h4 className="font-normal">کتاب جدید خود را بنویسید</h4>
-              </button>
-            </button>
+              <div className="flex w-7/10 h-95   lg:w-35 xl:w-45 cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-slate-300 bg-white p-3 text-center text-slate-500 shadow-sm transition-colors duration-300 hover:border-blue-400 hover:text-blue-500">
+                <p className="text-sm">اولین کتاب خود را بنویسید</p>
+                <FiPlus className="h-12 w-12" />
+              </div>
+            </div>
           )}
         </div>
         <h2 className="text-xl md:text-2xl lg:text-[24px] font-normal text-[#265073] ml-auto mb-6 lg:mb-[25px]">

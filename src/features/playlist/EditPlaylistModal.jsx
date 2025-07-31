@@ -1,46 +1,117 @@
 import React, { useState, useEffect } from "react";
+import TagExplorer from "../CreateBook/TagExplorer";
 
 const EditPlaylistModal = ({ playlist, onSave, onClose }) => {
-  const [editedPlaylist, setEditedPlaylist] = useState(playlist);
-  const [newTag, setNewTag] = useState("");
+  const [name, setName] = useState(playlist.name || "");
+  const [description, setDescription] = useState(playlist.description || "");
+  const [isPublic, setIsPublic] = useState(playlist.is_public || false);
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [selectedGenres, setSelectedGenres] = useState([]);
+  const [allGenres, setAllGenres] = useState([]);
+  const [allTags, setAllTags] = useState([]);
 
   useEffect(() => {
-    setEditedPlaylist(playlist);
-  }, [playlist]);
+    const fetchGenresAndTags = async () => {
+      try {
+        const token = localStorage.getItem("access_token");
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setEditedPlaylist({ ...editedPlaylist, [name]: value });
-  };
+        const [genresRes, tagsRes] = await Promise.all([
+          fetch(`https://batbooks.liara.run/tag/genres/`),
+          fetch(`https://batbooks.liara.run/tag/tag-categories/`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }),
+        ]);
+        const genresData = await genresRes.json();
+        const tagsData = await tagsRes.json();
 
-  const handleAddTag = () => {
-    if (newTag.trim() && !editedPlaylist.tags.includes(newTag.trim())) {
-      setEditedPlaylist({
-        ...editedPlaylist,
-        tags: [...editedPlaylist.tags, newTag.trim()],
-      });
-      setNewTag("");
-    }
-  };
+        setAllGenres(genresData.genres || []);
 
-  const handleRemoveTag = (tagToRemove) => {
-    setEditedPlaylist({
-      ...editedPlaylist,
-      tags: editedPlaylist.tags.filter((tag) => tag !== tagToRemove),
-    });
-  };
+        const allTagsFlat = (tagsData.tag_categories || []).flatMap(
+          (category) => category.tags
+        );
+        setAllTags(allTagsFlat);
+      } catch (err) {
+        console.error("Error fetching genres or tags:", err);
+        setError("خطا در بارگذاری ژانرها یا تگ‌ها");
+      }
+    };
+    fetchGenresAndTags();
+  }, []);
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    const genreIds = playlist.genres
+      .map((genre) => {
+        const found = allGenres.find((g) => g.title === genre.title);
+        return found ? found.id : null;
+      })
+      .filter(Boolean);
+    setSelectedGenres(genreIds);
+    console.log(allTags);
+
+    const matchedTags = playlist.tags
+      .map((tag) => {
+        return allTags.find((t) => t.title === tag.title);
+      })
+      .filter(Boolean);
+    setSelectedTags(matchedTags);
+  }, [allGenres, allTags, playlist.genres, playlist.tags]);
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSave(editedPlaylist);
+    setLoading(true);
+    setError("");
+
+    const token = localStorage.getItem("access_token");
+
+    const payload = {
+      name,
+      description,
+      is_public: isPublic,
+      tag_ids: selectedTags.map((tag) => tag.id),
+      genre_ids: selectedGenres,
+    };
+
+    try {
+      const response = await fetch(
+        `https://batbooks.liara.run/user/playlists/${playlist.id}/`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.detail || "خطا در بروزرسانی پلی‌لیست");
+      }
+
+      const updated = await response.json();
+      onSave(updated); // update parent state
+      onClose(); // close modal
+    } catch (err) {
+      setError(err.message || "مشکلی پیش آمده است.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div
       dir="rtl"
-      className="fixed inset-0  bg-opacity-50 flex items-center backdrop-blur-xs justify-center z-50"
+      className="fixed inset-0 bg-opacity-50 flex items-center backdrop-blur-xs justify-center z-50"
     >
-      <div className="bg-white rounded-lg p-6 w-full max-w-md">
+      <div className="bg-white rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-xl font-bold text-gray-800">ویرایش پلی‌لیست</h3>
           <button
@@ -64,126 +135,70 @@ const EditPlaylistModal = ({ playlist, onSave, onClose }) => {
           </button>
         </div>
 
-        <form onSubmit={handleSubmit}>
+        <div>
           <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="title"
-            >
+            <label className="block text-sm font-medium text-gray-700">
               عنوان پلی‌لیست
             </label>
             <input
               type="text"
-              id="title"
-              name="title"
-              value={editedPlaylist.title}
-              onChange={handleInputChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
 
           <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="description"
-            >
+            <label className="block text-sm font-medium text-gray-700">
               توضیحات
             </label>
             <textarea
-              id="description"
-              name="description"
-              value={editedPlaylist.description}
-              onChange={handleInputChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              rows="3"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              rows={3}
+              className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="genre"
-            >
-              ژانر
+          <div className="mb-4 flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="isPublic"
+              checked={isPublic}
+              onChange={(e) => setIsPublic(e.target.checked)}
+            />
+            <label htmlFor="isPublic" className="font-medium">
+              عمومی
             </label>
-            <select
-              id="genre"
-              name="genre"
-              value={editedPlaylist.genre}
-              onChange={handleInputChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            >
-              <option value="ادبیات">ادبیات</option>
-              <option value="عمومی">عمومی</option>
-              <option value="توسعه فردی">توسعه فردی</option>
-              <option value="تاریخ">تاریخ</option>
-              <option value="علمی-تخیلی">علمی-تخیلی</option>
-              <option value="فلسفه">فلسفه</option>
-              <option value="روانشناسی">روانشناسی</option>
-              <option value="مدیریت">مدیریت</option>
-              <option value="سلامت">سلامت</option>
-              <option value="داستان">داستان</option>
-              <option value="سبک زندگی">سبک زندگی</option>
-              <option value="تکنولوژی">تکنولوژی</option>
-            </select>
           </div>
+          <TagExplorer
+            onSelectTags={setSelectedTags}
+            onSelectGenre={setSelectedGenres}
+            initialTags={selectedTags}
+            initialGenres={selectedGenres}
+          />
 
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              تگ‌ها
-            </label>
-            <div className="flex mb-2">
-              <input
-                type="text"
-                value={newTag}
-                onChange={(e) => setNewTag(e.target.value)}
-                className="shadow appearance-none border rounded-l w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                placeholder="تگ جدید"
-              />
-              <button
-                type="button"
-                onClick={handleAddTag}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-l focus:outline-none focus:shadow-outline"
-              >
-                افزودن
-              </button>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {editedPlaylist.tags.map((tag, index) => (
-                <span
-                  key={index}
-                  className="bg-gray-200 text-gray-800 text-xs px-3 py-1 rounded-full flex items-center"
-                >
-                  #{tag}
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveTag(tag)}
-                    className="mr-1 text-gray-500 hover:text-red-500"
-                  >
-                    ×
-                  </button>
-                </span>
-              ))}
-            </div>
-          </div>
+          {error && <p className="text-red-500 mt-3 text-sm">{error}</p>}
 
-          <div className="flex justify-end gap-3">
+          <div className="mt-6 flex justify-end gap-3">
             <button
               type="button"
               onClick={onClose}
-              className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded"
             >
               انصراف
             </button>
             <button
-              type="submit"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              type="button"
+              onClick={handleSubmit}
+              disabled={loading}
+              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             >
-              ذخیره تغییرات
+              {loading ? "در حال ذخیره..." : "ذخیره تغییرات"}
             </button>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );

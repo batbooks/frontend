@@ -4,110 +4,47 @@ import Navbar from "../../pages/Navbar";
 import Footer from "../../common/Footer/Footer";
 import PlaylistCard from "./PlaylistCard";
 import EditPlaylistModal from "./EditPlaylistModal";
+import Loading from "../../common/Loading/Loading";
+import CreatePlaylistPopup from "./createPlaylistPopop";
 
 const PlaylistPage = () => {
   const navigate = useNavigate();
-  const [playlists, setPlaylists] = useState([
-    {
-      id: 1,
-      title: "رمان‌های کلاسیک جهان",
-      description: "برترین آثار ادبیات جهان از نویسندگان مطرح",
-      bookCount: 15,
-      tags: ["ادبیات جهان", "کلاسیک", "برنده جایزه نوبل"],
-      genre: "ادبیات",
-    },
-    {
-      id: 2,
-      title: "کتاب‌های صوتی پرفروش",
-      description: "پرفروش‌ترین کتاب‌های صوتی سال جاری",
-      bookCount: 23,
-      tags: ["پرفروش", "صوتی", "محبوب"],
-      genre: "عمومی",
-    },
-    {
-      id: 3,
-      title: "توسعه فردی و موفقیت",
-      description: "راهکارهای عملی برای رشد شخصی و حرفه‌ای",
-      bookCount: 18,
-      tags: ["موفقیت", "رشد شخصی", "انگیزشی"],
-      genre: "توسعه فردی",
-    },
-    {
-      id: 4,
-      title: "تاریخ ایران باستان",
-      description: "شناخت تمدن کهن ایران زمین",
-      bookCount: 12,
-      tags: ["تاریخ", "ایران", "تمدن"],
-      genre: "تاریخ",
-    },
-    {
-      id: 5,
-      title: "داستان‌های علمی-تخیلی",
-      description: "جهان‌های موازی و آینده‌نگرانه",
-      bookCount: 14,
-      tags: ["تخیلی", "آینده", "فناوری"],
-      genre: "علمی-تخیلی",
-    },
-    {
-      id: 6,
-      title: "فلسفه و اندیشه",
-      description: "آثار فلسفی برای تفکر عمیق",
-      bookCount: 9,
-      tags: ["فلسفه", "اندیشه", "حکمت"],
-      genre: "فلسفه",
-    },
-    {
-      id: 7,
-      title: "روانشناسی کاربردی",
-      description: "درک رفتار انسان و روابط اجتماعی",
-      bookCount: 11,
-      tags: ["روانشناسی", "رفتار", "روابط"],
-      genre: "روانشناسی",
-    },
-    {
-      id: 8,
-      title: "مدیریت و کسب‌وکار",
-      description: "راهبردهای مدیریتی و کارآفرینی",
-      bookCount: 16,
-      tags: ["مدیریت", "کسب‌وکار", "اقتصاد"],
-      genre: "مدیریت",
-    },
-    {
-      id: 9,
-      title: "سلامت و تناسب اندام",
-      description: "راهنمای جامع سلامت جسم و روان",
-      bookCount: 8,
-      tags: ["سلامت", "تغذیه", "ورزش"],
-      genre: "سلامت",
-    },
-    {
-      id: 10,
-      title: "داستان‌های پلیسی",
-      description: "پرونده‌های جنایی و معمایی",
-      bookCount: 13,
-      tags: ["پلیسی", "جنایی", "معمایی"],
-      genre: "داستان",
-    },
-    {
-      id: 11,
-      title: "سبک زندگی و خانه‌داری",
-      description: "نکات کاربردی برای زندگی بهتر",
-      bookCount: 7,
-      tags: ["سبک زندگی", "خانه‌داری", "کاربردی"],
-      genre: "سبک زندگی",
-    },
-    {
-      id: 12,
-      title: "تکنولوژی و آینده",
-      description: "تحولات دیجیتال و فناوری‌های نوین",
-      bookCount: 19,
-      tags: ["تکنولوژی", "دیجیتال", "فناوری"],
-      genre: "تکنولوژی",
-    },
-  ]);
+  const [loading, setLoading] = useState(true);
+  const [playlists, setPlaylists] = useState([]);
   const [editingPlaylist, setEditingPlaylist] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  
+  const [isCreatePopupOpen, setIsCreatePopupOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchdata = async () => {
+      try {
+        setLoading(true);
+        const token = localStorage.getItem("access_token");
+        const auth = token ? `Bearer ${token}` : "";
+
+        const response = await fetch(`https://batbooks.liara.run/user/playlists/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: auth,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setPlaylists(data);
+        }
+      } catch (err) {
+        console.error(err);
+        throw new Error("Failed to fetch data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchdata();
+  }, []);
+
   // حالت‌های pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
@@ -125,15 +62,39 @@ const PlaylistPage = () => {
     return playlists.slice(startIndex, endIndex);
   };
 
-  const handleDeletePlaylist = (id) => {
-    if (window.confirm("آیا مطمئن هستید که می‌خواهید این پلی‌لیست را حذف کنید؟")) {
-      const updatedPlaylists = playlists.filter((playlist) => playlist.id !== id);
+  const handleDeletePlaylist = async (id) => {
+    const confirmed = window.confirm(
+      "آیا مطمئن هستید که می‌خواهید این پلی‌لیست را حذف کنید؟"
+    );
+
+    if (!confirmed) return;
+
+    try {
+      const token = localStorage.getItem("access_token");
+      const response = await fetch(
+        `https://batbooks.liara.run/user/playlists/${id}/`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("خطا در حذف پلی‌لیست. لطفاً دوباره تلاش کنید.");
+      }
+
+      const updatedPlaylists = playlists.filter(
+        (playlist) => playlist.id !== id
+      );
       setPlaylists(updatedPlaylists);
-      
-      // اگر صفحه آخر فقط یک آیتم داشت و آن را حذف کردیم، به صفحه قبل برو
+
       if (currentPage > 1 && getCurrentPlaylists().length === 1) {
         setCurrentPage(currentPage - 1);
       }
+    } catch (error) {
+      alert(error.message || "مشکلی پیش آمده است.");
     }
   };
 
@@ -147,15 +108,17 @@ const PlaylistPage = () => {
   };
 
   const handleSavePlaylist = (updatedPlaylist) => {
-    setPlaylists(playlists.map(playlist => 
-      playlist.id === updatedPlaylist.id ? updatedPlaylist : playlist
-    ));
+    setPlaylists(
+      playlists.map((playlist) =>
+        playlist.id === updatedPlaylist.id ? updatedPlaylist : playlist
+      )
+    );
     setIsEditModalOpen(false);
   };
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -170,7 +133,10 @@ const PlaylistPage = () => {
         </div>
 
         <div dir="rtl" className="mt-6 mb-6 md:mt-8 md:mb-8 text-left">
-          <button className="flex items-center justify-center gap-2 bg-[#2663CD] rounded-[10px] text-white text-sm sm:text-[16px] font-medium py-2 px-4 sm:py-[9px] sm:px-[32px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-2 focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto w-full sm:w-auto">
+          <button
+            onClick={() => setIsCreatePopupOpen(true)}
+            className="flex items-center justify-center gap-2 bg-[#2663CD] rounded-[10px] text-white text-sm sm:text-[16px] font-medium py-2 px-4 sm:py-[9px] sm:px-[32px] shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-2 focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto w-full sm:w-auto"
+          >
             پلی‌لیست جدید
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -187,13 +153,16 @@ const PlaylistPage = () => {
           </button>
         </div>
 
-        <div dir="rtl" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div
+          dir="rtl"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
           {getCurrentPlaylists().map((playlist) => (
             <PlaylistCard
               key={playlist.id}
               playlist={playlist}
-              onDelete={handleDeletePlaylist}
-              onEdit={handleEditPlaylist}
+              onDelete={() => handleDeletePlaylist(playlist.id)}
+              onEdit={() => handleEditPlaylist(playlist)}
               onView={() => handleViewPlaylist(playlist.id)}
             />
           ))}
@@ -201,7 +170,10 @@ const PlaylistPage = () => {
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div dir="rtl" className="flex justify-center gap-2 my-6 items-center">
+          <div
+            dir="rtl"
+            className="flex justify-center gap-2 my-6 items-center"
+          >
             {/* Previous Button */}
             <button
               onClick={() => handlePageChange(currentPage - 1)}
@@ -263,7 +235,9 @@ const PlaylistPage = () => {
             {/* Last Page */}
             {currentPage < totalPages - 2 && totalPages > 5 && (
               <>
-                {currentPage < totalPages - 3 && <span className="px-2">...</span>}
+                {currentPage < totalPages - 3 && (
+                  <span className="px-2">...</span>
+                )}
                 <button
                   onClick={() => handlePageChange(totalPages)}
                   className={`px-3 py-1 rounded-md ${
@@ -299,6 +273,12 @@ const PlaylistPage = () => {
           playlist={editingPlaylist}
           onSave={handleSavePlaylist}
           onClose={() => setIsEditModalOpen(false)}
+        />
+      )}
+      {isCreatePopupOpen && (
+        <CreatePlaylistPopup
+          isOpen={isCreatePopupOpen}
+          onClose={() => setIsCreatePopupOpen(false)}
         />
       )}
 

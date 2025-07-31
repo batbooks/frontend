@@ -65,7 +65,7 @@ function EditBook() {
 
         setName(data.name);
         setDescription(data.description);
-
+        console.log(data.genres);
         const genreIds = data.genres
           .map((genreName) => {
             const found = allGenres.find(

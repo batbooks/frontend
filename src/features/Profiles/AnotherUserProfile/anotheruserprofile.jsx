@@ -308,11 +308,11 @@ export default function Another_User_Profile() {
                 </span>
               </button>
               <button
-                onClick={() => handleScrollDown(1.8)}
+                onClick={() => navigate(`/anotherUserPlaylists/${user.user_id}`)}
                 className=" btn !m-0 !mt-[10px] !min-h-[60px] !flex !flex-col !bg-[#ffffff]  !rounded-[10px]"
               >
                 <span className=" span-btn !text-[24px] !font-[600] !text-[#265073]">
-                  5
+                  {user.playlist_count}
                 </span>
                 <span className="span-btn !font-[400] !text-[#000000]/70 !text-[14px]">
                   پلی لیست
@@ -370,7 +370,7 @@ export default function Another_User_Profile() {
                 title={lastBook.name}
                 coverImage={
                   lastBook.image != null
-                    ? `https://batbooks.liara.run${lastBook.image}`
+                    ? `${lastBook.image}`
                     : "/23.png"
                 }
                 chapters={80}
@@ -481,11 +481,7 @@ export default function Another_User_Profile() {
               <span>موردی برای نمایش وجود ندارد...</span>
             )}
           </div>
-          {UserWritten.length > 8 ? (
-            <button className="btn w-[200px]!">
-              <span className="span-btn "> مشاهده تمام موارد </span>
-            </button>
-          ) : null}
+          
         </div>
       </main>
       <div className="mt-[-60px]">
@@ -509,7 +505,7 @@ export function Book({ book, isLast = false, minw = 180, h = 254 }) {
         title={book.name}
         author={book.Author}
         coverImage={
-          book.image != null ? `https://batbooks.liara.run/${book.image}` : "/20.jpg"
+          book.image != null ? `${book.image}` : "/20.jpg"
         }
         description={book.description}
         chapters={80}

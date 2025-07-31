@@ -81,7 +81,7 @@ function Navbar() {
   return (
     <header
       dir="rtl"
-      className={`${isVisiblePanel || isVisibleUser ? "relative" : ""} p-7  sticky top-0 z-50  lg:${isScrolled ? "h-[70px] shadow-md transition-all duration-300" : ""} h-[100px] md:max-w-screen lg:m-auto flex bg-[#a3d5ff] justify-between py-[1px] lg:pl-[50px]  lg:pr-[30px]`}
+      className={`${isVisiblePanel || isVisibleUser ? "relative" : ""} p-7  sticky top-0 z-150  lg:${isScrolled ? "h-[70px] shadow-md transition-all duration-300" : ""} h-[100px] md:max-w-screen lg:m-auto flex bg-[#a3d5ff] justify-between py-[1px] lg:pl-[50px]  lg:pr-[30px]`}
     >
       <nav className="hidden lg:flex items-center gap-[60px]">
         <div
@@ -132,7 +132,6 @@ function Navbar() {
             <ul
               className={`w-[155px] h-[76px] divide-y divide-[#2F4F4F]/50 shadow-lg shadow-[#000000]/25 rounded-[10px] transition-opacity duration-1000 ease-in-out ${isVisibleUser ? "opacity-100 pointer-events-auto relative" : "opacity-0 pointer-events-none absolute mt-[60px]"}`}
             >
-              
               <li className=" w-full text-nowrap h-[38px] bg-[#ffffff] rounded-t-[10px]">
                 <button
                   onClick={() => {

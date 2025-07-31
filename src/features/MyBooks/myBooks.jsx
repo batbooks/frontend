@@ -133,7 +133,7 @@ export default function MyBooks() {
             </h3>
             <div
               ref={containerRef1}
-              className="  pr-3 overflow-x-scroll scrollbar-opacity-0 w-full ml-auto pt-4  "
+              className="  pr-3 overflow-x-scroll overflow-y-hidden scrollbar-opacity-0 w-full ml-auto pt-4 mb-3 pb-3 "
             >
               {favoriteBooks[1] &&
               favoriteBooks.length > (isMobile ? 2 : isTablet ? 5 : 7) ? (
@@ -232,7 +232,7 @@ export default function MyBooks() {
 
             <div
               ref={containerRef2}
-              className=" pr-3  overflow-x-scroll scrollbar-opacity-0 w-full ml-auto pt-4 md:pt-[18px]"
+              className=" pr-3  overflow-x-scroll overflow-y-hidden pb-3 scrollbar-opacity-0 w-full ml-auto pt-4 md:pt-[18px]"
             >
               {writtenBooks[1] &&
               writtenBooks.length > (isMobile ? 2 : isTablet ? 5 : 7) ? (

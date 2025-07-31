@@ -39,7 +39,7 @@ const Threads = () => {
       }
       setTimeout(() => {
         Swal.fire({
-          title: "نظر شما با موفقیت ثبت شد",
+          title:"ترد شما با موفقیت ایجاد شد",
           icon: "success",
           confirmButtonText: "باشه",
         }).then((result) => {

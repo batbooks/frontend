@@ -19,6 +19,7 @@ export default function AdvancedSearchBook() {
   const [totalPages, setTotalPages] = useState(1);
   const [nextPageLink, setNextPageLink] = useState(".");
   const [prevPageLink, setPrevPageLink] = useState(".");
+  const [numberOfBooks, setNumberOfBooks] = useState(0);
   const itemsPerPage = 10;
   const location = useLocation();
   const query = new URLSearchParams(location.search);
@@ -47,7 +48,7 @@ export default function AdvancedSearchBook() {
           setAllBooks(data.results);
           setNextPageLink(data.next);
           setPrevPageLink(data.previous);
-          
+          setNumberOfBooks(data.count)
           setTotalPages(Math.ceil(data.count / itemsPerPage));
           console.log(Math.ceil(data.count / itemsPerPage));
           setShowingBooks(data.results);
@@ -181,6 +182,8 @@ export default function AdvancedSearchBook() {
           setNextPageLink={setNextPageLink}
           setPrevPageLink={setPrevPageLink}
           showingBooks={showingBooks}
+          numberOfBooks={numberOfBooks}
+          setNumberOfBooks={setNumberOfBooks}
         />
         <div className="flex flex-col w-[100%]">
           {loading ? (
@@ -190,12 +193,12 @@ export default function AdvancedSearchBook() {
           ) : showingBooks.length === 0 && !loading ? (
             <>
               <h2 className="text-[16px] right-0 font-[300] hidden sm:block">
-                نتایج جستجو
+               نتایج جستجو ({numberOfBooks ?? 0})
               </h2>
               <p className="text-[24px] mx-auto">موردی یافت نشد</p>
             </>
           ) : !loading ? (
-            <SearchBookResults books={showingBooks} loading={loading} />
+            <SearchBookResults numberOfBooks={numberOfBooks} books={showingBooks} loading={loading} />
           ) : null}
           {/* Pagination */}
           {totalPages > 1 && (
@@ -301,7 +304,7 @@ export default function AdvancedSearchBook() {
   );
 }
 
-function SearchBookResults({ books, loading }) {
+function SearchBookResults({ books, loading ,numberOfBooks}) {
   if (loading) {
     return (
       <div className="h-[100vh] grid place-items-center">
@@ -313,7 +316,9 @@ function SearchBookResults({ books, loading }) {
   return (
     <div className="flex flex-col -mt-[30px]">
       <div className="flex items-center justify-between mb-[60px] sm:mb-[30px]">
-        <h2 className="text-[16px] font-[300] hidden sm:block">نتایج جستجو</h2>
+        <h2 className="text-[16px] font-[300] hidden sm:block">
+نتایج جستجو ({numberOfBooks ?? 0})
+        </h2>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-1 xl:grid-cols-2 gap-x-[15px] sm:gap-x-[37px] gap-y-[25px] mb-[30px]">
         {books.map((book, i) => (
