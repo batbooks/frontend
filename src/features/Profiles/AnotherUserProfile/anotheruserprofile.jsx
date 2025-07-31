@@ -231,8 +231,10 @@ export default function Another_User_Profile() {
                 className="w-full h-full shadow-lg shadow-[#000000]/25 object-cover "
                 src={
                   user.image
-                    ? `https://batbooks.liara.run${user.image}`
-                    : user.gender=="female"?"/images/femaleProfile.png":"/images/maleProfile.png"
+                    ? `http://127.0.0.1:8000${user.image}`
+                    : user.gender == "female"
+                      ? "/images/femaleProfile.png"
+                      : "/images/maleProfile.png"
                 }
                 alt="userimage"
               />
@@ -241,7 +243,7 @@ export default function Another_User_Profile() {
               <h3 className="  text-[24px] font-bold text-center">
                 {user.user}
               </h3>
-                
+
               <svg
                 className="cursor-pointer"
                 onClick={() => navigate("/chat", { state: { userId } })}
@@ -334,22 +336,11 @@ export default function Another_User_Profile() {
                 <div className="min-w-175">
                   <p className="text-[#000000] text-[14px] font-[300]">
                     {user.bio}
-                    {user.bio}
-                    <br />
-                    {user.bio}
-                    <br />
-                    {user.bio}
-                    <br />
-                    {user.bio}
-                    <br />
-                    {user.bio}
-                    <br />
                   </p>
                 </div>
                 <p className="text-[14px] absolute bottom-10">
                   <span className="font-semibold">جنسیت:</span>{" "}
                   {user.gender === "female" ? "زن" : "مرد"}
-                  
                 </p>
                 <p className="text-[14px] font-[300] absolute bottom-2">
                   {/* {user.joined_date} */}
