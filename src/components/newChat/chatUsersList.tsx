@@ -268,6 +268,7 @@ const ChatUserList: React.FC<Props> = ({
                       onClick={() => {
                         onUserSelect(person.id);
                         setPopUp(false);
+                        
                       }}
                       className="flex gap-1.5 items-center  p-3 hover:bg-slate-100 cursor-pointer transition dir-rtl"
                     >

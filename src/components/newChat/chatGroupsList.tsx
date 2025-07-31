@@ -51,9 +51,7 @@ const GroupChatList: React.FC<Props> = ({
   const [groups, setGroups] = useState<GroupChat[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchGroups = async () => {
+  const fetchGroups = async () => {
       setIsLoading(true);
       try {
         const response = await fetch(`http://127.0.0.1:8000/chat/group/list/`, {
@@ -72,6 +70,8 @@ const GroupChatList: React.FC<Props> = ({
         setIsLoading(false);
       }
     };
+  useEffect(() => {
+    
 
     fetchGroups();
   }, []);
@@ -178,7 +178,9 @@ const GroupChatList: React.FC<Props> = ({
           onClose={() => setPopUp2(false)}
           onGroupCreated={() => {
             // Optionally re-fetch groups here
+            fetchGroups()
           }}
+          
         />
       )}
     </div>

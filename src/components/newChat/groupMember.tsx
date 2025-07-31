@@ -10,6 +10,7 @@ interface GroupMemberProps {
 
 const GroupMember: React.FC<GroupMemberProps> = ({ name, image,id }) => {
   // Generate a simple text placeholder if no image
+  console.log(image)
   const getInitials = (nameStr: string) => {
     const names = nameStr.split(' ');
     let initials = names[0].substring(0, 1).toUpperCase();
