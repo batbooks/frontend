@@ -46,6 +46,7 @@ export default function People() {
           );
 
           setPeople(enriched);
+          console.log(enriched)
           setTotalPages(Math.ceil(data.count / itemsPerPage));
         }
       } catch (err) {
@@ -209,6 +210,7 @@ function Person({ person }) {
     } catch (err) {
       console.error(err.message);
     }
+  
   };
 
   return (
@@ -247,7 +249,7 @@ function Person({ person }) {
           />
         ) : (
           <img
-            src="/images/following.png"
+            src={person.user_info.gender=="female"?"/images/femaleProfile.png":"/images/maleProfile.png"}
             alt="follow"
             className="rounded-full border-3 border-white 
         w-12 h-12 sm:w-14 sm:h-14 
