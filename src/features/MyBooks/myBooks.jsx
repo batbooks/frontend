@@ -304,17 +304,7 @@ export default function MyBooks() {
               </div>
             </div>
             <BookshelfSeparator />
-            {writtenBooks[1] &&
-            writtenBooks.length > (isMobile ? 4 : isTablet ? 8 : 10) ? (
-              <button className="mx-auto md:mx-[31%] w-[150px] md:w-[197px] h-[34px] md:h-[38px] flex items-center py-1 md:py-[7px] px-3 md:px-[23px] gap-2 md:gap-[10px] bg-[#2663CD] rounded-full text-sm md:text-[16px] text-white font-[400] text-nowrap shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
-                <span>مشاهده همه موارد</span>
-                <img
-                  src="/images/arrow-right.png"
-                  alt="right"
-                  className="w-4 h-4"
-                />
-              </button>
-            ) : null}
+
             {isMobile && writtenBooks[1] && (
               <button
                 onClick={() => navigate("./createbook")}
