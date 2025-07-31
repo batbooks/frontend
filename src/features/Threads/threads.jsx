@@ -69,9 +69,6 @@ const Threads = () => {
 
   const itemsPerPage = 10;
 
-  const onSearch = () => {
-    console.log("searched");
-  };
 
   useEffect(() => {
     if (!forumId) return;
