@@ -4,6 +4,11 @@ import { useNavigate } from "react-router";
 import { useLocation } from "react-router-dom";
 import { logout } from "../redux/infoSlice";
 import menuIcon from "../assets/images/menu.svg";
+import { IoIosSearch } from "react-icons/io";
+import { IoSearchSharp } from "react-icons/io5";
+import { RiPlayListAddFill, RiPlayListAddLine } from "react-icons/ri";
+import { FaBook } from "react-icons/fa";
+import { FaHome } from "react-icons/fa";
 import HamburgerNavbar from "../sharedComponents/navbar/HamburgerNavbar";
 import {
   FiHome,
@@ -132,33 +137,33 @@ function Navbar() {
             <ul
               className={`w-[155px] h-[76px] divide-y divide-[#2F4F4F]/50 shadow-lg shadow-[#000000]/25 rounded-[10px] transition-opacity duration-1000 ease-in-out ${isVisibleUser ? "opacity-100 pointer-events-auto relative" : "opacity-0 pointer-events-none absolute mt-[60px]"}`}
             >
-              <li className=" w-full text-nowrap h-[38px] bg-[#ffffff] rounded-t-[10px]">
+              <li className=" w-full text-nowrap h-[38px] bg-[#ffffff] rounded-t-[10px] group">
                 <button
                   onClick={() => {
                     setSelectedItem(0);
                     setIsVisibleUser(false);
                     navigate("/userprofile");
                   }}
-                  className="px-2 flex items-center gap-2 text-[#000000]/70 w-full h-full rounded-t-[10px] cursor-pointer  hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
+                  className="px-2 flex items-center gap-2 text-[#000000]/70 w-full h-full rounded-t-[10px] cursor-pointer group-hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
-                  <FiUser className="text-black/50" />
+                  <FiUser className="text-black/50 group-hover:text-white" />
                   <p className="text-[13px] font-bold">پروفایل کاربری</p>
                 </button>
               </li>
-              <li className="w-full h-[38px] bg-[#ffffff]">
+              <li className="w-full h-[38px] bg-[#ffffff] group">
                 <button
                   onClick={() => {
                     setSelectedItem(0);
                     setIsVisibleUser(false);
                     navigate("/mybooks/createbook");
                   }}
-                  className="flex p-2 gap-2 text-[#000000]/70 w-full h-full cursor-pointer items-center hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
+                  className="flex p-2 gap-2 text-[#000000]/70 w-full h-full cursor-pointer items-center group-hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
-                  <FiEdit className="text-black/50" />
+                  <FiEdit className="text-black/50 group-hover:text-white" />
                   <p className="text-[13px] font-bold"> نوشتن کتاب جدید</p>
                 </button>
               </li>
-              <li className="w-full h-[38px] bg-[#ffffff]  border-b border-[#2F4F4F]/50 rounded-b-[10px]">
+              <li className="w-full h-[38px] bg-[#ffffff]  border-b border-[#2F4F4F]/50 rounded-b-[10px] group">
                 <button
                   onClick={() => {
                     setSelectedItem(0);
@@ -167,9 +172,9 @@ function Navbar() {
                     localStorage.removeItem("access_token");
                     localStorage.removeItem("refresh_token");
                   }}
-                  className="flex p-2 gap-2 text-[#000000]/70 w-full h-full cursor-pointer items-center hover:text-[#ffffff] hover:bg-[#2663cd]/90 rounded-b-[10px] hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
+                  className="flex p-2 gap-2 text-[#000000]/70 w-full h-full cursor-pointer items-center group-hover:text-[#ffffff] hover:bg-[#2663cd]/90 rounded-b-[10px] hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
-                  <FiLogOut className="text-black/50" />
+                  <FiLogOut className="text-black/50 group-hover:text-white" />
                   <p className="text-nowrap text-[13px] font-bold">
                     {" "}
                     خروج از حساب کاربری
@@ -214,47 +219,66 @@ function Navbar() {
         <ul
           className={`flex items-center lg:gap-12 xl:gap-[66px] ${isVisibleUser ? "-mr-[105px]" : ""}`}
         >
-          <li className="flex gap-2 ">
-            <section className="flex p-1">
-              <FiHome></FiHome>
-            </section>
-            <div className="flex flex-col items-center">
-              <button
-                onClick={() => {
-                  setSelectedItem(1);
-                  navigate("/");
-                }}
-                className={`text-[16px] ${selectedItem != 1 ? "cursor-pointer hover:text-[#2663CD]" : "text-[#265073] font-bold"}  active:text-[#2663CD]/50 active:no-underline active:transition-all active:duration-100 focus:outline-none focus:text-[#2663CD]`}
-              >
-                صفحه اصلی
-              </button>
-              {selectedItem === 1 ? (
-                <div className="w-[60px] h-[2.5px] bg-[#1E40AF] mt-[3px] rounded-full"></div>
-              ) : (
-                <span></span>
-              )}
+          <li className="flex flex-col items-center">
+            <div
+              onClick={() => {
+                setSelectedItem(1);
+                navigate("/");
+              }}
+              className={`flex items-center group gap-1 ${selectedItem != 1 ? "cursor-pointer" : ""}`}
+            >
+              <section className="flex p-1">
+                {selectedItem != 1 ? (
+                  <FiHome className="h-5 w-5 group-hover:text-[#2663CD] cursor-pointer" />
+                ) : (
+                  <FaHome className="h-5 w-5 text-[#265073]" />
+                )}
+              </section>
+              <div className="flex flex-col items-center">
+                <button
+                  className={`text-[16px] hover:animate-pulse ${selectedItem != 1 ? "cursor-pointer group-hover:text-[#2663CD]" : "text-[#265073] font-bold"}  active:text-[#2663CD]/50 active:no-underline active:transition-all active:duration-100 focus:outline-none focus:text-[#2663CD]`}
+                >
+                  صفحه اصلی
+                </button>
+              </div>
             </div>
+            {selectedItem === 1 ? (
+              <div className="w-[60px] h-[2.5px] bg-[#1E40AF] mt-[3px] rounded-full"></div>
+            ) : (
+              <span></span>
+            )}
           </li>
-          <li className="flex gap-2 ">
-            <section className="flex p-1">
-              <FiBook></FiBook>
-            </section>
-            <div className="flex flex-col items-center">
-              <button
-                onClick={() => {
-                  setSelectedItem(2);
-                  navigate("/mybooks");
-                }}
-                className={`text-[16px] ${selectedItem != 2 ? "cursor-pointer hover:text-[#2663CD]" : "text-[#265073] font-bold"}  active:text-[#2663CD]/50 active:no-underline active:transition-all active:duration-100 focus:outline-none focus:text-[#2663CD]`}
-              >
-                کتاب های من
-              </button>
-              {selectedItem === 2 ? (
-                <div className="w-[40px] h-[2.5px] bg-[#1E40AF] mt-[3px] rounded-full"></div>
-              ) : (
-                <span></span>
-              )}
+          <li className="flex flex-col items-center">
+            <div
+              onClick={() => {
+                setSelectedItem(2);
+                navigate("/mybooks");
+              }}
+              className={`flex items-center group gap-1 ${selectedItem != 2 ? "cursor-pointer" : ""}`}
+            >
+              <section className="flex p-1">
+                {selectedItem != 2 ? (
+                  <FiBook className="h-5 w-5 group-hover:text-[#2663CD] cursor-pointer" />
+                ) : (
+                  <FaBook
+                    style={{ fontWeight: "bold" }}
+                    className="h-5 w-5 text-[#265073]"
+                  />
+                )}
+              </section>
+              <div className="flex flex-col items-center">
+                <button
+                  className={`text-[16px] hover:animate-pulse ${selectedItem != 2 ? "cursor-pointer group-hover:text-[#2663CD]" : "text-[#265073] font-bold"}  active:text-[#2663CD]/50 active:no-underline active:transition-all active:duration-100 focus:outline-none focus:text-[#2663CD]`}
+                >
+                  کتاب های من
+                </button>
+              </div>
             </div>
+            {selectedItem === 2 ? (
+              <div className="w-[40px] h-[2.5px] bg-[#1E40AF] mt-[3px] rounded-full"></div>
+            ) : (
+              <span></span>
+            )}
           </li>
           <li
             onMouseLeave={() => {
@@ -294,59 +318,72 @@ function Navbar() {
               <span>پنل ارتباطی</span>
             </button>
             <ul
-              className={`w-[155px] h-[76px] divide-y divide-[#2F4F4F]/50 shadow-lg shadow-[#000000]/25 rounded-[10px] transition-opacity duration-1000 ease-in-out ${isVisiblePanel ? "opacity-100 pointer-events-auto relative" : "opacity-0 pointer-events-none absolute mt-[34px]"}`}
+              className={`w-[155px] h-[76px] border-[#000] divide-y divide-[#2F4F4F]/50 shadow-lg shadow-[#000000]/25 rounded-[10px] transition-opacity duration-1000 ease-in-out ${isVisiblePanel ? "opacity-100 pointer-events-auto relative" : "opacity-0 pointer-events-none absolute mt-[34px]"}`}
             >
-              <li className="w-full h-[38px] bg-[#ffffff] rounded-t-[10px]">
+              <li className="w-full h-[38px] bg-[#ffffff] rounded-t-[10px] group">
                 <button
                   onClick={() => {
                     setSelectedItem(0);
                     setIsVisibleUser(false);
                     navigate("/chat");
                   }}
-                  className="flex p-2 gap-2 text-[#000000]/70 w-full h-full cursor-pointer items-center hover:text-[#ffffff] hover:bg-[#2663cd]/90 rounded-t-[10px] hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
+                  className="flex p-2 gap-2 text-[#000000]/70 w-full h-full cursor-pointer items-center group-hover:text-[#ffffff] hover:bg-[#2663cd]/90 rounded-t-[10px] hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
-                  <FiMessageCircle className="text-black/50" />
+                  <FiMessageCircle className="text-black/50 group-hover:text-[#ffffff]" />
                   <p className="text-[13px] font-bold"> چت</p>
                 </button>
               </li>
-              <li className="w-full h-[38px] bg-[#ffffff]">
+              <li className="w-full h-[38px] bg-[#ffffff] group">
                 <button
                   onClick={() => {
                     setSelectedItem(0);
                     setIsVisibleUser(false);
                     navigate("/forums");
                   }}
-                  className="flex p-2 gap-2 text-[#000000]/70 w-full h-full cursor-pointer items-center hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
+                  className="flex p-2 gap-2 text-[#000000]/70 w-full h-full cursor-pointer items-center group-hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
-                  <FiMessageSquare className="text-black/50" />
+                  <FiMessageSquare className="text-black/50 group-hover:text-[#ffffff]" />
                   <p className="text-[13px] font-bold"> تالار گفتگو</p>
                 </button>
               </li>
-              <li className="w-full h-[38px] bg-[#ffffff] rounded-b-[10px]">
+              <li className="w-full h-[38px] border-b border-[#2F4F4F]/50 bg-[#ffffff] rounded-b-[10px] group">
                 <button
                   onClick={() => {
                     setSelectedItem(0);
                     setIsVisibleUser(false);
                     navigate("/people");
                   }}
-                  className="flex p-2 gap-2 text-[#000000]/70 w-full h-full cursor-pointer rounded-b-[10px] items-center hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
+                  className="flex p-2 gap-2 text-[#000000]/70 w-full h-full cursor-pointer rounded-b-[10px] items-center group-hover:text-[#ffffff] hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:outline-none disabled:bg-[#2663cd] disabled:cursor-auto"
                 >
-                  <FiUsers className="text-black/50" />
+                  <FiUsers className="text-black/50 group-hover:text-[#ffffff]" />
                   <p className="text-[13px] font-bold"> افراد</p>
                 </button>
               </li>
             </ul>
           </li>
           <li className="flex flex-col items-center mr-[-29px]">
-            <button
+            <div
               onClick={() => {
                 setSelectedItem(3);
                 navigate("/advancedsearchbook");
               }}
-              className={`text-[16px]  ${selectedItem != 3 ? "cursor-pointer hover:text-[#2663CD]" : "text-[#265073] font-bold"} active:text-[#2663CD]/50 active:no-underline active:transition-all active:duration-100 focus:outline-none focus:text-[#2663CD]`}
+              className={`flex items-center group gap-1 ${selectedItem != 3 ? "cursor-pointer" : ""}`}
             >
-              جستجوی کتاب
-            </button>
+              <section className="flex p-1">
+                {selectedItem != 3 ? (
+                  <IoIosSearch className="h-6 w-6 group-hover:text-[#2663CD] cursor-pointer" />
+                ) : (
+                  <IoSearchSharp className="h-6 w-6 text-[#265073]" />
+                )}
+              </section>
+              <div className="flex flex-col items-center">
+                <button
+                  className={`text-[16px] hover:animate-pulse ${selectedItem != 3 ? "cursor-pointer group-hover:text-[#2663CD]" : "text-[#265073] font-bold"} active:text-[#2663CD]/50 active:no-underline active:transition-all active:duration-100 focus:outline-none focus:text-[#2663CD]`}
+                >
+                  جستجوی کتاب
+                </button>
+              </div>
+            </div>
             {selectedItem === 3 ? (
               <div className="w-[40px] h-[2.5px] bg-[#1E40AF] mt-[3px] rounded-full"></div>
             ) : (
@@ -355,15 +392,31 @@ function Navbar() {
           </li>
 
           <li className="flex flex-col items-center">
-            <button
+            <div
               onClick={() => {
                 setSelectedItem(4);
                 navigate("/public-playlists");
               }}
-              className={`text-[16px] hover:animate-pulse ${selectedItem != 4 ? "cursor-pointer hover:text-[#2663CD]" : "text-[#265073] font-bold"}  active:text-[#2663CD]/50 active:no-underline active:transition-all active:duration-100 focus:outline-none focus:text-[#2663CD]`}
+              className={`flex items-center group gap-1 ${selectedItem != 4 ? "cursor-pointer" : ""}`}
             >
-              پلی لیست های عمومی
-            </button>
+              <section className="flex p-1">
+                {selectedItem !== 4 ? (
+                  <RiPlayListAddFill className="h-5 w-5 group-hover:text-[#2663CD] cursor-pointer" />
+                ) : (
+                  <RiPlayListAddLine
+                    className="h-5 w-5 text-[#265073]"
+                    style={{ strokeWidth: 1, fontWeight: 500 }}
+                  />
+                )}
+              </section>
+              <div className="flex flex-col items-center">
+                <button
+                  className={`text-[16px] hover:animate-pulse ${selectedItem != 4 ? "cursor-pointer group-hover:text-[#2663CD]" : "text-[#265073] font-bold"}  active:text-[#2663CD]/50 active:no-underline active:transition-all active:duration-100 focus:outline-none focus:text-[#2663CD]`}
+                >
+                  پلی لیست های عمومی
+                </button>
+              </div>
+            </div>
             {selectedItem === 4 ? (
               <div className="w-[40px] h-[2.5px] bg-[#1E40AF] mt-[3px] rounded-full"></div>
             ) : (

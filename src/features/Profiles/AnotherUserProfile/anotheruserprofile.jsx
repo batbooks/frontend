@@ -309,7 +309,9 @@ export default function Another_User_Profile() {
                 </span>
               </button>
               <button
-                onClick={() => navigate(`/anotherUserPlaylists/${user.user_id}`)}
+                onClick={() =>
+                  navigate(`/anotherUserPlaylists/${user.user_id}`)
+                }
                 className=" btn !m-0 !mt-[10px] !min-h-[60px] !flex !flex-col !bg-[#ffffff]  !rounded-[10px]"
               >
                 <span className=" span-btn !text-[24px] !font-[600] !text-[#265073]">
@@ -371,11 +373,9 @@ export default function Another_User_Profile() {
                 author={lastBook.Author}
                 title={lastBook.name}
                 coverImage={
-                  lastBook.image != null
-                    ? `${lastBook.image}`
-                    : "/23.png"
+                  lastBook.image != null ? `${lastBook.image}` : "/23.png"
                 }
-                chapters={80}
+                chapters={lastBook.chapter_count}
                 description={lastBook.description}
               />
             </div>
@@ -483,7 +483,6 @@ export default function Another_User_Profile() {
               <span>موردی برای نمایش وجود ندارد...</span>
             )}
           </div>
-          
         </div>
       </main>
       <div className="mt-[-60px]">
@@ -506,11 +505,9 @@ export function Book({ book, isLast = false, minw = 180, h = 254 }) {
         id={book.id}
         title={book.name}
         author={book.Author}
-        coverImage={
-          book.image != null ? `${book.image}` : "/20.jpg"
-        }
+        coverImage={book.image != null ? `${book.image}` : "/20.jpg"}
         description={book.description}
-        chapters={80}
+        chapters={book.chapter_count}
       />
     </div>
   );
