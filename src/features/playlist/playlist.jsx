@@ -64,12 +64,6 @@ const PlaylistPage = () => {
   };
 
   const handleDeletePlaylist = async (id) => {
-    const confirmed = window.confirm(
-      "آیا مطمئن هستید که می‌خواهید این پلی‌لیست را حذف کنید؟"
-    );
-
-    if (!confirmed) return;
-
     try {
       const token = localStorage.getItem("access_token");
       const response = await fetch(

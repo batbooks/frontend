@@ -143,11 +143,6 @@ const PlaylistDetailPage = () => {
   };
 
   const handleDeleteBook = async (bookId, playlistId) => {
-    const confirmDelete = window.confirm(
-      "آیا مطمئن هستید که می‌خواهید این کتاب را حذف کنید؟"
-    );
-    if (!confirmDelete) return;
-
     try {
       const token = localStorage.getItem("access_token");
       const auth = token ? `Bearer ${token}` : "";
