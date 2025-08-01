@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../../pages/Navbar";
 import Footer from "../../common/Footer/Footer";
 import { Editor } from "primereact/editor";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import Loading from "../../common/Loading/Loading";
 import Swal from "sweetalert2";
 
@@ -17,6 +17,7 @@ const CreateChapter = () => {
   const [pdfFile, setPdfFile] = useState(null);
   const location = useLocation();
   const id = location.state?.id;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,7 +28,10 @@ const CreateChapter = () => {
 
         const response = await fetch(`http://127.0.0.1:8000/book/${id}/`, {
           method: "GET",
-          headers: { "Content-Type": "application/json", Authorization: auth },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: auth,
+          },
         });
 
         if (!response.ok) {
@@ -73,7 +77,7 @@ const CreateChapter = () => {
         formData.append("title", chapterName);
         formData.append("pdf", pdfFile);
 
-        response = await fetch(`http://127.0.0.1:8000/book/uploadfile/`, {
+        const response = await fetch(`http://127.0.0.1:8000/book/uploadfile/`, {
           method: "POST",
           body: formData,
           headers: {
@@ -85,11 +89,17 @@ const CreateChapter = () => {
       const result = await response.json();
 
       if (response.ok) {
-        Swal.fire({
-          title: " فصل با موفقیت ایجاد شد",
-          icon: "success",
-          confirmButtonText: "باشه",
-        });
+        setTimeout(() => {
+          Swal.fire({
+            title: " فصل با موفقیت ایجاد شد",
+            icon: "success",
+            confirmButtonText: "باشه",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              navigate(-1);
+            }
+          });
+        }, 100);
       } else {
         Swal.fire({
           title: "ارور ",
@@ -199,7 +209,7 @@ const CreateChapter = () => {
             <div className="mx-auto">
               <button
                 onClick={handleSubmit}
-                className="btn mt-[36px] text-[16.8px] rounded-[12px] border-[2px] border-[#000000]/21 px-[86px] py-[13.5px] bg-[#2663CD] text-white shadow-lg"
+                className="btn mt-18 text-[16.8px] rounded-[12px] border-[2px] border-[#000000]/21 px-[86px] py-[13.5px] bg-[#2663CD] text-white shadow-lg"
               >
                 <span className="span-btn">انتشار</span>
               </button>

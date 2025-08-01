@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 
 export default function VoteAndReview({ chapter, commentsCount }) {
   const { user } = useSelector((state) => state.auth);
+  console.log(user);
   const [isClicked, setIsClicked] = useState(false);
   const [body, setbody] = useState("");
   const [error, setError] = useState("");
@@ -57,7 +58,11 @@ export default function VoteAndReview({ chapter, commentsCount }) {
       >
         <div className="flex flex-col items-center">
           <img
-            src={`http://127.0.0.1:8000${user.user_info.image}`}
+            src={
+              user?.user_info.image
+                ? `http://127.0.0.1:8000${user?.user_info.image}`
+                : "/images/maleProfile.png"
+            }
             className="min-w-[63px] max-w-[63px] max-h-[63px] min-h-[63px] rounded-full mb-[15px]"
           />
           <h1 className="text-[24px] font-[700] mb-[8px]">نظر شما چیست؟</h1>

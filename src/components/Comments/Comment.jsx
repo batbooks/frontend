@@ -496,7 +496,7 @@ function Comment({
       ) : isClickedReply ? (
         <div className="relative flex flex-col mr-[200px] mt-[-2px] border-[2px] border-t-0 border-[#000000]/42 rounded-b-[25px]">
           <div className="bg-[#A4C0ED] h-[25px] w-[25px] absolute right-[-25px]">
-            <div className="bg-[#D9F0FF] rounded-tl-[25px] w-[25px] h-[25px] border-[2px] border-b-0 border-r-0 border-[#000000]/42"></div>
+            <div className="bg-[#FFF] rounded-tl-[25px] w-[25px] h-[25px] border-[2px] border-b-0 border-r-0 border-[#000000]/42"></div>
           </div>
           <ReplyBox
             setHidden={setIsClickedReply}
@@ -659,7 +659,11 @@ function ReplyBox({ isLast, commentId, setHidden }) {
     >
       <div className="flex flex-col items-center gap-[9px] mx-[33px]">
         <img
-          src={`http://127.0.0.1:8000${user.user_info.image}`}
+          src={
+            user?.user_info.image
+              ? `http://127.0.0.1:8000${user?.user_info.image}`
+              : "/images/user_none.png"
+          }
           alt="user"
           className="min-w-[83px] max-w-[83px] max-h-[83px] min-h-[83px] rounded-full"
         />

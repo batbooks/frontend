@@ -46,7 +46,7 @@ export default function MyBooks() {
         }
 
         const data = await response.json();
-        setWrittenBooks([...data.results, ...writtenBooks]);
+        setWrittenBooks([...data, ...writtenBooks]);
       } catch (error) {
         console.error("خطا در ارسال به سرور:", error);
       } finally {
@@ -133,7 +133,7 @@ export default function MyBooks() {
             </h3>
             <div
               ref={containerRef1}
-              className="  pr-3 overflow-x-scroll scrollbar-opacity-0 w-full ml-auto pt-4  "
+              className="  pr-3 overflow-x-scroll overflow-y-hidden scrollbar-opacity-0 w-full ml-auto pt-4 mb-3 pb-3 "
             >
               {favoriteBooks[1] &&
               favoriteBooks.length > (isMobile ? 2 : isTablet ? 5 : 7) ? (
@@ -171,9 +171,10 @@ export default function MyBooks() {
                           title={book.name}
                           author={book.Author}
                           description={book.description}
+                          chapters={book.chapter_count}
                           coverImage={
                             book.image
-                              ? `http://127.0.0.1:8000/${book.image}`
+                              ? `http://127.0.0.1:8000${book.image}`
                               : `/images/book_sample1.png`
                           }
                           minw={isMobile ? 150 : 180}
@@ -203,8 +204,8 @@ export default function MyBooks() {
                 ) : null}
               </div>
             </div>
-              <BookshelfSeparator/>
-            
+            <BookshelfSeparator />
+
             {writtenBooks[1] ? (
               <div className="flex items-center mr-2  md:mr-[11px] mb-4 md:mb-[22px] justify-between">
                 <h3 className="text-base md:text-[16px] font-[700] text-[#1A365D]">
@@ -232,7 +233,7 @@ export default function MyBooks() {
 
             <div
               ref={containerRef2}
-              className=" pr-3  overflow-x-scroll scrollbar-opacity-0 w-full ml-auto pt-4 md:pt-[18px]"
+              className=" pr-3  overflow-x-scroll overflow-y-hidden pb-3 scrollbar-opacity-0 w-full ml-auto pt-4 md:pt-[18px]"
             >
               {writtenBooks[1] &&
               writtenBooks.length > (isMobile ? 2 : isTablet ? 5 : 7) ? (
@@ -271,6 +272,7 @@ export default function MyBooks() {
                           title={book.name}
                           author={book.Author}
                           description={book.description}
+                          chapters={book.chapter_count}
                           coverImage={
                             book.image
                               ? `${book.image}`
@@ -303,18 +305,8 @@ export default function MyBooks() {
                 ) : null}
               </div>
             </div>
-            <BookshelfSeparator/>
-            {writtenBooks[1] &&
-            writtenBooks.length > (isMobile ? 4 : isTablet ? 8 : 10) ? (
-              <button className="mx-auto md:mx-[31%] w-[150px] md:w-[197px] h-[34px] md:h-[38px] flex items-center py-1 md:py-[7px] px-3 md:px-[23px] gap-2 md:gap-[10px] bg-[#2663CD] rounded-full text-sm md:text-[16px] text-white font-[400] text-nowrap shadow-lg shadow-[#000000]/25 focus:outline-none focus:ring-[#2663cd] focus:ring-offset-2 focus:ring-[2px] focus:shadow-none hover:bg-[#2663cd]/90 hover:cursor-pointer transition-colors duration-200 active:bg-[#2663cd]/30 active:duration-300 active:transition-all active:ring-0 active:ring-offset-0 disabled:ring-offset-0 disabled:ring-0 disabled:bg-[#2663cd]/60 disabled:cursor-auto">
-                <span>مشاهده همه موارد</span>
-                <img
-                  src="/images/arrow-right.png"
-                  alt="right"
-                  className="w-4 h-4"
-                />
-              </button>
-            ) : null}
+            <BookshelfSeparator />
+
             {isMobile && writtenBooks[1] && (
               <button
                 onClick={() => navigate("./createbook")}

@@ -3,7 +3,7 @@ import Navbar from "../../pages/Navbar";
 import Footer from "../../common/Footer/Footer";
 import { useNavigate } from "react-router";
 import Loading from "../../common/Loading/Loading";
-import { FiUserPlus,FiSearch } from "react-icons/fi";
+import { FiUserPlus, FiSearch } from "react-icons/fi";
 
 export default function People() {
   const [people, setPeople] = useState([]);
@@ -17,7 +17,7 @@ export default function People() {
   const itemsPerPage = 10;
 
   useEffect(() => {
-    const fetchPeople = async () => {
+    const fetchAllPeople = async () => {
       setLoading(true);
       try {
         const response = await fetch(
@@ -25,7 +25,28 @@ export default function People() {
         );
         if (response.ok) {
           const data = await response.json();
-          setPeople(data.results);
+
+          const enriched = await Promise.all(
+            data.results.map(async (person) => {
+              try {
+                const res = await fetch(
+                  `http://127.0.0.1:8000/user/is/follow/${person.id}/`,
+                  {
+                    headers: {
+                      Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                    },
+                  }
+                );
+                const followData = await res.json();
+                return { ...person, is_follow: followData.is_follow };
+              } catch {
+                return { ...person, is_follow: false };
+              }
+            })
+          );
+
+          setPeople(enriched);
+          console.log(enriched)
           setTotalPages(Math.ceil(data.count / itemsPerPage));
         }
       } catch (err) {
@@ -34,7 +55,7 @@ export default function People() {
         setLoading(false);
       }
     };
-    fetchPeople();
+    fetchAllPeople();
   }, [currentpage]);
 
   const fetchPeople = async (page = 1) => {
@@ -44,20 +65,40 @@ export default function People() {
       setError(" کلمه سرچ شده باید بزرگتر از سه حرف باشد ");
       setTotalPages(0);
       setPeople([]);
+      setLoading(false);
+      return;
     }
+
     try {
       const response = await fetch(
         `http://127.0.0.1:8000/user/search/${searched}/?page=${page}`
       );
       if (response.ok) {
         const data = await response.json();
-        setPeople(data.results);
+
+        const enriched = await Promise.all(
+          data.results.map(async (person) => {
+            try {
+              const res = await fetch(
+                `http://127.0.0.1:8000/user/is/follow/${person.id}/`,
+                {
+                  headers: {
+                    Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                  },
+                }
+              );
+              const followData = await res.json();
+              return { ...person, is_follow: followData.is_follow };
+            } catch {
+              return { ...person, is_follow: false };
+            }
+          })
+        );
+
+        setPeople(enriched);
         setTotalPages(Math.ceil(data.count / itemsPerPage));
       }
     } catch (err) {
-      if (searched.length < 3) {
-        setError(" کلمه سرچ شده باید بزرگتر از سه حرف باشد ");
-      }
       setError(err.message);
       setTotalPages(0);
     } finally {
@@ -76,11 +117,12 @@ export default function People() {
 
   if (loading) {
     return (
-      <div className="h-[100vh] grid place-items-center">
+      <main className="w-full h-screen flex items-center justify-center">
         <Loading />
-      </div>
+      </main>
     );
   }
+
   return (
     <>
       <Navbar />
@@ -113,11 +155,8 @@ export default function People() {
             >
               <span className="span-btn !text-[16px] !font-[400] whitespace-nowrap">
                 <div className="flex flex-row-reverse items-center gap-2">
-
-                
-
-                <p>جستجوی فرد </p>
-                <FiSearch></FiSearch>
+                  <p>جستجوی فرد </p>
+                  <FiSearch />
                 </div>
               </span>
             </button>
@@ -133,7 +172,6 @@ export default function People() {
               <Person person={person} key={person.id} />
             ))}
           </div>
-          {/* Pagination */}
           {totalPages > 1 && allOfThem && (
             <Pagination
               currentPage={currentpage}
@@ -141,7 +179,6 @@ export default function People() {
               onPageChange={handlePageChange}
             />
           )}
-          {/* Pagination */}
           {totalPages > 1 && !allOfThem && (
             <Pagination
               currentPage={currentpage1}
@@ -157,60 +194,24 @@ export default function People() {
 }
 
 function Person({ person }) {
-  const [isFollowing, setIsFollowing] = useState(false);
+  const [isFollowing, setIsFollowing] = useState(person.is_follow || false);
   const [isHoveredInnerButton, setIsHoveredInnerButton] = useState(false);
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    setLoading(true);
-    const fetchFollowing = async () => {
-      try {
-        const response = await fetch(
-          `http://127.0.0.1:8000/user/is/follow/${person.id}/`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-            },
-          }
-        );
-        const data = await response.json();
-        setIsFollowing(data.is_follow);
-      } catch (err) {
-        console.log(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchFollowing();
-  }, [person.id]);
 
   const handleFollow = async () => {
     try {
-      const response = await fetch(
-        `http://127.0.0.1:8000/user/toggle/follow/${person.id}/`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-          },
-        }
-      );
+      await fetch(`http://127.0.0.1:8000/user/toggle/follow/${person.id}/`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      });
     } catch (err) {
       console.error(err.message);
     }
+  
   };
-
-  if (loading) {
-    return (
-      <div className="h-[100vh] grid place-items-center">
-        <Loading />
-      </div>
-    );
-  }
 
   return (
     <button
@@ -236,28 +237,40 @@ function Person({ person }) {
     gap-1 sm:gap-2 md:gap-3 lg:gap-3 xl:gap-[15px] 
     relative w-full"
       >
-        <img
-          src="/images/following.png"
-          alt="follow"
-          className="rounded-full 
+        {person.user_info.image ? (
+          <img
+            src={`http://127.0.0.1:8000${person.user_info.image}`}
+            alt="follow"
+            className="rounded-full border border-white
         w-12 h-12 sm:w-14 sm:h-14 
         md:w-16 md:h-16 
         lg:w-20 lg:h-20 
         xl:w-[100px] xl:h-[100px]"
-        />
+          />
+        ) : (
+          <img
+            src={person.user_info.gender=="female"?"/images/femaleProfile.png":"/images/maleProfile.png"}
+            alt="follow"
+            className="rounded-full border-3 border-white 
+        w-12 h-12 sm:w-14 sm:h-14 
+        md:w-16 md:h-16 
+        lg:w-20 lg:h-20 
+        xl:w-[100px] xl:h-[100px]"
+          />
+        )}
+
         <div
           className="flex flex-col 
       gap-1 sm:gap-1 md:gap-2 lg:gap-2 xl:gap-[7px] 
       items-start flex-grow min-w-0"
         >
           <h3 className="text-xs sm:text-sm md:text-[15px] lg:text-[15px] xl:text-[16px] truncate ">
-          
             {person.name.length > 15
               ? person.name.slice(0, 15) + "..."
               : person.name}
           </h3>
           <span className="text-[8px] sm:text-xs md:text-[13px] lg:text-[13px] xl:text-[14px]">
-         تعداد دنبال کنندگان  :  {person.user_info.following_count} 
+            تعداد دنبال کنندگان : {person.user_info.follower_count}
           </span>
         </div>
       </div>
@@ -296,15 +309,12 @@ function Person({ person }) {
           <div className="flex flex-row-reverse px-4 gap-1 items-center">
             <p>{isFollowing ? "دنبال نکردن" : "دنبال کردن"}</p>
             <FiUserPlus />
-          
-
           </div>
         </span>
       </div>
     </button>
   );
 }
-
 function Pagination({ currentPage, totalPages, onPageChange }) {
   return (
     <div className="flex justify-center gap-2 my-6 items-center flex-wrap">

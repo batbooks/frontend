@@ -134,7 +134,7 @@ const ChatUserList: React.FC<Props> = ({
     // Main container for the ChatUserList
     <div
       className="
-      sticky top-0 
+      sticky top-0
       z-10                    
       h-fit              
       max-h-[80%]    
@@ -268,6 +268,7 @@ const ChatUserList: React.FC<Props> = ({
                       onClick={() => {
                         onUserSelect(person.id);
                         setPopUp(false);
+                        
                       }}
                       className="flex gap-1.5 items-center  p-3 hover:bg-slate-100 cursor-pointer transition dir-rtl"
                     >

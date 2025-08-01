@@ -226,13 +226,15 @@ export default function Another_User_Profile() {
         </div>
         <div className="flex min-w-[90vw] bg-[#A4C0ED] ml-auto rounded-[35px] shadow-lg shadow-[#000000]/25 mb-[40px] pl-[52px] pr-[23px] pt-[20px] gap-[39px] border-[2px] border-[#000000]/8 ">
           <div className="min-w-[236px] flex flex-col gap-[15px]">
-            <div className="w-[236px] aspect-square rounded-full overflow-hidden">
+            <div className="w-[236px] aspect-square rounded-full overflow-hidden border-4 border-white">
               <img
-                className="w-full h-full shadow-lg shadow-[#000000]/25 object-cover"
+                className="w-full h-full shadow-lg shadow-[#000000]/25 object-cover "
                 src={
                   user.image
                     ? `http://127.0.0.1:8000${user.image}`
-                    : `/images/user_image.png`
+                    : user.gender == "female"
+                      ? "/images/femaleProfile.png"
+                      : "/images/maleProfile.png"
                 }
                 alt="userimage"
               />
@@ -241,6 +243,7 @@ export default function Another_User_Profile() {
               <h3 className="  text-[24px] font-bold text-center">
                 {user.user}
               </h3>
+
               <svg
                 className="cursor-pointer"
                 onClick={() => navigate("/chat", { state: { userId } })}
@@ -308,11 +311,13 @@ export default function Another_User_Profile() {
                 </span>
               </button>
               <button
-                onClick={() => handleScrollDown(1.8)}
+                onClick={() =>
+                  navigate(`/anotherUserPlaylists/${user.user_id}`)
+                }
                 className=" btn !m-0 !mt-[10px] !min-h-[60px] !flex !flex-col !bg-[#ffffff]  !rounded-[10px]"
               >
                 <span className=" span-btn !text-[24px] !font-[600] !text-[#265073]">
-                  5
+                  {user.playlist_count}
                 </span>
                 <span className="span-btn !font-[400] !text-[#000000]/70 !text-[14px]">
                   پلی لیست
@@ -331,16 +336,6 @@ export default function Another_User_Profile() {
                 <div className="min-w-175">
                   <p className="text-[#000000] text-[14px] font-[300]">
                     {user.bio}
-                    {user.bio}
-                    <br />
-                    {user.bio}
-                    <br />
-                    {user.bio}
-                    <br />
-                    {user.bio}
-                    <br />
-                    {user.bio}
-                    <br />
                   </p>
                 </div>
                 <p className="text-[14px] absolute bottom-10">
@@ -356,7 +351,7 @@ export default function Another_User_Profile() {
             </div>
           </div>
 
-          {UserWritten[0]? (
+          {UserWritten[0] ? (
             <div className="min-w-[242px] h-[385px] m-[32px] mt-[5px]  ml-0 ">
               <div className="flex items-start text-center gap-2 md:gap-3 lg:gap-[10px] mb-3">
                 <FiBookmark className="opacity-70 text-xl md:text-2xl lg:text-2xl" />
@@ -365,17 +360,14 @@ export default function Another_User_Profile() {
                 </h1>
               </div>
               <BookCard
-              id={lastBook.id}
+                id={lastBook.id}
                 author={lastBook.Author}
                 title={lastBook.name}
                 coverImage={
-                  lastBook.image != null
-                    ? `http://127.0.0.1:8000${lastBook.image}`
-                    : "/23.png"
+                  lastBook.image != null ? `${lastBook.image}` : "/23.png"
                 }
-                chapters={80}
+                chapters={lastBook.chapter_count}
                 description={lastBook.description}
-                
               />
             </div>
           ) : (
@@ -482,11 +474,6 @@ export default function Another_User_Profile() {
               <span>موردی برای نمایش وجود ندارد...</span>
             )}
           </div>
-          {UserWritten.length > 8 ? (
-            <button className="btn w-[200px]!">
-              <span className="span-btn "> مشاهده تمام موارد </span>
-            </button>
-          ) : null}
         </div>
       </main>
       <div className="mt-[-60px]">
@@ -509,13 +496,9 @@ export function Book({ book, isLast = false, minw = 180, h = 254 }) {
         id={book.id}
         title={book.name}
         author={book.Author}
-        coverImage={
-          book.image != null
-            ? `http://127.0.0.1:8000/${book.image}`
-            : "/20.jpg"
-        }
+        coverImage={book.image != null ? `${book.image}` : "/20.jpg"}
         description={book.description}
-        chapters={80}
+        chapters={book.chapter_count}
       />
     </div>
   );

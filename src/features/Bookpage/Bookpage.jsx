@@ -9,9 +9,25 @@ import Reviews from "./reviews";
 import SearchBar from "../../Searchbar";
 import Loading from "../../common/Loading/Loading.jsx";
 import Swal from "sweetalert2";
-import { FiBook, FiBookOpen, FiEdit, FiFileText, FiHeart, FiMessageCircle, FiPenTool, FiPlus } from "react-icons/fi";
+import {
+  FiBook,
+  FiBookOpen,
+  FiEdit,
+  FiFileText,
+  FiHeart,
+  FiMessageCircle,
+  FiPenTool,
+  FiPlus,
+} from "react-icons/fi";
 import { FaBook, FaBookOpen, FaPenNib } from "react-icons/fa";
-import { RiBook2Fill, RiBook2Line, RiBook3Line, RiBookOpenLine, RiBookReadLine, RiBookShelfLine } from "react-icons/ri";
+import {
+  RiBook2Fill,
+  RiBook2Line,
+  RiBook3Line,
+  RiBookOpenLine,
+  RiBookReadLine,
+  RiBookShelfLine,
+} from "react-icons/ri";
 const Pagination = ({ totalPages, currentPage, onPageChange }) => {
   const getPageNumbers = () => {
     const pages = [];
@@ -197,6 +213,7 @@ const BookPage = () => {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
+            title: reviewTitle,
             body: reviewContent,
             rating: reviewRating,
             book: parseInt(bookId),
@@ -232,6 +249,7 @@ const BookPage = () => {
 
   const handleIsReadingBook = async (bookId, chapterId) => {
     const token = localStorage.getItem("access_token");
+    const auth = token ? `Bearer ${token}` : "";
     setLoading2(true);
     try {
       const formData = new FormData();
@@ -243,7 +261,7 @@ const BookPage = () => {
           method: "POST",
           body: formData,
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: auth,
           },
         }
       );
@@ -311,7 +329,7 @@ const BookPage = () => {
 
   if (loading2) {
     return (
-      <main className="w-full flex items-center">
+      <main className="grid place-items-center h-[100vh]">
         <Loading />
       </main>
     );
@@ -353,7 +371,7 @@ const BookPage = () => {
                     {isFavorite
                       ? "حذف از مورد علاقه ها"
                       : "اضافه کردن به مورد علاقه ها"}
-                      <FiHeart></FiHeart>
+                    <FiHeart></FiHeart>
                   </div>
                 </span>
               </button>
@@ -367,9 +385,9 @@ const BookPage = () => {
 
           {/* Book Details */}
           <div className=" text-right p-5 pt-0 mb-5 z-10">
-            <div className="flex flex-row-reverse gap-4 items-center mb-4" >
-            <RiBookShelfLine className="scale-200"></RiBookShelfLine>
-            <h1 className=" text-4xl font-bold ">{book.name}</h1>
+            <div className="flex flex-row-reverse gap-4 items-center mb-4">
+              <RiBookShelfLine className="scale-200"></RiBookShelfLine>
+              <h1 className=" text-4xl font-bold ">{book.name}</h1>
             </div>
             <h2 className="text-2xl text-gray-600">{book.Author}</h2>
 
@@ -380,10 +398,7 @@ const BookPage = () => {
               <span className="  text-gray-700 mb-1 font-bold opacity-70">
                 {reviewsCount}
               </span>
-              <div className="mr-10 flex">
-
-            
-              </div>
+              <div className="mr-10 flex"></div>
 
               <span className=" text-gray-700 text-2xl mb-1">
                 {Math.round(book.rating * 10) / 10}

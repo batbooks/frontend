@@ -2,16 +2,43 @@ import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import DatePicker from "react-multi-date-picker";
 import { useSharedState } from "./SharedStateProvider";
+import { useEffect, useRef } from "react";
 
-export function CreationDate({ setFilters }) {
+export function CreationDate({ setFilters, date_from, date_to }) {
   const { dateFrom, setDateFrom, dateTo, setDateTo } = useSharedState();
-
+  const didRun = useRef(false);
+  console.log(date_to, date_from);
+  useEffect(() => {
+    if (!didRun.current && date_from) {
+      setDateFrom(date_from);
+      if (String(date_from) == String(date_to)) {
+        setFilters((filters) => [
+          ...(filters || []),
+          `تاریخ ایجاد: ${date_to}`,
+        ]);
+      } else {
+        console.log("salam");
+        setFilters((filters) => [
+          ...(filters || []),
+          `تاریخ ایجاد: از ${date_from}`,
+        ]);
+      }
+    }
+    if (!didRun.current && date_to) {
+      setDateTo(date_to);
+      setFilters((filters) => [
+        ...(filters || []),
+        `تاریخ ایجاد: تا ${date_to}`,
+      ]);
+    }
+    didRun.current = true;
+  }, []);
   return (
-    <div className="flex flex-col gap-[17px] w-full lg:w-6/10">
-      <h2 className="text-[20px] font-[300] ">تاریخ ایجاد:</h2>
-      <div className="flex 2xl:mr-[30px] w-full gap-[20px]">
-        <div className="flex gap-[9px] items-center w-1/2">
-          <span className="text-[20px] font-[300]">از:</span>
+    <div className="flex flex-col gap-[17px] w-full ">
+      <h2 className="text-[17px] font-[300] ">تاریخ انتشار:</h2>
+      <div className="flex  w-full ">
+        <div className="flex  items-center gap-2">
+          <span className="text-[17px] font-[300]">از:</span>
           <DatePicker
             value={dateFrom}
             onChange={(value) => {
@@ -53,11 +80,11 @@ export function CreationDate({ setFilters }) {
             locale={persian_fa}
             maxDate={dateTo ? new Date(dateTo) : new Date()}
             calendarPosition="bottom-right"
-            inputClass="h-[40px] text-[20px] p-[12px] bg-white rounded-[6px] outline-[2px] outline-[#000000]/21 focus:outline-[3px] focus:outline-[#2663CD] w-full"
+            inputClass="h-[30px] text-[20px] p-[12px] bg-white rounded-[6px] outline-[2px] outline-[#000000]/21 focus:outline-[3px] focus:outline-[#2663CD] w-8/10"
           />
         </div>
-        <div className="flex gap-[9px] items-center w-1/2">
-          <span className="text-[20px] font-[300]">تا:</span>
+        <div className="flex gap-[9px] items-center ">
+          <span className="text-[17px] font-[300]">تا:</span>
           <DatePicker
             value={dateTo}
             onChange={(value) => {
@@ -100,7 +127,7 @@ export function CreationDate({ setFilters }) {
             maxDate={new Date()}
             minDate={dateFrom ? new Date(dateFrom) : null}
             calendarPosition="bottom-right"
-            inputClass="h-[40px] text-[20px] p-[12px] bg-white rounded-[6px] outline-[2px] outline-[#000000]/21 focus:outline-[3px] focus:outline-[#2663CD] w-full"
+            inputClass="h-[30px] text-[20px] p-[12px] bg-white rounded-[6px] outline-[2px] outline-[#000000]/21 focus:outline-[3px] focus:outline-[#2663CD] w-8/10"
           />
         </div>
       </div>

@@ -74,12 +74,13 @@ const ReadingPage = () => {
 
     fetchChapter();
   }, []);
-  if (loading)
+  if (loading) {
     return (
-      <div className="h-[100vh] grid place-items-center">
+      <main className="grid place-items-center h-[100vh]">
         <Loading />
-      </div>
+      </main>
     );
+  }
   if (!chapterFound) {
     return (
       <div className="grid place-items-center h-[100vh]">
@@ -171,13 +172,21 @@ const ReadingPage = () => {
 
           <div className="flex justify-between py-[41px] w-95/100 mx-auto ">
             <button
-              onClick={() => navigate(`/chapter/${nextChapter}`)}
+              disabled={!nextChapter}
+              onClick={() => {
+                navigate(`/chapter/${nextChapter}`);
+                window.location.reload();
+              }}
               className="btn !py-[5px] !px-[5px] !m-0 text-nowrap !rounded-[10px] !w-auto "
             >
               <span className="span-btn">{"<<"} فصل بعد</span>
             </button>
             <button
-              onClick={() => navigate(`/chapter/${prevChapter}`)}
+              disabled={!prevChapter}
+              onClick={() => {
+                navigate(`/chapter/${prevChapter}`);
+                window.location.reload();
+              }}
               className="btn !py-[5px] !px-[5px] !m-0 text-nowrap !rounded-[10px] !w-auto "
             >
               <span className="span-btn">فصل قبل {">>"}</span>

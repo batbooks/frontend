@@ -82,11 +82,9 @@ function CreateBook() {
             title: "ساخت کتاب با مشکل روبرو شد ",
             icon: "error",
             confirmButtonText: "باشه",
-            text:JSON.stringify(errorText)
-            
+            text: JSON.stringify(errorText),
           });
         }, 100);
-        
       }
     } catch (err) {
       console.log(err.message);
@@ -173,6 +171,7 @@ function CreateBook() {
           </div>
           <div dir="rtl" className="w-full max-w-[1020px] h-[211px]">
             <LongParagraphInput
+              
               setInputValue={setDescription}
               placeholder="خلاصه داستان را در اینجا بنویسید "
             />

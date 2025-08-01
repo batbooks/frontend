@@ -69,6 +69,7 @@ const GroupChatWindow: React.FC<GroupChatWindowProps> = ({ groupId, groupName,se
       if (!response.ok) throw new Error(" خطا در بارگزاری افراد ");
       const data = await response.json();
       setMembers(data.members);
+      console.log(data.members)
     } catch (err) {
       setError(err instanceof Error ? err.message : "خطای ناشناخته");
     } finally {

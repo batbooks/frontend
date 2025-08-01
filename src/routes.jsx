@@ -17,7 +17,6 @@ import ModifiedChapter from "./features/CreateChapter/modifiedChapter.jsx";
 import ReadingPage from "./features/ReadingChapter/chapterView.jsx";
 import CreateChapter from "./features/CreateChapter/createChapter.jsx";
 import Threads from "./features/Threads/threads.jsx";
-import ShowAllBooks from "./features/ShowAllBooks/ShowAllBooks.jsx";
 import Comments from "./components/Comments/Comment.jsx";
 import ChatPage from "./common/Chat/Chat.jsx";
 import Chat from "./components/newChat/chat.js";
@@ -31,10 +30,12 @@ import ThreadPostsWrapper from "./features/Thread Posts/threadpost.jsx";
 import PublicPlaylistsPage from "./features/playlist/PublicPlaylistsPage.jsx";
 import UserPlaylistsPage from "./features/playlist/anotherUserPlaylistsPage.jsx";
 import OthersPlaylistDetailPage from "./features/playlist/othersPlaylistDetailPage.jsx";
-
+import Temp from "./features/temp.jsx";
+import ScrollToTop from "./scrollToTop.jsx";
 function AppRoutes() {
   return (
     <Router>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Homepage />}></Route>
         <Route path="/auth/signup" element={<Signup />}></Route>
@@ -86,7 +87,6 @@ function AppRoutes() {
           }
         />
         <Route path="/chapter/:chapterId" element={<ReadingPage />} />
-        <Route path="/showallbooks" element={<ShowAllBooks />} />
         <Route
           path="/modifiedChapter/:id"
           element={
@@ -104,14 +104,21 @@ function AppRoutes() {
           }
         />
         <Route path="/threads/:forumId" element={<Threads forumId={3} />} />
-        <Route path="chat" element={<Chat />} />
+        <Route path="/chat" element={<Chat />} />
+        <Route path="/temp" element={<Temp />} />
         <Route path="/threadposts/:threadId" element={<ThreadPostsWrapper />} />
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/playlists" element={<PlaylistPage />} />
-        <Route path="/playlists/:id" element={<PlaylistDetailPage />} />
+        <Route path="/playlists/:playlistId" element={<PlaylistDetailPage />} />
         <Route path="/public-playlists" element={<PublicPlaylistsPage />} />
-        <Route path="/anotherUserPlaylists" element={<UserPlaylistsPage />} />
-        <Route path="/othersPlaylists/:id" element={<OthersPlaylistDetailPage />} />
+        <Route
+          path="/anotherUserPlaylists/:userId"
+          element={<UserPlaylistsPage />}
+        />
+        <Route
+          path="/othersPlaylists/:playlistId"
+          element={<OthersPlaylistDetailPage />}
+        />
       </Routes>
     </Router>
   );
