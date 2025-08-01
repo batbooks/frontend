@@ -306,7 +306,7 @@ function Person({ person }) {
       md:text-[13px] lg:text-[13px] 
       xl:text-[14px] font-[300]"
         >
-          <div className="flex flex-row-reverse gap-1 items-center">
+          <div className="flex flex-row-reverse px-4 gap-1 items-center">
             <p>{isFollowing ? "دنبال نکردن" : "دنبال کردن"}</p>
             <FiUserPlus />
           </div>
