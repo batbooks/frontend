@@ -64,6 +64,7 @@ export default function Profile() {
         if (response.ok) {
           const data = await response.json();
           userBooks(data.id);
+          console.log(data.id);
           setUserInfo(data.user_info);
           setPlaylistCount(data.playlist_count);
         } else {
@@ -101,7 +102,6 @@ export default function Profile() {
       }
     };
     auth();
-    userBooks();
   }, []);
   useEffect(() => {
     const fetchFollowings = async () => {

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 
 const LongParagraphInput = ({
   placeholder,
-  heightLine = 5,
+  heightLine =0.2,
   setInputValue,
   inputValue = "",
   hideError = () => {},

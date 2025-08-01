@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../../pages/Navbar";
 import Footer from "../../common/Footer/Footer";
 import SearchDropdown from "./searchDropdown";
+import Swal from "sweetalert2";
 
 const PlaylistDetailPage = () => {
   const { playlistId } = useParams();
@@ -117,7 +118,13 @@ const PlaylistDetailPage = () => {
       });
     } catch (err) {
       console.error("Error updating rank:", err);
-      alert("خطا در تغییر رتبه کتاب");
+      setTimeout(() => {
+        Swal.fire({
+          title: "تغییر رتبه کتاب با مشکل روبرو شد ",
+          icon: "error",
+          confirmButtonText: "باشه",
+        });
+      }, 100);
     }
   };
 
@@ -136,11 +143,6 @@ const PlaylistDetailPage = () => {
   };
 
   const handleDeleteBook = async (bookId, playlistId) => {
-    const confirmDelete = window.confirm(
-      "آیا مطمئن هستید که می‌خواهید این کتاب را حذف کنید؟"
-    );
-    if (!confirmDelete) return;
-
     try {
       const token = localStorage.getItem("access_token");
       const auth = token ? `Bearer ${token}` : "";
@@ -174,7 +176,14 @@ const PlaylistDetailPage = () => {
       });
     } catch (error) {
       console.error("Error deleting book:", error);
-      alert("خطا در حذف کتاب");
+
+      setTimeout(() => {
+        Swal.fire({
+          title: "حذف کتاب با مشکل روبرو شد ",
+          icon: "error",
+          confirmButtonText: "باشه",
+        });
+      }, 100);
     }
   };
 

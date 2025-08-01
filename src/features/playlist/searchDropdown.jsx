@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import Swal from "sweetalert2";
 
 const useDebounce = (value, delay) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
@@ -55,7 +56,13 @@ const SearchDropdown = ({ playlistId, onBookAdded }) => {
       setResults([]);
     } catch (err) {
       console.error(err.message);
-      alert("خطا در افزودن کتاب");
+      setTimeout(() => {
+        Swal.fire({
+          title: "افزودن کتاب با مشکل روبرو شد ",
+          icon: "error",
+          confirmButtonText: "باشه",
+        });
+      }, 100);
     }
   };
 

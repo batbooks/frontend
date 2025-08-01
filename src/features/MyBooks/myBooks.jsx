@@ -174,7 +174,7 @@ export default function MyBooks() {
                           chapters={book.chapter_count}
                           coverImage={
                             book.image
-                              ? `https://batbooks.liara.run/${book.image}`
+                              ? `https://batbooks.liara.run${book.image}`
                               : `/images/book_sample1.png`
                           }
                           minw={isMobile ? 150 : 180}

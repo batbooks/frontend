@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../../pages/Navbar";
 import Footer from "../../common/Footer/Footer";
 import { Editor } from "primereact/editor";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import Loading from "../../common/Loading/Loading";
 import Swal from "sweetalert2";
 import Quill from 'quill';
@@ -24,6 +24,7 @@ const CreateChapter = () => {
   const [pdfFile, setPdfFile] = useState(null);
   const location = useLocation();
   const id = location.state?.id;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -83,7 +84,7 @@ const CreateChapter = () => {
         formData.append("title", chapterName);
         formData.append("pdf", pdfFile);
 
-        response = await fetch(`https://batbooks.liara.run/book/uploadfile/`, {
+        const response = await fetch(`https://batbooks.liara.run/book/uploadfile/`, {
           method: "POST",
           body: formData,
           headers: {
@@ -95,11 +96,17 @@ const CreateChapter = () => {
       const result = await response.json();
 
       if (response.ok) {
-        Swal.fire({
-          title: " فصل با موفقیت ایجاد شد",
-          icon: "success",
-          confirmButtonText: "باشه",
-        });
+        setTimeout(() => {
+          Swal.fire({
+            title: " فصل با موفقیت ایجاد شد",
+            icon: "success",
+            confirmButtonText: "باشه",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              navigate(-1);
+            }
+          });
+        }, 100);
       } else {
         Swal.fire({
           title: "ارور ",

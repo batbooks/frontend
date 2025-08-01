@@ -7,6 +7,7 @@ import Loading from "../../common/Loading/Loading";
 import parse from "html-react-parser";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
+import { FaArrowAltCircleRight, FaArrowRight } from "react-icons/fa";
 
 const ModifiedChapter = () => {
   const [chapterName, setChapterName] = useState("");
@@ -99,53 +100,59 @@ const ModifiedChapter = () => {
           style={{
             borderRadius: "30px",
           }}
-          className="bg-[#A4C0ED] w-[90%] mx-auto flex flex-col px-[75px] pt-[27px] pb-[72px] shadow-lg border-[2px] border-[#000000]/21"
+          className="bg-[#A4C0ED] w-[90%] mx-auto px-[75px] pt-[27px] pb-[72px] shadow-lg border-[2px] border-[#000000]/21"
         >
-          <button className="btn m-0 " onClick={() => navigate(-1)}>
+          <button
+            className="btn !gap-2 !px-5 !w-fit !m-0 "
+            onClick={() => navigate(-1)}
+          >
+            <FaArrowRight className="span-btn" />
             <span className="span-btn">بازگشت به صفحه قبل</span>
           </button>
-          <span className="font-bold text-[32px] text-[#265073] mx-auto">
-            ویرایش فصل
-          </span>
+          <div className="flex flex-col">
+            <span className="font-bold text-[32px] text-[#265073] mx-auto">
+              ویرایش فصل
+            </span>
 
-          <div className="flex flex-col items-center">
-            <div className="flex flex-col my-4">
-              <label className=" font-bold text-[20px]">نام فصل :</label>
-              <input
-                type="text"
-                value={chapterName}
-                onChange={(e) => setChapterName(e.target.value)}
-                className="px-[26px] bg-white rounded-[12px] w-[492px] h-[54px] mb-[27px] border-[2px] border-[#000000]/21"
-              />
-            </div>
-            <div className="grid grid-cols-[1fr_2fr] justify-items-stretch gap-5">
-              <div className="flex flex-col">
-                <label className=" font-bold text-[20px] mb-[1px]">
-                  محتوای فصل :
-                </label>
-                <Editor
-                  value={chapterContent}
-                  onTextChange={(e) => setChapterContent(e.htmlValue)}
-                  className="!border-[2px]  !h-full !border-[#000000]/21 !bg-white ql-editor"
+            <div className="flex flex-col items-center">
+              <div className="flex flex-col my-4">
+                <label className=" font-bold text-[20px]">نام فصل :</label>
+                <input
+                  type="text"
+                  value={chapterName}
+                  onChange={(e) => setChapterName(e.target.value)}
+                  className="px-[26px] bg-white rounded-[12px] w-[492px] h-[54px] mb-[27px] border-[2px] border-[#000000]/21"
                 />
               </div>
-              <div>
-                <label className=" font-bold text-[20px] mb-[1px]">
-                  پیش نمایش محتوای فصل:
-                </label>
-                <div className="bg-white h-full text-[16px]  px-[10px] py-[7px] leading-10 border border-[#2663cd]">
-                  {parse(chapterContent || "")}
+              <div className="grid grid-cols-[1fr_2fr] justify-items-stretch gap-5">
+                <div className="flex flex-col">
+                  <label className=" font-bold text-[20px] mb-[1px]">
+                    محتوای فصل :
+                  </label>
+                  <Editor
+                    value={chapterContent}
+                    onTextChange={(e) => setChapterContent(e.htmlValue)}
+                    className="!border-[2px]  !h-full !border-[#000000]/21 !bg-white ql-editor"
+                  />
+                </div>
+                <div>
+                  <label className=" font-bold text-[20px] mb-[1px]">
+                    پیش نمایش محتوای فصل:
+                  </label>
+                  <div className="bg-white h-full text-[16px]  px-[10px] py-[7px] leading-10 border border-[#2663cd]">
+                    {parse(chapterContent || "")}
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div className="mx-auto">
-              <button
-                onClick={handleSubmit}
-                className="cursor-pointer mt-[36px] text-[16.8px] font-[400] text-[#ffffff] rounded-[12px] border-[2px] border-[#000000]/21 px-[86px] py-[13.5px] bg-[#2663CD] shadow-lg shadow-[#000000]/25"
-              >
-                اعمال تغییرات
-              </button>
+              <div className="mx-auto">
+                <button
+                  onClick={handleSubmit}
+                  className="cursor-pointer mt-[36px] text-[16.8px] font-[400] text-[#ffffff] rounded-[12px] border-[2px] border-[#000000]/21 px-[86px] py-[13.5px] bg-[#2663CD] shadow-lg shadow-[#000000]/25"
+                >
+                  اعمال تغییرات
+                </button>
+              </div>
             </div>
           </div>
         </div>
