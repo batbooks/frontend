@@ -6,6 +6,7 @@ import PlaylistCard from "./PlaylistCard";
 import EditPlaylistModal from "./EditPlaylistModal";
 import Loading from "../../common/Loading/Loading";
 import CreatePlaylistPopup from "./createPlaylistPopop";
+import Swal from "sweetalert2";
 
 const PlaylistPage = () => {
   const navigate = useNavigate();
@@ -94,7 +95,13 @@ const PlaylistPage = () => {
         setCurrentPage(currentPage - 1);
       }
     } catch (error) {
-      alert(error.message || "مشکلی پیش آمده است.");
+      setTimeout(() => {
+        Swal.fire({
+          title: "مشکلی پیش آمده است.",
+          icon: "error",
+          confirmButtonText: "باشه",
+        });
+      }, 100);
     }
   };
 
