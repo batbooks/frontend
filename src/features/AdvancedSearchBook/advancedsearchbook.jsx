@@ -478,7 +478,7 @@ function Book({
                 size="small"
               />
             </div>
-            <p className="text-[14px] font-[300] top-0 break-words break-all overflow-hidden">
+            <p className="text-[14px] font-[300] top-0  break-after-all overflow-hidden">
               خلاصه کتاب:{" "}
               {String(bookDescription).length > 270
                 ? bookDescription.slice(0, 270) + "..."
