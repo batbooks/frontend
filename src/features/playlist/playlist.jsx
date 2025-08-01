@@ -6,6 +6,7 @@ import PlaylistCard from "./PlaylistCard";
 import EditPlaylistModal from "./EditPlaylistModal";
 import Loading from "../../common/Loading/Loading";
 import CreatePlaylistPopup from "./createPlaylistPopop";
+import Swal from "sweetalert2";
 
 const PlaylistPage = () => {
   const navigate = useNavigate();
@@ -63,12 +64,6 @@ const PlaylistPage = () => {
   };
 
   const handleDeletePlaylist = async (id) => {
-    const confirmed = window.confirm(
-      "آیا مطمئن هستید که می‌خواهید این پلی‌لیست را حذف کنید؟"
-    );
-
-    if (!confirmed) return;
-
     try {
       const token = localStorage.getItem("access_token");
       const response = await fetch(
@@ -94,7 +89,13 @@ const PlaylistPage = () => {
         setCurrentPage(currentPage - 1);
       }
     } catch (error) {
-      alert(error.message || "مشکلی پیش آمده است.");
+      setTimeout(() => {
+        Swal.fire({
+          title: "مشکلی پیش آمده است.",
+          icon: "error",
+          confirmButtonText: "باشه",
+        });
+      }, 100);
     }
   };
 
