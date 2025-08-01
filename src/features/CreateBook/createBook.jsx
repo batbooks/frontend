@@ -171,7 +171,7 @@ function CreateBook() {
           </div>
           <div dir="rtl" className="w-full max-w-[1020px] h-[211px]">
             <LongParagraphInput
-            
+              
               setInputValue={setDescription}
               placeholder="خلاصه داستان را در اینجا بنویسید "
             />

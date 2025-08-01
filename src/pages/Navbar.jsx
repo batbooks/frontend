@@ -87,7 +87,7 @@ function Navbar() {
     <header
       dir="rtl"
       className={`bg-[#a3d5ff]/50 backdrop-blur-md border-b border-white/20 shadow-md 
-    sticky top-0 z-[150] transition-all duration-300 
+    sticky top-0 z-150 transition-all duration-300 
     ${isScrolled ? "h-[70px]" : "h-[100px]"} 
     p-7 md:max-w-screen lg:m-auto flex justify-between py-[1px] lg:pl-[50px] lg:pr-[30px] 
     ${isVisiblePanel || isVisibleUser ? "relative" : ""}`}
