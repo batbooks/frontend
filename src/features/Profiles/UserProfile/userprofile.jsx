@@ -287,7 +287,7 @@ export default function Profile() {
                     نفر دنبال شده
                   </span>
                 </button>
-                <ul
+                {/* <ul
                   dir="ltr"
                   className={`z-10 absolute w-[90vw] sm:w-[80vw] md:w-[487px] rounded-md overflow-y-auto transition-opacity duration-400 ease-in-out ${
                     isFollowingOpened
@@ -298,7 +298,7 @@ export default function Profile() {
                   {followings.map((user) => (
                     <UserFollowing user={user} />
                   ))}
-                </ul>
+                </ul> */}
               </div>
 
               <button
