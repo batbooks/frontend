@@ -231,7 +231,7 @@ export default function Another_User_Profile() {
                 className="w-full h-full shadow-lg shadow-[#000000]/25 object-cover "
                 src={
                   user.image
-                    ? `http://127.0.0.1:8000${user.image}`
+                    ? `https://batbooks.liara.run${user.image}`
                     : user.gender == "female"
                       ? "/images/femaleProfile.png"
                       : "/images/maleProfile.png"
