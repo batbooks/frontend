@@ -10,13 +10,15 @@ import Loading from "../../common/Loading/Loading";
 import parse from "html-react-parser";
 import ReactMarkdown from "react-markdown";
 import moment from "jalali-moment";
+import Swal from "sweetalert2";
+import { useSelector } from "react-redux";
 const ReadingPage = () => {
   const { chapterId } = useParams();
   const [id, setId] = useState();
   const [chapterBody, setChapterBody] = useState("");
   const [bookCover, setbookCover] = useState("");
   const location = useLocation();
-
+  const [loading2, setLoading2] = useState(false);
   const [bookName, setbookName] = useState("");
   const [author, setAuthor] = useState("");
   const [season, setSeason] = useState("");
@@ -27,6 +29,7 @@ const ReadingPage = () => {
   const [nextChapter, setNextChapter] = useState(0);
   const [prevChapter, setPrevChapter] = useState(0);
   const [bookId, setBookId] = useState(null);
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   useEffect(() => {
     const fetchChapter = async () => {
@@ -74,6 +77,95 @@ const ReadingPage = () => {
 
     fetchChapter();
   }, []);
+
+  const handleIsReadingBook = async (bookId, chapterId) => {
+    const token = localStorage.getItem("access_token");
+    const auth = token ? `Bearer ${token}` : "";
+    setLoading2(true);
+    try {
+      const formData = new FormData();
+      formData.append("book", bookId);
+      formData.append("last_read_chapter", chapterId);
+      const response = await fetch(
+        `http://127.0.0.1:8000/book/user-book-progress/`,
+        {
+          method: "POST",
+          body: formData,
+          headers: {
+            Authorization: auth,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("باید put کنی");
+      }
+    } catch (err) {
+      console.error(err.message);
+      try {
+        const response = await fetch(
+          `http://127.0.0.1:8000/book/user-book-progress/`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error("مشکلی پیش اومد...دوباره تلاش کنید");
+        }
+        const data = await response.json();
+        const formData = new FormData();
+        formData.append("last_read_chapter", chapterId);
+        const id = data.find((book) => Number(book.book) === Number(bookId)).id;
+        try {
+          const response = await fetch(
+            `http://127.0.0.1:8000/book/user-book-progress/${id}/`,
+            {
+              method: "PUT",
+              body: formData,
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error("مشکل در اتصال به اینترنت");
+          }
+        } catch (err) {
+          console.error(err.message);
+          Swal.fire({
+            title: `${err.message}`,
+            text: "دوباره امتحان کنید ",
+            icon: "error",
+            confirmButtonText: "باشه",
+          });
+        }
+      } catch (err) {
+        setTimeout(() => {
+          Swal.fire({
+            title: `${err.message}`,
+            icon: "error",
+            confirmButtonText: "باشه",
+          });
+        }, 100);
+      }
+    } finally {
+      setLoading2(false);
+    }
+  };
+
+  if (loading2) {
+    return (
+      <main className="grid place-items-center h-[100vh]">
+        <Loading />
+      </main>
+    );
+  }
+
   if (loading) {
     return (
       <main className="grid place-items-center h-[100vh]">
@@ -144,10 +236,31 @@ const ReadingPage = () => {
           <div className="flex justify-between py-[41px] w-95/100 mx-auto ">
             <button
               disabled={!nextChapter}
-              onClick={() => {
-                navigate(`/chapter/${nextChapter}`);
-                window.location.reload();
+              // onClick={async () => {
+              //   if (isAuthenticated) {
+              //     await handleIsReadingBook(bookId, chapter.id);
+              //     navigate(`/chapter/${chapter.id}`, {
+              //       state: { index, bookId },
+              //     });
+              //   } else {
+              //     navigate(`/chapter/${chapter.id}`, {
+              //       state: { index, bookId },
+              //     });
+              //   }
+              // }}
+              onClick={async () => {
+                if (isAuthenticated) {
+                  await handleIsReadingBook(bookId, nextChapter);
+                  navigate(`/chapter/${nextChapter}`);
+                  window.location.reload();
+                } else {
+                  navigate(`/chapter/${nextChapter}`);
+                  window.location.reload();
+                }
               }}
+              // onClick={() => {
+              //   window.location.reload();
+              // }}
               className="btn !py-[5px] !px-[5px] !m-0 text-nowrap !rounded-[10px] !w-auto "
             >
               <span className="span-btn">{"<<"} فصل بعد</span>
@@ -173,9 +286,15 @@ const ReadingPage = () => {
           <div className="flex justify-between py-[41px] w-95/100 mx-auto ">
             <button
               disabled={!nextChapter}
-              onClick={() => {
-                navigate(`/chapter/${nextChapter}`);
-                window.location.reload();
+              onClick={async () => {
+                if (isAuthenticated) {
+                  await handleIsReadingBook(bookId, nextChapter);
+                  navigate(`/chapter/${nextChapter}`);
+                  window.location.reload();
+                } else {
+                  navigate(`/chapter/${nextChapter}`);
+                  window.location.reload();
+                }
               }}
               className="btn !py-[5px] !px-[5px] !m-0 text-nowrap !rounded-[10px] !w-auto "
             >
